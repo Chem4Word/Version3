@@ -19,7 +19,7 @@ namespace Chem4Word.Helpers
         public string DeploymentPath { get; }
 
         /// <summary>
-        /// Common Data Path i.e. C:\ProgramData\Chem4Word.V.Next
+        /// Common Data Path i.e. C:\ProgramData\Chem4Word.V3
         /// </summary>
         public string ProgramDataPath { get; }
 
@@ -59,7 +59,7 @@ namespace Chem4Word.Helpers
                 Directory.CreateDirectory($@"{ProductAppDataPath}\Telemetry");
             }
 
-            // Get ProgramData Path i.e "C:\ProgramData\Chem4Word.V.Next" and ensure it exists
+            // Get ProgramData Path i.e "C:\ProgramData\Chem4Word.V3" and ensure it exists
             string programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             ProgramDataPath = Path.Combine(programData, ProductName);
 
