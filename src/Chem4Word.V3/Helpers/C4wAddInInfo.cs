@@ -24,7 +24,7 @@ namespace Chem4Word.Helpers
         public string ProgramDataPath { get; }
 
         /// <summary>
-        /// Local AppData Path of Product i.e. "C:\Users\{User}\AppData\Local\Chem4Word"
+        /// Local AppData Path of Product i.e. "C:\Users\{User}\AppData\Local\Chem4Word.V3"
         /// </summary>
         public string ProductAppDataPath { get; }
 
