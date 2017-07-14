@@ -9,19 +9,14 @@ namespace Chem4Word.Helpers
         //private readonly string _localAppDataPath;
 
         /// <summary>
-        /// Name of product reflected from assembly i.e. "Chem4Word.V.Next"
+        /// Name of product reflected from assembly i.e. "Chem4Word.V3"
         /// </summary>
         public string ProductName { get; }
 
         /// <summary>
-        /// Where the AddIn is being run from i.e. "C:\Program Files (x86)\Chem4Word.V.Next"
+        /// Where the AddIn is being run from i.e. "C:\Program Files (x86)\Chem4Word.V3"
         /// </summary>
         public string DeploymentPath { get; }
-
-        /// <summary>
-        /// For development indication of which source branch is in use
-        /// </summary>
-        public string SourceBranch { get; }
 
         /// <summary>
         /// Common Data Path i.e. C:\ProgramData\Chem4Word.V.Next
@@ -51,17 +46,7 @@ namespace Chem4Word.Helpers
             Uri uriCodeBase = new Uri(assemblyInfo.CodeBase);
             DeploymentPath = Path.GetDirectoryName(uriCodeBase.LocalPath);
 
-            string[] parts = DeploymentPath.Split('\\');
-            for (int i = 0; i < parts.Length; i++)
-            {
-                if (parts[i].Equals("Chem4Word.V3"))
-                {
-                    SourceBranch = parts[i - 1];
-                    break;
-                }
-            }
-
-            // Get the user's Local AppData Path i.e. "C:\Users\{User}\AppData\Local\Chem4Word" and ensure it exists
+            // Get the user's Local AppData Path i.e. "C:\Users\{User}\AppData\Local\" and ensure our user data folder exists
             AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             ProductAppDataPath = Path.Combine(AppDataPath, ProductName);
 

@@ -56,10 +56,6 @@ namespace Chem4Word
 
                 string tabLabel = "Chemistry";
 #if DEBUG
-                if (!string.IsNullOrEmpty(Globals.Chem4WordV3.AddInInfo.SourceBranch))
-                {
-                    tabLabel += " [" + Globals.Chem4WordV3.AddInInfo.SourceBranch + "]";
-                }
                 tabLabel += " (Debug)";
 #endif
                 if (Globals.Chem4WordV3.WordVersion == 2013)
