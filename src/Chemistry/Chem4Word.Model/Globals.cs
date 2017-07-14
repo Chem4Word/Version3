@@ -4,9 +4,5 @@
     {
         public static PeriodicTable PeriodicTable = new PeriodicTable();
         public const double VectorTolerance = 0.01;
-
-        //collection helper methods
-
-
     }
 }

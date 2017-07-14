@@ -125,31 +125,31 @@ function AddHydrogensToAtom(atoms, bonds, bondlength, atom) {
                 atomDegrees = atomDegrees;
                 break;
             case 2:
-                atomDegrees = atomDegrees + (0.5 * seperation);
+                atomDegrees = atomDegrees + 0.5 * seperation;
                 break;
             case 3:
-                atomDegrees = atomDegrees + (1.0 * seperation);
+                atomDegrees = atomDegrees + 1.0 * seperation;
                 break;
         }
 
         for (var i = 0; i < hToAdd; i++) {
             var hAtomAngle = Math.radians(atomDegrees);
-            var newAtomX = atom.x + (bondlength * Math.cos(hAtomAngle));
-            var newAtomY = atom.y - (bondlength * Math.sin(hAtomAngle));
+            var newAtomX = atom.x + bondlength * Math.cos(hAtomAngle);
+            var newAtomY = atom.y - bondlength * Math.sin(hAtomAngle);
             // Detect and bump any overlapping atoms
             for (var j = 0, jj = atoms.length; j < jj; j++) {
                 var xdelta = Math.abs(Math.floor(atoms[j].x) - Math.floor(newAtomX));
                 var ydelta = Math.abs(Math.floor(atoms[j].y) - Math.floor(newAtomY));
                 if (xdelta < 2 && ydelta < 2) {
                     hAtomAngle = Math.radians(atomDegrees - 45);
-                    newAtomX = atom.x + (bondlength / 2 * Math.cos(hAtomAngle));
-                    newAtomY = atom.y - (bondlength / 2 * Math.sin(hAtomAngle));
+                    newAtomX = atom.x + bondlength / 2 * Math.cos(hAtomAngle);
+                    newAtomY = atom.y - bondlength / 2 * Math.sin(hAtomAngle);
                     break;
                 }
             }
             var hydrogen = new ChemDoodle.structures.Atom('H');
-            hydrogen.x = atom.x + (bondlength * Math.cos(hAtomAngle));
-            hydrogen.y = atom.y - (bondlength * Math.sin(hAtomAngle));
+            hydrogen.x = atom.x + bondlength * Math.cos(hAtomAngle);
+            hydrogen.y = atom.y - bondlength * Math.sin(hAtomAngle);
             var bond = new ChemDoodle.structures.Bond(atom, hydrogen, 1);
             atoms[atomIdx++] = hydrogen;
             bonds[bondIdx++] = bond;
@@ -160,7 +160,7 @@ function AddHydrogensToAtom(atoms, bonds, bondlength, atom) {
 
 function AddExplicitHydrogensToMol(mol) {
     var avBondLength = mol.getAverageBondLength();
-    if (avBondLength == 0) {
+    if (avBondLength === 0) {
         avBondLength = 20;
     }
 
@@ -280,9 +280,9 @@ function SetMolFile(molFile, length) {
 function SetCmlFile(cmlFile, length) {
     if (sketcher.oneMolecule) {
         var data = ChemDoodle.readCML(cmlFile);
-        if (data != null && data.length >= 1) {
+        if (data !== null && data.length >= 1) {
             var mol = data[0];
-            if (mol != null) {
+            if (mol !== null) {
                 ShowMol(mol, length);
             }
             else {
@@ -290,7 +290,7 @@ function SetCmlFile(cmlFile, length) {
             }
         }
         else {
-            if (data == null) {
+            if (data === null) {
                 alert("data is null");
             }
             else {
@@ -319,7 +319,7 @@ function SetJSON(molFile, length) {
                 objects = {
                     molecules: [new ChemDoodle.io.JSONInterpreter().molFrom(jsonObject)],
                     shapes: []
-                }
+                };
             }
             ShowSketch(objects.molecules, objects.shapes, length);
         }
@@ -350,13 +350,13 @@ function ShowSketch(mols, shapes, length) {
     // Scale Shapes
     if (sketcher.shapes && sketcher.shapes.length > 0) {
         dummy.s = [];
-        for (var i = 0, ii = sketcher.shapes.length; i < ii; i++) {
-            var ps = sketcher.shapes[i].getPoints();
+        for (var j = 0, jj = sketcher.shapes.length; j < jj; j++) {
+            var ps = sketcher.shapes[j].getPoints();
             for (p = 0, pp = ps.length; p < pp; p++) {
                 ps[p].x *= scale;
                 ps[p].y *= scale;
             }
-            dummy.s.push(sketcher.shapes[i]);
+            dummy.s.push(sketcher.shapes[j]);
         }
     }
 

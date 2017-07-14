@@ -210,8 +210,6 @@ namespace Chem4Word.Model
                 }
                 else
                 {
-                    var pt = Model.PeriodicTable;
-
                     if (Element.Symbol == "C")
                     {
                         if (ShowSymbol | Degree <= 1)

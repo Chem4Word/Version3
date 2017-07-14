@@ -50,6 +50,10 @@ namespace Chem4Word.Core.Helpers
                 data = textStreamReader.ReadToEnd();
             }
 
+            // Repair any broken line feeds to Windows style
+            string[] lines = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            data = string.Join(Environment.NewLine, lines);
+
             return data;
         }
 

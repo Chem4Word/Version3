@@ -13,6 +13,7 @@ namespace Chem4Word.Core.UI.Forms
 
         public System.Windows.Point TopLeft { get; set; }
 
+        // ToDo: Change this to pass in Exception and see if it has an inner exception.
         public ReportError(IChem4WordTelemetry telemetry, System.Windows.Point topLeft, string operation, string exceptionMessage, string callStack)
         {
             InitializeComponent();

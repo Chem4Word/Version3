@@ -209,7 +209,7 @@ namespace Chem4Word.Model
 
             string csv = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "PeriodicTable.csv");
 
-            string[] lines = csv.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = csv.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string line in lines)
             {

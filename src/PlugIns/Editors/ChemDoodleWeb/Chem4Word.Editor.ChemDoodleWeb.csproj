@@ -109,13 +109,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Chem4Word.Core\Chem4Word.Core.csproj">
-      <Project>{2e7b1308-8149-4b03-9cb9-48e0b7151560}</Project>
-      <Name>Chem4Word.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Chemistry\Chem4Word.Model\Chem4Word.Model.csproj">
       <Project>{2ac2b698-58e4-45ea-a69e-d8380fa73b3e}</Project>
       <Name>Chem4Word.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Chem4Word.Core\Chem4Word.Core.csproj">
+      <Project>{2e7b1308-8149-4b03-9cb9-48e0b7151560}</Project>
+      <Name>Chem4Word.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Contracts\Chem4Word.Contracts.csproj">
       <Project>{bdfee6c1-3f34-4200-9100-c543bf4c3783}</Project>
