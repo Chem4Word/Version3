@@ -1,0 +1,22 @@
+﻿# Set Build Numbers
+
+.\SetAssemblyVersion.ps1 -version 3.0.0 -released "01-Jun-2017" -name "Alpha" -path .
+.\SetAssemblyVersion.ps1 -version 3.0.1 -released "08-Jun-2017" -name "Beta 1" -path .
+.\SetAssemblyVersion.ps1 -version 3.0.2 -released "18-Jun-2017" -name "Beta 2" -path .
+
+# Sign Files
+
+CD "C:\Tools\Code Signing Certificate"
+
+SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.exe
+SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.0.Alpha.msi
+SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.1.Beta.1.msi
+SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.2.Beta.2.msi
+
+CD "C:\Tools\Code Signing Certificate"
+
+.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.exe
+.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.0.Alpha.msi
+.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.1.Beta.1.msi
+.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.2.Beta.2.msi
+

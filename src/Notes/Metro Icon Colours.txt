@@ -1,0 +1,23 @@
+Metro Icons
+-----------
+#FFFF0000 == Red
+#FF00FF00 == Green
+#FF0000FF == Blue
+
+Office 2016 - Colours (Backstage)
+---------------------------------
+#FF2B579A == Word Blue
+#FF3955A3 == Visio Blue
+#FF106EBE == Outlook Blue
+#FF2650A2 == OneDrive Blue
+#FF00AFF0 == Skype Blue
+
+#FF80397B == OneNote Purple
+
+#FF217346 == Excel Green
+#FF077568 == Publisher Green
+#FF31752F == Project Green
+
+#FFB7472A == PowerPoint Orange
+#FFA4373A == Access Brown
+#FFEB3C00 == Store Red (Outlook 2013)

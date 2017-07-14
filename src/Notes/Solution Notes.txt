@@ -1,0 +1,43 @@
+Any supporting assemblies for PlugIns MUST be referenced in the main AddIn project to ensure they are deployed.
+
+You will need to import the developer certificate from both, making sure they go in the "Current User\Personal" store.
+$/C4W V.Next/Main/Tools/Certificates/Developer/Chem4WordAddIn.cer
+$/C4W V.Next/Main/Tools/Certificates/Developer/Chem4WordAddIn.pfx
+
+Once imported you can use the select from store button in the Add-In properties Signing page as described in
+$/C4W V.Next/Main/Tools/Certificates/Setting Up Chem4Word VNext.docx
+
+
+Office Locations
+----------------
+http://www.ryadel.com/en/microsoft-office-default-installation-folders-versions/
+
+Office 2010
+	32-bit
+		Windows 32-bit: C:\Program Files\Microsoft Office\Office14\
+		Windows 64-bit: C:\Program Files (x86)\Microsoft Office\Office14\
+	64-bit
+		Windows 64-bit: C:\Program Files\Microsoft Office\Office14\
+	Click-To-Run
+		Windows 32-bit: C:\Program Files\Microsoft Office 14\ClientX86\Root\Office14\
+		Windows 64-bit: C:\Program Files (x86)\Microsoft Office 14\ClientX64\Root\Office14\
+
+Office 2013
+	32-bit
+		Windows 32-bit: C:\Program Files\Microsoft Office\Office15\
+		Windows 64-bit: C:\Program Files (x86)\Microsoft Office\Office15\
+	64-bit
+		Windows 64-bit: C:\Program Files\Microsoft Office\Office15\
+	Click-To-Run
+		Windows 32-bit: C:\Program Files\Microsoft Office 15\ClientX86\Root\Office15\
+		Windows 64-bit: C:\Program Files (x86)\Microsoft Office 15\ClientX64\Root\Office15\
+
+Office 2016
+	32-bit
+		Windows 32-bit: C:\Program Files\Microsoft Office\root\Office16\
+		Windows 64-bit: C:\Program Files (x86)\Microsoft Office\root\Office16\
+	64-bit
+		Windows 64-bit: C:\Program Files\Microsoft Office\root\Office16\
+	Click-To-Run
+		Windows 32-bit: C:\Program Files\Microsoft Office 16\ClientX86\Root\Office16\
+		Windows 64-bit: C:\Program Files (x86)\Microsoft Office 16\ClientX64\Root\Office16\

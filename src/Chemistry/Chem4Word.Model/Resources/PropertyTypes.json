@@ -1,0 +1,87 @@
+﻿[
+  {
+    "ExternalName": "> <CHEM4WORD_FORMULA>",
+    "InternalName": "chem4word:Formula",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <CHEM4WORD_NAME>",
+    "InternalName": "chem4word:Synonym",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <CSID>",
+    "InternalName": "chemspider:Id",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <StdInChIKey>",
+    "InternalName": "chemspider:Inchikey",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <ChemSpider_Synonym>",
+    "InternalName": "chemspider:Synonym",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <Formula>",
+    "InternalName": "chemspider:Formula",
+    "IsFormula": true
+  },
+  {
+    "ExternalName": "> <SMILES>",
+    "InternalName": "chemspider:Smiles",
+    "IsFormula": true
+  },
+  {
+    "ExternalName": "> <PUBCHEM_COMPOUND_CID>",
+    "InternalName": "pubchem:Id",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_IUPAC_OPENEYE_NAME>",
+    "InternalName": "pubchem:IupacOpenEyeName",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_IUPAC_CAS_NAME>",
+    "InternalName": "pubchem:IupacCasName",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_IUPAC_NAME>",
+    "InternalName": "pubchem:Name",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_IUPAC_SYSTEMATIC_NAME>",
+    "InternalName": "pubchem:Systemic",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_IUPAC_TRADITIONAL_NAME>",
+    "InternalName": "pubchem:Traditional",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_IUPAC_INCHIKEY>",
+    "InternalName": "pubchem:InchiKey",
+    "IsFormula": false
+  },
+  {
+    "ExternalName": "> <PUBCHEM_MOLECULAR_FORMULA>",
+    "InternalName": "pubchem:Formula",
+    "IsFormula": true
+  },
+  {
+    "ExternalName": "> <PUBCHEM_OPENEYE_CAN_SMILES>",
+    "InternalName": "pubchem:CanonicalSmiles",
+    "IsFormula": true
+  },
+  {
+    "ExternalName": "> <PUBCHEM_OPENEYE_ISO_SMILES>",
+    "InternalName": "pubchem:IsoSmiles",
+    "IsFormula": true
+  }
+]

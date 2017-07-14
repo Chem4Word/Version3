@@ -1,0 +1,9 @@
+﻿<cml:cml convention="conventions:molecular" xmlns:conventions="http://www.xml-cml.org/convention/" xmlns:cml="http://www.xml-cml.org/schema" xmlns:cmlDict="http://www.xml-cml.org/dictionary/cml/" xmlns:nameDict="http://www.xml-cml.org/dictionary/cml/name/">
+  <cml:molecule id="m1" formalCharge="0" spinMultiplicity="1">
+    <cml:atomArray>
+      <cml:atom id="a0" elementType="C" x2="329.5" y2="182.5" />
+    </cml:atomArray>
+    <cml:bondArray></cml:bondArray>
+    <cml:formula concise="C 1 H 4"></cml:formula>
+  </cml:molecule>
+</cml:cml>

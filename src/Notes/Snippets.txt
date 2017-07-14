@@ -1,0 +1,60 @@
+﻿//. Reflection
+private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
+private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+
+
+// Error Reporting
+string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+try
+{
+
+}
+catch (Exception ex)
+{
+    new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+}
+
+// Error Reporting
+string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+try
+{
+
+}
+catch (Exception ex)
+{
+    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+}
+
+// Experimental code
+private void btnWpf_Click(object sender, RibbonControlEventArgs e)
+{
+    // Could this be from a list of supported PlugIns ???
+    string[] wpfChildren = new[] { "UserControl1", "UserControl2" };
+
+    Random r = new Random(DateTime.UtcNow.Millisecond);
+    int idx = r.Next(0, 2);
+    WpfHost host = new WpfHost(wpfChildren[idx]);
+    host.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+    switch (idx)
+    {
+        case 0:
+            host.FormSize = new Size(350, 600);
+            break;
+
+        case 1:
+            host.FormSize = new Size(600, 350);
+            break;
+    }
+    host.InputValue = wpfChildren[idx];
+
+    DialogResult dr = host.ShowDialog();
+
+    if (dr == DialogResult.OK)
+    {
+        MessageBox.Show(host.OutputValue, "DialogResult.OK");
+    }
+}
+
+// Insert / Update Chemistry into document
+
+public static string InsertChemistry(in out ContentControl cc string cml, )

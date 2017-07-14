@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.chemspider.com/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.chemspider.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">&lt;h3&gt;Please send all feedback to development-at-chemspider-dot-com&lt;/h3&gt;&lt;i&gt;NOTE: Some operations require a "Security Token". To obtain a token please complete the &lt;a href="/Register.aspx"&gt;registration&lt;/a&gt; process. Security Token is listed at &lt;a href="/UserProfile.aspx"&gt;Profile&lt;/a&gt; page.&lt;/i&gt;</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.chemspider.com/">
+      <s:element name="InChIToInChIKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToInChIKeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIToInChIKeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIKeyToInChI">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi_key" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIKeyToInChIResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIKeyToInChIResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SMILESToInChI">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="smiles" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SMILESToInChIResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SMILESToInChIResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToSMILES">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToSMILESResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIToSMILESResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MolToInChI">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MolToInChIResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MolToInChIResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToMol">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToMolResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIToMolResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsValidInChIKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi_key" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="IsValidInChIKeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="IsValidInChIKeyResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MolToInChIKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="mol" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MolToInChIKeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="MolToInChIKeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIKeyToMol">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi_key" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIKeyToMolResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIKeyToMolResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CSIDToMol">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="csid" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="token" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CSIDToMolResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CSIDToMolResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIKeyToCSID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi_key" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIKeyToCSIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIKeyToCSIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToCSID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InChIToCSIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InChIToCSIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateInChIInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="str" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="format" type="tns:ChemicalFormat" />
+            <s:element minOccurs="0" maxOccurs="1" name="flags" type="tns:InChIFlags" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="ChemicalFormat">
+        <s:restriction base="s:string">
+          <s:enumeration value="MOL" />
+          <s:enumeration value="SDF" />
+          <s:enumeration value="SMILES" />
+          <s:enumeration value="InChI" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="InChIFlags">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="version" type="tns:InChIVersion" />
+          <s:element minOccurs="1" maxOccurs="1" name="stereo" type="tns:InChIStereo" />
+          <s:element minOccurs="1" maxOccurs="1" name="fixedH" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="InChIVersion">
+        <s:restriction base="s:string">
+          <s:enumeration value="v102b" />
+          <s:enumeration value="v102s" />
+          <s:enumeration value="v103" />
+          <s:enumeration value="v104" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="InChIStereo">
+        <s:restriction base="s:string">
+          <s:enumeration value="No" />
+          <s:enumeration value="Absolute" />
+          <s:enumeration value="Relative" />
+          <s:enumeration value="Racemic" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="GenerateInChIInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateInChIInfoResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GenerateInChI">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="str" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="format" type="tns:ChemicalFormat" />
+            <s:element minOccurs="0" maxOccurs="1" name="flags" type="tns:InChIFlags" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateInChIResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateInChIResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateInChIKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="str" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="format" type="tns:ChemicalFormat" />
+            <s:element minOccurs="0" maxOccurs="1" name="flags" type="tns:InChIFlags" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GenerateInChIKeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GenerateInChIKeyResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResolveInChIKey">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="inchi_key" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="out_format" type="tns:ChemicalFormat" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ResolveInChIKeyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ResolveInChIKeyResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+      <s:element name="boolean" type="s:boolean" />
+      <s:element name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="InChIToInChIKeySoapIn">
+    <wsdl:part name="parameters" element="tns:InChIToInChIKey" />
+  </wsdl:message>
+  <wsdl:message name="InChIToInChIKeySoapOut">
+    <wsdl:part name="parameters" element="tns:InChIToInChIKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToInChISoapIn">
+    <wsdl:part name="parameters" element="tns:InChIKeyToInChI" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToInChISoapOut">
+    <wsdl:part name="parameters" element="tns:InChIKeyToInChIResponse" />
+  </wsdl:message>
+  <wsdl:message name="SMILESToInChISoapIn">
+    <wsdl:part name="parameters" element="tns:SMILESToInChI" />
+  </wsdl:message>
+  <wsdl:message name="SMILESToInChISoapOut">
+    <wsdl:part name="parameters" element="tns:SMILESToInChIResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIToSMILESSoapIn">
+    <wsdl:part name="parameters" element="tns:InChIToSMILES" />
+  </wsdl:message>
+  <wsdl:message name="InChIToSMILESSoapOut">
+    <wsdl:part name="parameters" element="tns:InChIToSMILESResponse" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChISoapIn">
+    <wsdl:part name="parameters" element="tns:MolToInChI" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChISoapOut">
+    <wsdl:part name="parameters" element="tns:MolToInChIResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIToMolSoapIn">
+    <wsdl:part name="parameters" element="tns:InChIToMol" />
+  </wsdl:message>
+  <wsdl:message name="InChIToMolSoapOut">
+    <wsdl:part name="parameters" element="tns:InChIToMolResponse" />
+  </wsdl:message>
+  <wsdl:message name="IsValidInChIKeySoapIn">
+    <wsdl:part name="parameters" element="tns:IsValidInChIKey" />
+  </wsdl:message>
+  <wsdl:message name="IsValidInChIKeySoapOut">
+    <wsdl:part name="parameters" element="tns:IsValidInChIKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIKeySoapIn">
+    <wsdl:part name="parameters" element="tns:MolToInChIKey" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIKeySoapOut">
+    <wsdl:part name="parameters" element="tns:MolToInChIKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToMolSoapIn">
+    <wsdl:part name="parameters" element="tns:InChIKeyToMol" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToMolSoapOut">
+    <wsdl:part name="parameters" element="tns:InChIKeyToMolResponse" />
+  </wsdl:message>
+  <wsdl:message name="CSIDToMolSoapIn">
+    <wsdl:part name="parameters" element="tns:CSIDToMol" />
+  </wsdl:message>
+  <wsdl:message name="CSIDToMolSoapOut">
+    <wsdl:part name="parameters" element="tns:CSIDToMolResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToCSIDSoapIn">
+    <wsdl:part name="parameters" element="tns:InChIKeyToCSID" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToCSIDSoapOut">
+    <wsdl:part name="parameters" element="tns:InChIKeyToCSIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIToCSIDSoapIn">
+    <wsdl:part name="parameters" element="tns:InChIToCSID" />
+  </wsdl:message>
+  <wsdl:message name="InChIToCSIDSoapOut">
+    <wsdl:part name="parameters" element="tns:InChIToCSIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInChIInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateInChIInfo" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInChIInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateInChIInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInChISoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateInChI" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInChISoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateInChIResponse" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInChIKeySoapIn">
+    <wsdl:part name="parameters" element="tns:GenerateInChIKey" />
+  </wsdl:message>
+  <wsdl:message name="GenerateInChIKeySoapOut">
+    <wsdl:part name="parameters" element="tns:GenerateInChIKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="ResolveInChIKeySoapIn">
+    <wsdl:part name="parameters" element="tns:ResolveInChIKey" />
+  </wsdl:message>
+  <wsdl:message name="ResolveInChIKeySoapOut">
+    <wsdl:part name="parameters" element="tns:ResolveInChIKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="InChIToInChIKeyHttpGetIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToInChIKeyHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToInChIHttpGetIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToInChIHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SMILESToInChIHttpGetIn">
+    <wsdl:part name="smiles" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SMILESToInChIHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToSMILESHttpGetIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToSMILESHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIHttpGetIn">
+    <wsdl:part name="mol" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToMolHttpGetIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToMolHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="IsValidInChIKeyHttpGetIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="IsValidInChIKeyHttpGetOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIKeyHttpGetIn">
+    <wsdl:part name="mol" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIKeyHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToMolHttpGetIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToMolHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="CSIDToMolHttpGetIn">
+    <wsdl:part name="csid" type="s:string" />
+    <wsdl:part name="token" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CSIDToMolHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToCSIDHttpGetIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToCSIDHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToCSIDHttpGetIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToCSIDHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ResolveInChIKeyHttpGetIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+    <wsdl:part name="out_format" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ResolveInChIKeyHttpGetOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:message name="InChIToInChIKeyHttpPostIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToInChIKeyHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToInChIHttpPostIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToInChIHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="SMILESToInChIHttpPostIn">
+    <wsdl:part name="smiles" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="SMILESToInChIHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToSMILESHttpPostIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToSMILESHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIHttpPostIn">
+    <wsdl:part name="mol" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToMolHttpPostIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToMolHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="IsValidInChIKeyHttpPostIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="IsValidInChIKeyHttpPostOut">
+    <wsdl:part name="Body" element="tns:boolean" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIKeyHttpPostIn">
+    <wsdl:part name="mol" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="MolToInChIKeyHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToMolHttpPostIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToMolHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="CSIDToMolHttpPostIn">
+    <wsdl:part name="csid" type="s:string" />
+    <wsdl:part name="token" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CSIDToMolHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToCSIDHttpPostIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIKeyToCSIDHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToCSIDHttpPostIn">
+    <wsdl:part name="inchi" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="InChIToCSIDHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="ResolveInChIKeyHttpPostIn">
+    <wsdl:part name="inchi_key" type="s:string" />
+    <wsdl:part name="out_format" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="ResolveInChIKeyHttpPostOut">
+    <wsdl:part name="Body" element="tns:ArrayOfString" />
+  </wsdl:message>
+  <wsdl:portType name="InChISoap">
+    <wsdl:operation name="InChIToInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to InChIKey.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToInChIKeySoapIn" />
+      <wsdl:output message="tns:InChIToInChIKeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to InChI. Internally searches InChIKey against ChemSpider database.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToInChISoapIn" />
+      <wsdl:output message="tns:InChIKeyToInChISoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert SMILES to InChI. Result is v1.02s InChI.</wsdl:documentation>
+      <wsdl:input message="tns:SMILESToInChISoapIn" />
+      <wsdl:output message="tns:SMILESToInChISoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to SMILES. Uses OpenBabel internally.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToSMILESSoapIn" />
+      <wsdl:output message="tns:InChIToSMILESSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert MOL to InChI. Result is v1.02s InChI.</wsdl:documentation>
+      <wsdl:input message="tns:MolToInChISoapIn" />
+      <wsdl:output message="tns:MolToInChISoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to MOL. Uses OpenBabel internally.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToMolSoapIn" />
+      <wsdl:output message="tns:InChIToMolSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Checks that specified argument is valid InChIKey. Works for v1.02b InChIKey only.</wsdl:documentation>
+      <wsdl:input message="tns:IsValidInChIKeySoapIn" />
+      <wsdl:output message="tns:IsValidInChIKeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert MOL to InChIKey. Result is v1.02s InChIKey.</wsdl:documentation>
+      <wsdl:input message="tns:MolToInChIKeySoapIn" />
+      <wsdl:output message="tns:MolToInChIKeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to MOL. Internally searches InChIKey against ChemSpider database.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToMolSoapIn" />
+      <wsdl:output message="tns:InChIKeyToMolSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert CSID to MOL. Security token is required to get access to this service.</wsdl:documentation>
+      <wsdl:input message="tns:CSIDToMolSoapIn" />
+      <wsdl:output message="tns:CSIDToMolSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to ChemSpider ID.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToCSIDSoapIn" />
+      <wsdl:output message="tns:InChIKeyToCSIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to ChemSpider ID.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToCSIDSoapIn" />
+      <wsdl:output message="tns:InChIToCSIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChIInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Generates InChI, InChIKey and AuxInfo from structure provided in format defined by format parameter.</wsdl:documentation>
+      <wsdl:input message="tns:GenerateInChIInfoSoapIn" />
+      <wsdl:output message="tns:GenerateInChIInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Generates InChI from structure provided in format defined by format parameter.</wsdl:documentation>
+      <wsdl:input message="tns:GenerateInChISoapIn" />
+      <wsdl:output message="tns:GenerateInChISoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Generates InChIKey from structure provided in format defined by format parameter.</wsdl:documentation>
+      <wsdl:input message="tns:GenerateInChIKeySoapIn" />
+      <wsdl:output message="tns:GenerateInChIKeySoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resolves InChIKey against ChemSpider database and returns result as specified by out_format parameter.</wsdl:documentation>
+      <wsdl:input message="tns:ResolveInChIKeySoapIn" />
+      <wsdl:output message="tns:ResolveInChIKeySoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="InChIHttpGet">
+    <wsdl:operation name="InChIToInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to InChIKey.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToInChIKeyHttpGetIn" />
+      <wsdl:output message="tns:InChIToInChIKeyHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to InChI. Internally searches InChIKey against ChemSpider database.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToInChIHttpGetIn" />
+      <wsdl:output message="tns:InChIKeyToInChIHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert SMILES to InChI. Result is v1.02s InChI.</wsdl:documentation>
+      <wsdl:input message="tns:SMILESToInChIHttpGetIn" />
+      <wsdl:output message="tns:SMILESToInChIHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to SMILES. Uses OpenBabel internally.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToSMILESHttpGetIn" />
+      <wsdl:output message="tns:InChIToSMILESHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert MOL to InChI. Result is v1.02s InChI.</wsdl:documentation>
+      <wsdl:input message="tns:MolToInChIHttpGetIn" />
+      <wsdl:output message="tns:MolToInChIHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to MOL. Uses OpenBabel internally.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToMolHttpGetIn" />
+      <wsdl:output message="tns:InChIToMolHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Checks that specified argument is valid InChIKey. Works for v1.02b InChIKey only.</wsdl:documentation>
+      <wsdl:input message="tns:IsValidInChIKeyHttpGetIn" />
+      <wsdl:output message="tns:IsValidInChIKeyHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert MOL to InChIKey. Result is v1.02s InChIKey.</wsdl:documentation>
+      <wsdl:input message="tns:MolToInChIKeyHttpGetIn" />
+      <wsdl:output message="tns:MolToInChIKeyHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to MOL. Internally searches InChIKey against ChemSpider database.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToMolHttpGetIn" />
+      <wsdl:output message="tns:InChIKeyToMolHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert CSID to MOL. Security token is required to get access to this service.</wsdl:documentation>
+      <wsdl:input message="tns:CSIDToMolHttpGetIn" />
+      <wsdl:output message="tns:CSIDToMolHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to ChemSpider ID.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToCSIDHttpGetIn" />
+      <wsdl:output message="tns:InChIKeyToCSIDHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to ChemSpider ID.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToCSIDHttpGetIn" />
+      <wsdl:output message="tns:InChIToCSIDHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resolves InChIKey against ChemSpider database and returns result as specified by out_format parameter.</wsdl:documentation>
+      <wsdl:input message="tns:ResolveInChIKeyHttpGetIn" />
+      <wsdl:output message="tns:ResolveInChIKeyHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="InChIHttpPost">
+    <wsdl:operation name="InChIToInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to InChIKey.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToInChIKeyHttpPostIn" />
+      <wsdl:output message="tns:InChIToInChIKeyHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to InChI. Internally searches InChIKey against ChemSpider database.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToInChIHttpPostIn" />
+      <wsdl:output message="tns:InChIKeyToInChIHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert SMILES to InChI. Result is v1.02s InChI.</wsdl:documentation>
+      <wsdl:input message="tns:SMILESToInChIHttpPostIn" />
+      <wsdl:output message="tns:SMILESToInChIHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to SMILES. Uses OpenBabel internally.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToSMILESHttpPostIn" />
+      <wsdl:output message="tns:InChIToSMILESHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert MOL to InChI. Result is v1.02s InChI.</wsdl:documentation>
+      <wsdl:input message="tns:MolToInChIHttpPostIn" />
+      <wsdl:output message="tns:MolToInChIHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to MOL. Uses OpenBabel internally.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToMolHttpPostIn" />
+      <wsdl:output message="tns:InChIToMolHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Checks that specified argument is valid InChIKey. Works for v1.02b InChIKey only.</wsdl:documentation>
+      <wsdl:input message="tns:IsValidInChIKeyHttpPostIn" />
+      <wsdl:output message="tns:IsValidInChIKeyHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert MOL to InChIKey. Result is v1.02s InChIKey.</wsdl:documentation>
+      <wsdl:input message="tns:MolToInChIKeyHttpPostIn" />
+      <wsdl:output message="tns:MolToInChIKeyHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to MOL. Internally searches InChIKey against ChemSpider database.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToMolHttpPostIn" />
+      <wsdl:output message="tns:InChIKeyToMolHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert CSID to MOL. Security token is required to get access to this service.</wsdl:documentation>
+      <wsdl:input message="tns:CSIDToMolHttpPostIn" />
+      <wsdl:output message="tns:CSIDToMolHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChIKey to ChemSpider ID.</wsdl:documentation>
+      <wsdl:input message="tns:InChIKeyToCSIDHttpPostIn" />
+      <wsdl:output message="tns:InChIKeyToCSIDHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Convert InChI to ChemSpider ID.</wsdl:documentation>
+      <wsdl:input message="tns:InChIToCSIDHttpPostIn" />
+      <wsdl:output message="tns:InChIToCSIDHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Resolves InChIKey against ChemSpider database and returns result as specified by out_format parameter.</wsdl:documentation>
+      <wsdl:input message="tns:ResolveInChIKeyHttpPostIn" />
+      <wsdl:output message="tns:ResolveInChIKeyHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="InChISoap" type="tns:InChISoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InChIToInChIKey">
+      <soap:operation soapAction="http://www.chemspider.com/InChIToInChIKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <soap:operation soapAction="http://www.chemspider.com/InChIKeyToInChI" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <soap:operation soapAction="http://www.chemspider.com/SMILESToInChI" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <soap:operation soapAction="http://www.chemspider.com/InChIToSMILES" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <soap:operation soapAction="http://www.chemspider.com/MolToInChI" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <soap:operation soapAction="http://www.chemspider.com/InChIToMol" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <soap:operation soapAction="http://www.chemspider.com/IsValidInChIKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <soap:operation soapAction="http://www.chemspider.com/MolToInChIKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <soap:operation soapAction="http://www.chemspider.com/InChIKeyToMol" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <soap:operation soapAction="http://www.chemspider.com/CSIDToMol" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <soap:operation soapAction="http://www.chemspider.com/InChIKeyToCSID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <soap:operation soapAction="http://www.chemspider.com/InChIToCSID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChIInfo">
+      <soap:operation soapAction="http://www.chemspider.com/GenerateInChIInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChI">
+      <soap:operation soapAction="http://www.chemspider.com/GenerateInChI" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChIKey">
+      <soap:operation soapAction="http://www.chemspider.com/GenerateInChIKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <soap:operation soapAction="http://www.chemspider.com/ResolveInChIKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="InChISoap12" type="tns:InChISoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InChIToInChIKey">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIToInChIKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIKeyToInChI" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <soap12:operation soapAction="http://www.chemspider.com/SMILESToInChI" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIToSMILES" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <soap12:operation soapAction="http://www.chemspider.com/MolToInChI" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIToMol" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <soap12:operation soapAction="http://www.chemspider.com/IsValidInChIKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <soap12:operation soapAction="http://www.chemspider.com/MolToInChIKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIKeyToMol" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <soap12:operation soapAction="http://www.chemspider.com/CSIDToMol" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIKeyToCSID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <soap12:operation soapAction="http://www.chemspider.com/InChIToCSID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChIInfo">
+      <soap12:operation soapAction="http://www.chemspider.com/GenerateInChIInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChI">
+      <soap12:operation soapAction="http://www.chemspider.com/GenerateInChI" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GenerateInChIKey">
+      <soap12:operation soapAction="http://www.chemspider.com/GenerateInChIKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <soap12:operation soapAction="http://www.chemspider.com/ResolveInChIKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="InChIHttpGet" type="tns:InChIHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="InChIToInChIKey">
+      <http:operation location="/InChIToInChIKey" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <http:operation location="/InChIKeyToInChI" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <http:operation location="/SMILESToInChI" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <http:operation location="/InChIToSMILES" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <http:operation location="/MolToInChI" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <http:operation location="/InChIToMol" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <http:operation location="/IsValidInChIKey" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <http:operation location="/MolToInChIKey" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <http:operation location="/InChIKeyToMol" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <http:operation location="/CSIDToMol" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <http:operation location="/InChIKeyToCSID" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <http:operation location="/InChIToCSID" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <http:operation location="/ResolveInChIKey" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="InChIHttpPost" type="tns:InChIHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="InChIToInChIKey">
+      <http:operation location="/InChIToInChIKey" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToInChI">
+      <http:operation location="/InChIKeyToInChI" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SMILESToInChI">
+      <http:operation location="/SMILESToInChI" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToSMILES">
+      <http:operation location="/InChIToSMILES" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChI">
+      <http:operation location="/MolToInChI" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToMol">
+      <http:operation location="/InChIToMol" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsValidInChIKey">
+      <http:operation location="/IsValidInChIKey" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MolToInChIKey">
+      <http:operation location="/MolToInChIKey" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToMol">
+      <http:operation location="/InChIKeyToMol" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CSIDToMol">
+      <http:operation location="/CSIDToMol" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIKeyToCSID">
+      <http:operation location="/InChIKeyToCSID" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InChIToCSID">
+      <http:operation location="/InChIToCSID" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ResolveInChIKey">
+      <http:operation location="/ResolveInChIKey" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="InChI">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">&lt;h3&gt;Please send all feedback to development-at-chemspider-dot-com&lt;/h3&gt;&lt;i&gt;NOTE: Some operations require a "Security Token". To obtain a token please complete the &lt;a href="/Register.aspx"&gt;registration&lt;/a&gt; process. Security Token is listed at &lt;a href="/UserProfile.aspx"&gt;Profile&lt;/a&gt; page.&lt;/i&gt;</wsdl:documentation>
+    <wsdl:port name="InChISoap" binding="tns:InChISoap">
+      <soap:address location="http://www.chemspider.com/InChI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="InChISoap12" binding="tns:InChISoap12">
+      <soap12:address location="http://www.chemspider.com/InChI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="InChIHttpGet" binding="tns:InChIHttpGet">
+      <http:address location="http://www.chemspider.com/InChI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="InChIHttpPost" binding="tns:InChIHttpPost">
+      <http:address location="http://www.chemspider.com/InChI.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

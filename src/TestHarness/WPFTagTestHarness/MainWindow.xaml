@@ -1,0 +1,15 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFTagTestHarness"
+        xmlns:TagControl="clr-namespace:Chem4Word.Controls.TagControl;assembly=Chem4Word.Controls" x:Class="WPFTagTestHarness.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+
+        <TagControl:TagControl x:Name="myTagControl" Margin="10,10,10,0" VerticalAlignment="Top" />
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,0,0,10" TextWrapping="Wrap" Width="497" VerticalAlignment="Bottom"><Run Text="INSTRUCTIONS:" /><LineBreak /><Run /><LineBreak /><Run Text="Type something in the white text box and use a punctuation character to turn it into a tag.  Clicking on an existing tag deletes it and removes it from the collection." /><LineBreak /><Run /><LineBreak /><Run Text="Have a play!!" /></TextBlock>
+    </Grid>
+</Window>

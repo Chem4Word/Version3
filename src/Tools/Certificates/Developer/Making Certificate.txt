@@ -1,0 +1,15 @@
+MakeCert
+
+https://msdn.microsoft.com/en-us/library/ff699202.aspx
+
+Open Elevated Command Prompt
+
+Copy makecert.exe and pvk2pfx.exe from "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin" to C:\MakeCert
+
+CD C:\MakeCert
+
+rem makecert -sv Chem4WordAddIn.pvk -n "CN=Chem4Word AddIn" Chem4WordAddIn.cer
+rem pvk2pfx -pvk Chem4WordAddIn.pvk -spc Chem4WordAddIn.cer -pfx Chem4WordAddIn.pfx
+
+makecert.exe -n "CN=Chem4Word AddIn" -r -pe -a sha512 -len 4096 -cy authority -sv Chem4WordAddIn.pvk Chem4WordAddIn.cer 
+pvk2pfx.exe -pvk Chem4WordAddIn.pvk -spc Chem4WordAddIn.cer -pfx Chem4WordAddIn.pfx -po Password_123

@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!-- For automatic upgrade to work only first three parts of version number are used -->
+  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.2 Beta 2" Manufacturer="Chem4Word" Version="3.0.2.6378" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of Chem4Word is already installed." />
+    <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
+    <!-- EULA Must be editied in WordPad NOT Word -->
+    <WixVariable Id="WixUILicenseRtf" Value="EULA.rtf" />
+    <Property Id="ARPCOMMENTS">This is the WiX installer for Chemistry Add-In for Microsoft Word</Property>
+    <Property Id="ARPHELPLINK">https://www.chem4word.co.uk/help</Property>
+    <Property Id="ARPURLINFOABOUT">https://www.chem4word.co.uk/about</Property>
+    <Property Id="ARPURLUPDATEINFO">https://www.chem4word.co.uk/update</Property>
+    <Property Id="ARPNOMODIFY" Value="1" />
+    <WixVariable Id="WixUIBannerBmp" Value="WixUIBanner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="WixUIDialog.bmp" />
+    <Icon Id="Chem4Word.ico" SourceFile="Chem4Word.ico" />
+    <Property Id="ARPPRODUCTICON" Value="Chem4Word.ico" />
+    <Feature Id="ProductFeature" Title="Setup" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="PlugIns" />
+      <ComponentGroupRef Id="ThirdParty" />
+      <ComponentGroupRef Id="SQLite.x86" />
+      <ComponentGroupRef Id="SQLite.x64" />
+      <ComponentGroupRef Id="Manual" />
+      <!--<ComponentGroupRef Id="RegistryEntries" />-->
+    </Feature>
+    <Property Id="CHEM4WORDV2">
+      <DirectorySearch Id="Chem4Wordx32" Path="[ProgramFilesFolder]\Chem4Word" Depth="1">
+        <FileSearch Name="Chem4Word.AddIn.dlll" MinVersion="0.0.0.0" MaxVersion="99.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Chem4Wordx64" Path="[ProgramFiles64Folder]\Chem4Word" Depth="1">
+        <FileSearch Name="Chem4Word.AddIn.dll" MinVersion="0.0.0.0" MaxVersion="99.99.9999.9999" />
+      </DirectorySearch>
+    </Property>
+    <Condition Message="Please uninstall version 2 of Chem4Word, then run this installer again."><![CDATA[Installed OR (NOT CHEM4WORDV2)]]></Condition>
+    <Property Id="WORD2010">
+      <DirectorySearch Id="Word2010x32" Path="[ProgramFilesFolder]\Microsoft Office\Office14" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2010x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office14" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2010Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 14\ClientX86\Root\Office14" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2010Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 14\ClientX64\Root\Office14" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
+      </DirectorySearch>
+    </Property>
+    <Property Id="WORD2013">
+      <DirectorySearch Id="Word2013x32" Path="[ProgramFilesFolder]\Microsoft Office\Office15" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2013x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office15" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2013Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 15\ClientX86\Root\Office15" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2013Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 15\ClientX86\Root\Office15" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
+      </DirectorySearch>
+    </Property>
+    <Property Id="WORD2016">
+      <DirectorySearch Id="Word2016x32" Path="[ProgramFilesFolder]\Microsoft Office\root\Office16" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2016x64" Path="[ProgramFiles64Folder]\Microsoft Office\root\Office16" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2016Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2016Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
+      </DirectorySearch>
+    </Property>
+    <Condition Message="This application requires Microsoft Word 2010, 2013 or 2016. Please install it then run this installer again."><![CDATA[Installed OR WORD2010 OR WORD2013 OR WORD2016]]></Condition>
+    <!-- https://msdn.microsoft.com/library/aa370556.aspx -->
+    <Condition Message="This application is only supported on Windows 7, Windows Server 2008 R2, or higher."><![CDATA[Installed OR (VersionNT >= 601)]]></Condition>
+    <!-- https://msdn.microsoft.com/en-us/library/ee942965(v=vs.110).aspx#detect_net -->
+    <PropertyRef Id="NETFRAMEWORK45" />
+    <Condition Message="This application requires .NET Framework 4.5.2. Please install the .NET Framework then run this installer again."><![CDATA[Installed OR NETFRAMEWORK45 >= "#379893"]]></Condition>
+    <!-- https://blogs.msdn.microsoft.com/jschaffe/2012/10/23/creating-wix-custom-actions-in-c-and-passing-parameters/ -->
+    <!-- https://www.codeproject.com/Articles/132918/Creating-Custom-Action-for-WIX-Written-in-Managed -->
+    <Binary Id="WiX.CustomAction.dll" SourceFile="..\Wix.CustomAction\bin\x86\$(var.Configuration)\WiX.CustomAction.CA.dll" />
+    <CustomAction Id="SetupChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="SetupChem4Word" Return="check" Execute="deferred" Impersonate="no" />
+    <CustomAction Id="RemoveChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="RemoveChem4Word" Return="check" Execute="deferred" Impersonate="no" />
+    <InstallExecuteSequence>
+      <Custom Action="SetupChem4Word" Before="InstallFinalize">NOT Installed</Custom>
+      <Custom Action="RemoveChem4Word" Before="InstallFinalize">Installed</Custom>
+    </InstallExecuteSequence>
+    <Property Id="VSTODESIGNTIME">
+      <RegistrySearch Id="VSTODesignTime" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO_DT\VS10\Feature" Type="raw" />
+    </Property>
+    <Property Id="VSTORUNTIMEREDIST">
+      <RegistrySearch Id="VSTORuntimeRedist" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO Runtime Setup\v4R" Name="Version" Type="raw" />
+    </Property>
+    <Condition Message="The Visual Studio 2010 Tools for Office Runtime is not installed. Please download and install from https://www.microsoft.com/en-GB/download/details.aspx?id=48217."><![CDATA[Installed OR VSTODESIGNTIME OR VSTORUNTIMEREDIST >= "10.0.60724"]]></Condition>
+    <UI Id="UserInterface">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="Minimal" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+      <DialogRef Id="WelcomeEulaDlg" />
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+      <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Read the User Manual" />
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+      <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="DisplayUserManual">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <CustomAction Id="DisplayUserManual" Directory="MANUAL" ExeCommand="cmd.exe /c start Chem4Word-V3-User-Manual.docx" Execute="immediate" Return="asyncNoWait" />
+    <UIRef Id="WixUI_Common" />
+  </Product>
+  <!-- Define directory structure -->
+  <Fragment>
+    <!-- User Directory Id attributes MUST BE UPPERCASE !! -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Chem4Word V3">
+          <Directory Id="PLUGINSFOLDER" Name="PlugIns" />
+          <Directory Id="MANUAL" Name="Manual" />
+          <Directory Id="SQLITEX64" Name="x64" />
+          <Directory Id="SQLITEX86" Name="x86" />
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+  <!-- Registry Entries  (Not Used)-->
+  <Fragment>
+    <ComponentGroup Id="RegistryEntries" Directory="INSTALLFOLDER">
+      <Component Id="RegistryEntries">
+        <RegistryKey Root="HKCU" Key="Software\Microsoft\Office\Word\Addins\Chem4Word V3" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+          <RegistryValue Type="string" Name="Description" Value="Chem4Word V3" />
+          <RegistryValue Type="string" Name="FriendlyName" Value="Chemistry Add-In for Word (Chem4Word) V3" />
+          <RegistryValue Type="string" Name="Manifest" Value="[INSTALLFOLDER]\Chem4Word.V3.vsto|vstolocal" />
+          <RegistryValue Type="integer" Name="LoadBehavior" Value="3" />
+        </RegistryKey>
+        <Condition>%PROCESSOR_ARCHITECTURE="x86"</Condition>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- The Chem4Word DLLs etc -->
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- Our Main Assembly -->
+      <Component Id="Chem4Word.V3">
+        <File Id="Chem4Word.V3.dll" Source="$(var.Chem4Word.V3.TargetPath)" />
+      </Component>
+      <Component Id="Chem4Word.V3.pdb">
+        <File Id="Chem4Word.V3.pdb" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.V3.pdb" />
+      </Component>
+      <Component Id="Chem4Word.V3.config">
+        <File Id="Chem4Word.V3.dll.config" Source="$(var.Chem4Word.V3.TargetPath).config" />
+      </Component>
+      <Component Id="Chem4Word.V3.manifest">
+        <File Id="Chem4Word.V3.dll.manifest" Source="$(var.Chem4Word.V3.TargetPath).manifest" />
+      </Component>
+      <Component Id="Chem4Word.V3.vsto">
+        <File Id="Chem4Word.V3.vsto" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.V3.vsto" />
+      </Component>
+      <Component Id="Chem4Word.V3.XmlSerializers">
+        <File Id="Chem4Word.V3.XmlSerializers.dll" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.V3.XmlSerializers.dll" />
+      </Component>
+      <!-- Updater -->
+      <Component Id="Chem4WordUpdater.exe">
+        <File Id="Chem4WordUpdater.exe" Source="..\Chem4WordUpdater\bin\$(var.Configuration)\Chem4WordUpdater.exe" />
+      </Component>
+      <!-- Our Other Assemblies -->
+      <Component Id="Chem4Word.Controls">
+        <File Id="Chem4Word.Controls.dll" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Controls.dll" />
+        <File Id="Chem4Word.Controls.pdb" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Controls.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Core">
+        <File Id="Chem4Word.Core.dll" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Core.dll" />
+        <File Id="Chem4Word.Core.pdb" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Core.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Model">
+        <File Id="Chem4Word.Model.dll" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Model.dll" />
+        <File Id="Chem4Word.Model.pdb" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Model.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Telemetry">
+        <File Id="Chem4Word.Telemetry.dll" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Telemetry.dll" />
+        <File Id="Chem4Word.Telemetry.pdb" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.Telemetry.pdb" />
+      </Component>
+      <Component Id="Chem4Word.ViewModel">
+        <File Id="Chem4Word.ViewModel.dll" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.ViewModel.dll" />
+        <File Id="Chem4Word.ViewModel.pdb" Source="$(var.Chem4Word.V3.TargetDir)Chem4Word.ViewModel.pdb" />
+      </Component>
+      <Component Id="IChem4Word.Contracts">
+        <File Id="IChem4Word.Contracts.dll" Source="$(var.Chem4Word.V3.TargetDir)IChem4Word.Contracts.dll" />
+        <File Id="IChem4Word.Contracts.pdb" Source="$(var.Chem4Word.V3.TargetDir)IChem4Word.Contracts.pdb" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- Standard Plug Ins -->
+  <Fragment>
+    <ComponentGroup Id="PlugIns" Directory="PLUGINSFOLDER">
+      <Component Id="Chem4Word.Editor.ChemDoodleWeb">
+        <File Id="Chem4Word.Editor.ChemDoodleWeb.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb.dll" />
+        <File Id="Chem4Word.Editor.ChemDoodleWeb.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Renderer.OoXmlV3">
+        <File Id="Chem4Word.Renderer.OoXmlV3.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Renderer.OoXmlV3.dll" />
+        <File Id="Chem4Word.Renderer.OoXmlV3.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Renderer.OoXmlV3.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Searcher.ChEBIPlugin">
+        <File Id="Chem4Word.Searcher.ChEBIPlugin.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Searcher.ChEBIPlugin.dll" />
+        <File Id="Chem4Word.Searcher.ChEBIPlugin.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Searcher.ChEBIPlugin.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Searcher.OpsinPlugIn">
+        <File Id="Chem4Word.Searcher.OpsinPlugIn.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Searcher.OpsinPlugIn.dll" />
+        <File Id="Chem4Word.Searcher.OpsinPlugIn.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Searcher.OpsinPlugIn.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Searcher.PubChemPlugIn">
+        <File Id="Chem4Word.Searcher.PubChemPlugIn.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Searcher.PubChemPlugIn.dll" />
+        <File Id="Chem4Word.Searcher.PubChemPlugIn.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Searcher.PubChemPlugIn.pdb" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- The User Manual -->
+  <Fragment>
+    <ComponentGroup Id="Manual" Directory="MANUAL">
+      <Component Id="Chem4Word.V3.User.Manual">
+        <File Id="Chem4Word.V3.User.Manual.docx" Source="$(var.Chem4Word.V3.TargetDir)\Manual\Chem4Word-V3-User-Manual.docx" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- SQLite x86 -->
+  <Fragment>
+    <ComponentGroup Id="SQLite.x86" Directory="SQLITEX86">
+      <Component Id="SQLite.Interop.x86">
+        <File Id="SQLite.Interop.x86.dll" Source="$(var.Chem4Word.V3.TargetDir)\x86\SQLite.Interop.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- SQLite x64 -->
+  <Fragment>
+    <ComponentGroup Id="SQLite.x64" Directory="SQLITEX64">
+      <Component Id="SQLite.Interop.x64">
+        <File Id="SQLite.Interop.x64.dll" Source="$(var.Chem4Word.V3.TargetDir)\x64\SQLite.Interop.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- Third Party DLLs -->
+  <Fragment>
+    <ComponentGroup Id="ThirdParty" Directory="INSTALLFOLDER">
+      <!-- OpenXML SDK -->
+      <Component Id="OpenXML.SDK">
+        <File Id="DocumentFormat.OpenXml.dll" Source="$(var.Chem4Word.V3.TargetDir)DocumentFormat.OpenXml.dll" />
+        <File Id="DocumentFormat.OpenXml.xml" Source="$(var.Chem4Word.V3.TargetDir)DocumentFormat.OpenXml.xml" />
+      </Component>
+      <Component Id="OpenXML.SDK.Dependancy">
+        <File Id="WindowsBase.dll" Source="$(var.Chem4Word.V3.TargetDir)WindowsBase.dll" />
+      </Component>
+      <!-- Other Nuget packages -->
+      <Component Id="Ionic.Zip">
+        <File Id="Ionic.Zip.dll" Source="$(var.Chem4Word.V3.TargetDir)Ionic.Zip.dll" />
+      </Component>
+      <Component Id="Newtonsoft.Json">
+        <File Id="Newtonsoft.Json.dll" Source="$(var.Chem4Word.V3.TargetDir)Newtonsoft.Json.dll" />
+        <File Id="Newtonsoft.Json.xml" Source="$(var.Chem4Word.V3.TargetDir)Newtonsoft.Json.xml" />
+      </Component>
+      <Component Id="Ookii.Dialogs">
+        <File Id="Ookii.Dialogs.dll" Source="$(var.Chem4Word.V3.TargetDir)Ookii.Dialogs.dll" />
+        <File Id="Ookii.Dialogs.xml" Source="$(var.Chem4Word.V3.TargetDir)Ookii.Dialogs.xml" />
+      </Component>
+      <!-- Database -->
+      <Component Id="EntityFramework">
+        <File Id="EntityFramework.dll" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.dll" />
+        <File Id="EntityFramework.xml" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.xml" />
+      </Component>
+      <Component Id="EntityFramework.SqlServer">
+        <File Id="EntityFramework.SqlServer.dll" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.SqlServer.dll" />
+        <File Id="EntityFramework.SqlServer.xml" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.SqlServer.xml" />
+      </Component>
+      <Component Id="System.Data.SQLite">
+        <File Id="System.Data.SQLite.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.dll" />
+        <File Id="System.Data.SQLite.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.xml" />
+      </Component>
+      <Component Id="System.Data.SQLite.EF6">
+        <File Id="System.Data.SQLite.EF6.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.EF6.dll" />
+      </Component>
+      <Component Id="System.Data.SQLite.Linq">
+        <File Id="System.Data.SQLite.Linq.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.Linq.dll" />
+      </Component>
+      <!-- WPF ToolKit -->
+      <Component Id="DotNetProjects.Input.Toolkit">
+        <File Id="DotNetProjects.Input.Toolkit.dll" Source="$(var.Chem4Word.V3.TargetDir)DotNetProjects.Input.Toolkit.dll" />
+        <File Id="DotNetProjects.Input.Toolkit.pdb" Source="$(var.Chem4Word.V3.TargetDir)DotNetProjects.Input.Toolkit.pdb" />
+      </Component>
+      <Component Id="System.Spatial">
+        <File Id="System.Spatial.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Spatial.dll" />
+        <File Id="System.Spatial.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Spatial.xml" />
+      </Component>
+      <Component Id="System.Windows.Interactivity">
+        <File Id="System.Windows.Interactivity.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Windows.Interactivity.dll" />
+        <File Id="System.Windows.Interactivity.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Windows.Interactivity.xml" />
+      </Component>
+      <!-- Azure -->
+      <Component Id="Microsoft.Azure.KeyVault.Core">
+        <File Id="Microsoft.Azure.KeyVault.Core.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Azure.KeyVault.Core.dll" />
+      </Component>
+      <Component Id="Microsoft.Data.Edm">
+        <File Id="Microsoft.Data.Edm.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Edm.dll" />
+        <File Id="Microsoft.Data.Edm.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Edm.xml" />
+      </Component>
+      <Component Id="Microsoft.Data.OData">
+        <File Id="Microsoft.Data.OData.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.OData.dll" />
+        <File Id="Microsoft.Data.OData.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.OData.xml" />
+      </Component>
+      <Component Id="Microsoft.Data.Services.Client">
+        <File Id="Microsoft.Data.Services.Client.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Services.Client.dll" />
+        <!--<File Id="Microsoft.Data.Services.Client.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Services.Client.xml" />-->
+      </Component>
+      <Component Id="Microsoft.WindowsAzure.Storage">
+        <File Id="Microsoft.WindowsAzure.Storage.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.WindowsAzure.Storage.dll" />
+        <File Id="Microsoft.WindowsAzure.Storage.pdb" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.WindowsAzure.Storage.pdb" />
+        <File Id="Microsoft.WindowsAzure.Storage.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.WindowsAzure.Storage.xml" />
+      </Component>
+      <!-- Microsoft Office Tools -->
+      <Component Id="Microsoft.Office.Tools.Common.v4.0.Utilities">
+        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.dll" />
+        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.xml" />
+      </Component>
+      <Component Id="Microsoft.Office.Tools.v4.0.Framework">
+        <File Id="Microsoft.Office.Tools.v4.0.Framework.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.v4.0.Framework.dll" />
+        <File Id="Microsoft.Office.Tools.v4.0.Framework.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.v4.0.Framework.xml" />
+      </Component>
+      <Component Id="Microsoft.Office.Tools.Word">
+        <File Id="Microsoft.Office.Tools.Word.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.dll" />
+        <File Id="Microsoft.Office.Tools.Word.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.xml" />
+      </Component>
+      <Component Id="Microsoft.Office.Tools.Word.v4.0.Utilities">
+        <File Id="Microsoft.Office.Tools.Word.v4.0.Utilities.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.v4.0.Utilities.dll" />
+        <File Id="Microsoft.Office.Tools.Word.v4.0.Utilities.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.v4.0.Utilities.xml" />
+      </Component>
+      <Component Id="Microsoft.VisualStudio.Tools.Applications.Runtime">
+        <File Id="Microsoft.VisualStudio.Tools.Applications.Runtime.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.VisualStudio.Tools.Applications.Runtime.dll" />
+        <File Id="Microsoft.VisualStudio.Tools.Applications.Runtime.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.VisualStudio.Tools.Applications.Runtime.xml" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

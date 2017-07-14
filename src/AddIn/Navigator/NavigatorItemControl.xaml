@@ -1,0 +1,147 @@
+﻿<UserControl
+    x:Class="Chem4Word.Navigator.NavigatorItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Chem4Word.Controls;assembly=Chem4Word.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Chem4Word.Navigator"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignWidth="300"
+    mc:Ignorable="d"
+    x:Name="NavItemControl" Loaded="NavItemControl_Loaded">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="BlueBrush">
+            <SolidColorBrush.Color>#2A579A</SolidColorBrush.Color>
+        </SolidColorBrush>
+        <Style x:Key="NavButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="Blue" />
+        </Style>
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition SharedSizeGroup="col1" />
+        </Grid.ColumnDefinitions>
+        <local:FormulaBlock
+                Grid.Row="0"
+                Margin="2"
+                FontSize="14"
+                Foreground="{StaticResource BlueBrush}"
+                Formula="{Binding Path=Name}" />
+        <controls:FlexDisplay
+                Name="FlexDisplay"
+                Grid.Row="1"
+                Width="Auto"
+                Height="150"
+                Margin="8"
+                HorizontalAlignment="Stretch"
+                Chemistry="{Binding Path=ChemicalStructure}" />
+
+        <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Stretch"
+                Orientation="Horizontal">
+            <Button
+                    x:Name="InsertCopyButton"
+
+                    Width="32"
+                    Height="32"
+                    Style="{StaticResource NavButtonStyle}"
+                    Click="InsertCopyButton_OnClick">
+                <Viewbox Stretch="Uniform">
+                    <Canvas
+                            Width="32"
+                            Height="32"
+                            ClipToBounds="True">
+                        <Path
+                                Canvas.Left="4"
+                                Canvas.Top="4"
+                                Width="24"
+                                Height="24"
+                                Data="F1 M 27,20L 38.75,20L 37.75,19L 24,19L 24,50L 27,50L 27,20 Z M 46.25,20L 59,32.75L 59,59L 27,59L 27,54L 20,54L 20,15L 39.25,15L 44.25,20L 46.25,20 Z M 31,24L 31,55L 55,55L 55,37L 42,37L 42,24L 31,24 Z M 46,25.25L 46,33L 53.75,33L 46,25.25 Z "
+                                Fill="{StaticResource BlueBrush}"
+                                Stretch="Fill" />
+                    </Canvas>
+                </Viewbox>
+                <Button.ToolTip>Insert a copy of the chemistry</Button.ToolTip>
+            </Button>
+            <Button
+                    x:Name="InsertLinkButton"
+                    Width="32"
+                    Height="32"
+                    Style="{StaticResource NavButtonStyle}"
+                    Click="InsertLinkButton_OnClick">
+                <Viewbox Stretch="Uniform">
+                    <Canvas
+                            Width="32"
+                            Height="32"
+                            ClipToBounds="True">
+                        <Path
+                                Canvas.Left="4"
+                                Canvas.Top="4"
+                                Width="24"
+                                Height="24"
+                                Data="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z"
+                                Fill="{StaticResource BlueBrush}"
+                                Stretch="Fill" />
+                    </Canvas>
+                </Viewbox>
+                <Button.ToolTip>Insert a link to the original chemistry</Button.ToolTip>
+            </Button>
+            <Button
+                    x:Name="PreviousButton"
+                    Width="32"
+                    Height="32"
+                    Style="{StaticResource NavButtonStyle}"
+                    Click="PreviousButton_OnClick">
+                <Viewbox Stretch="Uniform">
+                    <Canvas
+                            Width="32"
+                            Height="32"
+                            ClipToBounds="True">
+                        <Path
+                                Canvas.Left="4"
+                                Canvas.Top="4"
+                                Width="24"
+                                Height="24"
+                                Data="M25.320001,0L25.320001,32 0,16z"
+                                Fill="{StaticResource BlueBrush}"
+                                Stretch="Fill" />
+                    </Canvas>
+                </Viewbox>
+                <Button.ToolTip>Move to the previous linked structure</Button.ToolTip>
+            </Button>
+            <Button
+                    x:Name="NextButton"
+                    Width="32"
+                    Height="32"
+                    Style="{StaticResource NavButtonStyle}"
+                    Click="NextButton_OnClick">
+                <Viewbox Stretch="Uniform">
+                    <Canvas
+                            Width="32"
+                            Height="32"
+                            ClipToBounds="True">
+                        <Path
+                                Canvas.Left="4"
+                                Canvas.Top="4"
+                                Width="24"
+                                Height="24"
+                                Data="M0,0L25.194,16 0,32z"
+                                Fill="{StaticResource BlueBrush}"
+                                Stretch="Fill" />
+                    </Canvas>
+                </Viewbox>
+                <Button.ToolTip>Move to the next linked structure</Button.ToolTip>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

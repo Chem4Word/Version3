@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://www.chemspider.com/InChI.asmx?wsdl" docRef="http://www.chemspider.com/InChI.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://www.chemspider.com/InChI.asmx" xmlns:q1="http://www.chemspider.com/" binding="q1:InChISoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://www.chemspider.com/InChI.asmx" xmlns:q2="http://www.chemspider.com/" binding="q2:InChISoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

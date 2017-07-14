@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cml:cml convention="conventions:molecular" xmlns:cml="http://www.xml-cml.org/schema" xmlns:conventions="http://www.xml-cml.org/convention/" xmlns:cmlDict="http://www.xml-cml.org/dictionary/cml/" xmlns:nameDict="http://www.xml-cml.org/dictionary/cml/name/">
+  <cml:molecule id="m0" xmlns:cml="http://www.xml-cml.org/schema">
+    <cml:atomArray>
+      <cml:atom id="a0" elementType="C" x2="297" y2="141" />
+      <cml:atom id="a1" elementType="C" x2="314.320508075689" y2="131" />
+    </cml:atomArray>
+    <cml:bondArray>
+      <cml:bond id="b0" atomRefs2="a0 a1" order="S" />
+    </cml:bondArray>
+  </cml:molecule>
+  <cml:molecule id="m1" xmlns:cml="http://www.xml-cml.org/schema">
+    <cml:atomArray>
+      <cml:atom id="a2" elementType="C" x2="363" y2="149" />
+      <cml:atom id="a3" elementType="C" x2="380.320508075689" y2="139" />
+    </cml:atomArray>
+    <cml:bondArray>
+      <cml:bond id="b1" atomRefs2="a2 a3" order="S" />
+    </cml:bondArray>
+  </cml:molecule>
+</cml:cml>

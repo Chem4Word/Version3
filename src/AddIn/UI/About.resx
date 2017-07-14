@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="labelBody1.Text" xml:space="preserve">
+    <value>The Chemistry Add-In for Word was developed jointly by Microsoft Research and the University of Cambridge in order to enable authorship of chemical information within Microsoft Office Word documents.  The Add-In is now being further developed by a small, independent project team spread across the world.  The Chem4Word Project aims to demonstrate how semantic information can be captured and retained as a part of document authoring in order to more accurately represent the chemical content, contribute to simpler pre-publication processes and richer information discovery scenarios, as well as to preserve chemical information for archival purposes using Chemical Markup Language - an open standard.</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AACcUSH/nFEh/5RJIf+USSH/lEkh/5RJGP+USRj/jEEY/4xBGP+MQRj/jDgY/4w4GP+MOBj/jDgY/4w4
+        GP+MOBj/nFEh////////////////////////////////////////////////////////////////////
+        ////////jDgY/5xZIf///////+fO///fzv//173//8+1///Ptf//x7X//76l//+2nP//tpz//7al//+2
+        nP//tpz//////4w4GP+cWSH////////nzv//38b//8+1/7VRCP+1UQj/1pZz///v5/+9WSn/rUkI/7VZ
+        Kf//9/f//7ac//////+MOBj/pVkp////////587//9/G//e+nP+9WQj/vVkI/9aWa///7+//vVkY/7VJ
+        CP+1SRj///////+2nP//////jDgY/6VhKf///////+fO///fxv/npnP/xmEI/8ZhCP/OeTn///f3/8Zh
+        GP+1UQj/tUkI//fn3v//z7X//////4xBGP+lYSn////////nzv//387/3o45/85xCP/OaQj/znkh/+e+
+        nP/GYRD/vVkI/7VRCP/erpT//+fe//////+MQRj/rWEp////////59b//9/O/9Z5CP/WeQj/3pZC/85x
+        CP/OaQj/xmkQ/9aOSv+9UQj/vWEp///39///////jEEY/61hKf///////+fW///nzv/Whgj/3pYp//ff
+        xv/WeQj/znEI/85xGP/3797/vWEY/7VRCP///////////5RJGP+taSn////////v1v/3z5z/3oYI/+em
+        Of////f/1oYI/9Z5CP/OcRD////3/9aGQv+1UQj/99/W//////+USSH/rXEx////////7+f/77Zj/96O
+        CP/vtlr////3/96OIf/WeQj/3p5K/+/Xvf+9WQj/tVEI/96mhP////f/nFEx/72GUv//9+////fv/96G
+        CP/ehgj/775z///37//elin/1nkI/+euc//ernv/vVkI/7VRCP+1SRD//////6VZOf/WroT/59e9////
+        9///797//+/e///v3v//59b//+fO///nzv//587//9/O///fzv//387//+fO//////+cUSH/AAAAAMae
+        a///9+/////////37///797//+/W///n1v//59b//+fW///nzv//587//+fO///nzv//////nFEh/wAA
+        AAAAAAAAxp5r/+fXvf//9+///////////////////////////////////////////////////////5xR
+        If8AAAAAAAAAAAAAAADWroT/vYZS/7VxMf+taSn/rWkp/61hKf+lYSn/pWEp/6VZKf+lWSn/nFkh/5xZ
+        If+cUSH/AACsQQAArEEAAKxBAACsQQAArEEAAKxBAACsQQAArEEAAKxBAACsQQAArEEAAKxBAACsQYAA
+        rEHAAKxB4ACsQQ==
+</value>
+  </data>
+</root>

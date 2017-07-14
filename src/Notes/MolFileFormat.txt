@@ -1,0 +1,60 @@
+Header
+// Line 1 - Molecule Name (80)
+
+// Line 2
+// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+//           1         2         3         4         5         6         7         
+// IIPPPPPPPPMMDDYYHHmmddSSssssssssssEEEEEEEEEEEERRRRRR
+// A2<--A8--><---A10-->A2I2<--F10.5-><---F12.5--><-I6->
+// I == User Initials
+// P == Program Name
+// MMDDYYHHmm == Date and Time
+// d == dimensional codes
+// Ss == scaling factors
+// E == Energy
+// R == registry number
+
+Line 3 - Comments (80)
+
+// Counts line
+// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+//           1         2         3         4         5         6         7         
+// aaabbblll---cccsss------------mmm-vvvvv
+//   6  5  0     0  0              3 V2000
+// a == number of atoms
+// b == number of bonds
+// l == number of atom lists
+// c == chiral flag; 0=not chiral, 1=chiral
+// m == number of additional properties
+// v == version number
+
+// Atoms
+// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+//           1         2         3         4         5         6         7         
+// xxxxx.xxxxyyyyy.yyyyzzzzz.zzzz aaaddcccssshhhbbbvvvHHH------mmmnnneee
+// x,y,z = atom coordinates
+// a = atom symbol
+// d = mass difference; -3, -2, -1, 0, 1, 2, 3, 4 (0 if value beyond these limits)
+// c = charge; 0 = uncharged or value other than these, 1 = +3, 2 = +2, 3 = +1, 4 = doublet radical, 5 = -1, 6 = -2, 7 = -3
+// s = stereo parity; 0 = not stereo, 1 = odd, 2 = even, 3 = either or unmarked stereo center
+// h = hydrogen count +1; 1 = H0, 2 = H1, 3 = H2, 4 = H3, 5 = H4
+// b = stereo care box; 0 = ignore stereo configuration of this double bond atom, 1 = stereo configuration of double bond atom must match
+// v = valence; 0 = no marking (default) (1 to 14) = (1 to 14) 15 = zero valence
+// H = H0 designator; 0 = not specified, 1 = no H atoms allowed
+// m = atom to atom mapping
+// n = inversion/retention flag
+// e = exact change flag
+
+// Bonds
+// 01234567890123456789012345678901234567890123456789012345678901234567890123456789
+//           1         2         3         4         5         6         7         
+// 111222tttsss---rrrccc
+// 1 == 1st atom number
+// 2 == 2nd atom number
+// t = bond type; 1 = Single, 2 = Double, 3 = Triple, 4 = Aromatic, 5 = Single or Double, 6 = Single or Aromatic, 7 = Double or Aromatic, 8 = Any
+// s = bond stereo; Single bonds: 0 = not stereo, 1 = Up, 4 = Either, 6 = Down, Double bonds: 0 = Use x-, y-, z-coords from atom block to determine cis or trans, 3 = Cis or trans (either) double bond
+// r = bond topology; 0 = Either, 1 = Ring, 2 = Chain
+// c = reacting center status; 0 = unmarked, 1 = a center, -1 = not a center, Additional: 2 = no change, 4 = bond made/broken, 8 = bond order changes 12 = 4+8 (both made/broken and changes); 5 = (4 + 1), 9 = (8 + 1), and 13 = (12 + 1) are also possible
+
+Footer
+M  END

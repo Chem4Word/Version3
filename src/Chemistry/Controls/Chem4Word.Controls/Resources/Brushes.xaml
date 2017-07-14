@@ -1,0 +1,49 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- lists the colours for the standard elements
+    https://en.wikipedia.org/wiki/CPK_coloring -->
+    <SolidColorBrush
+        x:Key="HBrush"
+        Color="Gray" />
+    <SolidColorBrush
+        x:Key="CBrush"
+        Color="Black" />
+    <SolidColorBrush
+        x:Key="NBrush"
+        Color="Blue" />
+    <SolidColorBrush
+        x:Key="OBrush"
+        Color="Red" />
+    <SolidColorBrush
+        x:Key="FBrush"
+        Color="#00C000" />
+    <SolidColorBrush
+        x:Key="PBrush"
+        Color="#FF8000" />
+    <SolidColorBrush
+        x:Key="SBrush"
+        Color="Olive" />
+    <SolidColorBrush
+        x:Key="ClBrush"
+        Color="#00C000" />
+    <SolidColorBrush
+        x:Key="BrBrush"
+        Color="#C04000" />
+
+    <SolidColorBrush
+        x:Key="IBrush"
+        Color="DarkViolet" />
+    <SolidColorBrush
+        x:Key="BBrush"
+        Color="Salmon" />
+    <SolidColorBrush
+        x:Key="RBrush"
+        Color="Black" />
+    <SolidColorBrush
+        x:Key="NobleBrush"
+        Color="Cyan" />
+    <SolidColorBrush
+        x:Key="AlkaliBrush"
+        Color="BlueViolet" />
+</ResourceDictionary>
