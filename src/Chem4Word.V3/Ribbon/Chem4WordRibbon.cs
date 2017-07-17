@@ -1811,6 +1811,7 @@ namespace Chem4Word
                             }
 
                             Globals.Chem4WordV3.LibraryState = ShowLibrary.Checked;
+                            ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
 
                             if (ShowLibrary.Checked)
                             {
@@ -1887,6 +1888,7 @@ namespace Chem4Word
                                 {
                                     (taskPane.Control as LibraryHost)?.Refresh();
                                 }
+                                ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
                             }
                         }
                     }
