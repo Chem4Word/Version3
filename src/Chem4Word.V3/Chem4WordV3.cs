@@ -1112,6 +1112,7 @@ namespace Chem4Word
 
                         Ribbon.ShowNavigator.Checked = false;
                         Ribbon.ShowLibrary.Checked = LibraryState;
+                        Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
 
                         DialogResult answer = Upgrader.UpgradeIsRequired(doc);
                         if (answer == DialogResult.Yes)
@@ -1152,6 +1153,7 @@ namespace Chem4Word
                                         Debug.WriteLine($"Found Gallery Task Pane. Visible: {taskPane.Visible}");
                                         //Ribbon.ToggleButtonGallery.Checked = taskPane.Visible;
                                         taskPane.Visible = Ribbon.ShowLibrary.Checked;
+                                        Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
                                         libraryFound = true;
                                         break;
                                     }
