@@ -463,6 +463,18 @@ namespace Chem4Word.Model
 
         }
 
+        private List<Ring> _sortedRings = null;
+        public List<Ring> SortedRings {
+            get
+            {
+                if (_sortedRings == null)
+                {
+                    _sortedRings = SortRingsForDBPlacement();
+                }
+                return _sortedRings;
+            }
+        }
+
         private void WipeMoleculeRings()
         {
             Rings.RemoveAll();
@@ -471,6 +483,7 @@ namespace Chem4Word.Model
             foreach (var a in Atoms)
             {
                 a.Rings.RemoveAll();
+                _sortedRings = null;
             }
         }
 
@@ -799,6 +812,8 @@ namespace Chem4Word.Model
         {
             get { return Bonds.Average(b => b.BondVector.Length); }
         }
+
+   
 
         public void ScaleToAverageBondLength(double newLength, Model model)
         {

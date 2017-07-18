@@ -694,56 +694,25 @@ namespace Chem4Word.Model
 
                 Ring theRing = null;
 
-                List<Ring> ringList = Rings.Where(x => x.Priority > 0).OrderBy(x => x.Priority).ToList();
+                //List<Ring> ringList = Rings.Where(x => x.Priority > 0).OrderBy(x => x.Priority).ToList();
 
-                if (!ringList.Any()) //no rings
+                
+
+                if (!Rings.Any()) //no rings
                 {
                     return null;
                 }
-                else if (ringList.Count() == 1)
+                else
                 {
-                    return ringList[0];
+                    List<Ring> ringList = Parent.SortedRings;
+                    var firstRing = (
+                        from Ring r in ringList
+                        where r.Atoms.Contains(this.StartAtom) && r.Atoms.Contains(this.EndAtom)
+                        select r
+                        ).FirstOrDefault();
+                    return firstRing;
                 }
-                else if (ringList.Count() == 2)
-                {
-                    // which ring has double bonds?
-                    Ring ring0 = ringList[0];
-                    int size0 = ring0.Atoms.Count();
-                    int doubleBondCount0 = ring0.DoubleBonds.Count;
-                    Ring ring1 = ringList[1];
-                    int size1 = ring1.Atoms.Count();
-                    int doubleBondCount1 = ring1.DoubleBonds.Count;
 
-                    // only one double per ring
-                    if (doubleBondCount0 == 1 && doubleBondCount1 == 1)
-                    {
-                        // null
-                    }
-                    // conjugated
-                    else if (size0 == 2 * doubleBondCount0)
-                    {
-                        theRing = ring0;
-                    }
-                    else if (size1 == 2 * doubleBondCount1)
-                    {
-                        theRing = ring1;
-                    }
-                    // which ring has more doubles
-                    else if (doubleBondCount0 > doubleBondCount1)
-                    {
-                        theRing = ring0;
-                    }
-                    else
-                    {
-                        theRing = ring1;
-                    }
-
-                    return theRing;
-                }
-                else// > 2 rings
-                {
-                    return ringList[0]; //gotta return something I suppose
-                }
             }
         }
 
