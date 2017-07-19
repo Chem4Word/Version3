@@ -76,7 +76,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
             return true;
         }
@@ -106,7 +106,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -132,7 +132,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
             return result;
         }
