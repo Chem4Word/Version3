@@ -36,14 +36,13 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkShowImplicitHydrogens = new System.Windows.Forms.CheckBox();
             this.chkColouredAtoms = new System.Windows.Forms.CheckBox();
             this.tabDebug = new System.Windows.Forms.TabPage();
+            this.chkShowAtomPositions = new System.Windows.Forms.CheckBox();
             this.chkShowRingCentres = new System.Windows.Forms.CheckBox();
             this.chkShowCharacterBox = new System.Windows.Forms.CheckBox();
             this.chkShowMoleculeBox = new System.Windows.Forms.CheckBox();
-            this.chkPushToCentre = new System.Windows.Forms.CheckBox();
             this.chkClipLines = new System.Windows.Forms.CheckBox();
             this.btnSetDefaults = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
-            this.chkShowAtomPositions = new System.Windows.Forms.CheckBox();
             this.tabControlEx.SuspendLayout();
             this.tabRendering.SuspendLayout();
             this.tabDebug.SuspendLayout();
@@ -111,7 +110,6 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.tabDebug.Controls.Add(this.chkShowRingCentres);
             this.tabDebug.Controls.Add(this.chkShowCharacterBox);
             this.tabDebug.Controls.Add(this.chkShowMoleculeBox);
-            this.tabDebug.Controls.Add(this.chkPushToCentre);
             this.tabDebug.Controls.Add(this.chkClipLines);
             this.tabDebug.Location = new System.Drawing.Point(0, 20);
             this.tabDebug.Name = "tabDebug";
@@ -119,6 +117,20 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.tabDebug.Size = new System.Drawing.Size(428, 163);
             this.tabDebug.TabIndex = 1;
             this.tabDebug.Text = "Debug";
+            // 
+            // chkShowAtomPositions
+            // 
+            this.chkShowAtomPositions.AutoSize = true;
+            this.chkShowAtomPositions.Checked = true;
+            this.chkShowAtomPositions.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowAtomPositions.Location = new System.Drawing.Point(12, 37);
+            this.chkShowAtomPositions.Margin = new System.Windows.Forms.Padding(4);
+            this.chkShowAtomPositions.Name = "chkShowAtomPositions";
+            this.chkShowAtomPositions.Size = new System.Drawing.Size(125, 17);
+            this.chkShowAtomPositions.TabIndex = 21;
+            this.chkShowAtomPositions.Text = "Show Atom Positions";
+            this.chkShowAtomPositions.UseVisualStyleBackColor = true;
+            this.chkShowAtomPositions.CheckedChanged += new System.EventHandler(this.chkShowAtomCentres_CheckedChanged);
             // 
             // chkShowRingCentres
             // 
@@ -162,20 +174,6 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkShowMoleculeBox.UseVisualStyleBackColor = true;
             this.chkShowMoleculeBox.CheckedChanged += new System.EventHandler(this.chkShowMoleculeBox_CheckedChanged);
             // 
-            // chkPushToCentre
-            // 
-            this.chkPushToCentre.AutoSize = true;
-            this.chkPushToCentre.Checked = true;
-            this.chkPushToCentre.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkPushToCentre.Location = new System.Drawing.Point(12, 37);
-            this.chkPushToCentre.Margin = new System.Windows.Forms.Padding(4);
-            this.chkPushToCentre.Name = "chkPushToCentre";
-            this.chkPushToCentre.Size = new System.Drawing.Size(239, 17);
-            this.chkPushToCentre.TabIndex = 14;
-            this.chkPushToCentre.Text = "Push double bonds to centre of detected ring";
-            this.chkPushToCentre.UseVisualStyleBackColor = true;
-            this.chkPushToCentre.CheckedChanged += new System.EventHandler(this.chkPushToCentre_CheckedChanged);
-            // 
             // chkClipLines
             // 
             this.chkClipLines.AutoSize = true;
@@ -214,20 +212,6 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
-            // chkShowAtomPositions
-            // 
-            this.chkShowAtomPositions.AutoSize = true;
-            this.chkShowAtomPositions.Checked = true;
-            this.chkShowAtomPositions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowAtomPositions.Location = new System.Drawing.Point(12, 137);
-            this.chkShowAtomPositions.Margin = new System.Windows.Forms.Padding(4);
-            this.chkShowAtomPositions.Name = "chkShowAtomPositions";
-            this.chkShowAtomPositions.Size = new System.Drawing.Size(125, 17);
-            this.chkShowAtomPositions.TabIndex = 21;
-            this.chkShowAtomPositions.Text = "Show Atom Positions";
-            this.chkShowAtomPositions.UseVisualStyleBackColor = true;
-            this.chkShowAtomPositions.CheckedChanged += new System.EventHandler(this.chkShowAtomCentres_CheckedChanged);
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,7 +247,6 @@ namespace Chem4Word.Renderer.OoXmlV3
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.CheckBox chkShowImplicitHydrogens;
         private System.Windows.Forms.CheckBox chkColouredAtoms;
-        private System.Windows.Forms.CheckBox chkPushToCentre;
         private System.Windows.Forms.CheckBox chkClipLines;
         private System.Windows.Forms.CheckBox chkShowRingCentres;
         private System.Windows.Forms.CheckBox chkShowCharacterBox;

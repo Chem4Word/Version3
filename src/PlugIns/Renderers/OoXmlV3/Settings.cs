@@ -44,20 +44,6 @@ namespace Chem4Word.Renderer.OoXmlV3
             }
         }
 
-        private void chkPushToCentre_CheckedChanged(object sender, EventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            try
-            {
-                RendererOptions.PushBondToCentre = chkPushToCentre.Checked;
-                _dirty = true;
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
-            }
-        }
-
         private void chkShowImplicitHydrogens_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -203,7 +189,6 @@ namespace Chem4Word.Renderer.OoXmlV3
             chkColouredAtoms.Checked = RendererOptions.ColouredAtoms;
             chkShowImplicitHydrogens.Checked = RendererOptions.ShowHydrogens;
             chkClipLines.Checked = RendererOptions.ClipLines;
-            chkPushToCentre.Checked = RendererOptions.PushBondToCentre;
             chkShowCharacterBox.Checked = RendererOptions.ShowCharacterBoundingBoxes;
             chkShowMoleculeBox.Checked = RendererOptions.ShowMoleculeBoundingBoxes;
             chkShowRingCentres.Checked = RendererOptions.ShowRingCentres;

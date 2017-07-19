@@ -135,93 +135,77 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                         else
                         {
                             Debug.WriteLine($"bond.Placement {bond.Placement}");
-                            if (m_rendererOptions.PushBondToCentre)
+                            Point outIntersectP1;
+                            Point outIntersectP2;
+                            bool linesIntersect;
+                            bool segmentsIntersect;
+                            Point centre;
+
+                            switch (bond.Placement)
                             {
-                                BondLine dc = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
-                                m_BondLines.Add(dc);
-                                Vector? vec2 = bond.GetPrettyDoubleBondVector();
-                                Vector dv = vec2.Value;
-                                BondLine dc1 = null;
-                                Point startPoint = new Point(bondStart.X + dv.X, bondStart.Y + dv.Y);
-                                Point endPoint = new Point(bondEnd.X + dv.X, bondEnd.Y + dv.Y);
-                                CoordinateTool.AdjustLineAboutMidpoint(ref startPoint, ref endPoint, -(BondOffset() / 1.75));
-                                dc1 = new BondLine(startPoint, endPoint, BondLineStyle.Solid, bond.Id);
-                                m_BondLines.Add(dc1);
-                            }
-                            else
-                            {
-                                Point outIntersectP1;
-                                Point outIntersectP2;
-                                bool linesIntersect;
-                                bool segmentsIntersect;
-                                Point centre;
+                                case BondDirection.Anticlockwise:
+                                    BondLine da = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
+                                    m_BondLines.Add(da);
 
-                                switch (bond.Placement)
-                                {
-                                    case BondDirection.Anticlockwise:
-                                        BondLine da = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
-                                        m_BondLines.Add(da);
+                                    BondLine bla = da.GetParallel(-BondOffset());
+                                    Point startPointa = bla.Start;
+                                    Point endPointa = bla.End;
 
-                                        BondLine bla = da.GetParallel(-BondOffset());
-                                        Point startPointa = bla.Start;
-                                        Point endPointa = bla.End;
+                                    if (bond.PrimaryRing != null)
+                                    {
+                                        centre = bond.PrimaryRing.Centroid.Value;
+                                        // Diagnostics
+                                        //m_BondLines.Add(new BondLine(bondStart, centre, BondLineStyle.Dotted, null));
+                                        //m_BondLines.Add(new BondLine(bondEnd, centre, BondLineStyle.Dotted, null));
 
-                                        if (bond.PrimaryRing != null)
-                                        {
-                                            centre = bond.PrimaryRing.Centroid.Value;
-                                            // Diagnostics
-                                            //m_BondLines.Add(new BondLine(bondStart, centre, BondLineStyle.Dotted, null));
-                                            //m_BondLines.Add(new BondLine(bondEnd, centre, BondLineStyle.Dotted, null));
+                                        CoordinateTool.FindIntersection(startPointa, endPointa, bondStart, centre,
+                                            out linesIntersect, out segmentsIntersect, out outIntersectP1);
+                                        CoordinateTool.FindIntersection(startPointa, endPointa, bondEnd, centre,
+                                            out linesIntersect, out segmentsIntersect, out outIntersectP2);
 
-                                            CoordinateTool.FindIntersection(startPointa, endPointa, bondStart, centre,
-                                                out linesIntersect, out segmentsIntersect, out outIntersectP1);
-                                            CoordinateTool.FindIntersection(startPointa, endPointa, bondEnd, centre,
-                                                out linesIntersect, out segmentsIntersect, out outIntersectP2);
+                                        m_BondLines.Add(new BondLine(outIntersectP1, outIntersectP2, BondLineStyle.Solid, bond.Id));
+                                    }
+                                    else
+                                    {
+                                        CoordinateTool.AdjustLineAboutMidpoint(ref startPointa, ref endPointa, -(BondOffset() / 1.75));
+                                        m_BondLines.Add(new BondLine(startPointa, endPointa, BondLineStyle.Solid, bond.Id));
+                                    }
+                                    break;
 
-                                            m_BondLines.Add(new BondLine(outIntersectP1, outIntersectP2, BondLineStyle.Solid, bond.Id));
-                                        }
-                                        else
-                                        {
-                                            CoordinateTool.AdjustLineAboutMidpoint(ref startPointa, ref endPointa, -(BondOffset() / 1.75));
-                                            m_BondLines.Add(new BondLine(startPointa, endPointa, BondLineStyle.Solid, bond.Id));
-                                        }
-                                        break;
+                                case BondDirection.Clockwise:
+                                    BondLine dc = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
+                                    m_BondLines.Add(dc);
 
-                                    case BondDirection.Clockwise:
-                                        BondLine dc = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
-                                        m_BondLines.Add(dc);
+                                    BondLine blc = dc.GetParallel(+BondOffset());
+                                    Point startPointc = blc.Start;
+                                    Point endPointc = blc.End;
 
-                                        BondLine blc = dc.GetParallel(+BondOffset());
-                                        Point startPointc = blc.Start;
-                                        Point endPointc = blc.End;
+                                    if (bond.PrimaryRing != null)
+                                    {
+                                        centre = bond.PrimaryRing.Centroid.Value;
+                                        // Diagnostics
+                                        //m_BondLines.Add(new BondLine(bondStart, centre, BondLineStyle.Dotted, null));
+                                        //m_BondLines.Add(new BondLine(bondEnd, centre, BondLineStyle.Dotted, null));
 
-                                        if (bond.PrimaryRing != null)
-                                        {
-                                            centre = bond.PrimaryRing.Centroid.Value;
-                                            // Diagnostics
-                                            //m_BondLines.Add(new BondLine(bondStart, centre, BondLineStyle.Dotted, null));
-                                            //m_BondLines.Add(new BondLine(bondEnd, centre, BondLineStyle.Dotted, null));
+                                        CoordinateTool.FindIntersection(startPointc, endPointc, bondStart, centre,
+                                            out linesIntersect, out segmentsIntersect, out outIntersectP1);
+                                        CoordinateTool.FindIntersection(startPointc, endPointc, bondEnd, centre,
+                                            out linesIntersect, out segmentsIntersect, out outIntersectP2);
 
-                                            CoordinateTool.FindIntersection(startPointc, endPointc, bondStart, centre,
-                                                out linesIntersect, out segmentsIntersect, out outIntersectP1);
-                                            CoordinateTool.FindIntersection(startPointc, endPointc, bondEnd, centre,
-                                                out linesIntersect, out segmentsIntersect, out outIntersectP2);
+                                        m_BondLines.Add(new BondLine(outIntersectP1, outIntersectP2, BondLineStyle.Solid, bond.Id));
+                                    }
+                                    else
+                                    {
+                                        CoordinateTool.AdjustLineAboutMidpoint(ref startPointc, ref endPointc, -(BondOffset() / 1.75));
+                                        m_BondLines.Add(new BondLine(startPointc, endPointc, BondLineStyle.Solid, bond.Id));
+                                    }
+                                    break;
 
-                                            m_BondLines.Add(new BondLine(outIntersectP1, outIntersectP2, BondLineStyle.Solid, bond.Id));
-                                        }
-                                        else
-                                        {
-                                            CoordinateTool.AdjustLineAboutMidpoint(ref startPointc, ref endPointc, -(BondOffset() / 1.75));
-                                            m_BondLines.Add(new BondLine(startPointc, endPointc, BondLineStyle.Solid, bond.Id));
-                                        }
-                                        break;
-
-                                    default:
-                                        BondLine dp = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
-                                        m_BondLines.Add(dp.GetParallel(-(BondOffset() / 2)));
-                                        m_BondLines.Add(dp.GetParallel(BondOffset() / 2));
-                                        break;
-                                }
+                                default:
+                                    BondLine dp = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
+                                    m_BondLines.Add(dp.GetParallel(-(BondOffset() / 2)));
+                                    m_BondLines.Add(dp.GetParallel(BondOffset() / 2));
+                                    break;
                             }
                         }
                     }

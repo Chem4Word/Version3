@@ -31,10 +31,6 @@ namespace Chem4Word.Renderer.OoXmlV3
         [JsonProperty]
         public bool ShowRingCentres { get; set; }
 
-        // Debugging
-        [JsonProperty]
-        public bool PushBondToCentre { get; set; }
-
         public Options()
         {
             RestoreDefaults();
@@ -49,7 +45,6 @@ namespace Chem4Word.Renderer.OoXmlV3
 
             // Debugging Options
             clone.ClipLines = ClipLines;
-            clone.PushBondToCentre = PushBondToCentre;
             clone.ShowCharacterBoundingBoxes = ShowCharacterBoundingBoxes;
             clone.ShowMoleculeBoundingBoxes = ShowMoleculeBoundingBoxes;
             clone.ShowRingCentres = ShowRingCentres;
@@ -65,10 +60,10 @@ namespace Chem4Word.Renderer.OoXmlV3
 
             // Debugging Options
             ClipLines = true;
-            PushBondToCentre = false;
             ShowCharacterBoundingBoxes = false;
             ShowMoleculeBoundingBoxes = false;
             ShowRingCentres = false;
+            ShowAtomPositions = false;
         }
     }
 }
