@@ -341,7 +341,6 @@ namespace Chem4Word.Model
             }
         }//have we calculated the rings yet?
 
-
         public void RebuildRings()
         {
 #if DEBUG
@@ -369,7 +368,10 @@ namespace Chem4Word.Model
                         Rings.Add(nextRing); //add the ring to the set
                         foreach (Atom a in nextRing.Atoms.ToList())
                         {
-                            a.Rings.Add(nextRing);
+                            if (!a.Rings.Contains(nextRing))
+                            {
+                                a.Rings.Add(nextRing);
+                            }
 
                             if (workingSet.ContainsKey(a))
                             {

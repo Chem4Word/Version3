@@ -1,4 +1,5 @@
-﻿using Chem4Word.Model.Enums;
+﻿using System;
+using Chem4Word.Model.Enums;
 using Chem4Word.Model.Geometry;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,7 @@ namespace Chem4Word.Model
     /// Represents an undordered ring of atoms
     /// </summary>
     [DebuggerDisplay("Atoms: {Atoms.Count} Priority: {Priority}")]
-    public class Ring
+    public class Ring : IComparer<Ring>
     {
         //private Point? _centroid;
 
@@ -279,6 +280,11 @@ namespace Chem4Word.Model
             HashSet<Atom> setB = new HashSet<Atom>(b.Atoms);
             setA.SymmetricExceptWith(setB);
             return new Ring(setA);
+        }
+
+        public int Compare(Ring x, Ring y)
+        {
+            return String.Compare(x.UniqueID, y.UniqueID, StringComparison.Ordinal);
         }
 
         #endregion Operators
