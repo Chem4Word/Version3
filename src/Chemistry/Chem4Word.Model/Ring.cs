@@ -42,6 +42,13 @@ namespace Chem4Word.Model
                         case 3:
                             result = 5;
                             break;
+                        case 8:
+                            result = 6;
+                            break;
+                        case 9:
+                            result = 7;
+                            break;
+                                
                         default:
                             result = -1;
                             break;

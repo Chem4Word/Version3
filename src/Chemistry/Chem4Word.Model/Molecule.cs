@@ -342,7 +342,7 @@ namespace Chem4Word.Model
         }//have we calculated the rings yet?
 
 
-        public void RebuildRings2()
+        public void RebuildRings()
         {
 #if DEBUG
             Stopwatch sw = new Stopwatch();
@@ -398,7 +398,7 @@ namespace Chem4Word.Model
         /// 3. If it belongs to a ring and that ring hasn't been calculated before, then add it to the set
         /// 4. delete the atom from the projection, reduce the degree of neighbouring atoms and prune away the side chains
         /// </summary>
-        public void RebuildRings()
+        public void RebuildRings2()
         {
 #if DEBUG
             Stopwatch sw = new Stopwatch();
@@ -463,6 +463,18 @@ namespace Chem4Word.Model
 
         }
 
+        private List<Ring> _sortedRings = null;
+        public List<Ring> SortedRings {
+            get
+            {
+                if (_sortedRings == null)
+                {
+                    _sortedRings = SortRingsForDBPlacement();
+                }
+                return _sortedRings;
+            }
+        }
+
         private void WipeMoleculeRings()
         {
             Rings.RemoveAll();
@@ -471,6 +483,7 @@ namespace Chem4Word.Model
             foreach (var a in Atoms)
             {
                 a.Rings.RemoveAll();
+                _sortedRings = null;
             }
         }
 
@@ -480,37 +493,15 @@ namespace Chem4Word.Model
         /// Rendering molecular sketches for publication quality output
         /// Alex M Clark
         /// </summary>
-        /// <returns>List consisting of rings sorted for placement</returns>
+        /// <returns>List of rings</returns>
         // ReSharper disable once InconsistentNaming
         public List<Ring> SortRingsForDBPlacement()
         {
             //
             Debug.Assert(HasRings); //no bloody point in running this unless it has rings
-            Debug.Assert(RingsCalculated); //make sure that if the molecule contains rings that we have caluclated them
+            Debug.Assert(RingsCalculated); //make sure that if the molecule contains rings that we have calculated them
             //1) All rings of sizes 6, 5, 7, 4 and 3 are discovered, in that order, and added to a list R.
-            var R = new List<Ring>();
-
-            var sixRings = from r in Rings
-                           where r.Atoms.Count == 6
-                           select r;
-            var fiveRings = from r in Rings
-                            where r.Atoms.Count == 5
-                            select r;
-            var sevenRings = from r in Rings
-                             where r.Atoms.Count == 7
-                             select r;
-            var fourRings = from r in Rings
-                            where r.Atoms.Count == 4
-                            select r;
-            var threeRings = from r in Rings
-                             where r.Atoms.Count == 3
-                             select r;
-
-            R.AddRange(sixRings.ToArray());
-            R.AddRange(fiveRings.ToArray());
-            R.AddRange(sevenRings.ToArray());
-            R.AddRange(fourRings.ToArray());
-            R.AddRange(threeRings.ToArray());
+            var R = Rings.Where(x => x.Priority > 0).OrderBy(x => x.Priority).ToList();
 
             //Define B as an array of size equal to the number of atoms, where each value is equal to the number of times the atom occurs in any of the rings R
             Dictionary<Atom, int> B = new Dictionary<Atom, int>();
@@ -799,6 +790,8 @@ namespace Chem4Word.Model
         {
             get { return Bonds.Average(b => b.BondVector.Length); }
         }
+
+   
 
         public void ScaleToAverageBondLength(double newLength, Model model)
         {
