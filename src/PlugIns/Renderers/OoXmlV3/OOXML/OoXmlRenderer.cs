@@ -587,7 +587,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             // Make a longer version of the line
             Point startLonger = new Point(leftOrRight.Start.X, leftOrRight.Start.Y);
             Point endLonger = new Point(leftOrRight.End.X, leftOrRight.End.Y);
-            CoordinateTool.AdjustLineAboutMidpoint(ref startLonger, ref endLonger, _medianBondLength / 10);
+            CoordinateTool.AdjustLineAboutMidpoint(ref startLonger, ref endLonger, _medianBondLength / 5);
 
             // See if they intersect at one end
             CoordinateTool.FindIntersection(startLonger, endLonger, line.Start, line.End,
