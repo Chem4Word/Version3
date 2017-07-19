@@ -342,7 +342,7 @@ namespace Chem4Word.Model
         }//have we calculated the rings yet?
 
 
-        public void RebuildRings2()
+        public void RebuildRings()
         {
 #if DEBUG
             Stopwatch sw = new Stopwatch();
@@ -398,7 +398,7 @@ namespace Chem4Word.Model
         /// 3. If it belongs to a ring and that ring hasn't been calculated before, then add it to the set
         /// 4. delete the atom from the projection, reduce the degree of neighbouring atoms and prune away the side chains
         /// </summary>
-        public void RebuildRings()
+        public void RebuildRings2()
         {
 #if DEBUG
             Stopwatch sw = new Stopwatch();
