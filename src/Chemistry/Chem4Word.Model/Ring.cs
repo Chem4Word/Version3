@@ -284,7 +284,7 @@ namespace Chem4Word.Model
 
         public int Compare(Ring x, Ring y)
         {
-            return String.Compare(x.UniqueID, y.UniqueID, StringComparison.Ordinal);
+            return String.Compare(x?.UniqueID, y?.UniqueID, StringComparison.Ordinal);
         }
 
         #endregion Operators
