@@ -247,7 +247,7 @@ namespace Chem4Word
             {
                 Debug.WriteLine(ex.Message);
                 Debug.WriteLine(ex.StackTrace);
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -798,7 +798,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -841,7 +841,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1079,7 +1079,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1185,7 +1185,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1199,7 +1199,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1240,7 +1240,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1279,7 +1279,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1308,7 +1308,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1339,7 +1339,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1358,7 +1358,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1410,7 +1410,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1436,7 +1436,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1463,7 +1463,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1494,7 +1494,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
         }
 
