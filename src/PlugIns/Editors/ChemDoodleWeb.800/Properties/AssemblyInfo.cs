@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Chem4Word.ChemDoodleWebEditor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Chem4Word.ChemDoodleWebEditor800")]
+[assembly: AssemblyDescription("Chem4Word Editor PlugIn using ChemDoodleWeb Editor 8.0.0")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chem4Word")]
-[assembly: AssemblyProduct("Chem4Word.ChemDoodleWebEditor")]
+[assembly: AssemblyProduct("Chem4Word.ChemDoodleWebEditor800")]
 [assembly: AssemblyCopyright("© Chem4Word 2017. All rights reserved.")]
 [assembly: AssemblyTrademark("Chem4Word")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("666b7e5e-d48a-42cf-91a6-8e58e90b830d")]
+[assembly: Guid("2da303a5-e6fa-4e61-80d0-fff99fd7ff2d")]
 
 // Version information for an assembly consists of the following four values:
 //

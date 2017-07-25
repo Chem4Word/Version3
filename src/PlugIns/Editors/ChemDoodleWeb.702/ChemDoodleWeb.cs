@@ -1,15 +1,16 @@
-﻿using Chem4Word.Core.UI.Forms;
-using IChem4Word.Contracts;
-using Ionic.Zip;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
+using IChem4Word.Contracts;
+using Ionic.Zip;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace Chem4Word.Editor.ChemDoodleWeb
+namespace Chem4Word.Editor.ChemDoodleWeb702
 {
     public partial class ChemDoodleWeb : Form, IMessageFilter
     {
@@ -97,6 +98,36 @@ namespace Chem4Word.Editor.ChemDoodleWeb
             return handled;
         }
 
+        private void DelTree(string sPath)
+        {
+            DelTree(sPath, null);
+        }
+
+        private void DelTree(string sPath, List<string> listOfFilesToIgnore)
+        {
+            DirectoryInfo di = new DirectoryInfo(sPath);
+            DirectoryInfo[] subdirs = di.GetDirectories();
+            FileInfo[] filesList = di.GetFiles();
+            foreach (FileInfo f in filesList)
+            {
+                if (listOfFilesToIgnore == null)
+                {
+                    File.Delete(f.FullName);
+                }
+                else
+                {
+                    if (!listOfFilesToIgnore.Contains(f.FullName))
+                    {
+                        File.Delete(f.FullName);
+                    }
+                }
+            }
+            foreach (DirectoryInfo subdir in subdirs)
+            {
+                DelTree(Path.Combine(sPath, subdir.ToString()), listOfFilesToIgnore);
+            }
+        }
+
         private void FormChemDoodleEditor_Load(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -114,6 +145,13 @@ namespace Chem4Word.Editor.ChemDoodleWeb
 
                 this.Show();
                 Application.DoEvents();
+
+                string otherVersion = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-800.txt");
+                if (File.Exists(otherVersion))
+                {
+                    File.Delete(otherVersion);
+                    DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
+                }
 
                 string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-702.txt");
                 if (!File.Exists(markerFile))

@@ -1,6 +1,6 @@
 ﻿using Chem4Word.Core.UI.Controls;
 
-namespace Chem4Word.Editor.ChemDoodleWeb
+namespace Chem4Word.Editor.ChemDoodleWeb800
 {
     partial class Settings
     {

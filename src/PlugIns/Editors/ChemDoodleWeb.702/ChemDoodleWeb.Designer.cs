@@ -1,4 +1,4 @@
-﻿namespace Chem4Word.Editor.ChemDoodleWeb
+﻿namespace Chem4Word.Editor.ChemDoodleWeb702
 {
     partial class ChemDoodleWeb
     {
@@ -125,7 +125,7 @@
             // btnRemoveExplicitHydrogens
             // 
             this.btnRemoveExplicitHydrogens.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRemoveExplicitHydrogens.Image = global::Chem4Word.Editor.ChemDoodleWeb.Properties.Resources.Minus;
+            this.btnRemoveExplicitHydrogens.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Minus;
             this.btnRemoveExplicitHydrogens.Location = new System.Drawing.Point(16, 59);
             this.btnRemoveExplicitHydrogens.Name = "btnRemoveExplicitHydrogens";
             this.btnRemoveExplicitHydrogens.Size = new System.Drawing.Size(30, 32);
@@ -138,7 +138,7 @@
             // btnAddExplicitHydrogens
             // 
             this.btnAddExplicitHydrogens.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddExplicitHydrogens.Image = global::Chem4Word.Editor.ChemDoodleWeb.Properties.Resources.Plus;
+            this.btnAddExplicitHydrogens.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Plus;
             this.btnAddExplicitHydrogens.Location = new System.Drawing.Point(16, 22);
             this.btnAddExplicitHydrogens.Name = "btnAddExplicitHydrogens";
             this.btnAddExplicitHydrogens.Size = new System.Drawing.Size(30, 32);
@@ -220,7 +220,7 @@
             // btnFlip
             // 
             this.btnFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnFlip.Image = global::Chem4Word.Editor.ChemDoodleWeb.Properties.Resources.Flip;
+            this.btnFlip.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Flip;
             this.btnFlip.Location = new System.Drawing.Point(405, 480);
             this.btnFlip.Name = "btnFlip";
             this.btnFlip.Size = new System.Drawing.Size(48, 48);
@@ -232,7 +232,7 @@
             // btnMirror
             // 
             this.btnMirror.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnMirror.Image = global::Chem4Word.Editor.ChemDoodleWeb.Properties.Resources.Mirror;
+            this.btnMirror.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Mirror;
             this.btnMirror.Location = new System.Drawing.Point(457, 480);
             this.btnMirror.Name = "btnMirror";
             this.btnMirror.Size = new System.Drawing.Size(48, 48);

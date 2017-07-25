@@ -1,22 +1,22 @@
-﻿using Chem4Word.Core.UI.Forms;
-using Chem4Word.Model.Converters;
-using IChem4Word.Contracts;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Model.Converters;
+using IChem4Word.Contracts;
+using Newtonsoft.Json;
 
-namespace Chem4Word.Editor.ChemDoodleWeb
+namespace Chem4Word.Editor.ChemDoodleWeb800
 {
     public class Editor : IChem4WordEditor
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
 
-        public string Name => "ChemDoodle Web Structure Editor";
+        public string Name => "ChemDoodle Web Structure Editor V8.0.0";
 
         public string Description => "The standard free editor using the ChemDoodle Web JavaScript structure editor";
 

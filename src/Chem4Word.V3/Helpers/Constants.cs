@@ -15,7 +15,7 @@
 
         public static string DefaultOpsinWebServiceUri = "http://opsin.ch.cam.ac.uk/";
 
-        public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor";
+        public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V7.0.2";
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
         public const string ChemspiderIdName = "chemspider:Id";

@@ -1,7 +1,6 @@
-﻿using System.IO;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace Chem4Word.Editor.ChemDoodleWeb
+namespace Chem4Word.Editor.ChemDoodleWeb702
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class Options
