@@ -187,31 +187,6 @@ namespace Chem4Word.Model.Converters
             {
                 foreach (BondJSON b in data.b)
                 {
-                    BondStereo s;
-                    if (!string.IsNullOrEmpty(b.s))
-                    {
-                        if (b.s == "recessed")
-                        {
-                            s = BondStereo.Hatch;
-                        }
-                        else if (b.s == "protruding")
-                        {
-                            s = BondStereo.Wedge;
-                        }
-                        else if (b.s == "ambiguous")
-                        {
-                            s = BondStereo.Ambiguous;
-                        }
-                        else
-                        {
-                            s = BondStereo.None;
-                        }
-                    }
-                    else
-                    {
-                        s = BondStereo.None;
-                    }
-
                     string o;
                     if (b.o != null)
                     {
@@ -220,6 +195,45 @@ namespace Chem4Word.Model.Converters
                     else
                     {
                         o = Bond.OrderSingle;
+                    }
+
+                    BondStereo s;
+                    if (!string.IsNullOrEmpty(b.s))
+                    {
+                        if (o == Bond.OrderSingle)
+                        {
+                            if (b.s == "ambiguous")
+                            {
+                                s = BondStereo.Ambiguous;
+                            }
+                            else
+                            {
+                                s = BondStereo.None;
+                            }
+                        }
+                        else
+                        {
+                            if (b.s == "recessed")
+                            {
+                                s = BondStereo.Hatch;
+                            }
+                            else if (b.s == "protruding")
+                            {
+                                s = BondStereo.Wedge;
+                            }
+                            else if (b.s == "ambiguous")
+                            {
+                                s = BondStereo.Indeterminate;
+                            }
+                            else
+                            {
+                                s = BondStereo.None;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        s = BondStereo.None;
                     }
 
                     Bond newBond = new Bond()
