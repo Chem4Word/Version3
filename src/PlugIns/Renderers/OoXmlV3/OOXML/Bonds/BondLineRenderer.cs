@@ -42,6 +42,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     DrawHashBondLines(wordprocessingGroup1, points);
                     break;
 
+                case BondLineStyle.Wiggly:
+                    DrawBondLine(wordprocessingGroup1, bl);
+                    break;
+
                 default:
                     DrawBondLine(wordprocessingGroup1, bl);
                     break;

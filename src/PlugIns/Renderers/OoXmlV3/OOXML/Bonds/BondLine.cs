@@ -63,6 +63,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
         Solid,
         Dotted,
         Dashed,
+        Wiggly,
         Wedge,
         Hash
     }
