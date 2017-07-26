@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Core", "Common\Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Contracts", "PlugIns\Contracts\Chem4Word.Contracts.csproj", "{BDFEE6C1-3F34-4200-9100-C543BF4C3783}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Model", "Chemistry\Model\Chem4Word.Model\Chem4Word.Model.csproj", "{2AC2B698-58E4-45EA-A69E-D8380FA73B3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Model", "Chemistry\Chem4Word.Model\Chem4Word.Model.csproj", "{2AC2B698-58E4-45EA-A69E-D8380FA73B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

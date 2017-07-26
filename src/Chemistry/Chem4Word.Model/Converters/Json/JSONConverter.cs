@@ -108,7 +108,7 @@ namespace Chem4Word.Model.Converters
                     {
                         i = bond.Id,
                         b = indexLookup[bond.StartAtom],
-                        e = indexLookup[bond.EndAtom],
+                        e = indexLookup[bond.EndAtom]
                     };
 
                     if (bond.Stereo == BondStereo.Wedge)
@@ -119,7 +119,10 @@ namespace Chem4Word.Model.Converters
                     {
                         mj.b[iBond].s = "recessed";
                     }
-
+                    else if (bond.Stereo == BondStereo.Ambiguous)
+                    {
+                        mj.b[iBond].s = "ambiguous";
+                    }
                     if (bond.Order != Bond.OrderSingle)
                     {
                         mj.b[iBond].o = bond.OrderValue;
@@ -194,6 +197,10 @@ namespace Chem4Word.Model.Converters
                         else if (b.s == "protruding")
                         {
                             s = BondStereo.Wedge;
+                        }
+                        else if (b.s == "ambiguous")
+                        {
+                            s = BondStereo.Ambiguous;
                         }
                         else
                         {

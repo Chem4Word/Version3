@@ -11,8 +11,6 @@ namespace Chem4Word.Model.Converters
     // ReSharper disable once InconsistentNaming
     public class CMLConverter : IConverter
     {
-        private const string StereoIndexes = "NWHICT";
-
         public string Description => "Chemical Markup Language";
 
         public string[] Extensions => new string[]
@@ -214,7 +212,7 @@ namespace Chem4Word.Model.Converters
                 case BondStereo.Trans:
                     return "T";
 
-                case BondStereo.Indeterminate:
+                case BondStereo.Ambiguous:
                     return "S";
 
                 default:
@@ -610,7 +608,33 @@ namespace Chem4Word.Model.Converters
             {
                 var stereo = stereoElems[0].Value;
                 //look up the position of the index letter in the string and convert it to an enum
-                newBond.Stereo = (BondStereo)StereoIndexes.IndexOf(stereo);
+                switch (stereo)
+                {
+                    case "N":
+                        newBond.Stereo = BondStereo.None;
+                        break;
+                    case "W":
+                        newBond.Stereo = BondStereo.Wedge;
+                        break;
+                    case "H":
+                        newBond.Stereo = BondStereo.Hatch;
+                        break;
+                    case "I":
+                        newBond.Stereo = BondStereo.Indeterminate;
+                        break;
+                    case "S":
+                        newBond.Stereo = BondStereo.Ambiguous;
+                        break;
+                    case "C":
+                        newBond.Stereo = BondStereo.Cis;
+                        break;
+                    case "T":
+                        newBond.Stereo = BondStereo.Trans;
+                        break;
+                    default:
+                        newBond.Stereo = BondStereo.None;
+                        break;
+                }
             }
 
             return newBond;

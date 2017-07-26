@@ -144,7 +144,7 @@
     <Content Include="ChemDoodle\ChemDoodleWeb\uis\images\ui-icons_fbc856_256x240.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ChemDoodle\ChemDoodleWeb\uis\jquery-ui-1.10.3.custom.css">
+    <Content Include="ChemDoodle\ChemDoodleWeb\uis\jquery-ui-1.11.4.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ChemDoodle\sketcher.htm">
@@ -157,7 +157,7 @@
     <Content Include="ChemDoodle\Source\ChemDoodleWeb-unpacked.js" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chemistry\Model\Chem4Word.Model\Chem4Word.Model.csproj">
+    <ProjectReference Include="..\Chemistry\Chem4Word.Model\Chem4Word.Model.csproj">
       <Project>{2ac2b698-58e4-45ea-a69e-d8380fa73b3e}</Project>
       <Name>Chem4Word.Model</Name>
     </ProjectReference>

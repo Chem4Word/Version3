@@ -42,10 +42,6 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     DrawHashBondLines(wordprocessingGroup1, points);
                     break;
 
-                case BondLineStyle.Wiggly:
-                    DrawBondLine(wordprocessingGroup1, bl);
-                    break;
-
                 default:
                     DrawBondLine(wordprocessingGroup1, bl);
                     break;
@@ -79,6 +75,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
 
                 case BondLineStyle.Dashed:
                     DrawDashedLine(wordprocessingGroup1, extents, startPoint, endPoint);
+                    break;
+
+                case BondLineStyle.Wavy:
+                    DrawBondLine(wordprocessingGroup1, bl);
                     break;
 
                 default:
