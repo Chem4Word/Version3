@@ -92,7 +92,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
             return true;
         }
@@ -138,7 +138,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
 
             return result;
