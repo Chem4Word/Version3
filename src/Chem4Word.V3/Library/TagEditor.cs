@@ -68,7 +68,7 @@ namespace Chem4Word.Library
                 }
                 catch (Exception e)
                 {
-                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, e.Message, e.StackTrace).ShowDialog();
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, e).ShowDialog();
                 }
                 finally
                 {
@@ -77,7 +77,7 @@ namespace Chem4Word.Library
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -102,7 +102,7 @@ namespace Chem4Word.Library
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -120,7 +120,7 @@ namespace Chem4Word.Library
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -141,7 +141,7 @@ namespace Chem4Word.Library
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 

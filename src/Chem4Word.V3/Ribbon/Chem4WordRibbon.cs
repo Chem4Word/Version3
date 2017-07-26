@@ -69,7 +69,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -151,11 +151,13 @@ namespace Chem4Word
                                 string text;
                                 if (chosenState.Equals("c0"))
                                 {
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "User inserted Overall Concise Formula");
                                     text = model.ConciseFormula;
                                     isFormula = true;
                                 }
                                 else
                                 {
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"User inserted {chosenState}");
                                     text = GetInlineText(model, chosenState, ref isFormula);
                                 }
 
@@ -172,7 +174,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             finally
             {
@@ -303,7 +305,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -338,7 +340,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -351,7 +353,6 @@ namespace Chem4Word
             Word.Document doc = app.ActiveDocument;
             Word.ContentControl cc = null;
 
-            string errorReason = "";
             try
             {
                 StringBuilder sb = new StringBuilder();
@@ -365,6 +366,7 @@ namespace Chem4Word
                 DialogResult dr = ofd.ShowDialog();
                 if (dr == DialogResult.OK)
                 {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Importing file {ofd.FileName}");
                     string fileType = Path.GetExtension(ofd.FileName).ToLower();
                     Model.Model model = null;
                     string mol = File.ReadAllText(ofd.FileName);
@@ -454,13 +456,14 @@ namespace Chem4Word
                     }
                     else
                     {
-                        new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, "Could not import file", errorReason).ShowDialog();
+                        Exception x = new Exception("Could not import file");
+                        new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, x).ShowDialog();
                     }
                 }
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             finally
             {
@@ -487,7 +490,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -697,6 +700,7 @@ namespace Chem4Word
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
+            // Using $"{}" to coerce null to empty string
             List<string> targets = (from Word.ContentControl ccs in doc.ContentControls
                                     orderby ccs.Range.Start
                                     where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Equals(guidString)
@@ -708,6 +712,7 @@ namespace Chem4Word
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
+            // Using $"{}" to coerce null to empty string
             List<string> targets = (from Word.ContentControl ccs in doc.ContentControls
                                     orderby ccs.Range.Start
                                     where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Contains(guidString)
@@ -721,6 +726,7 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             // Use LINQ to get a list of all our ContentControls
+            // Using $"{}" to coerce null to empty string
             List<Word.ContentControl> targets = (from Word.ContentControl ccs in doc.ContentControls
                                                  orderby ccs.Range.Start
                                                  where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Contains(guidString)
@@ -767,12 +773,14 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             string text = "";
+            string source = "";
 
             foreach (Molecule m in model.Molecules)
             {
                 if (prefix.Equals($"{m.Id}.f0"))
                 {
                     text = m.ConciseFormula;
+                    source = "ConciseFormula";
                     isFormula = true;
                 }
 
@@ -788,6 +796,7 @@ namespace Chem4Word
                             {
                                 if (f.Convention.ToLower().Contains("formula"))
                                 {
+                                    source = f.Convention;
                                     isFormula = true;
                                 }
                             }
@@ -804,6 +813,7 @@ namespace Chem4Word
                         if (n.Id.Equals(prefix))
                         {
                             text = n.Name;
+                            source = n.DictRef;
                             break;
                         }
                     }
@@ -819,6 +829,10 @@ namespace Chem4Word
             if (string.IsNullOrEmpty(text))
             {
                 text = $"Unable to find formula or name with id of '{prefix}'";
+            }
+            else
+            {
+                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"User inserted {source} of {text}");
             }
 
             return text;
@@ -1247,7 +1261,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             finally
             {
@@ -1297,7 +1311,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1351,6 +1365,7 @@ namespace Chem4Word
                             DialogResult dr = sfd.ShowDialog();
                             if (dr == DialogResult.OK)
                             {
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Exporting to {sfd.FileName}");
                                 string fileType = Path.GetExtension(sfd.FileName).ToLower();
                                 switch (fileType)
                                 {
@@ -1377,7 +1392,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1432,7 +1447,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1455,7 +1470,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1471,7 +1486,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1500,7 +1515,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1596,8 +1611,9 @@ namespace Chem4Word
                             }
                             else
                             {
+                                Exception x = new Exception("Could not import search result, Model is null");
                                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft,
-                                    module, "Could not import search result", "Model is null").ShowDialog();
+                                    module, x).ShowDialog();
                             }
 
                             app.ScreenUpdating = true;
@@ -1614,7 +1630,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1672,7 +1688,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1740,7 +1756,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1780,7 +1796,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1852,7 +1868,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             AfterButtonChecks(sender as RibbonButton);
         }
@@ -1896,7 +1912,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -1989,7 +2005,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
             finally
             {
@@ -2025,7 +2041,7 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
     }

@@ -92,7 +92,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
 
             return handled;
@@ -198,7 +198,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -261,7 +261,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -292,7 +292,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -305,7 +305,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -328,7 +328,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -363,7 +363,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -379,7 +379,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -395,7 +395,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -412,7 +412,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -428,7 +428,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -444,7 +444,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -496,7 +496,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -522,7 +522,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
     }

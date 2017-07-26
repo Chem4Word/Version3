@@ -692,12 +692,6 @@ namespace Chem4Word.Model
             {
                 Debug.Assert(Parent.RingsCalculated);
 
-                Ring theRing = null;
-
-                //List<Ring> ringList = Rings.Where(x => x.Priority > 0).OrderBy(x => x.Priority).ToList();
-
-                
-
                 if (!Rings.Any()) //no rings
                 {
                     return null;
@@ -712,7 +706,6 @@ namespace Chem4Word.Model
                         ).FirstOrDefault();
                     return firstRing;
                 }
-
             }
         }
 
