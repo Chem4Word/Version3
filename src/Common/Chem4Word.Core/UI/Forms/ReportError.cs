@@ -14,7 +14,7 @@ namespace Chem4Word.Core.UI.Forms
         public System.Windows.Point TopLeft { get; set; }
 
         // ToDo: Change this to pass in Exception and see if it has an inner exception.
-        public ReportError(IChem4WordTelemetry telemetry, System.Windows.Point topLeft, string operation, string exceptionMessage, string callStack)
+        public ReportError(IChem4WordTelemetry telemetry, System.Windows.Point topLeft, string operation, Exception ex)
         {
             InitializeComponent();
 
@@ -24,8 +24,12 @@ namespace Chem4Word.Core.UI.Forms
                 _telemetry = telemetry;
 
                 _operation = operation;
-                _callStack = callStack;
-                _exceptionMessage = exceptionMessage;
+                _callStack = ex.StackTrace;
+                _exceptionMessage = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    _exceptionMessage += Environment.NewLine + ex.InnerException.Message;
+                }
             }
             catch (Exception)
             {

@@ -145,7 +145,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -213,7 +213,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -236,7 +236,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                 }
                 catch (Exception ex)
                 {
-                    new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                    new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
                 }
             }
         }
@@ -250,7 +250,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
 
@@ -279,7 +279,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, TopLeft, module, ex.Message, ex.StackTrace).ShowDialog();
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
             LabelInfo.Text = "";
         }
