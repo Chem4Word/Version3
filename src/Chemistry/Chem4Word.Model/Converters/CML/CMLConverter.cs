@@ -1,6 +1,7 @@
 ﻿using Chem4Word.Model.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -222,18 +223,34 @@ namespace Chem4Word.Model.Converters
 
         public XElement GetXElement(Bond bond)
         {
-            var xe = new XElement(CML.cml + "bond",
-                new XAttribute("id", bond.Id),
-                new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
-                new XAttribute("order", bond.Order),
-                GetStereoXElement(bond)
+            XElement result;
+
+            if (bond.Stereo == BondStereo.Cis || bond.Stereo == BondStereo.Trans)
+            {
+                Debugger.Break();
+                // ToDo: Ensure this is Tested
+                result = new XElement(CML.cml + "bond",
+                    new XAttribute("id", bond.Id),
+                    new XAttribute("atomRefs4", $" {bond.StartAtom.Id} {bond.StartAtom.Id} {bond.EndAtom.Id} {bond.EndAtom.Id}"),
+                    new XAttribute("order", bond.Order),
+                    GetStereoXElement(bond)
                 );
+            }
+            else
+            {
+                result = new XElement(CML.cml + "bond",
+                    new XAttribute("id", bond.Id),
+                    new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
+                    new XAttribute("order", bond.Order),
+                    GetStereoXElement(bond)
+                    );
+            }
 
             if (bond.ExplicitPlacement != null)
             {
-                xe.Add(new XAttribute(CML.c4w + "placement", bond.ExplicitPlacement));
+                result.Add(new XAttribute(CML.c4w + "placement", bond.ExplicitPlacement));
             }
-            return xe;
+            return result;
         }
 
         public XElement GetMoleculeElement(Molecule mol)
