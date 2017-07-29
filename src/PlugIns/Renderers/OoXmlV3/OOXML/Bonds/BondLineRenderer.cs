@@ -1,7 +1,9 @@
 ﻿using DocumentFormat.OpenXml;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Media;
 using A = DocumentFormat.OpenXml.Drawing;
 using Point = System.Windows.Point;
 using Wpg = DocumentFormat.OpenXml.Office2010.Word.DrawingGroup;
@@ -92,6 +94,46 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             UInt32Value bondLineId = UInt32Value.FromUInt32((uint)m_ooxmlId++);
             string bondLineName = "WavyLine" + bondLineId;
 
+            Vector bondVector = bondStart - bondEnd;
+            int noOfWiggles = (int)Math.Floor(bondVector.Length / BondOffset());
+            Debug.WriteLine($"v.Length: {bondVector.Length} noOfWiggles: {noOfWiggles}");
+
+            Vector originalWigglePortion = bondVector;
+            originalWigglePortion.Normalize();
+            originalWigglePortion *= BondOffset();
+            Matrix toLeft = new Matrix();
+            toLeft.Rotate(-60);
+            Matrix toRight = new Matrix();
+            toRight.Rotate(60);
+
+            List<List<Point>> points = new List<List<Point>>();
+
+            List<Point> triangle = new List<Point>();
+
+            Point lastPoint = bondStart;
+            triangle.Add(lastPoint);
+            for (int i = 0; i < noOfWiggles; i++)
+            {
+                var wigglePortion = originalWigglePortion;
+                wigglePortion = wigglePortion * toLeft;
+                Point leftPoint = lastPoint + wigglePortion;
+                triangle.Add(leftPoint);
+
+                wigglePortion = wigglePortion * toRight;
+                Point middlePoint = lastPoint + wigglePortion;
+                triangle.Add(middlePoint);
+
+                wigglePortion = wigglePortion * toRight;
+                Point rightPoint = leftPoint + wigglePortion * 2;
+                triangle.Add(rightPoint);
+
+                lastPoint += originalWigglePortion * 2;
+                triangle.Add(lastPoint);
+                points.Add(triangle);
+                triangle = new List<Point>();
+                triangle.Add(lastPoint);
+            }
+
             Int64Value width = OoXmlHelper.ScaleCmlToEmu(extents.Width);
             Int64Value height = OoXmlHelper.ScaleCmlToEmu(extents.Height);
             Int64Value top = OoXmlHelper.ScaleCmlToEmu(extents.Top);
@@ -173,7 +215,6 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             wordprocessingShape1.Append(textBodyProperties1);
 
             wordprocessingGroup1.Append(wordprocessingShape1);
-
         }
 
         private void DrawFilledTriangle(Wpg.WordprocessingGroup wordprocessingGroup1, List<Point> points)
