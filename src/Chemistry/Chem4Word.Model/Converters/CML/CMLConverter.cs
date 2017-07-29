@@ -184,14 +184,23 @@ namespace Chem4Word.Model.Converters
 
         private XElement GetStereoXElement(Bond bond)
         {
+            XElement result = null;
+
             if (bond.Stereo != BondStereo.None)
             {
-                return new XElement(CML.cml + "bondStereo", GetStereoString(bond.Stereo));
+                if (bond.Stereo == BondStereo.Cis || bond.Stereo == BondStereo.Trans)
+                {
+                    Debugger.Break();
+                    result = new XElement(CML.cml + "bondStereo",
+                                new XAttribute("atomRefs4", $"{bond.StartAtom.Id} {bond.StartAtom.Id} {bond.EndAtom.Id} {bond.EndAtom.Id}"),
+                                GetStereoString(bond.Stereo));
+                }
+                else
+                {
+                    result = new XElement(CML.cml + "bondStereo", GetStereoString(bond.Stereo));
+                }
             }
-            else
-            {
-                return null;
-            }
+            return result;
         }
 
         private string GetStereoString(BondStereo stereo)
@@ -225,26 +234,11 @@ namespace Chem4Word.Model.Converters
         {
             XElement result;
 
-            if (bond.Stereo == BondStereo.Cis || bond.Stereo == BondStereo.Trans)
-            {
-                Debugger.Break();
-                // ToDo: Ensure this is Tested
-                result = new XElement(CML.cml + "bond",
-                    new XAttribute("id", bond.Id),
-                    new XAttribute("atomRefs4", $" {bond.StartAtom.Id} {bond.StartAtom.Id} {bond.EndAtom.Id} {bond.EndAtom.Id}"),
-                    new XAttribute("order", bond.Order),
-                    GetStereoXElement(bond)
-                );
-            }
-            else
-            {
-                result = new XElement(CML.cml + "bond",
-                    new XAttribute("id", bond.Id),
-                    new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
-                    new XAttribute("order", bond.Order),
-                    GetStereoXElement(bond)
-                    );
-            }
+            result = new XElement(CML.cml + "bond",
+                        new XAttribute("id", bond.Id),
+                        new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
+                        new XAttribute("order", bond.Order),
+                        GetStereoXElement(bond));
 
             if (bond.ExplicitPlacement != null)
             {
@@ -368,29 +362,15 @@ namespace Chem4Word.Model.Converters
 
             foreach (XElement bondElement in bondElements)
             {
-                var attributes = bondElement.Attributes();
                 var newBond = CreateBond(bondElement);
 
-                foreach (var attribute in attributes)
+                string[] atomRefs = bondElement.Attribute("atomRefs2")?.Value.Split(' ');
+                if (atomRefs?.Length == 2)
                 {
-                    if (attribute.Name.LocalName.Equals("atomRefs2"))
-                    {
-                        string[] atomRefs = bondElement.Attribute("atomRefs2").Value.Split(' ');
-
-                        newBond.StartAtom = newAtoms[atomRefs[0]];
-                        newBond.EndAtom = newAtoms[atomRefs[1]];
-                    }
-
-                    if (attribute.Name.LocalName.Equals("atomRefs4"))
-                    {
-                        string[] atomRefs = bondElement.Attribute("atomRefs4").Value.Split(' ');
-
-                        newBond.StartAtom = newAtoms[atomRefs[1]];
-                        newBond.EndAtom = newAtoms[atomRefs[2]];
-                    }
+                    newBond.StartAtom = newAtoms[atomRefs[0]];
+                    newBond.EndAtom = newAtoms[atomRefs[1]];
+                    m.Bonds.Add(newBond);
                 }
-
-                m.Bonds.Add(newBond);
             }
 
             foreach (XElement nameElement in nameElements)
