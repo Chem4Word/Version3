@@ -351,11 +351,27 @@ namespace Chem4Word.Model.Converters
 
             foreach (XElement bondElement in bondElements)
             {
-                string[] atomRefs = bondElement.Attribute("atomRefs2").Value.Split(' ');
+                var attributes = bondElement.Attributes();
                 var newBond = CreateBond(bondElement);
 
-                newBond.StartAtom = newAtoms[atomRefs[0]];
-                newBond.EndAtom = newAtoms[atomRefs[1]];
+                foreach (var attribute in attributes)
+                {
+                    if (attribute.Name.LocalName.Equals("atomRefs2"))
+                    {
+                        string[] atomRefs = bondElement.Attribute("atomRefs2").Value.Split(' ');
+
+                        newBond.StartAtom = newAtoms[atomRefs[0]];
+                        newBond.EndAtom = newAtoms[atomRefs[1]];
+                    }
+
+                    if (attribute.Name.LocalName.Equals("atomRefs4"))
+                    {
+                        string[] atomRefs = bondElement.Attribute("atomRefs4").Value.Split(' ');
+
+                        newBond.StartAtom = newAtoms[atomRefs[1]];
+                        newBond.EndAtom = newAtoms[atomRefs[2]];
+                    }
+                }
 
                 m.Bonds.Add(newBond);
             }
@@ -579,8 +595,6 @@ namespace Chem4Word.Model.Converters
         /// <returns></returns>
         public Bond CreateBond(XElement cmlElement)
         {
-            string[] atomRefs = cmlElement.Attribute("atomRefs2").Value.Split(' ');
-
             Bond newBond = new Bond();
             BondDirection? dir = null;
 
