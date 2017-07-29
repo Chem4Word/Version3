@@ -22,8 +22,7 @@
         Hatch,
         Indeterminate,
         Cis,
-        Trans,
-        Ambiguous
+        Trans
     }
 
     public enum MoleculeRole

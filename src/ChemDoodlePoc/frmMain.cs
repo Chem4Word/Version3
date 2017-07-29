@@ -23,7 +23,7 @@ namespace ChemDoodlePoc
         private const int WM_KEYUP = 0x0101;
 
         //private string[] ma_ChemDoodleFormats = { "JSON", "MDL", "CML", "formula" };
-        private string[] ma_ChemDoodleFormats = { "JSON", "MDL"};
+        private string[] ma_ChemDoodleFormats = { "JSON", "MDL", "CML"};
         private string[] ma_ConvertFormats = { "CML", "MDL" };
 
         private string ms_AppTitle = "Chem4Word Editor Powered By ChemDoodle Web V";
@@ -634,6 +634,11 @@ namespace ChemDoodlePoc
         private void btnMirror_Click(object sender, EventArgs e)
         {
             ExecuteJavaScript("Mirror");
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtStructure.Text = "";
         }
     }
 }

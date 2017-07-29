@@ -40,7 +40,6 @@
             this.chkShowHydrogenCount = new System.Windows.Forms.CheckBox();
             this.btnFormula = new System.Windows.Forms.Button();
             this.btnRemoveH = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.nudBondLength = new System.Windows.Forms.NumericUpDown();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -51,6 +50,7 @@
             this.browser = new System.Windows.Forms.WebBrowser();
             this.saveFile = new System.Windows.Forms.SaveFileDialog();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
+            this.btnClear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -67,6 +67,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnClear);
             this.splitContainer1.Panel1.Controls.Add(this.btnConvertModel);
             this.splitContainer1.Panel1.Controls.Add(this.btnMirror);
             this.splitContainer1.Panel1.Controls.Add(this.btnFlip);
@@ -76,7 +77,6 @@
             this.splitContainer1.Panel1.Controls.Add(this.chkShowHydrogenCount);
             this.splitContainer1.Panel1.Controls.Add(this.btnFormula);
             this.splitContainer1.Panel1.Controls.Add(this.btnRemoveH);
-            this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.nudBondLength);
             this.splitContainer1.Panel1.Controls.Add(this.btnSave);
             this.splitContainer1.Panel1.Controls.Add(this.btnOpen);
@@ -94,7 +94,7 @@
             // 
             // btnConvertModel
             // 
-            this.btnConvertModel.Location = new System.Drawing.Point(319, 32);
+            this.btnConvertModel.Location = new System.Drawing.Point(5, 59);
             this.btnConvertModel.Name = "btnConvertModel";
             this.btnConvertModel.Size = new System.Drawing.Size(134, 23);
             this.btnConvertModel.TabIndex = 25;
@@ -104,7 +104,7 @@
             // 
             // btnMirror
             // 
-            this.btnMirror.Location = new System.Drawing.Point(5, 32);
+            this.btnMirror.Location = new System.Drawing.Point(5, 30);
             this.btnMirror.Name = "btnMirror";
             this.btnMirror.Size = new System.Drawing.Size(75, 23);
             this.btnMirror.TabIndex = 24;
@@ -114,7 +114,7 @@
             // 
             // btnFlip
             // 
-            this.btnFlip.Location = new System.Drawing.Point(86, 32);
+            this.btnFlip.Location = new System.Drawing.Point(86, 30);
             this.btnFlip.Name = "btnFlip";
             this.btnFlip.Size = new System.Drawing.Size(75, 23);
             this.btnFlip.TabIndex = 23;
@@ -127,7 +127,7 @@
             this.chkShowColouredAtoms.AutoSize = true;
             this.chkShowColouredAtoms.Checked = true;
             this.chkShowColouredAtoms.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowColouredAtoms.Location = new System.Drawing.Point(86, 59);
+            this.chkShowColouredAtoms.Location = new System.Drawing.Point(288, 12);
             this.chkShowColouredAtoms.Name = "chkShowColouredAtoms";
             this.chkShowColouredAtoms.Size = new System.Drawing.Size(56, 17);
             this.chkShowColouredAtoms.TabIndex = 22;
@@ -139,7 +139,7 @@
             // 
             this.groupBox1.Controls.Add(this.radSketcher);
             this.groupBox1.Controls.Add(this.radSingle);
-            this.groupBox1.Location = new System.Drawing.Point(218, 3);
+            this.groupBox1.Location = new System.Drawing.Point(363, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(91, 70);
             this.groupBox1.TabIndex = 21;
@@ -185,7 +185,7 @@
             this.chkShowHydrogenCount.AutoSize = true;
             this.chkShowHydrogenCount.Checked = true;
             this.chkShowHydrogenCount.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowHydrogenCount.Location = new System.Drawing.Point(5, 61);
+            this.chkShowHydrogenCount.Location = new System.Drawing.Point(288, 36);
             this.chkShowHydrogenCount.Name = "chkShowHydrogenCount";
             this.chkShowHydrogenCount.Size = new System.Drawing.Size(65, 17);
             this.chkShowHydrogenCount.TabIndex = 19;
@@ -195,7 +195,7 @@
             // 
             // btnFormula
             // 
-            this.btnFormula.Location = new System.Drawing.Point(142, 80);
+            this.btnFormula.Location = new System.Drawing.Point(175, 90);
             this.btnFormula.Name = "btnFormula";
             this.btnFormula.Size = new System.Drawing.Size(62, 23);
             this.btnFormula.TabIndex = 18;
@@ -205,22 +205,13 @@
             // 
             // btnRemoveH
             // 
-            this.btnRemoveH.Location = new System.Drawing.Point(168, 32);
+            this.btnRemoveH.Location = new System.Drawing.Point(168, 30);
             this.btnRemoveH.Name = "btnRemoveH";
             this.btnRemoveH.Size = new System.Drawing.Size(44, 23);
             this.btnRemoveH.TabIndex = 15;
             this.btnRemoveH.Text = "- H";
             this.btnRemoveH.UseVisualStyleBackColor = true;
             this.btnRemoveH.Click += new System.EventHandler(this.btnRemoveH_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 85);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Bond Length";
             // 
             // nudBondLength
             // 
@@ -229,14 +220,14 @@
             0,
             0,
             0});
-            this.nudBondLength.Location = new System.Drawing.Point(86, 82);
+            this.nudBondLength.Location = new System.Drawing.Point(288, 59);
             this.nudBondLength.Minimum = new decimal(new int[] {
             10,
             0,
             0,
             0});
             this.nudBondLength.Name = "nudBondLength";
-            this.nudBondLength.Size = new System.Drawing.Size(44, 20);
+            this.nudBondLength.Size = new System.Drawing.Size(56, 20);
             this.nudBondLength.TabIndex = 13;
             this.nudBondLength.Value = new decimal(new int[] {
             20,
@@ -275,7 +266,7 @@
             // 
             // btnGet
             // 
-            this.btnGet.Location = new System.Drawing.Point(319, 61);
+            this.btnGet.Location = new System.Drawing.Point(243, 90);
             this.btnGet.Name = "btnGet";
             this.btnGet.Size = new System.Drawing.Size(66, 23);
             this.btnGet.TabIndex = 3;
@@ -285,7 +276,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(387, 61);
+            this.btnSend.Location = new System.Drawing.Point(315, 90);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(66, 23);
             this.btnSend.TabIndex = 2;
@@ -321,6 +312,16 @@
             // 
             this.openFile.FileName = "openFileDialog1";
             // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(5, 88);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(62, 23);
+            this.btnClear.TabIndex = 26;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -355,7 +356,6 @@
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.SaveFileDialog saveFile;
         private System.Windows.Forms.OpenFileDialog openFile;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown nudBondLength;
         private System.Windows.Forms.Button btnRemoveH;
         private System.Windows.Forms.Button btnFormula;
@@ -368,6 +368,7 @@
         private System.Windows.Forms.Button btnMirror;
         private System.Windows.Forms.Button btnFlip;
         private System.Windows.Forms.Button btnConvertModel;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 

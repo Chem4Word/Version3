@@ -119,7 +119,7 @@ namespace Chem4Word.Model.Converters
                     {
                         mj.b[iBond].s = "recessed";
                     }
-                    else if (bond.Stereo == BondStereo.Ambiguous)
+                    else if (bond.Stereo == BondStereo.Indeterminate)
                     {
                         mj.b[iBond].s = "ambiguous";
                     }
@@ -204,7 +204,7 @@ namespace Chem4Word.Model.Converters
                         {
                             if (b.s == "ambiguous")
                             {
-                                s = BondStereo.Ambiguous;
+                                s = BondStereo.Indeterminate;
                             }
                             else
                             {

@@ -212,7 +212,7 @@ namespace Chem4Word.Model.Converters
                 case BondStereo.Trans:
                     return "T";
 
-                case BondStereo.Ambiguous:
+                case BondStereo.Indeterminate:
                     return "S";
 
                 default:
@@ -623,7 +623,7 @@ namespace Chem4Word.Model.Converters
                         newBond.Stereo = BondStereo.Indeterminate;
                         break;
                     case "S":
-                        newBond.Stereo = BondStereo.Ambiguous;
+                        newBond.Stereo = BondStereo.Indeterminate;
                         break;
                     case "C":
                         newBond.Stereo = BondStereo.Cis;
