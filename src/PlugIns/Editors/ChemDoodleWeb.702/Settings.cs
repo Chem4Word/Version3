@@ -1,14 +1,14 @@
-﻿using Chem4Word.Core;
-using Chem4Word.Core.UI.Forms;
-using IChem4Word.Contracts;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Chem4Word.Core;
+using Chem4Word.Core.UI.Forms;
+using IChem4Word.Contracts;
+using Newtonsoft.Json;
 
-namespace Chem4Word.Editor.ChemDoodleWeb
+namespace Chem4Word.Editor.ChemDoodleWeb702
 {
     public partial class Settings : Form
     {

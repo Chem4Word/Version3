@@ -7,8 +7,8 @@
     <ProjectGuid>{666B7E5E-D48A-42CF-91A6-8E58E90B830D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Chem4Word.Editor.ChemDoodleWeb</RootNamespace>
-    <AssemblyName>Chem4Word.Editor.ChemDoodleWeb</AssemblyName>
+    <RootNamespace>Chem4Word.Editor.ChemDoodleWeb800</RootNamespace>
+    <AssemblyName>Chem4Word.Editor.ChemDoodleWeb800</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -135,9 +135,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\ChemDoodleWeb\ChemDoodleWeb_702.zip" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Chem4Word.css" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Chem4Word.js" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Multi.html" />
@@ -151,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <EmbeddedResource Include="Resources\ChemDoodleWeb\ChemDoodleWeb_800.zip" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

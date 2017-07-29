@@ -1,6 +1,7 @@
 ﻿using Chem4Word.Model.Enums;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -11,8 +12,6 @@ namespace Chem4Word.Model.Converters
     // ReSharper disable once InconsistentNaming
     public class CMLConverter : IConverter
     {
-        private const string StereoIndexes = "NWHICT";
-
         public string Description => "Chemical Markup Language";
 
         public string[] Extensions => new string[]
@@ -224,18 +223,34 @@ namespace Chem4Word.Model.Converters
 
         public XElement GetXElement(Bond bond)
         {
-            var xe = new XElement(CML.cml + "bond",
-                new XAttribute("id", bond.Id),
-                new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
-                new XAttribute("order", bond.Order),
-                GetStereoXElement(bond)
+            XElement result;
+
+            if (bond.Stereo == BondStereo.Cis || bond.Stereo == BondStereo.Trans)
+            {
+                Debugger.Break();
+                // ToDo: Ensure this is Tested
+                result = new XElement(CML.cml + "bond",
+                    new XAttribute("id", bond.Id),
+                    new XAttribute("atomRefs4", $" {bond.StartAtom.Id} {bond.StartAtom.Id} {bond.EndAtom.Id} {bond.EndAtom.Id}"),
+                    new XAttribute("order", bond.Order),
+                    GetStereoXElement(bond)
                 );
+            }
+            else
+            {
+                result = new XElement(CML.cml + "bond",
+                    new XAttribute("id", bond.Id),
+                    new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
+                    new XAttribute("order", bond.Order),
+                    GetStereoXElement(bond)
+                    );
+            }
 
             if (bond.ExplicitPlacement != null)
             {
-                xe.Add(new XAttribute(CML.c4w + "placement", bond.ExplicitPlacement));
+                result.Add(new XAttribute(CML.c4w + "placement", bond.ExplicitPlacement));
             }
-            return xe;
+            return result;
         }
 
         public XElement GetMoleculeElement(Molecule mol)
@@ -353,11 +368,27 @@ namespace Chem4Word.Model.Converters
 
             foreach (XElement bondElement in bondElements)
             {
-                string[] atomRefs = bondElement.Attribute("atomRefs2").Value.Split(' ');
+                var attributes = bondElement.Attributes();
                 var newBond = CreateBond(bondElement);
 
-                newBond.StartAtom = newAtoms[atomRefs[0]];
-                newBond.EndAtom = newAtoms[atomRefs[1]];
+                foreach (var attribute in attributes)
+                {
+                    if (attribute.Name.LocalName.Equals("atomRefs2"))
+                    {
+                        string[] atomRefs = bondElement.Attribute("atomRefs2").Value.Split(' ');
+
+                        newBond.StartAtom = newAtoms[atomRefs[0]];
+                        newBond.EndAtom = newAtoms[atomRefs[1]];
+                    }
+
+                    if (attribute.Name.LocalName.Equals("atomRefs4"))
+                    {
+                        string[] atomRefs = bondElement.Attribute("atomRefs4").Value.Split(' ');
+
+                        newBond.StartAtom = newAtoms[atomRefs[1]];
+                        newBond.EndAtom = newAtoms[atomRefs[2]];
+                    }
+                }
 
                 m.Bonds.Add(newBond);
             }
@@ -581,8 +612,6 @@ namespace Chem4Word.Model.Converters
         /// <returns></returns>
         public Bond CreateBond(XElement cmlElement)
         {
-            string[] atomRefs = cmlElement.Attribute("atomRefs2").Value.Split(' ');
-
             Bond newBond = new Bond();
             BondDirection? dir = null;
 
@@ -610,7 +639,33 @@ namespace Chem4Word.Model.Converters
             {
                 var stereo = stereoElems[0].Value;
                 //look up the position of the index letter in the string and convert it to an enum
-                newBond.Stereo = (BondStereo)StereoIndexes.IndexOf(stereo);
+                switch (stereo)
+                {
+                    case "N":
+                        newBond.Stereo = BondStereo.None;
+                        break;
+                    case "W":
+                        newBond.Stereo = BondStereo.Wedge;
+                        break;
+                    case "H":
+                        newBond.Stereo = BondStereo.Hatch;
+                        break;
+                    case "I":
+                        newBond.Stereo = BondStereo.Indeterminate;
+                        break;
+                    case "S":
+                        newBond.Stereo = BondStereo.Indeterminate;
+                        break;
+                    case "C":
+                        newBond.Stereo = BondStereo.Cis;
+                        break;
+                    case "T":
+                        newBond.Stereo = BondStereo.Trans;
+                        break;
+                    default:
+                        newBond.Stereo = BondStereo.None;
+                        break;
+                }
             }
 
             return newBond;

@@ -209,9 +209,9 @@
   <!-- Standard Plug Ins -->
   <Fragment>
     <ComponentGroup Id="PlugIns" Directory="PLUGINSFOLDER">
-      <Component Id="Chem4Word.Editor.ChemDoodleWeb">
-        <File Id="Chem4Word.Editor.ChemDoodleWeb.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb.dll" />
-        <File Id="Chem4Word.Editor.ChemDoodleWeb.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb.pdb" />
+      <Component Id="Chem4Word.Editor.ChemDoodleWeb.702">
+        <File Id="Chem4Word.Editor.ChemDoodleWeb702.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb702.dll" />
+        <File Id="Chem4Word.Editor.ChemDoodleWeb702.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb702.pdb" />
       </Component>
       <Component Id="Chem4Word.Renderer.OoXmlV3">
         <File Id="Chem4Word.Renderer.OoXmlV3.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Renderer.OoXmlV3.dll" />

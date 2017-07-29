@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Add Mark Of The Web -->
+    <!-- saved from url=(0014)about:internet -->
+    <!-- Make .Net WebBrowser component work -->
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+
+    <!--these three are required by the ChemDoodle Web Components library-->
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link rel="stylesheet" href="ChemDoodleWeb/ChemDoodleWeb.css" type="text/css">
+    <script type="text/javascript" src="ChemDoodleWeb/ChemDoodleWeb.js"></script>
+
+    <!--these two are required by the SketcherCanvas plugin-->
+    <link rel="stylesheet" href="ChemDoodleWeb/uis/jquery-ui-1.11.4.css" type="text/css">
+    <script type="text/javascript" src="ChemDoodleWeb/uis/ChemDoodleWeb-uis.js"></script>
+
+    <!-- Our files -->
+    <link rel="stylesheet" href="Chem4Word.css" type="text/css" />
+    <script type="text/javascript" src="Chem4Word.js"></script>
+    <title>ChemDoodle</title>
+</head>
+
+<body onresize="resize_canvas()" onload="resize_canvas()">
+    <div id="container">
+        <canvas id="sketcher" />
+    </div>
+
+    <script type="text/javascript">
+        // Initialise the SketcherCanvas
+        var sketcher = new ChemDoodle.SketcherCanvas('sketcher',
+            clientWidth - X_OFFSET, clientHeight - Y_OFFSET,
+            { useServices: false, oneMolecule: true, includeToolbar: true });
+
+        // Setup the Sketcher
+        setup_sketcher();
+
+        // because we do not load any content, we need to repaint the sketcher, otherwise we would just see an empty area with the toolbar
+        // however, you can instead use one of the Canvas.load... functions to pre-populate the canvas with content, then you don't need to call repaint
+        sketcher.repaint();
+    </script>
+</body>
+</html>

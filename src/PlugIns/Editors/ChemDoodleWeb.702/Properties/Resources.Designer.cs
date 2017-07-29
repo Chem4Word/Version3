@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Chem4Word.Editor.ChemDoodleWeb.Properties {
+namespace Chem4Word.Editor.ChemDoodleWeb702.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chem4Word.Editor.ChemDoodleWeb.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

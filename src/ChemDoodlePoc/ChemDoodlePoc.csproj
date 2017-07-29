@@ -144,7 +144,7 @@
     <Content Include="ChemDoodle\ChemDoodleWeb\uis\images\ui-icons_fbc856_256x240.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ChemDoodle\ChemDoodleWeb\uis\jquery-ui-1.10.3.custom.css">
+    <Content Include="ChemDoodle\ChemDoodleWeb\uis\jquery-ui-1.11.4.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ChemDoodle\sketcher.htm">

@@ -77,6 +77,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     DrawDashedLine(wordprocessingGroup1, extents, startPoint, endPoint);
                     break;
 
+                case BondLineStyle.Wavy:
+                    DrawBondLine(wordprocessingGroup1, bl);
+                    break;
+
                 default:
                     DrawSolidLine(wordprocessingGroup1, extents, startPoint, endPoint);
                     break;

@@ -22,6 +22,8 @@ body {
     border: 1px solid #c3c3c3;
 }
 
-#sketcher_button_open, #sketcher_button_save, #sketcher_buttons_shape {
+#sketcher_button_open,
+#sketcher_button_save,
+#sketcher_buttons_shape {
     display:none;
 }

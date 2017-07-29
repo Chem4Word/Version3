@@ -12,6 +12,10 @@ namespace Chem4Word.Model.Converters
     /// </summary>
     public class JSONConverter : IConverter
     {
+        private const string Protruding = "protruding";
+        private const string Recessed = "recessed";
+        private const string Ambiguous = "ambiguous";
+
         private class AtomJSON
         {
             public string i;    // Id
@@ -108,18 +112,21 @@ namespace Chem4Word.Model.Converters
                     {
                         i = bond.Id,
                         b = indexLookup[bond.StartAtom],
-                        e = indexLookup[bond.EndAtom],
+                        e = indexLookup[bond.EndAtom]
                     };
 
                     if (bond.Stereo == BondStereo.Wedge)
                     {
-                        mj.b[iBond].s = "protruding";
+                        mj.b[iBond].s = Protruding;
                     }
                     else if (bond.Stereo == BondStereo.Hatch)
                     {
-                        mj.b[iBond].s = "recessed";
+                        mj.b[iBond].s = Recessed;
                     }
-
+                    else if (bond.Stereo == BondStereo.Indeterminate)
+                    {
+                        mj.b[iBond].s = Ambiguous;
+                    }
                     if (bond.Order != Bond.OrderSingle)
                     {
                         mj.b[iBond].o = bond.OrderValue;
@@ -184,27 +191,6 @@ namespace Chem4Word.Model.Converters
             {
                 foreach (BondJSON b in data.b)
                 {
-                    BondStereo s;
-                    if (!string.IsNullOrEmpty(b.s))
-                    {
-                        if (b.s == "recessed")
-                        {
-                            s = BondStereo.Hatch;
-                        }
-                        else if (b.s == "protruding")
-                        {
-                            s = BondStereo.Wedge;
-                        }
-                        else
-                        {
-                            s = BondStereo.None;
-                        }
-                    }
-                    else
-                    {
-                        s = BondStereo.None;
-                    }
-
                     string o;
                     if (b.o != null)
                     {
@@ -213,6 +199,45 @@ namespace Chem4Word.Model.Converters
                     else
                     {
                         o = Bond.OrderSingle;
+                    }
+
+                    BondStereo s;
+                    if (!string.IsNullOrEmpty(b.s))
+                    {
+                        if (o == Bond.OrderDouble)
+                        {
+                            if (b.s.Equals(Ambiguous))
+                            {
+                                s = BondStereo.Indeterminate;
+                            }
+                            else
+                            {
+                                s = BondStereo.None;
+                            }
+                        }
+                        else
+                        {
+                            if (b.s.Equals(Recessed))
+                            {
+                                s = BondStereo.Hatch;
+                            }
+                            else if (b.s.Equals(Protruding))
+                            {
+                                s = BondStereo.Wedge;
+                            }
+                            else if (b.s.Equals(Ambiguous))
+                            {
+                                s = BondStereo.Indeterminate;
+                            }
+                            else
+                            {
+                                s = BondStereo.None;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        s = BondStereo.None;
                     }
 
                     Bond newBond = new Bond()

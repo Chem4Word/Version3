@@ -1,0 +1,30 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+#container {
+    background-color: white;
+    height:100vh;
+    margin: 5px;
+    padding: 0;
+}
+
+#sketcher {
+    margin: 0;
+    padding: 0;
+    border: 1px solid #c3c3c3;
+}
+
+#sketcher_button_open,
+#sketcher_button_save,
+#sketcher_buttons_shape,
+#sketcher_button_template_label {
+    display:none;
+}
