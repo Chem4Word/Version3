@@ -10,13 +10,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
     {
         private List<BondLine> m_BondLines;
         private double m_medianBondLength;
-        private Options m_rendererOptions;
 
-        public BondLinePositioner(List<BondLine> bondLines, double medianBondLength, Options options)
+        public BondLinePositioner(List<BondLine> bondLines, double medianBondLength)
         {
             m_BondLines = bondLines;
             m_medianBondLength = medianBondLength;
-            m_rendererOptions = options;
         }
 
         /// <summary>
@@ -49,8 +47,6 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
 
             #region Create Bond Line objects
 
-            var stereo = bond.Stereo;
-
             switch (bond.Order)
             {
                 case Bond.OrderZero:
@@ -64,7 +60,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
 
                 case "1":
                 case Bond.OrderSingle:
-                    switch (stereo)
+                    switch (bond.Stereo)
                     {
                         case BondStereo.None:
                             m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id));
@@ -78,7 +74,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                             m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Wedge, bond.Id));
                             break;
 
+                        case BondStereo.Indeterminate:
+                            m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Wavy, bond.Id));
+                            break;
                         default:
+
                             m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id));
                             break;
                     }
@@ -97,7 +97,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     break;
 
                 case Bond.OrderDouble:
-                    if (stereo == BondStereo.Indeterminate) //crossing bonds
+                    if (bond.Stereo == BondStereo.Indeterminate) //crossing bonds
                     {
                         // Crossed lines
                         BondLine d = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
