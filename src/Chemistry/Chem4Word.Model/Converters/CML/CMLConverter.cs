@@ -618,7 +618,7 @@ namespace Chem4Word.Model.Converters
             if (stereoElems.Any())
             {
                 var stereo = stereoElems[0].Value;
-                //look up the position of the index letter in the string and convert it to an enum
+
                 switch (stereo)
                 {
                     case "N":
@@ -629,9 +629,6 @@ namespace Chem4Word.Model.Converters
                         break;
                     case "H":
                         newBond.Stereo = BondStereo.Hatch;
-                        break;
-                    case "I":
-                        newBond.Stereo = BondStereo.Indeterminate;
                         break;
                     case "S":
                         newBond.Stereo = BondStereo.Indeterminate;
