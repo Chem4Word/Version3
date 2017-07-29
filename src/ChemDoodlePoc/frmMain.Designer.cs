@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnClear = new System.Windows.Forms.Button();
             this.btnConvertModel = new System.Windows.Forms.Button();
             this.btnMirror = new System.Windows.Forms.Button();
             this.btnFlip = new System.Windows.Forms.Button();
@@ -50,7 +51,6 @@
             this.browser = new System.Windows.Forms.WebBrowser();
             this.saveFile = new System.Windows.Forms.SaveFileDialog();
             this.openFile = new System.Windows.Forms.OpenFileDialog();
-            this.btnClear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -92,13 +92,23 @@
             this.splitContainer1.SplitterDistance = 468;
             this.splitContainer1.TabIndex = 0;
             // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(5, 88);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(62, 23);
+            this.btnClear.TabIndex = 26;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // btnConvertModel
             // 
             this.btnConvertModel.Location = new System.Drawing.Point(5, 59);
             this.btnConvertModel.Name = "btnConvertModel";
-            this.btnConvertModel.Size = new System.Drawing.Size(134, 23);
+            this.btnConvertModel.Size = new System.Drawing.Size(207, 23);
             this.btnConvertModel.TabIndex = 25;
-            this.btnConvertModel.Text = "JSON <--> CML [Model]";
+            this.btnConvertModel.Text = "? -> CML -> JSON";
             this.btnConvertModel.UseVisualStyleBackColor = true;
             this.btnConvertModel.Click += new System.EventHandler(this.btnConvertModel_Click);
             // 
@@ -311,16 +321,6 @@
             // openFile
             // 
             this.openFile.FileName = "openFileDialog1";
-            // 
-            // btnClear
-            // 
-            this.btnClear.Location = new System.Drawing.Point(5, 88);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(62, 23);
-            this.btnClear.TabIndex = 26;
-            this.btnClear.Text = "Clear";
-            this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // frmMain
             // 

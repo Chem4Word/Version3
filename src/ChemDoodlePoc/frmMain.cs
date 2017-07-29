@@ -195,24 +195,34 @@ namespace ChemDoodlePoc
             switch (format)
             {
                 case TextBoxFormat.Json:
-                    JSONConverter jsonConverter1 = new JSONConverter();
-                    Model model1 = jsonConverter1.Import((object)txtStructure.Text);
+                    JSONConverter converter1 = new JSONConverter();
+                    Model model1 = converter1.Import((object)txtStructure.Text);
                     model1.RebuildMolecules();
                     model1.Relabel();
                     model1.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
-                    CMLConverter cmlConverter1 = new CMLConverter();
-                    txtStructure.Text = cmlConverter1.Export(model1);
+                    CMLConverter converter2 = new CMLConverter();
+                    txtStructure.Text = converter2.Export(model1);
                     break;
 
                 case TextBoxFormat.Cml:
-                    CMLConverter cmlConverter2 = new CMLConverter();
-                    Model model2 = cmlConverter2.Import((object)txtStructure.Text);
+                    CMLConverter converter3 = new CMLConverter();
+                    Model model2 = converter3.Import((object)txtStructure.Text);
                     model2.RebuildMolecules();
                     model2.Relabel();
-                    JSONConverter jsonConverter2 = new JSONConverter();
-                    txtStructure.Text = jsonConverter2.Export(model2);
+                    JSONConverter converter4 = new JSONConverter();
+                    txtStructure.Text = converter4.Export(model2);
+                    break;
+
+                case TextBoxFormat.MolFile:
+                    SdFileConverter converter5 = new SdFileConverter();
+                    Model model3 = converter5.Import((object) txtStructure.Text);
+                    model3.RebuildMolecules();
+                    model3.Relabel();
+                    CMLConverter converter6 = new CMLConverter();
+                    txtStructure.Text = converter6.Export(model3);
                     break;
             }
+
             EnableButtons();
         }
 
@@ -378,7 +388,7 @@ namespace ChemDoodlePoc
                     break;
 
                 case TextBoxFormat.MolFile:
-                    btnConvertModel.Enabled = false;
+                    btnConvertModel.Enabled = true;
                     btnSend.Enabled = true;
                     break;
 

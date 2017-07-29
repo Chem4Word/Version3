@@ -12,6 +12,10 @@ namespace Chem4Word.Model.Converters
     /// </summary>
     public class JSONConverter : IConverter
     {
+        private const string Protruding = "protruding";
+        private const string Recessed = "recessed";
+        private const string Ambiguous = "ambiguous";
+
         private class AtomJSON
         {
             public string i;    // Id
@@ -113,15 +117,15 @@ namespace Chem4Word.Model.Converters
 
                     if (bond.Stereo == BondStereo.Wedge)
                     {
-                        mj.b[iBond].s = "protruding";
+                        mj.b[iBond].s = Protruding;
                     }
                     else if (bond.Stereo == BondStereo.Hatch)
                     {
-                        mj.b[iBond].s = "recessed";
+                        mj.b[iBond].s = Recessed;
                     }
                     else if (bond.Stereo == BondStereo.Indeterminate)
                     {
-                        mj.b[iBond].s = "ambiguous";
+                        mj.b[iBond].s = Ambiguous;
                     }
                     if (bond.Order != Bond.OrderSingle)
                     {
@@ -200,9 +204,9 @@ namespace Chem4Word.Model.Converters
                     BondStereo s;
                     if (!string.IsNullOrEmpty(b.s))
                     {
-                        if (o == Bond.OrderSingle)
+                        if (o == Bond.OrderDouble)
                         {
-                            if (b.s == "ambiguous")
+                            if (b.s.Equals(Ambiguous))
                             {
                                 s = BondStereo.Indeterminate;
                             }
@@ -213,15 +217,15 @@ namespace Chem4Word.Model.Converters
                         }
                         else
                         {
-                            if (b.s == "recessed")
+                            if (b.s.Equals(Recessed))
                             {
                                 s = BondStereo.Hatch;
                             }
-                            else if (b.s == "protruding")
+                            else if (b.s.Equals(Protruding))
                             {
                                 s = BondStereo.Wedge;
                             }
-                            else if (b.s == "ambiguous")
+                            else if (b.s.Equals(Ambiguous))
                             {
                                 s = BondStereo.Indeterminate;
                             }
