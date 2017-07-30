@@ -198,7 +198,6 @@ namespace Chem4Word.Model.Converters
                 }
                 else
                 {
-                    //result = new XElement(CML.cml + "bondStereo", GetStereoString(bond.Stereo));
                     result = new XElement(CML.cml + "bondStereo",
                                 new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
                                 GetStereoString(bond.Stereo));
