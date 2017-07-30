@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using A = DocumentFormat.OpenXml.Drawing;
 using Point = System.Windows.Point;
@@ -94,9 +96,15 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             UInt32Value bondLineId = UInt32Value.FromUInt32((uint)m_ooxmlId++);
             string bondLineName = "WavyLine" + bondLineId;
 
-            Vector bondVector = bondStart - bondEnd;
-            int noOfWiggles = (int)Math.Floor(bondVector.Length / BondOffset());
+            Vector bondVector = bondEnd - bondStart;
+            int noOfWiggles = (int)Math.Ceiling(bondVector.Length / BondOffset() / 2);
+            if (noOfWiggles < 1)
+            {
+                noOfWiggles = 1;
+            }
             Debug.WriteLine($"v.Length: {bondVector.Length} noOfWiggles: {noOfWiggles}");
+
+            // Number of wiggles is NOT always right ???
 
             Vector originalWigglePortion = bondVector;
             originalWigglePortion.Normalize();
@@ -106,33 +114,62 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             Matrix toRight = new Matrix();
             toRight.Rotate(60);
 
-            List<List<Point>> points = new List<List<Point>>();
-
+            List<Point> allpoints = new List<Point>();
+            List<List<Point>> allTriangles = new List<List<Point>>();
             List<Point> triangle = new List<Point>();
 
             Point lastPoint = bondStart;
+            allpoints.Add(lastPoint);
             triangle.Add(lastPoint);
             for (int i = 0; i < noOfWiggles; i++)
             {
                 var wigglePortion = originalWigglePortion;
                 wigglePortion = wigglePortion * toLeft;
                 Point leftPoint = lastPoint + wigglePortion;
+                allpoints.Add(leftPoint);
                 triangle.Add(leftPoint);
 
                 wigglePortion = wigglePortion * toRight;
                 Point middlePoint = lastPoint + wigglePortion;
+                allpoints.Add(middlePoint);
+                triangle.Add(middlePoint);
+                allTriangles.Add(triangle);
+                triangle = new List<Point>();
                 triangle.Add(middlePoint);
 
                 wigglePortion = wigglePortion * toRight;
                 Point rightPoint = leftPoint + wigglePortion * 2;
+                allpoints.Add(rightPoint);
                 triangle.Add(rightPoint);
 
                 lastPoint += originalWigglePortion * 2;
+                allpoints.Add(lastPoint);
                 triangle.Add(lastPoint);
-                points.Add(triangle);
+                allTriangles.Add(triangle);
                 triangle = new List<Point>();
                 triangle.Add(lastPoint);
             }
+
+            //Debug.WriteLine($"{bondStart.X},{bondStart.Y}");
+            //Debug.WriteLine($"{bondEnd.X},{bondEnd.Y}");
+
+            //foreach (var p in allpoints)
+            //{
+            //    Debug.WriteLine($"{p.X},,{p.Y}");
+            //}
+
+            //foreach (var tri in allTriangles)
+            //{
+            //    foreach (var p in tri)
+            //    {
+            //        Debug.WriteLine($"{p.X},,{p.Y}");
+            //    }
+            //}
+
+            double xmin = allpoints.Min(point => point.X);
+            double xmax = allpoints.Max(point => point.X);
+            double ymin = allpoints.Min(point => point.Y);
+            double ymax = allpoints.Max(point => point.Y);
 
             Int64Value width = OoXmlHelper.ScaleCmlToEmu(extents.Width);
             Int64Value height = OoXmlHelper.ScaleCmlToEmu(extents.Height);
@@ -162,16 +199,29 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
 
             A.MoveTo moveTo1 = new A.MoveTo();
             A.Point point1 = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(bondStart.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(bondStart.Y).ToString() };
-
             moveTo1.Append(point1);
-
-            A.LineTo lineTo1 = new A.LineTo();
-            A.Point point2 = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(bondEnd.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(bondEnd.Y).ToString() };
-
-            lineTo1.Append(point2);
-
             path1.Append(moveTo1);
-            path1.Append(lineTo1);
+
+            // Curves - Not working (Yet)
+            //foreach (var tri in allTriangles)
+            //{
+            //    A.CubicBezierCurveTo cubicBezierCurveTo = new A.CubicBezierCurveTo();
+            //    foreach (var p in tri)
+            //    {
+            //        A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.X).ToString() };
+            //        cubicBezierCurveTo.Append(point);
+            //    }
+            //    path1.Append(cubicBezierCurveTo);
+            //}
+
+            // Straight Lines (Probably good enough)
+            foreach (var p in allpoints)
+            {
+                A.LineTo lineTo = new A.LineTo();
+                A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.Y).ToString() };
+                lineTo.Append(point);
+                path1.Append(lineTo);
+            }
 
             pathList1.Append(path1);
 
@@ -183,7 +233,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
 
             A.SolidFill solidFill1 = new A.SolidFill();
 
-            A.RgbColorModelHex rgbColorModelHex1 = new A.RgbColorModelHex() { Val = "ff0000" };
+            A.RgbColorModelHex rgbColorModelHex1 = new A.RgbColorModelHex() { Val = "000000" };
             A.Alpha alpha1 = new A.Alpha() { Val = new Int32Value() { InnerText = "100%" } };
 
             rgbColorModelHex1.Append(alpha1);
