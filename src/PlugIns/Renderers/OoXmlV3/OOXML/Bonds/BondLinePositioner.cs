@@ -202,9 +202,35 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                                     break;
 
                                 default:
-                                    BondLine dp = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
-                                    m_BondLines.Add(dp.GetParallel(-(BondOffset() / 2)));
-                                    m_BondLines.Add(dp.GetParallel(BondOffset() / 2));
+
+                                    switch (bond.Stereo)
+                                    {
+                                        case BondStereo.Cis:
+                                            BondLine dcc = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
+                                            m_BondLines.Add(dcc);
+                                            BondLine blnewc = dcc.GetParallel(+BondOffset());
+                                            Point startPointn = blnewc.Start;
+                                            Point endPointn = blnewc.End;
+                                            CoordinateTool.AdjustLineAboutMidpoint(ref startPointn, ref endPointn, -(BondOffset() / 1.75));
+                                            m_BondLines.Add(new BondLine(startPointn, endPointn, BondLineStyle.Solid, bond.Id));
+                                            break;
+
+                                        case BondStereo.Trans:
+                                            BondLine dtt = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
+                                            m_BondLines.Add(dtt);
+                                            BondLine blnewt = dtt.GetParallel(+BondOffset());
+                                            Point startPointt = blnewt.Start;
+                                            Point endPointt = blnewt.End;
+                                            CoordinateTool.AdjustLineAboutMidpoint(ref startPointt, ref endPointt, -(BondOffset() / 1.75));
+                                            m_BondLines.Add(new BondLine(startPointt, endPointt, BondLineStyle.Solid, bond.Id));
+                                            break;
+
+                                        default:
+                                            BondLine dp = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
+                                            m_BondLines.Add(dp.GetParallel(-(BondOffset() / 2)));
+                                            m_BondLines.Add(dp.GetParallel(BondOffset() / 2));
+                                            break;
+                                    }
                                     break;
                             }
                         }
@@ -217,7 +243,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     BondLine t = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
                     m_BondLines.Add(t);
                     m_BondLines.Add(t.GetParallel(BondOffset()));
-                    m_BondLines.Add(t.GetParallel(-(BondOffset())));
+                    m_BondLines.Add(t.GetParallel(-BondOffset()));
                     break;
 
                 default:
