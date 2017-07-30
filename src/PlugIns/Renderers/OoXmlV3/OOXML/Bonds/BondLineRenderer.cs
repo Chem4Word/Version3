@@ -97,57 +97,58 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             string bondLineName = "WavyLine" + bondLineId;
 
             Vector bondVector = bondEnd - bondStart;
-            int noOfWiggles = (int)Math.Ceiling(bondVector.Length / BondOffset() / 2);
+            int noOfWiggles = (int)Math.Ceiling(bondVector.Length / BondOffset());
             if (noOfWiggles < 1)
             {
                 noOfWiggles = 1;
             }
+            double wiggleLength = bondVector.Length / noOfWiggles;
             Debug.WriteLine($"v.Length: {bondVector.Length} noOfWiggles: {noOfWiggles}");
-
-            // Number of wiggles is NOT always right ???
 
             Vector originalWigglePortion = bondVector;
             originalWigglePortion.Normalize();
-            originalWigglePortion *= BondOffset();
+            originalWigglePortion *= wiggleLength / 2;
             Matrix toLeft = new Matrix();
             toLeft.Rotate(-60);
             Matrix toRight = new Matrix();
             toRight.Rotate(60);
+            Vector leftVector = originalWigglePortion * toLeft;
+            Vector rightVector = originalWigglePortion * toRight;
 
             List<Point> allpoints = new List<Point>();
-            List<List<Point>> allTriangles = new List<List<Point>>();
-            List<Point> triangle = new List<Point>();
+            //List<List<Point>> allTriangles = new List<List<Point>>();
+            //List<Point> triangle = new List<Point>();
 
             Point lastPoint = bondStart;
             allpoints.Add(lastPoint);
-            triangle.Add(lastPoint);
+            //triangle.Add(lastPoint);
             for (int i = 0; i < noOfWiggles; i++)
             {
-                var wigglePortion = originalWigglePortion;
-                wigglePortion = wigglePortion * toLeft;
-                Point leftPoint = lastPoint + wigglePortion;
+                //var wigglePortion = originalWigglePortion;
+                //wigglePortion = wigglePortion * toLeft;
+                Point leftPoint = lastPoint + leftVector;
                 allpoints.Add(leftPoint);
-                triangle.Add(leftPoint);
+                //triangle.Add(leftPoint);
 
-                wigglePortion = wigglePortion * toRight;
-                Point middlePoint = lastPoint + wigglePortion;
-                allpoints.Add(middlePoint);
-                triangle.Add(middlePoint);
-                allTriangles.Add(triangle);
-                triangle = new List<Point>();
-                triangle.Add(middlePoint);
+                //wigglePortion = wigglePortion * toRight;
+                //Point middlePoint = lastPoint + rightVector;
+                //allpoints.Add(middlePoint);
+                //triangle.Add(middlePoint);
+                //allTriangles.Add(triangle);
+                //triangle = new List<Point>();
+                //triangle.Add(middlePoint);
 
-                wigglePortion = wigglePortion * toRight;
-                Point rightPoint = leftPoint + wigglePortion * 2;
+                //wigglePortion = wigglePortion * toRight;
+                Point rightPoint = lastPoint + originalWigglePortion + rightVector;
                 allpoints.Add(rightPoint);
-                triangle.Add(rightPoint);
+                //triangle.Add(rightPoint);
 
                 lastPoint += originalWigglePortion * 2;
                 allpoints.Add(lastPoint);
-                triangle.Add(lastPoint);
-                allTriangles.Add(triangle);
-                triangle = new List<Point>();
-                triangle.Add(lastPoint);
+                //triangle.Add(lastPoint);
+                //allTriangles.Add(triangle);
+                //triangle = new List<Point>();
+                //triangle.Add(lastPoint);
             }
 
             //Debug.WriteLine($"{bondStart.X},{bondStart.Y}");
@@ -166,10 +167,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             //    }
             //}
 
-            double xmin = allpoints.Min(point => point.X);
-            double xmax = allpoints.Max(point => point.X);
-            double ymin = allpoints.Min(point => point.Y);
-            double ymax = allpoints.Max(point => point.Y);
+            //double xmin = allpoints.Min(point => point.X);
+            //double xmax = allpoints.Max(point => point.X);
+            //double ymin = allpoints.Min(point => point.Y);
+            //double ymax = allpoints.Max(point => point.Y);
 
             Int64Value width = OoXmlHelper.ScaleCmlToEmu(extents.Width);
             Int64Value height = OoXmlHelper.ScaleCmlToEmu(extents.Height);
