@@ -1,7 +1,11 @@
 ﻿using DocumentFormat.OpenXml;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Media;
 using A = DocumentFormat.OpenXml.Drawing;
 using Point = System.Windows.Point;
 using Wpg = DocumentFormat.OpenXml.Office2010.Word.DrawingGroup;
@@ -78,13 +82,190 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     break;
 
                 case BondLineStyle.Wavy:
-                    DrawBondLine(wordprocessingGroup1, bl);
+                    DrawWavyLine(wordprocessingGroup1, extents, startPoint, endPoint);
                     break;
 
                 default:
                     DrawSolidLine(wordprocessingGroup1, extents, startPoint, endPoint);
                     break;
             }
+        }
+
+        private void DrawWavyLine(Wpg.WordprocessingGroup wordprocessingGroup1, Rect extents, Point bondStart, Point bondEnd)
+        {
+            UInt32Value bondLineId = UInt32Value.FromUInt32((uint)m_ooxmlId++);
+            string bondLineName = "WavyLine" + bondLineId;
+
+            Vector bondVector = bondEnd - bondStart;
+            int noOfWiggles = (int)Math.Ceiling(bondVector.Length / BondOffset());
+            if (noOfWiggles < 1)
+            {
+                noOfWiggles = 1;
+            }
+            double wiggleLength = bondVector.Length / noOfWiggles;
+            Debug.WriteLine($"v.Length: {bondVector.Length} noOfWiggles: {noOfWiggles}");
+
+            Vector originalWigglePortion = bondVector;
+            originalWigglePortion.Normalize();
+            originalWigglePortion *= wiggleLength / 2;
+            Matrix toLeft = new Matrix();
+            toLeft.Rotate(-60);
+            Matrix toRight = new Matrix();
+            toRight.Rotate(60);
+            Vector leftVector = originalWigglePortion * toLeft;
+            Vector rightVector = originalWigglePortion * toRight;
+
+            List<Point> allpoints = new List<Point>();
+            //List<List<Point>> allTriangles = new List<List<Point>>();
+            //List<Point> triangle = new List<Point>();
+
+            Point lastPoint = bondStart;
+            allpoints.Add(lastPoint);
+            //triangle.Add(lastPoint);
+            for (int i = 0; i < noOfWiggles; i++)
+            {
+                //var wigglePortion = originalWigglePortion;
+                //wigglePortion = wigglePortion * toLeft;
+                Point leftPoint = lastPoint + leftVector;
+                allpoints.Add(leftPoint);
+                //triangle.Add(leftPoint);
+
+                //wigglePortion = wigglePortion * toRight;
+                //Point middlePoint = lastPoint + rightVector;
+                //allpoints.Add(middlePoint);
+                //triangle.Add(middlePoint);
+                //allTriangles.Add(triangle);
+                //triangle = new List<Point>();
+                //triangle.Add(middlePoint);
+
+                //wigglePortion = wigglePortion * toRight;
+                Point rightPoint = lastPoint + originalWigglePortion + rightVector;
+                allpoints.Add(rightPoint);
+                //triangle.Add(rightPoint);
+
+                lastPoint += originalWigglePortion * 2;
+                allpoints.Add(lastPoint);
+                //triangle.Add(lastPoint);
+                //allTriangles.Add(triangle);
+                //triangle = new List<Point>();
+                //triangle.Add(lastPoint);
+            }
+
+            //Debug.WriteLine($"{bondStart.X},{bondStart.Y}");
+            //Debug.WriteLine($"{bondEnd.X},{bondEnd.Y}");
+
+            //foreach (var p in allpoints)
+            //{
+            //    Debug.WriteLine($"{p.X},,{p.Y}");
+            //}
+
+            //foreach (var tri in allTriangles)
+            //{
+            //    foreach (var p in tri)
+            //    {
+            //        Debug.WriteLine($"{p.X},,{p.Y}");
+            //    }
+            //}
+
+            //double xmin = allpoints.Min(point => point.X);
+            //double xmax = allpoints.Max(point => point.X);
+            //double ymin = allpoints.Min(point => point.Y);
+            //double ymax = allpoints.Max(point => point.Y);
+
+            Int64Value width = OoXmlHelper.ScaleCmlToEmu(extents.Width);
+            Int64Value height = OoXmlHelper.ScaleCmlToEmu(extents.Height);
+            Int64Value top = OoXmlHelper.ScaleCmlToEmu(extents.Top);
+            Int64Value left = OoXmlHelper.ScaleCmlToEmu(extents.Left);
+
+            Wps.WordprocessingShape wordprocessingShape1 = new Wps.WordprocessingShape();
+            Wps.NonVisualDrawingProperties nonVisualDrawingProperties1 = new Wps.NonVisualDrawingProperties() { Id = bondLineId, Name = bondLineName };
+            Wps.NonVisualDrawingShapeProperties nonVisualDrawingShapeProperties1 = new Wps.NonVisualDrawingShapeProperties();
+
+            Wps.ShapeProperties shapeProperties1 = new Wps.ShapeProperties();
+
+            A.Transform2D transform2D1 = new A.Transform2D();
+            A.Offset offset2 = new A.Offset() { X = left, Y = top };
+            A.Extents extents2 = new A.Extents() { Cx = width, Cy = height };
+
+            transform2D1.Append(offset2);
+            transform2D1.Append(extents2);
+
+            A.CustomGeometry customGeometry1 = new A.CustomGeometry();
+            A.AdjustValueList adjustValueList1 = new A.AdjustValueList();
+            A.Rectangle rectangle1 = new A.Rectangle() { Left = "l", Top = "t", Right = "r", Bottom = "b" };
+
+            A.PathList pathList1 = new A.PathList();
+
+            A.Path path1 = new A.Path() { Width = width, Height = height };
+
+            A.MoveTo moveTo1 = new A.MoveTo();
+            A.Point point1 = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(bondStart.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(bondStart.Y).ToString() };
+            moveTo1.Append(point1);
+            path1.Append(moveTo1);
+
+            // Curves - Not working (Yet)
+            //foreach (var tri in allTriangles)
+            //{
+            //    A.CubicBezierCurveTo cubicBezierCurveTo = new A.CubicBezierCurveTo();
+            //    foreach (var p in tri)
+            //    {
+            //        A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.X).ToString() };
+            //        cubicBezierCurveTo.Append(point);
+            //    }
+            //    path1.Append(cubicBezierCurveTo);
+            //}
+
+            // Straight Lines (Probably good enough)
+            foreach (var p in allpoints)
+            {
+                A.LineTo lineTo = new A.LineTo();
+                A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.Y).ToString() };
+                lineTo.Append(point);
+                path1.Append(lineTo);
+            }
+
+            pathList1.Append(path1);
+
+            customGeometry1.Append(adjustValueList1);
+            customGeometry1.Append(rectangle1);
+            customGeometry1.Append(pathList1);
+
+            A.Outline outline1 = new A.Outline() { Width = 9525, CapType = A.LineCapValues.Round };
+
+            A.SolidFill solidFill1 = new A.SolidFill();
+
+            A.RgbColorModelHex rgbColorModelHex1 = new A.RgbColorModelHex() { Val = "000000" };
+            A.Alpha alpha1 = new A.Alpha() { Val = new Int32Value() { InnerText = "100%" } };
+
+            rgbColorModelHex1.Append(alpha1);
+
+            solidFill1.Append(rgbColorModelHex1);
+
+            outline1.Append(solidFill1);
+
+            shapeProperties1.Append(transform2D1);
+            shapeProperties1.Append(customGeometry1);
+            shapeProperties1.Append(outline1);
+
+            Wps.ShapeStyle shapeStyle1 = new Wps.ShapeStyle();
+            A.LineReference lineReference1 = new A.LineReference() { Index = (UInt32Value)0U };
+            A.FillReference fillReference1 = new A.FillReference() { Index = (UInt32Value)0U };
+            A.EffectReference effectReference1 = new A.EffectReference() { Index = (UInt32Value)0U };
+            A.FontReference fontReference1 = new A.FontReference() { Index = A.FontCollectionIndexValues.Minor };
+
+            shapeStyle1.Append(lineReference1);
+            shapeStyle1.Append(fillReference1);
+            shapeStyle1.Append(effectReference1);
+            shapeStyle1.Append(fontReference1);
+            Wps.TextBodyProperties textBodyProperties1 = new Wps.TextBodyProperties();
+
+            wordprocessingShape1.Append(nonVisualDrawingProperties1);
+            wordprocessingShape1.Append(nonVisualDrawingShapeProperties1);
+            wordprocessingShape1.Append(shapeProperties1);
+            wordprocessingShape1.Append(shapeStyle1);
+            wordprocessingShape1.Append(textBodyProperties1);
+
+            wordprocessingGroup1.Append(wordprocessingShape1);
         }
 
         private void DrawFilledTriangle(Wpg.WordprocessingGroup wordprocessingGroup1, List<Point> points)

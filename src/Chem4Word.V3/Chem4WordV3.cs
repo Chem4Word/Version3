@@ -1220,21 +1220,21 @@ namespace Chem4Word
 
                 if (!doc.ReadOnly)
                 {
-                    // Exclude templates from Orphan checks
-                    if (!doc.Name.ToLower().EndsWith(".dotm"))
+                    //// Exclude templates from Orphan checks
+                    //if (!doc.Name.ToLower().EndsWith(".dotm"))
+                    //{
+                    //}
+                    // Handle Word 2013+ AutoSave
+                    if (WordVersion >= 2013)
                     {
-                        // Handle Word 2013+ AutoSave
-                        if (WordVersion >= 2013)
-                        {
-                            if (!doc.IsInAutosave)
-                            {
-                                CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
-                            }
-                        }
-                        else
+                        if (!doc.IsInAutosave)
                         {
                             CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
                         }
+                    }
+                    else
+                    {
+                        CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
                     }
                 }
             }

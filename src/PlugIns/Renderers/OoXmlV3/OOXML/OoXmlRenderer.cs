@@ -502,7 +502,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
         private void ProcessBonds(Molecule mol, Progress pb, int moleculeNo)
         {
-            BondLinePositioner br = new BondLinePositioner(_bondLines, _medianBondLength, _options);
+            BondLinePositioner br = new BondLinePositioner(_bondLines, _medianBondLength);
 
             if (mol.Bonds.Count > 0)
             {

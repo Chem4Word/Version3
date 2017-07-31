@@ -1214,7 +1214,15 @@ namespace Chem4Word
                             {
                                 // Erase old CC
                                 cc.LockContents = false;
-                                cc.Range.Delete();
+                                Debug.WriteLine(cc.Type);
+                                if (cc.Type == Word.WdContentControlType.wdContentControlPicture)
+                                {
+                                    cc.Range.InlineShapes[1].Delete();
+                                }
+                                else
+                                {
+                                    cc.Range.Delete();
+                                }
                                 cc.Delete();
                             }
 

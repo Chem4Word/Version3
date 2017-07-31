@@ -191,13 +191,16 @@ namespace Chem4Word.Model.Converters
                 if (bond.Stereo == BondStereo.Cis || bond.Stereo == BondStereo.Trans)
                 {
                     Debugger.Break();
+                    // ToDo: Fix 1st and last atomRefs
                     result = new XElement(CML.cml + "bondStereo",
                                 new XAttribute("atomRefs4", $"{bond.StartAtom.Id} {bond.StartAtom.Id} {bond.EndAtom.Id} {bond.EndAtom.Id}"),
                                 GetStereoString(bond.Stereo));
                 }
                 else
                 {
-                    result = new XElement(CML.cml + "bondStereo", GetStereoString(bond.Stereo));
+                    result = new XElement(CML.cml + "bondStereo",
+                                new XAttribute("atomRefs2", $"{bond.StartAtom.Id} {bond.EndAtom.Id}"),
+                                GetStereoString(bond.Stereo));
                 }
             }
             return result;
