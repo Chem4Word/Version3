@@ -171,6 +171,8 @@ namespace Chem4Word.View
             //Vector startOffset = new Vector();
             //Vector endOffset = new Vector();
 
+
+
             if (startPoint != null & endPoint != null)
             {
                 //check to see if it's a wedge or a hatch yet
@@ -187,6 +189,10 @@ namespace Chem4Word.View
                 //double bond
                 if (ParentBond.OrderValue == 2)
                 {
+                    if (ParentBond.Stereo == BondStereo.Indeterminate)
+                    {
+                        return BondGeometry.CrossedDoubleGeometry(startPoint.Value, endPoint.Value, ref _enclosingPoly);
+                    }
                     Point? centroid = null;
                     if (ParentBond.IsCyclic())
                     {

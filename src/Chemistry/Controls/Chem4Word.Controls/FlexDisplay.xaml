@@ -99,6 +99,10 @@
                                         <Setter Property="Fill" Value="Black" />
                                         <Setter Property="Stroke" Value="Black" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Stereo, Mode=OneWay}" Value="Indeterminate">
+                                        <Setter Property="Fill" Value="Black" />
+                                        <Setter Property="Stroke" Value="Black" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=Stereo, Mode=OneWay}" Value="Hatch">
                                         <Setter Property="Fill" Value="{StaticResource HatchBrush}" />
                                         <Setter Property="Stroke" Value="Transparent" />

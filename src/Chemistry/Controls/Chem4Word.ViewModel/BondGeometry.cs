@@ -214,6 +214,46 @@ namespace Chem4Word.View
             return sg;
         }
 
+        /// <summary>
+        /// Draws the crossed double bond to indicate indeterminate geometry
+        /// </summary>
+        /// <param name="startPoint"></param>
+        /// <param name="endPoint"></param>
+        /// <param name="enclosingPoly"></param>
+        /// <returns></returns>
+        public static Geometry CrossedDoubleGeometry(Point startPoint, Point endPoint, ref List<Point> enclosingPoly)
+        {
+            Vector v = endPoint - startPoint;
+            Vector normal = v.Perpendicular();
+            normal.Normalize();
+
+            Point point1, point2, point3, point4;
+
+            double distance = Globals.Offset;
+
+
+            point1 = startPoint + normal * distance;
+            point2 = point1 + v;
+
+            point3 = startPoint - normal * distance;
+            point4 = point3 + v;
+
+            enclosingPoly = new List<Point>() {point1, point2, point4,point3};
+
+            StreamGeometry sg = new StreamGeometry();
+            using (StreamGeometryContext sgc = sg.Open())
+            {
+                sgc.BeginFigure(point1, false, false);
+                sgc.LineTo(point4, true, false);
+                sgc.BeginFigure(point2, false, false);
+                sgc.LineTo(point3, true, false);
+                sgc.Close();
+            }
+            sg.Freeze();
+            return sg;
+
+        }
+
         public static System.Windows.Media.Geometry SingleBondGeometry(Point startPoint, Point endPoint)
         {
             StreamGeometry sg = new StreamGeometry();
