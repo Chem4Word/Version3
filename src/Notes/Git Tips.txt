@@ -1,0 +1,9 @@
+Remove phantom local copies of remote branches
+
+git fetch --prune
+
+Get local copies and remote in sync
+
+git fetch
+git pull
+git push

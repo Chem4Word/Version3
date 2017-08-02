@@ -88,6 +88,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{1B81DF60-6A34-4B5B-86F3-24ED42587450}"
 	ProjectSection(SolutionItems) = preProject
 		Notes\Build Event Macro Locations.xlsx = Notes\Build Event Macro Locations.xlsx
+		Notes\Git Tips.txt = Notes\Git Tips.txt
 		Notes\MDL CTFile Formats.pdf = Notes\MDL CTFile Formats.pdf
 		Notes\Metro Icon Colours.txt = Notes\Metro Icon Colours.txt
 		Notes\MolFileFormat.txt = Notes\MolFileFormat.txt
