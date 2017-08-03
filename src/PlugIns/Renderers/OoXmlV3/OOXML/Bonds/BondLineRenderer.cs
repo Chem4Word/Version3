@@ -102,12 +102,14 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             {
                 noOfWiggles = 1;
             }
+
             double wiggleLength = bondVector.Length / noOfWiggles;
             Debug.WriteLine($"v.Length: {bondVector.Length} noOfWiggles: {noOfWiggles}");
 
             Vector originalWigglePortion = bondVector;
             originalWigglePortion.Normalize();
             originalWigglePortion *= wiggleLength / 2;
+
             Matrix toLeft = new Matrix();
             toLeft.Rotate(-60);
             Matrix toRight = new Matrix();
@@ -116,66 +118,58 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             Vector rightVector = originalWigglePortion * toRight;
 
             List<Point> allpoints = new List<Point>();
-            //List<List<Point>> allTriangles = new List<List<Point>>();
-            //List<Point> triangle = new List<Point>();
+            List<List<Point>> allTriangles = new List<List<Point>>();
+            List<Point> triangle = new List<Point>();
 
             Point lastPoint = bondStart;
             allpoints.Add(lastPoint);
-            //triangle.Add(lastPoint);
+            triangle.Add(lastPoint);
             for (int i = 0; i < noOfWiggles; i++)
             {
-                //var wigglePortion = originalWigglePortion;
-                //wigglePortion = wigglePortion * toLeft;
                 Point leftPoint = lastPoint + leftVector;
                 allpoints.Add(leftPoint);
-                //triangle.Add(leftPoint);
+                triangle.Add(leftPoint);
 
-                //wigglePortion = wigglePortion * toRight;
-                //Point middlePoint = lastPoint + rightVector;
-                //allpoints.Add(middlePoint);
-                //triangle.Add(middlePoint);
-                //allTriangles.Add(triangle);
-                //triangle = new List<Point>();
-                //triangle.Add(middlePoint);
+                Point midPoint = lastPoint + originalWigglePortion;
+                allpoints.Add(midPoint);
+                triangle.Add(midPoint);
+                allTriangles.Add(triangle);
+                triangle = new List<Point>();
+                triangle.Add(midPoint);
 
-                //wigglePortion = wigglePortion * toRight;
                 Point rightPoint = lastPoint + originalWigglePortion + rightVector;
                 allpoints.Add(rightPoint);
-                //triangle.Add(rightPoint);
+                triangle.Add(rightPoint);
 
                 lastPoint += originalWigglePortion * 2;
                 allpoints.Add(lastPoint);
-                //triangle.Add(lastPoint);
-                //allTriangles.Add(triangle);
-                //triangle = new List<Point>();
-                //triangle.Add(lastPoint);
+                triangle.Add(lastPoint);
+                allTriangles.Add(triangle);
+                triangle = new List<Point>();
+                triangle.Add(lastPoint);
             }
 
-            //Debug.WriteLine($"{bondStart.X},{bondStart.Y}");
-            //Debug.WriteLine($"{bondEnd.X},{bondEnd.Y}");
+            double minX = double.MaxValue;
+            double maxX = double.MinValue;
+            double minY = double.MaxValue;
+            double maxY = double.MinValue;
 
-            //foreach (var p in allpoints)
-            //{
-            //    Debug.WriteLine($"{p.X},,{p.Y}");
-            //}
+            foreach (Point p in allpoints)
+            {
+                maxX = Math.Max(p.X + extents.Left, maxX);
+                minX = Math.Min(p.X + extents.Left, minX);
+                maxY = Math.Max(p.Y + extents.Top, maxY);
+                minY = Math.Min(p.Y + extents.Top, minY);
+            }
 
-            //foreach (var tri in allTriangles)
-            //{
-            //    foreach (var p in tri)
-            //    {
-            //        Debug.WriteLine($"{p.X},,{p.Y}");
-            //    }
-            //}
+            Rect newExtents = new Rect(minX, minY, maxX - minX, maxY - minY);
+            double xOffset = extents.Left - newExtents.Left;
+            double yOffset = extents.Top - newExtents.Top;
 
-            //double xmin = allpoints.Min(point => point.X);
-            //double xmax = allpoints.Max(point => point.X);
-            //double ymin = allpoints.Min(point => point.Y);
-            //double ymax = allpoints.Max(point => point.Y);
-
-            Int64Value width = OoXmlHelper.ScaleCmlToEmu(extents.Width);
-            Int64Value height = OoXmlHelper.ScaleCmlToEmu(extents.Height);
-            Int64Value top = OoXmlHelper.ScaleCmlToEmu(extents.Top);
-            Int64Value left = OoXmlHelper.ScaleCmlToEmu(extents.Left);
+            Int64Value width = OoXmlHelper.ScaleCmlToEmu(newExtents.Width);
+            Int64Value height = OoXmlHelper.ScaleCmlToEmu(newExtents.Height);
+            Int64Value top = OoXmlHelper.ScaleCmlToEmu(newExtents.Top);
+            Int64Value left = OoXmlHelper.ScaleCmlToEmu(newExtents.Left);
 
             Wps.WordprocessingShape wordprocessingShape1 = new Wps.WordprocessingShape();
             Wps.NonVisualDrawingProperties nonVisualDrawingProperties1 = new Wps.NonVisualDrawingProperties() { Id = bondLineId, Name = bondLineName };
@@ -199,30 +193,30 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             A.Path path1 = new A.Path() { Width = width, Height = height };
 
             A.MoveTo moveTo1 = new A.MoveTo();
-            A.Point point1 = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(bondStart.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(bondStart.Y).ToString() };
+            A.Point point1 = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(bondStart.X + xOffset).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(bondStart.Y + yOffset).ToString() };
             moveTo1.Append(point1);
             path1.Append(moveTo1);
 
-            // Curves - Not working (Yet)
-            //foreach (var tri in allTriangles)
-            //{
-            //    A.CubicBezierCurveTo cubicBezierCurveTo = new A.CubicBezierCurveTo();
-            //    foreach (var p in tri)
-            //    {
-            //        A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.X).ToString() };
-            //        cubicBezierCurveTo.Append(point);
-            //    }
-            //    path1.Append(cubicBezierCurveTo);
-            //}
-
-            // Straight Lines (Probably good enough)
-            foreach (var p in allpoints)
+            //Curves
+            foreach (var tri in allTriangles)
             {
-                A.LineTo lineTo = new A.LineTo();
-                A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.Y).ToString() };
-                lineTo.Append(point);
-                path1.Append(lineTo);
+                A.CubicBezierCurveTo cubicBezierCurveTo = new A.CubicBezierCurveTo();
+                foreach (var p in tri)
+                {
+                    A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X + xOffset).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.Y + yOffset).ToString() };
+                    cubicBezierCurveTo.Append(point);
+                }
+                path1.Append(cubicBezierCurveTo);
             }
+
+            //// Straight Lines
+            //foreach (var p in allpoints)
+            //{
+            //    A.LineTo lineTo = new A.LineTo();
+            //    A.Point point = new A.Point() { X = OoXmlHelper.ScaleCmlToEmu(p.X + xOffset).ToString(), Y = OoXmlHelper.ScaleCmlToEmu(p.Y + yOffset).ToString() };
+            //    lineTo.Append(point);
+            //    path1.Append(lineTo);
+            //}
 
             pathList1.Append(path1);
 

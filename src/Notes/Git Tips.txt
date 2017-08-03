@@ -1,0 +1,20 @@
+Command Line Git tool
+Get it from https://git-scm.com/download/win
+
+Remove phantom local copies of remote branches
+
+git fetch --prune
+
+Get local copies and remote in sync
+
+git fetch
+git pull
+
+List all branches
+git branch -a
+
+Switch to branch
+git checkout branchname
+
+More command line and visual studio hints at
+https://www.visualstudio.com/en-us/docs/git/command-prompt
