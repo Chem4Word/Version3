@@ -42,18 +42,17 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
             //atomLabel = "ABCHDEFGHIJKLMNOHPQRSHTUVWXYZ";
             //atomLabel = "-+H01234567890H+-";
 
-            // Get Charge for use later on
-            int iCharge = 0;
-
-            iCharge = atom.FormalCharge ?? 0;
-
+            // Get Charge and Isotope valuesfor use later on
+            int iCharge = atom.FormalCharge ?? 0;
             int iAbsCharge = Math.Abs(iCharge);
+            int isoValue = atom.IsotopeNumber ?? 0;
 
             // Get Implicit Hydrogen Count for use later on
             int implicitHCount = atom.ImplicitHydrogenCount;
 
             Point cursorPosition = atom.Position;
             Point chargeCursorPosition = atom.Position;
+            Point isotopeCursorPosition = atom.Position;
 
             double lastOffset = 0;
 
@@ -90,6 +89,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 // Force on if atom has charge
                 if (iAbsCharge > 0)
+                {
+                    showLabel = true;
+                }
+                // Force on if atom has isotope value
+                if (isoValue > 0)
                 {
                     showLabel = true;
                 }
@@ -155,9 +159,9 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 double width = xMax - xMin;
                 double height = yMax - yMin;
-                cursorPosition = new Point(atom.Position.X - width / 2,
-                    atom.Position.Y + height / 2);
+                cursorPosition = new Point(atom.Position.X - width / 2, atom.Position.Y + height / 2);
                 chargeCursorPosition = new Point(cursorPosition.X, cursorPosition.Y);
+                isotopeCursorPosition = new Point(cursorPosition.X, cursorPosition.Y);
                 labelBounds = new Rect(cursorPosition, new Size(width, height));
                 //_telemetry.Write(module, "Debugging", $"Atom {atomLabel} [{atom.Id}] Label Bounds {labelBounds}");
 
@@ -268,6 +272,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                         {
                             chargeCursorPosition = new Point(cursorPosition.X, cursorPosition.Y);
                         }
+                        if (nesw == CompassPoints.West)
+                        {
+                            isotopeCursorPosition = new Point(thisCharacterPosition.X, isotopeCursorPosition.Y);
+                        }
                     }
 
                     #endregion Add H
@@ -348,6 +356,61 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                 }
 
                 #endregion Step 5 - Add Charge if required
+
+                #region Step 6 Add IsoTope Number if required
+
+                if (isoValue > 0)
+                {
+                    string digits = isoValue.ToString();
+
+                    xMin = double.MaxValue;
+                    yMin = double.MaxValue;
+                    xMax = double.MinValue;
+                    yMax = double.MinValue;
+
+                    Point isoOrigin = isotopeCursorPosition;
+
+                    // Calculate width of digits
+                    foreach (char chr in digits)
+                    {
+                        TtfCharacter c = m_TtfCharacterSet[chr];
+                        thisCharacterPosition = GetCharacterPosition(isotopeCursorPosition, c);
+
+                        // Raise the superscript Character
+                        thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(c.Height * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
+
+                        xMin = Math.Min(xMin, thisCharacterPosition.X);
+                        yMin = Math.Min(yMin, thisCharacterPosition.Y);
+                        xMax = Math.Max(xMax, thisCharacterPosition.X + OoXmlHelper.ScaleCsTtfToCml(c.Width));
+                        yMax = Math.Max(yMax, thisCharacterPosition.Y + OoXmlHelper.ScaleCsTtfToCml(c.Height));
+
+                        // Move to next Character position
+                        isotopeCursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(c.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
+                    }
+
+                    // Re-position Isotope Cursor
+                    width = xMax - xMin;
+                    isotopeCursorPosition = new Point(isoOrigin.X - width, isoOrigin.Y);
+
+                    // Insert digits
+                    foreach (char chr in digits)
+                    {
+                        TtfCharacter c = m_TtfCharacterSet[chr];
+                        thisCharacterPosition = GetCharacterPosition(isotopeCursorPosition, c);
+
+                        // Raise the superscript Character
+                        thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(c.Height * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
+
+                        AtomLabelCharacter alcc = new AtomLabelCharacter(thisCharacterPosition, c, atomColour, chr, atom.Id);
+                        alcc.IsSubScript = true;
+                        m_AtomLabelCharacters.Add(alcc);
+
+                        // Move to next Character position
+                        isotopeCursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(c.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
+                    }
+                }
+
+                #endregion Step 6 Add IsoTope Number if required
             }
         }
 
