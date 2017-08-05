@@ -12,11 +12,11 @@ namespace Chem4Word.Navigator
 {
     internal class NavigatorSupport
     {
-        public static void InsertChemistry(bool isCopy, Microsoft.Office.Interop.Word.Application app, FlexDisplay flexDisplay)
+        public static void InsertChemistry(bool isCopy, Application app, FlexDisplay flexDisplay)
         {
-            Microsoft.Office.Interop.Word.Document doc = app.ActiveDocument;
+            Document doc = app.ActiveDocument;
             Selection sel = app.Selection;
-            Microsoft.Office.Interop.Word.ContentControl cc = null;
+            ContentControl cc = null;
 
             if (sel.ContentControls.Count > 0)
             {

@@ -44,6 +44,7 @@ namespace Chem4Word.Library
         private void InsertCopyButton_OnClick(object sender, RoutedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
             try
             {
                 ActiveDocument = Globals.Chem4WordV3.Application.ActiveDocument;

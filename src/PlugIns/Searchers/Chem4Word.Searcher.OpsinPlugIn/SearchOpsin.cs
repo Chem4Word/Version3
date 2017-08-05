@@ -29,10 +29,10 @@ namespace Chem4Word.Searcher.OpsinPlugIn
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            if (SearchFor.Text.Length > 0)
+            if (!string.IsNullOrEmpty(SearchFor.Text))
             {
+                Telemetry.Write(module, "Information", $"User searched for '{SearchFor.Text}'");
                 Cursor = Cursors.WaitCursor;
-                Telemetry.Write(module, "Information", $"User searched for {SearchFor.Text}");
 
                 UriBuilder builder = new UriBuilder(UserOptions.OpsinWebServiceUri + SearchFor.Text);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(builder.Uri);

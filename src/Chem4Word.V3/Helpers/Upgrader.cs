@@ -89,7 +89,8 @@ namespace Chem4Word.Helpers
                                 cc.Delete();
                                 doc.Application.Selection.SetRange(start - 1, start - 1);
                                 bool isFormula = false;
-                                string text = CustomRibbon.GetInlineText(target.Model, cci.Type, ref isFormula);
+                                string source;
+                                string text = CustomRibbon.GetInlineText(target.Model, cci.Type, ref isFormula, out source);
                                 Word.ContentControl ccn = CustomRibbon.Insert1D(doc.Application, doc, text, isFormula, $"{cci.Type}:{target.Model.CustomXmlPartGuid}");
                                 ccn.LockContents = true;
                             }
