@@ -31,6 +31,8 @@ namespace Chem4Word.Helpers
                 sb.AppendLine("");
                 sb.AppendLine("  Click Yes to Upgrade then");
                 sb.AppendLine("  Click No to leave them as they are");
+                sb.AppendLine("");
+                sb.AppendLine("This operation can't be undone.");
                 result = UserInteractions.AskUserYesNo(sb.ToString());
             }
 
