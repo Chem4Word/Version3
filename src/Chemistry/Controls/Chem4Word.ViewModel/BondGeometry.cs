@@ -1,4 +1,5 @@
-﻿using Chem4Word.Model.Enums;
+﻿using System;
+using Chem4Word.Model.Enums;
 using Chem4Word.Model.Geometry;
 using System.Collections.Generic;
 using System.Windows;
@@ -130,76 +131,15 @@ namespace Chem4Word.View
         /// <returns></returns>
         public static System.Windows.Media.Geometry DoubleBondGeometry(Point startPoint, Point endPoint,
             BondDirection doubleBondPlacement, ref List<Point> enclosingPoly, Point? ringCentroid = null)
-        //this routine is very complex because iof the essentially asymmetric nature of these bonds
+
         {
-            Vector v = endPoint - startPoint;
-            Vector normal = v.Perpendicular();
-            normal.Normalize();
+            Point point1;
+            Point point2;
+            Point point3;
+            Point point4;
+            enclosingPoly = GetDoubleBondPoints(startPoint, endPoint, doubleBondPlacement, ringCentroid, out point1, out point2, out point3, out point4);
 
-            Point point1, point2, point3, point4;
-            Point? point3a, point4a;
-
-            double distance = Globals.Offset;
-            switch (doubleBondPlacement)
-            {
-                case BondDirection.None:
-
-                    point1 = startPoint + normal * distance;
-                    point2 = point1 + v;
-
-                    point3 = startPoint - normal * distance;
-                    point4 = point3 + v;
-
-                    break;
-
-                case BondDirection.Clockwise:
-                    {
-                        point1 = startPoint;
-
-                        point2 = endPoint;
-                        point3 = startPoint - normal * 2 * distance;
-                        point4 = point3 + v;
-
-                        break;
-                    }
-
-                case BondDirection.Anticlockwise:
-                    point1 = startPoint;
-                    point2 = endPoint;
-                    point3 = startPoint + normal * 2 * distance;
-                    point4 = point3 + v;
-                    break;
-
-                default:
-
-                    point1 = startPoint + normal * distance;
-                    point2 = point1 + v;
-
-                    point3 = startPoint - normal * distance;
-                    point4 = point3 + v;
-                    break;
-            }
-
-            //capture  the enclosing polygone for hit testing later
-
-            enclosingPoly = new List<Point>() { point1, point2, point4, point3 };
-
-            //shorten the supporting bond if it's a ring bond
-            if (ringCentroid != null)
-            {
-                point3a = BasicGeometry.LineSegmentsIntersect(startPoint, ringCentroid.Value, point3, point4);
-
-                var temp_point3 = point3a ?? point3;
-
-                point4a = BasicGeometry.LineSegmentsIntersect(endPoint, ringCentroid.Value, point3, point4);
-
-                var temp_point4 = point4 = point4a ?? point4;
-
-                point3 = temp_point3;
-                point4 = temp_point4;
-            }
-
-          ;
+            ;
 
             StreamGeometry sg = new StreamGeometry();
             using (StreamGeometryContext sgc = sg.Open())
@@ -212,6 +152,117 @@ namespace Chem4Word.View
             }
             sg.Freeze();
             return sg;
+        }
+
+
+        /// <summary>
+        /// Defines the 4 points that characterise a double bond and returns a list of them in polygon order
+        /// </summary>
+        /// <param name="startPoint"></param>
+        /// <param name="endPoint"></param>
+        /// <param name="doubleBondPlacement"></param>
+        /// <param name="ringCentroid"></param>
+        /// <param name="point1"></param>
+        /// <param name="point2"></param>
+        /// <param name="point3"></param>
+        /// <param name="point4"></param>
+        /// <returns></returns>
+        public static List<Point> GetDoubleBondPoints(Point startPoint, Point endPoint, BondDirection doubleBondPlacement,
+            Point? ringCentroid, out Point point1, out Point point2, out Point point3, out Point point4)
+        {
+            List<Point> enclosingPoly;
+            Vector v = endPoint - startPoint;
+            Vector normal = v.Perpendicular();
+            normal.Normalize();
+
+           
+            Point? point3a, point4a;
+
+            double distance = Globals.Offset;
+
+            if (ringCentroid == null)
+            {
+                switch (doubleBondPlacement)
+                {
+                    case BondDirection.None:
+
+                        point1 = startPoint + normal * distance;
+                        point2 = point1 + v;
+
+                        point3 = startPoint - normal * distance;
+                        point4 = point3 + v;
+
+                        break;
+
+                    case BondDirection.Clockwise:
+                    {
+                        point1 = startPoint;
+
+                        point2 = endPoint;
+                        point3 = startPoint - normal * 2 * distance;
+                        point4 = point3 + v;
+
+                        break;
+                    }
+
+                    case BondDirection.Anticlockwise:
+                        point1 = startPoint;
+                        point2 = endPoint;
+                        point3 = startPoint + normal * 2 * distance;
+                        point4 = point3 + v;
+                        break;
+
+                    default:
+
+                        point1 = startPoint + normal * distance;
+                        point2 = point1 + v;
+
+                        point3 = startPoint - normal * distance;
+                        point4 = point3 + v;
+                        break;
+                }
+            }
+            else
+            {
+                point1 = startPoint;
+                point2 = endPoint;
+
+                var bondvector = endPoint - startPoint;
+                var centreVector = ringCentroid - startPoint;
+                var bondPlacement = (BondDirection)Math.Sign(Vector.CrossProduct(centreVector.Value, bondvector ));
+                if (bondPlacement == BondDirection.Clockwise)
+                {
+                    point3 = startPoint - normal * 2 * distance;
+                    point4 = point3 + v;
+                }
+                    else
+                {
+                    point3 = startPoint + normal * 2 * distance;
+                    point4 = point3 + v;
+                }
+
+
+                point3a = BasicGeometry.LineSegmentsIntersect(startPoint, ringCentroid.Value, point3, point4);
+
+                var tempPoint3 = point3a ?? point3;
+
+                point4a = BasicGeometry.LineSegmentsIntersect(endPoint, ringCentroid.Value, point3, point4);
+
+                var tempPoint4 = point4 = point4a ?? point4;
+
+                point3 = tempPoint3;
+                point4 = tempPoint4;
+            }
+            //capture  the enclosing polygon for hit testing later
+
+            enclosingPoly = new List<Point>() {point1, point2, point4, point3};
+
+            //shorten the supporting bond if it's a ring bond
+            if (ringCentroid != null)
+            {
+                
+            }
+            return enclosingPoly;
         }
 
         /// <summary>

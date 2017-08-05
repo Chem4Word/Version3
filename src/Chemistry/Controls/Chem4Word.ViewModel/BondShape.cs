@@ -94,34 +94,36 @@ namespace Chem4Word.View
             get
             {
                 var totalgeo = GetBondGeometry(this.StartPoint, this.EndPoint);
-
-                if (!string.IsNullOrEmpty(ParentBond.StartAtom?.SymbolText) |
-                    !string.IsNullOrEmpty(ParentBond.EndAtom?.SymbolText))
-
+                if (totalgeo != null)
                 {
-                    Pen newPen = new Pen(Brushes.Black, 0.1);
-                    if (ParentBond.Stereo == BondStereo.Hatch | ParentBond.Stereo == BondStereo.Wedge)
-                    {
-                        totalgeo = totalgeo.GetOutlinedPathGeometry();
-                    }
-                    else
-                    {
-                        totalgeo = totalgeo.GetWidenedPathGeometry(newPen, 0.001, ToleranceType.Absolute);
-                    }
+                    if (!string.IsNullOrEmpty(ParentBond.StartAtom?.SymbolText) |
+                        !string.IsNullOrEmpty(ParentBond.EndAtom?.SymbolText))
 
-                    if (!string.IsNullOrEmpty(ParentBond.StartAtom?.SymbolText))
                     {
-                        var atomGeo = AtomShape.GetBoxGeometry(ParentBond.StartAtom);
-                        totalgeo = new CombinedGeometry(GeometryCombineMode.Exclude, totalgeo, atomGeo);
-                    }
+                        Pen newPen = new Pen(Brushes.Black, 0.1);
+                        if (ParentBond.Stereo == BondStereo.Hatch | ParentBond.Stereo == BondStereo.Wedge)
+                        {
+                            totalgeo = totalgeo.GetOutlinedPathGeometry();
+                        }
+                        else
+                        {
+                            totalgeo = totalgeo.GetWidenedPathGeometry(newPen, 0.001, ToleranceType.Absolute);
+                        }
 
-                    if (!string.IsNullOrEmpty(ParentBond.EndAtom?.SymbolText))
-                    {
-                        var atomGeo = AtomShape.GetBoxGeometry(ParentBond.EndAtom);
-                        totalgeo = new CombinedGeometry(GeometryCombineMode.Exclude, totalgeo, atomGeo);
+                        if (!string.IsNullOrEmpty(ParentBond.StartAtom?.SymbolText))
+                        {
+                            var atomGeo = AtomShape.GetBoxGeometry(ParentBond.StartAtom);
+                            totalgeo = new CombinedGeometry(GeometryCombineMode.Exclude, totalgeo, atomGeo);
+                        }
+
+                        if (!string.IsNullOrEmpty(ParentBond.EndAtom?.SymbolText))
+                        {
+                            var atomGeo = AtomShape.GetBoxGeometry(ParentBond.EndAtom);
+                            totalgeo = new CombinedGeometry(GeometryCombineMode.Exclude, totalgeo, atomGeo);
+                        }
                     }
+                    totalgeo.Freeze();
                 }
-                totalgeo.Freeze();
                 return totalgeo;
             }
         }
@@ -166,7 +168,7 @@ namespace Chem4Word.View
         public static readonly DependencyProperty OrderValueProperty =
             DependencyProperty.Register("OrderValue", typeof(int), typeof(BondShape), new PropertyMetadata(1));
 
-        public System.Windows.Media.Geometry GetBondGeometry(Point? startPoint, Point? endPoint)
+        public System.Windows.Media.Geometry  GetBondGeometry(Point? startPoint, Point? endPoint)
         {
             //Vector startOffset = new Vector();
             //Vector endOffset = new Vector();
@@ -186,6 +188,13 @@ namespace Chem4Word.View
                 {
                     return BondGeometry.SingleBondGeometry(startPoint.Value, endPoint.Value);
                 }
+                if (ParentBond.OrderValue == 1.5)
+                {
+                    //it's a resonance bond, so we deal with this in OnRender
+                    //return BondGeometry.SingleBondGeometry(startPoint.Value, endPoint.Value);
+                    return new StreamGeometry();
+                }
+
                 //double bond
                 if (ParentBond.OrderValue == 2)
                 {
@@ -231,6 +240,40 @@ namespace Chem4Word.View
                 {
                     return null;
                 }
+            }
+        }
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+
+
+            if (ParentBond.OrderValue == 1.5)
+            {
+                Point point1, point2, point3, point4;
+
+                Point? centroid = null;
+                if (ParentBond.IsCyclic())
+                {
+                    centroid = ParentBond.PrimaryRing?.Centroid;
+                }
+                _enclosingPoly = BondGeometry.GetDoubleBondPoints(StartPoint.Value, EndPoint.Value,
+                    Placement, centroid, out point1,
+                    out point2, out point3, out point4);
+                Pen solidPen = new Pen(Fill, StrokeThickness);
+
+                Pen dashedPen = solidPen.Clone();
+
+                dashedPen.DashStyle=DashStyles.Dash;
+                
+                drawingContext.DrawLine(solidPen , point1, point2);
+                drawingContext.DrawLine(dashedPen, point3, point4);
+
+                //drawingContext.Close();
+
+            }
+            else
+            {
+                base.OnRender(drawingContext);
             }
         }
 
