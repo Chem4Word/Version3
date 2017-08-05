@@ -445,7 +445,7 @@ namespace Chem4Word
                 if (mustBeSigned)
                 {
                     // Is it signed by us?
-                    allowed = parts[3].Contains("developer@chem4word.co.uk");
+                    allowed = parts[3].Contains("admin@chem4word.co.uk");
                 }
 
                 if (allowed)
