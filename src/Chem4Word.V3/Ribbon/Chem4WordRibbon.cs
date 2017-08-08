@@ -151,14 +151,15 @@ namespace Chem4Word
                                 string text;
                                 if (chosenState.Equals("c0"))
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "User inserted Overall Concise Formula");
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Render structure as Overall ConciseFormula");
                                     text = model.ConciseFormula;
                                     isFormula = true;
                                 }
                                 else
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"User inserted {chosenState}");
-                                    text = GetInlineText(model, chosenState, ref isFormula);
+                                    string source;
+                                    text = GetInlineText(model, chosenState, ref isFormula, out source);
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Render structure as {source}");
                                 }
 
                                 cc = Insert1D(app, doc, text, isFormula, chosenState + ":" + guid);
@@ -366,7 +367,7 @@ namespace Chem4Word
                 DialogResult dr = ofd.ShowDialog();
                 if (dr == DialogResult.OK)
                 {
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Importing file {ofd.FileName}");
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Importing file '{ofd.SafeFileName}'");
                     string fileType = Path.GetExtension(ofd.FileName).ToLower();
                     Model.Model model = null;
                     string mol = File.ReadAllText(ofd.FileName);
@@ -761,19 +762,20 @@ namespace Chem4Word
                     else
                     {
                         bool isFormula = false;
-                        string text = GetInlineText(model, prefix, ref isFormula);
+                        string source;
+                        string text = GetInlineText(model, prefix, ref isFormula, out source);
                         Update1D(app, cc, text, isFormula, $"{prefix}:{guidString}");
                     }
                 }
             }
         }
 
-        public static string GetInlineText(Model.Model model, string prefix, ref bool isFormula)
+        public static string GetInlineText(Model.Model model, string prefix, ref bool isFormula, out string source)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             string text = "";
-            string source = "";
+            source = "";
 
             foreach (Molecule m in model.Molecules)
             {
@@ -829,10 +831,6 @@ namespace Chem4Word
             if (string.IsNullOrEmpty(text))
             {
                 text = $"Unable to find formula or name with id of '{prefix}'";
-            }
-            else
-            {
-                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"User inserted {source} of {text}");
             }
 
             return text;
@@ -1373,7 +1371,8 @@ namespace Chem4Word
                             DialogResult dr = sfd.ShowDialog();
                             if (dr == DialogResult.OK)
                             {
-                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Exporting to {sfd.FileName}");
+                                FileInfo fi = new FileInfo(sfd.FileName);
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Exporting to '{fi.Name}'");
                                 string fileType = Path.GetExtension(sfd.FileName).ToLower();
                                 switch (fileType)
                                 {
@@ -1690,7 +1689,8 @@ namespace Chem4Word
                             (custTaskPane.Control as LibraryHost)?.Refresh();
                         }
 
-                        UserInteractions.InformUser($"Structure {m?.ConciseFormula} added into Library");
+                        UserInteractions.InformUser($"Structure '{m?.ConciseFormula}' added into Library");
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure '{m?.ConciseFormula}' added into Library");
                     }
                 }
             }

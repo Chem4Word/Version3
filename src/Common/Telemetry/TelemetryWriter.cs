@@ -73,7 +73,8 @@ namespace Chem4Word.Telemetry
             string userDomainName = Environment.UserDomainName;
             string userName = Environment.UserName;
             string machineName = Environment.MachineName;
-            string userSummary = "";
+            string userSummary;
+
             if (userDomainName.Equals(machineName))
             {
                 // Local account
@@ -82,7 +83,7 @@ namespace Chem4Word.Telemetry
             else
             {
                 // Domain account
-                userSummary = $"Domain user {userDomainName}\\{userName} on PC {machineName}";
+                userSummary = $@"Domain user {userDomainName}\{userName} on PC {machineName}";
             }
 #if DEBUG
             WritePrivate("StartUp", "Information", $"Debug - Environment.OSVersion: {Environment.OSVersion}");
@@ -97,6 +98,8 @@ namespace Chem4Word.Telemetry
 #endif
 
             WritePrivate("StartUp", "Information", _helper.SystemOs);
+            WritePrivate("Startup", "Information", _helper.DotNetVersion);
+
             WritePrivate("StartUp", "Information", _helper.IpAddress);
             WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
             WritePrivate("StartUp", "Information", _helper.WordProduct);

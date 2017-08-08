@@ -28,6 +28,7 @@ namespace Chem4Word.Navigator
         private void InsertLinkButton_OnClick(object sender, RoutedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
 
             try
             {
@@ -45,6 +46,7 @@ namespace Chem4Word.Navigator
         private void InsertCopyButton_OnClick(object sender, RoutedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
 
             try
             {
@@ -72,6 +74,8 @@ namespace Chem4Word.Navigator
         private void PreviousButton_OnClick(object sender, RoutedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+
             try
             {
                 PreviousControl();
@@ -121,9 +125,6 @@ namespace Chem4Word.Navigator
             }
             catch (NullReferenceException ex)
             {
-                StringBuilder sb = new StringBuilder();
-                //sb.AppendLine(ex.Message);
-                //sb.AppendLine("Unable to locate this chemistry in the document.  You may have deleted one or more chemistry zones.");
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
@@ -131,6 +132,8 @@ namespace Chem4Word.Navigator
         private void NextButton_OnClick(object sender, RoutedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+
             try
             {
                 NextControl();
@@ -180,9 +183,6 @@ namespace Chem4Word.Navigator
             }
             catch (NullReferenceException ex)
             {
-                StringBuilder sb = new StringBuilder();
-                //sb.AppendLine(ex.Message);
-                //sb.AppendLine("Unable to locate this chemistry in the document.  You may have deleted one or more chemistry zones.");
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }

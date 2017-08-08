@@ -186,7 +186,6 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             }
         }
 
-
         private void ResultsListView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -246,7 +245,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                ExecuteSearch();
+                if (!string.IsNullOrEmpty(SearchFor.Text))
+                {
+                    Telemetry.Write(module, "Information", $"User searched for '{SearchFor.Text}'");
+                    ExecuteSearch();
+                }
             }
             catch (Exception ex)
             {
@@ -317,7 +320,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin
 
         private string ConvertToWindows(string message)
         {
-            string[] lines = message.Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None);
+            char etx = (char) 3;
+            string temp = message.Replace("\r\n", $"{etx}");
+            temp = temp.Replace("\n", $"{etx}");
+            temp = temp.Replace("\r", $"{etx}");
+            string[] lines = temp.Split(etx);
             return string.Join(Environment.NewLine, lines);
         }
 

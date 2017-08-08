@@ -33,7 +33,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.lblInfo = new System.Windows.Forms.Label();
             this.btnUpdateLater = new System.Windows.Forms.Button();
-            this.linkCodeplexPage = new System.Windows.Forms.LinkLabel();
+            this.linkReleasesPage = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // btnUpdateNow
@@ -81,24 +81,24 @@
             this.btnUpdateLater.UseVisualStyleBackColor = true;
             this.btnUpdateLater.Click += new System.EventHandler(this.OnUpdateLaterClick);
             // 
-            // linkCodeplexPage
+            // linkReleasesPage
             // 
-            this.linkCodeplexPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.linkCodeplexPage.AutoSize = true;
-            this.linkCodeplexPage.Location = new System.Drawing.Point(12, 431);
-            this.linkCodeplexPage.Name = "linkCodeplexPage";
-            this.linkCodeplexPage.Size = new System.Drawing.Size(360, 13);
-            this.linkCodeplexPage.TabIndex = 5;
-            this.linkCodeplexPage.TabStop = true;
-            this.linkCodeplexPage.Text = "Click here to download from the CodePlex web site if automatic update fails";
-            this.linkCodeplexPage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnCodeplexPageLinkClicked);
+            this.linkReleasesPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkReleasesPage.AutoSize = true;
+            this.linkReleasesPage.Location = new System.Drawing.Point(12, 431);
+            this.linkReleasesPage.Name = "linkReleasesPage";
+            this.linkReleasesPage.Size = new System.Drawing.Size(360, 13);
+            this.linkReleasesPage.TabIndex = 5;
+            this.linkReleasesPage.TabStop = true;
+            this.linkReleasesPage.Text = "Click here to download directly from the releases page if automatic update fails";
+            this.linkReleasesPage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnReleasesPageLinkClicked);
             // 
             // AutomaticUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
-            this.Controls.Add(this.linkCodeplexPage);
+            this.Controls.Add(this.linkReleasesPage);
             this.Controls.Add(this.btnUpdateLater);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.richTextBox1);
@@ -119,6 +119,6 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label lblInfo;
         private System.Windows.Forms.Button btnUpdateLater;
-        private System.Windows.Forms.LinkLabel linkCodeplexPage;
+        private System.Windows.Forms.LinkLabel linkReleasesPage;
     }
 }

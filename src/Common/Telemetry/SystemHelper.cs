@@ -13,6 +13,7 @@ namespace Chem4Word.Telemetry
     public class SystemHelper
     {
         private string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
+        private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
         public string MachineId { get; set; }
 
@@ -29,6 +30,8 @@ namespace Chem4Word.Telemetry
         public string IpAddress { get; set; }
 
         public string IpObtainedFrom { get; set; }
+
+        public string DotNetVersion { get; set; }
 
         private static int _retryCount;
 
@@ -245,6 +248,8 @@ namespace Chem4Word.Telemetry
             t.Start(null);
 
             #endregion Get IpAddress
+
+            GetDotNetVersionFromRegistry();
         }
 
         private string OsBits
@@ -252,6 +257,99 @@ namespace Chem4Word.Telemetry
             get
             {
                 return Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null ? "64bit" : "32bit";
+            }
+        }
+
+        private void GetDotNetVersionFromRegistry()
+        {
+            // https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/how-to-determine-which-versions-are-installed
+            // https://en.wikipedia.org/wiki/Windows_10_version_history
+
+            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(DotNetVersionKey))
+            {
+                if (ndpKey != null)
+                {
+                    int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
+
+                    // .Net 4.7
+                    if (releaseKey >= 460805)
+                    {
+                        DotNetVersion = $".NET 4.7 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 460798)
+                    {
+                        DotNetVersion = $".NET 4.7 (W10 1703) [{releaseKey}]";
+                        return;
+                    }
+
+                    // .Net 4.6.2
+                    if (releaseKey >= 394806)
+                    {
+                        DotNetVersion = $".NET 4.6.2 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 394802)
+                    {
+                        DotNetVersion = $".NET 4.6.2 (W10 1607) [{releaseKey}]";
+                        return;
+                    }
+
+                    // .Net 4.6.1
+                    if (releaseKey >= 394271)
+                    {
+                        DotNetVersion = $".NET 4.6.1 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 394254)
+                    {
+                        DotNetVersion = $".NET 4.6.1 (W10 1511) [{releaseKey}]";
+                        return;
+                    }
+
+                    // .Net 4.6
+                    if (releaseKey >= 393297)
+                    {
+                        DotNetVersion = $".NET 4.6 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 393295)
+                    {
+                        DotNetVersion = $".NET 4.6 (W10 1507) [{releaseKey}]";
+                        return;
+                    }
+
+                    // .Net 4.5.2
+                    if (releaseKey >= 379893)
+                    {
+                        DotNetVersion = $".NET 4.5.2 [{releaseKey}]";
+                        return;
+                    }
+
+                    // .Net 4.5.1
+                    if (releaseKey >= 378758)
+                    {
+                        DotNetVersion = $".NET 4.5.1 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 378675)
+                    {
+                        DotNetVersion = $".NET 4.5.1 [{releaseKey}]";
+                        return;
+                    }
+
+                    // .Net 4.5
+                    if (releaseKey >= 378389)
+                    {
+                        DotNetVersion = $".NET 4.5 [{releaseKey}]";
+                        return;
+                    }
+
+                    if (releaseKey < 378389)
+                    {
+                        DotNetVersion = ".Net Version Unknown [{releaseKey}]";
+                    }
+                }
             }
         }
 
@@ -317,7 +415,7 @@ namespace Chem4Word.Telemetry
                                     if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
                                     {
                                         IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress got from {url} on attempt {_retryCount + 1}";
+                                        IpObtainedFrom = $"IpAddress V6 got from {url} on attempt {_retryCount + 1}";
                                     }
                                 }
 
@@ -332,7 +430,7 @@ namespace Chem4Word.Telemetry
                                     if (ipV4Parts.Length == 4)
                                     {
                                         IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress got from {url} on attempt {_retryCount + 1}";
+                                        IpObtainedFrom = $"IpAddress V4 got from {url} on attempt {_retryCount + 1}";
                                     }
                                 }
 

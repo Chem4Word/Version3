@@ -31,6 +31,8 @@ namespace Chem4Word.Helpers
                 sb.AppendLine("");
                 sb.AppendLine("  Click Yes to Upgrade then");
                 sb.AppendLine("  Click No to leave them as they are");
+                sb.AppendLine("");
+                sb.AppendLine("This operation can't be undone.");
                 result = UserInteractions.AskUserYesNo(sb.ToString());
             }
 
@@ -89,7 +91,8 @@ namespace Chem4Word.Helpers
                                 cc.Delete();
                                 doc.Application.Selection.SetRange(start - 1, start - 1);
                                 bool isFormula = false;
-                                string text = CustomRibbon.GetInlineText(target.Model, cci.Type, ref isFormula);
+                                string source;
+                                string text = CustomRibbon.GetInlineText(target.Model, cci.Type, ref isFormula, out source);
                                 Word.ContentControl ccn = CustomRibbon.Insert1D(doc.Application, doc, text, isFormula, $"{cci.Type}:{target.Model.CustomXmlPartGuid}");
                                 ccn.LockContents = true;
                             }

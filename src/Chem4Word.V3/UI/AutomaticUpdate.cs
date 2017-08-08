@@ -72,14 +72,14 @@ namespace Chem4Word.UI
             }
         }
 
-        private void OnCodeplexPageLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void OnReleasesPageLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             _telemetry.Write(module, "Audit", "Fired");
 
             try
             {
-                Process.Start("https://chem4word.codeplex.com/releases");
+                Process.Start("https://github.com/Chem4Word/Version3/releases");
                 DialogResult = DialogResult.Cancel;
             }
             catch (Exception ex)

@@ -19,10 +19,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using Chem4Word.Controls;
 using Chem4Word.Core.Helpers;
 using Extensions = Microsoft.Office.Tools.Word.Extensions;
-using MessageBox = System.Windows.Forms.MessageBox;
 using OfficeTools = Microsoft.Office.Tools;
 using Word = Microsoft.Office.Interop.Word;
 using WordTools = Microsoft.Office.Tools.Word;
@@ -447,7 +445,7 @@ namespace Chem4Word
                 if (mustBeSigned)
                 {
                     // Is it signed by us?
-                    allowed = parts[3].Contains("developer@chem4word.co.uk");
+                    allowed = parts[3].Contains("admin@chem4word.co.uk");
                 }
 
                 if (allowed)

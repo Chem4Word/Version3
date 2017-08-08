@@ -75,7 +75,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             {
                 if (!string.IsNullOrEmpty(SearchFor.Text))
                 {
-                    Telemetry.Write(module, "Information", $"User searched for {SearchFor.Text}");
+                    Telemetry.Write(module, "Information", $"User searched for '{SearchFor.Text}'");
                 }
                 ExecuteSearch(0);
             }
