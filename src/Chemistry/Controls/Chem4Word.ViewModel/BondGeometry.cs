@@ -2,6 +2,7 @@
 using Chem4Word.Model.Enums;
 using Chem4Word.Model.Geometry;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -305,7 +306,7 @@ namespace Chem4Word.View
 
         }
 
-        public static System.Windows.Media.Geometry SingleBondGeometry(Point startPoint, Point endPoint)
+        public static Geometry SingleBondGeometry(Point startPoint, Point endPoint)
         {
             StreamGeometry sg = new StreamGeometry();
             using (StreamGeometryContext sgc = sg.Open())
@@ -326,6 +327,71 @@ namespace Chem4Word.View
             PathFigure pf = new PathFigure(startPoint, segments, true);
             figures.Add(pf);
             return figures;
+        }
+
+        public static Geometry WavyBondGeometry(Point  startPoint, Point endPoint)
+        {
+            StreamGeometry sg = new StreamGeometry();
+            using (StreamGeometryContext sgc = sg.Open())
+            {
+                Vector bondVector = endPoint - startPoint;
+                int noOfWiggles = (int)Math.Ceiling(bondVector.Length / Globals.Offset);
+                if (noOfWiggles < 1)
+                {
+                    noOfWiggles = 1;
+                }
+
+                double wiggleLength = bondVector.Length / noOfWiggles;
+                Debug.WriteLine($"v.Length: {bondVector.Length} noOfWiggles: {noOfWiggles}");
+
+                Vector originalWigglePortion = bondVector;
+                originalWigglePortion.Normalize();
+                originalWigglePortion *= wiggleLength / 2;
+
+                Matrix toLeft = new Matrix();
+                toLeft.Rotate(-60);
+                Matrix toRight = new Matrix();
+                toRight.Rotate(60);
+                Vector leftVector = originalWigglePortion * toLeft;
+                Vector rightVector = originalWigglePortion * toRight;
+
+                List<Point> allpoints = new List<Point>();
+                List<List<Point>> allTriangles = new List<List<Point>>();
+                List<Point> triangle = new List<Point>();
+
+                Point lastPoint = startPoint;
+                allpoints.Add(lastPoint);
+                triangle.Add(lastPoint);
+                for (int i = 0; i < noOfWiggles; i++)
+                {
+                    Point leftPoint = lastPoint + leftVector;
+                    allpoints.Add(leftPoint);
+                    triangle.Add(leftPoint);
+
+                    //Point midPoint = lastPoint + originalWigglePortion;
+                    //allpoints.Add(midPoint);
+                    //triangle.Add(midPoint);
+                    //allTriangles.Add(triangle);
+                    //triangle = new List<Point>();
+                    //triangle.Add(midPoint);
+
+                    Point rightPoint = lastPoint + originalWigglePortion + rightVector;
+                    allpoints.Add(rightPoint);
+                    triangle.Add(rightPoint);
+
+                    lastPoint += originalWigglePortion * 2;
+                    allpoints.Add(lastPoint);
+                    triangle.Add(lastPoint);
+                    allTriangles.Add(triangle);
+                    triangle = new List<Point>();
+                    triangle.Add(lastPoint);
+                }
+
+                sgc.BeginFigure(startPoint, false, false);
+                sgc.PolyBezierTo(allpoints, true, true);
+                sgc.Close();
+            }
+            return sg;
         }
     }
 }

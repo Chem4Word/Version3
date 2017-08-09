@@ -102,6 +102,7 @@
                                     <DataTrigger Binding="{Binding Path=Stereo, Mode=OneWay}" Value="Indeterminate">
                                         <Setter Property="Fill" Value="Black" />
                                         <Setter Property="Stroke" Value="Black" />
+                                        <Setter Property="StrokeThickness" Value="1.5" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=Stereo, Mode=OneWay}" Value="Hatch">
                                         <Setter Property="Fill" Value="{StaticResource HatchBrush}" />
