@@ -183,6 +183,11 @@ namespace Chem4Word.View
                     return BondGeometry.WedgeBondGeometry(startPoint.Value, endPoint.Value);
                 }
 
+                if (ParentBond.Stereo == BondStereo.Indeterminate && ParentBond.OrderValue == 1.0)
+                {
+                    return BondGeometry.WavyBondGeometry(startPoint.Value, endPoint.Value);
+                }
+
                 //single or dotted bond
                 if (ParentBond.OrderValue <= 1)
                 {
