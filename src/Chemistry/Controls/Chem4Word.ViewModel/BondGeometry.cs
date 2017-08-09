@@ -366,7 +366,7 @@ namespace Chem4Word.View
                 {
                     Point leftPoint = lastPoint + leftVector;
                     allpoints.Add(leftPoint);
-                    triangle.Add(leftPoint);
+                    //triangle.Add(leftPoint);
 
                     //Point midPoint = lastPoint + originalWigglePortion;
                     //allpoints.Add(midPoint);
@@ -377,18 +377,19 @@ namespace Chem4Word.View
 
                     Point rightPoint = lastPoint + originalWigglePortion + rightVector;
                     allpoints.Add(rightPoint);
-                    triangle.Add(rightPoint);
+                    //triangle.Add(rightPoint);
 
                     lastPoint += originalWigglePortion * 2;
-                    allpoints.Add(lastPoint);
-                    triangle.Add(lastPoint);
-                    allTriangles.Add(triangle);
-                    triangle = new List<Point>();
-                    triangle.Add(lastPoint);
+                    //allpoints.Add(lastPoint);
+                    //triangle.Add(lastPoint);
+                    //allTriangles.Add(triangle);
+                    //triangle = new List<Point>();
+                    //triangle.Add(lastPoint);
                 }
 
                 sgc.BeginFigure(startPoint, false, false);
-                sgc.PolyBezierTo(allpoints, true, true);
+                sgc.PolyLineTo(allpoints, true, true);
+                
                 sgc.Close();
             }
             return sg;
