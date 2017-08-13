@@ -48,11 +48,15 @@ namespace Chem4Word.Core.Helpers
             {
                 var textStreamReader = new StreamReader(resource);
                 data = textStreamReader.ReadToEnd();
-            }
 
-            // Repair any broken line feeds to Windows style
-            string[] lines = data.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            data = string.Join(Environment.NewLine, lines);
+                // Repair any broken line feeds to Windows style
+                char etx = (char)3;
+                string temp = data.Replace("\r\n", $"{etx}");
+                temp = temp.Replace("\n", $"{etx}");
+                temp = temp.Replace("\r", $"{etx}");
+                string[] lines = temp.Split(etx);
+                data = string.Join(Environment.NewLine, lines);
+            }
 
             return data;
         }

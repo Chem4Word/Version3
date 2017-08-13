@@ -29,6 +29,7 @@ namespace Chem4Word.Core.UI.Forms
                 if (ex.InnerException != null)
                 {
                     _exceptionMessage += Environment.NewLine + ex.InnerException.Message;
+                    _callStack += Environment.NewLine + ex.InnerException.StackTrace;
                 }
             }
             catch (Exception)
