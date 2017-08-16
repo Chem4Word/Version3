@@ -84,8 +84,11 @@
                                 </debug:Setter>
 
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Order, Mode=OneWay}" Value="other">
+                                    <DataTrigger Binding="{Binding Order, Mode=OneWay}" Value="hbond">
                                         <Setter Property="StrokeDashArray" Value="1,1" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Order, Mode=OneWay}" Value="partial01">
+                                        <Setter Property="StrokeDashArray" Value="2,1" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=Stereo, Mode=OneWay}" Value="None">
                                         <Setter Property="Fill" Value="Black" />
