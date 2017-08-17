@@ -134,10 +134,19 @@ namespace Chem4Word.Model
             get { return _order; }
             set
             {
+                if (value == "0.5")
+                {
+                    value = OrderPartial01;
+                }
                 if (value == "1")
                 {
                     value = OrderSingle;
                 }
+                if (value == "1.5")
+                {
+                    value = OrderPartial12;
+                }
+
                 if (value == "2")
                 {
                     value = OrderDouble;
