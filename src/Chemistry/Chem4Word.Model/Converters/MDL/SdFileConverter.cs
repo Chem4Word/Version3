@@ -85,7 +85,9 @@ namespace Chem4Word.Model.Converters
             //    model.ScaleToAverageBondLength(20);
             //}
 
-            model.RebuildMolecules();
+            // Can't use RebuildMolecules() as it trashes the formulae and labels
+            //model.RebuildMolecules();
+            model.RefreshMolecules();
             return model;
         }
 
