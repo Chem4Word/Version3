@@ -80,7 +80,7 @@ namespace Chem4Word.Model.Converters.Tests
         }
 
         // ToDo: Find out why Fixing SDF Import causes this to fail
-        //[TestMethod()]
+        [TestMethod()]
         public void SDtest2()
         {
             SdFileConverter mc = new SdFileConverter();

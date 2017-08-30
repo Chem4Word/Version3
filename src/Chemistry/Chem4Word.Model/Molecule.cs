@@ -150,12 +150,18 @@ namespace Chem4Word.Model
         /// Rebuilds the molecule without trashing it totally
         /// </summary>
         /// <param name="seed">start Atom for refresh operation</param>
-        private void Refresh(Atom seed)
+        private void Refresh(Atom seed=null)
         {
+            //keep a list of the atoms to refer to later when rebuilding
+            List<Atom> checklist = new List<Atom>();
+            //set the parent to null but keep a list of all atoms
             foreach (Atom atom in Atoms)
             {
                 atom.Parent = null;
+                checklist.Add(atom);
             }
+
+            //clear the associated collections
             Atoms.RemoveAll();
             AllAtoms.RemoveAll();
             foreach (Bond bond in Bonds)
@@ -165,6 +171,16 @@ namespace Chem4Word.Model
             Bonds.RemoveAll();
             AllBonds.RemoveAll();
             Rings.RemoveAll();
+            
+            //if we've been provided with a seed atom, use that 
+            //else use the first atom in the checklist
+
+            if(seed==null)
+            {
+                seed = checklist[0];
+            }
+            //now traverse the tree as far as it will go
+            
             DepthFirstTraversal(seed,
                 operation: atom =>
                     {
@@ -174,10 +190,40 @@ namespace Chem4Word.Model
                         {
                             Bonds.Add(b);
                         }
+                        if(checklist.Contains(atom))
+                        {
+                            checklist.Remove(atom);
+                        }
                     },
                 isntProcessed: atom => atom.Parent == null);
             //only if the molecule has rings do we rebuild it
             RebuildRings();
+
+            //now we check to see whether there are any more unconnected regions lurking around
+
+            while (checklist.Count > 0)//means we haven't yet accounted for all the original atoms
+            {
+                seed = checklist[0];
+                Molecule addnlMol = new Molecule();
+                DepthFirstTraversal(seed,
+                   operation: atom =>
+                   {
+                       addnlMol.Atoms.Add(atom);
+
+                       foreach (Bond b in atom.Bonds.Where(b => b.Parent == null))
+                       {
+                           addnlMol.Bonds.Add(b);
+                       }
+                       if (checklist.Contains(atom))
+                       {
+                           checklist.Remove(atom);
+                       }
+                   },
+                   isntProcessed: atom => atom.Parent == null);
+                //only if the molecule has rings do we rebuild it
+                addnlMol.RebuildRings();
+                this.Parent.Molecules.Add(addnlMol);
+            }
         }
 
         /// <summary>
