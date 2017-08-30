@@ -85,6 +85,7 @@ namespace Chem4Word.Model.Converters.Tests
         {
             SdFileConverter mc = new SdFileConverter();
             Model m = mc.Import(ChemistryValues.BASIC_PARAFUCHSIN);
+            //m.RebuildMolecules();
 
             Assert.IsTrue(m.Molecules.Count == 2, $"Expected 2 Molecules; Got {m.Molecules.Count}");
             Assert.IsTrue(m.Molecules.SelectMany(m1 => m1.Rings).Count() == 3, $"Expected 2 Rings; Got {m.Molecules.SelectMany(m1 => m1.Rings).Count()}");

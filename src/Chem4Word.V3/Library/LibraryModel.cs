@@ -361,10 +361,10 @@ namespace Chem4Word.Library
                     model.CustomXmlPartGuid = "";
                     var cml = cmlConverter.Export(model);
 
+                    string chemicalName = model.ConciseFormula;
                     var mol = model.Molecules[0];
                     if (mol.ChemicalNames.Count > 0)
                     {
-                        string chemicalName = "";
                         foreach (var name in mol.ChemicalNames)
                         {
                             long temp;
@@ -374,20 +374,15 @@ namespace Chem4Word.Library
                                 break;
                             }
                         }
-
-                        if (string.IsNullOrEmpty(chemicalName))
-                        {
-                            chemicalName = model.ConciseFormula;
-                        }
-
-                        var id = AddChemistry(cml, chemicalName, model.ConciseFormula);
-                        foreach (var name in mol.ChemicalNames)
-                        {
-                            LibraryModel.AddChemicalName(id, name.Name, name.DictRef);
-                        }
-
-                        result = true;
                     }
+
+                    var id = AddChemistry(cml, chemicalName, model.ConciseFormula);
+                    foreach (var name in mol.ChemicalNames)
+                    {
+                        LibraryModel.AddChemicalName(id, name.Name, name.DictRef);
+                    }
+
+                    result = true;
                 }
             }
             catch (Exception ex)
