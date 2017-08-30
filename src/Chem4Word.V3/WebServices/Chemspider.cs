@@ -38,7 +38,7 @@ namespace Chem4Word.WebServices
                 Debug.WriteLine("ChemSpider Result: " + result);
                 //Log.Debug("ChemSpider Result: " + result);
             }
-            catch (System.Net.WebException wex)
+            catch (WebException wex)
             {
                 Telemetry.Write(module, "Exception", wex.Message);
                 if (wex.Status != WebExceptionStatus.Timeout)
