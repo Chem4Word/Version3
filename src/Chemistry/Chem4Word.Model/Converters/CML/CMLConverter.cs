@@ -296,36 +296,41 @@ namespace Chem4Word.Model.Converters
         {
             Model newModel = new Model();
 
-            XDocument modelDoc = XDocument.Parse((string)data);
-            var root = modelDoc.Root;
-
-            // Only import if not null
-            var customXmlPartGuid = CML.GetCustomXmlPartGuid(root);
-            if (customXmlPartGuid != null && !string.IsNullOrEmpty(customXmlPartGuid.Value))
+            if (data != null)
             {
-                newModel.CustomXmlPartGuid = customXmlPartGuid.Value;
-            }
 
-            var moleculeElements = CML.GetMolecules(root);
+                XDocument modelDoc = XDocument.Parse((string)data);
+                var root = modelDoc.Root;
 
-            foreach (XElement meElement in moleculeElements)
-            {
-                newModel.Molecules.Add(CreateMolecule(meElement));
-            }
-
-            // Can't use RebuildMolecules() as it trashes the formulae and labels
-            //newModel.RebuildMolecules();
-            newModel.RefreshMolecules();
-            foreach (Molecule molecule in newModel.Molecules)
-            {
-                molecule.RebuildRings();
-                // Ensure ConciseFormula has been calculated
-                if (string.IsNullOrEmpty(molecule.ConciseFormula))
+                // Only import if not null
+                var customXmlPartGuid = CML.GetCustomXmlPartGuid(root);
+                if (customXmlPartGuid != null && !string.IsNullOrEmpty(customXmlPartGuid.Value))
                 {
-                    molecule.ConciseFormula = molecule.CalculatedFormula();
+                    newModel.CustomXmlPartGuid = customXmlPartGuid.Value;
                 }
+
+                var moleculeElements = CML.GetMolecules(root);
+
+                foreach (XElement meElement in moleculeElements)
+                {
+                    newModel.Molecules.Add(CreateMolecule(meElement));
+                }
+
+                // Can't use RebuildMolecules() as it trashes the formulae and labels
+                //newModel.RebuildMolecules();
+                newModel.RefreshMolecules();
+                foreach (Molecule molecule in newModel.Molecules)
+                {
+                    molecule.RebuildRings();
+                    // Ensure ConciseFormula has been calculated
+                    if (string.IsNullOrEmpty(molecule.ConciseFormula))
+                    {
+                        molecule.ConciseFormula = molecule.CalculatedFormula();
+                    }
+                }
+                newModel.Relabel(true);
+
             }
-            newModel.Relabel(true);
 
             return newModel;
         }

@@ -1,0 +1,149 @@
+﻿<cml
+  convention='cmlDict:cmllite'
+  cml='http://www.xml-cml.org/schema'
+  cmlDict='http://www.xml-cml.org/dictionary/cml/'
+  bondDict='http://www.xml-cml.org/dictionary/bond/'
+  pc='http://www.ncbi.nlm.nih.gov'>
+  <molecule formalCharge='0' id='m1' spinMultiplicity='1'>
+    <name dictRef='pc:CID'>475701</name>
+    <atomArray>
+      <atom id='a1' x2='142.896116420753' y2='0.689661551738648' elementType='Cu' />
+      <atom id='a2' x2='142.896116420753' y2='25.8776828107795' elementType='N' />
+      <atom id='a3' x2='168.084137679794' y2='0.689661551738648' elementType='N' />
+      <atom id='a4' x2='117.708095161712' y2='0.689661551738648' elementType='N' />
+      <atom id='a5' x2='142.896116420753' y2='-24.4983597073022' elementType='N' />
+      <atom id='a6' x2='104.83514498738' y2='-34.5731289360448' elementType='N' />
+      <atom id='a7' x2='179.839133300511' y2='-35.6932798640279' elementType='N' />
+      <atom id='a8' x2='179.839133300511' y2='39.3107084491029' elementType='N' />
+      <atom id='a9' x2='106.515371379355' y2='38.7506329851114' elementType='N' />
+      <atom id='a10' x2='125.085716665821' y2='43.6880825657116' elementType='C' />
+      <atom id='a11' x2='185.894537434726' y2='18.5000613066708' elementType='C' />
+      <atom id='a12' x2='99.8998917811486' y2='-17.1207382031935' elementType='C' />
+      <atom id='a13' x2='160.706516175685' y2='-42.3087594622343' elementType='C' />
+      <atom id='a14' x2='160.706516175685' y2='43.6880825657116' elementType='C' />
+      <atom id='a15' x2='99.8998917811486' y2='18.5000613066708' elementType='C' />
+      <atom id='a16' x2='185.894537434726' y2='-17.1207382031935' elementType='C' />
+      <atom id='a17' x2='125.085716665821' y2='-42.3087594622343' elementType='C' />
+      <atom id='a18' x2='132.261271728019' y2='59.4602469065881' elementType='C' />
+      <atom id='a19' x2='203.346928167577' y2='11.8845817084644' elementType='C' />
+      <atom id='a20' x2='80.7672746563226' y2='-9.94518314099554' elementType='C' />
+      <atom id='a21' x2='155.211187505462' y2='-57.5208483391193' elementType='C' />
+      <atom id='a22' x2='154.091036577479' y2='58.9001714425966' elementType='C' />
+      <atom id='a23' x2='80.7672746563226' y2='11.3245062444728' elementType='C' />
+      <atom id='a24' x2='202.786852703586' y2='-11.0653340689787' elementType='C' />
+      <atom id='a25' x2='132.261271728019' y2='-57.5208483391193' elementType='C' />
+      <atom id='a26' x2='121.832886225932' y2='78.6455770162604' elementType='C' />
+      <atom id='a27' x2='223.5008593738' y2='22.8730426745423' elementType='C' />
+      <atom id='a28' x2='62.3462828269212' y2='-20.5822242080983' elementType='C' />
+      <atom id='a29' x2='166.685047206999' y2='-77.3958400005302' elementType='C' />
+      <atom id='a30' x2='165.490219550484' y2='77.5254260882773' elementType='C' />
+      <atom id='a31' x2='62.3462828269212' y2='21.959350937207' elementType='C' />
+      <atom id='a32' x2='222.380708445816' y2='-23.0245925059753' elementType='C' />
+      <atom id='a33' x2='120.787412026482' y2='-77.3958400005302' elementType='C' />
+      <atom id='a34' x2='133.232069198938' y2='97.2708316619411' elementType='C' />
+      <atom id='a35' x2='243.09471511603' y2='10.9137842375457' elementType='C' />
+      <atom id='a36' x2='43.9274873718884' y2='-9.94518314099554' elementType='C' />
+      <atom id='a37' x2='155.211187505462' y2='-97.2708316619411' elementType='C' />
+      <atom id='a38' x2='155.059637674029' y2='96.7107561979495' elementType='C' />
+      <atom id='a39' x2='43.9274873718884' y2='11.3245062444728' elementType='C' />
+      <atom id='a40' x2='242.534639652039' y2='-12.0339351655288' elementType='C' />
+      <atom id='a41' x2='132.261271728019' y2='-97.2708316619411' elementType='C' />
+      <atom id='a42' x2='108.219757889384' y2='78.9948005408669' elementType='H' />
+      <atom id='a43' x2='223.832511903457' y2='36.4861710110905' elementType='H' />
+      <atom id='a44' x2='62.3462828269212' y2='-34.1997452933837' elementType='H' />
+      <atom id='a45' x2='180.302568292285' y2='-77.3958400005302' elementType='H' />
+      <atom id='a46' x2='179.103347887032' y2='77.1762025636707' elementType='H' />
+      <atom id='a47' x2='62.3462828269212' y2='35.5768720224924' elementType='H' />
+      <atom id='a48' x2='222.049055916159' y2='-36.6377208425235' elementType='H' />
+      <atom id='a49' x2='107.169890941196' y2='-77.3958400005302' elementType='H' />
+      <atom id='a50' x2='126.726408319161' y2='109.234482847675' elementType='H' />
+      <atom id='a51' x2='255.051777178658' y2='17.4348197379025' elementType='H' />
+      <atom id='a52' x2='32.135153386905' y2='-16.7539436836382' elementType='H' />
+      <atom id='a53' x2='162.019948048105' y2='-109.063165646925' elementType='H' />
+      <atom id='a54' x2='162.169301505169' y2='108.325183859077' elementType='H' />
+      <atom id='a55' x2='32.135153386905' y2='18.1332667871155' elementType='H' />
+      <atom id='a56' x2='254.160049185009' y2='-19.1282243760888' elementType='H' />
+      <atom id='a57' x2='125.452511185376' y2='-109.063165646925' elementType='H' />
+    </atomArray>
+    <bondArray>
+      <bond id='a1_a2' order='other' atomRefs2='a1 a2' dictRef='bondDict:complex' source='
+              ftp://ftp.ncbi.nih.gov/pubchem/specifications/pubchem.xsd
+            ' xp_0='http://purl.org/dc/terms' cyclic='Cyclic' p8='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a1_a3' order='other' atomRefs2='a1 a3' dictRef='bondDict:complex' source='
+              ftp://ftp.ncbi.nih.gov/pubchem/specifications/pubchem.xsd
+            ' xp_0='http://purl.org/dc/terms' cyclic='Cyclic' p8='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a1_a4' order='other' atomRefs2='a1 a4' dictRef='bondDict:complex' source='
+              ftp://ftp.ncbi.nih.gov/pubchem/specifications/pubchem.xsd
+            ' xp_0='http://purl.org/dc/terms' cyclic='Cyclic' p8='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a1_a5' order='other' atomRefs2='a1 a5' dictRef='bondDict:complex' source='
+              ftp://ftp.ncbi.nih.gov/pubchem/specifications/pubchem.xsd
+            ' xp_0='http://purl.org/dc/terms' cyclic='Cyclic' p8='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a2_a10' order='D' atomRefs2='a2 a10' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a2_a14' order='S' atomRefs2='a2 a14' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a3_a11' order='D' atomRefs2='a3 a11' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a3_a16' order='S' atomRefs2='a3 a16' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a4_a12' order='D' atomRefs2='a4 a12' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a4_a15' order='S' atomRefs2='a4 a15' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a5_a13' order='D' atomRefs2='a5 a13' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a5_a17' order='S' atomRefs2='a5 a17' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a6_a12' order='S' atomRefs2='a6 a12' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a6_a17' order='D' atomRefs2='a6 a17' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a7_a13' order='S' atomRefs2='a7 a13' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a7_a16' order='D' atomRefs2='a7 a16' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a8_a11' order='S' atomRefs2='a8 a11' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a8_a14' order='D' atomRefs2='a8 a14' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a9_a10' order='S' atomRefs2='a9 a10' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a9_a15' order='D' atomRefs2='a9 a15' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a10_a18' order='S' atomRefs2='a10 a18' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a11_a19' order='S' atomRefs2='a11 a19' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a12_a20' order='S' atomRefs2='a12 a20' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a13_a21' order='S' atomRefs2='a13 a21' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a14_a22' order='S' atomRefs2='a14 a22' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a15_a23' order='S' atomRefs2='a15 a23' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a16_a24' order='S' atomRefs2='a16 a24' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a17_a25' order='S' atomRefs2='a17 a25' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a18_a22' order='S' atomRefs2='a18 a22' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a18_a26' order='D' atomRefs2='a18 a26' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a19_a24' order='S' atomRefs2='a19 a24' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a19_a27' order='D' atomRefs2='a19 a27' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a20_a23' order='S' atomRefs2='a20 a23' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a20_a28' order='D' atomRefs2='a20 a28' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a21_a25' order='S' atomRefs2='a21 a25' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a21_a29' order='D' atomRefs2='a21 a29' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a22_a30' order='D' atomRefs2='a22 a30' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a23_a31' order='D' atomRefs2='a23 a31' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a24_a32' order='D' atomRefs2='a24 a32' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a25_a33' order='D' atomRefs2='a25 a33' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a26_a34' order='S' atomRefs2='a26 a34' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a26_a42' order='S' atomRefs2='a26 a42' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a27_a35' order='S' atomRefs2='a27 a35' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a27_a43' order='S' atomRefs2='a27 a43' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a28_a36' order='S' atomRefs2='a28 a36' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a28_a44' order='S' atomRefs2='a28 a44' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a29_a37' order='S' atomRefs2='a29 a37' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a29_a45' order='S' atomRefs2='a29 a45' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a30_a38' order='S' atomRefs2='a30 a38' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a30_a46' order='S' atomRefs2='a30 a46' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a31_a39' order='S' atomRefs2='a31 a39' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a31_a47' order='S' atomRefs2='a31 a47' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a32_a40' order='S' atomRefs2='a32 a40' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a32_a48' order='S' atomRefs2='a32 a48' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a33_a41' order='S' atomRefs2='a33 a41' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a33_a49' order='S' atomRefs2='a33 a49' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a34_a38' order='D' atomRefs2='a34 a38' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a34_a50' order='S' atomRefs2='a34 a50' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a35_a40' order='D' atomRefs2='a35 a40' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a35_a51' order='S' atomRefs2='a35 a51' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a36_a39' order='D' atomRefs2='a36 a39' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a36_a52' order='S' atomRefs2='a36 a52' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a37_a41' order='D' atomRefs2='a37 a41' cyclic='Cyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a37_a53' order='S' atomRefs2='a37 a53' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a38_a54' order='S' atomRefs2='a38 a54' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a39_a55' order='S' atomRefs2='a39 a55' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a40_a56' order='S' atomRefs2='a40 a56' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+      <bond id='a41_a57' order='S' atomRefs2='a41 a57' cyclic='Acyclic' p7='http://www.xml-cml.org/dictionary/cmlx/' />
+    </bondArray>
+    <cidCommand instruction='NormalizeOnImport' xmlns='http://www.xml-cml.org/dictionary/cmlx/' />
+    <formula concise='C 32 H 16 Cu 1 N 8' />
+  </molecule>
+</cml>
