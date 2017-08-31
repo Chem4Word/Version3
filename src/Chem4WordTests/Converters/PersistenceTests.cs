@@ -8,6 +8,25 @@ namespace Chem4Word.Model.Converters.Tests
     public class PersistenceTests
     {
         [TestMethod()]
+        public void CmlImportBenzene()
+        {
+            CMLConverter mc = new CMLConverter();
+            Model m = mc.Import(ResourceHelper.GetStringResource("Benzene.xml"));
+
+            // Basic sanity checks
+            Assert.IsTrue(m.Molecules.Count == 1, $"Expected 1 Molecule; Got {m.Molecules.Count}");
+            Assert.IsTrue(m.AllAtoms.Count == 6, $"Expected 6 Atoms; Got {m.AllAtoms.Count}");
+            Assert.IsTrue(m.AllBonds.Count == 6, $"Expected 6 Bonds; Got {m.AllBonds.Count}");
+
+            // Check that names and formulae have not been trashed
+            Assert.IsTrue(m.Molecules[0].ChemicalNames.Count == 3, $"Expected 3 Chemical Names; Got {m.Molecules[0].ChemicalNames.Count}");
+            Assert.IsTrue(m.Molecules[0].Formulas.Count == 2, $"Expected 2 Formulae; Got {m.Molecules[0].Formulas.Count }");
+
+            // Check that we have one ring
+            Assert.IsTrue(m.Molecules.SelectMany(m1 => m1.Rings).Count() == 1, $"Expected 1 Ring; Got {m.Molecules.SelectMany(m1 => m1.Rings).Count()}");
+        }
+
+        [TestMethod()]
         public void CmlImportTestosterone()
         {
             CMLConverter mc = new CMLConverter();
