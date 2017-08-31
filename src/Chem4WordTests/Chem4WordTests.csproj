@@ -86,7 +86,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ChemistryValues.cs" />
     <Compile Include="ControlTestForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +94,7 @@
     </Compile>
     <Compile Include="Converters\PersistenceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chemistry\Controls\Chem4Word.Controls\Chem4Word.Controls.csproj">
@@ -117,6 +117,28 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="OOXML\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CML\Benzene.xml" />
+    <EmbeddedResource Include="Resources\MDL\Benzene.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MDL\BasicParafuchsin.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MDL\Insulin.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CML\Testosterone.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CML\ParafuchsinCarbol.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CML\CopperPhthalocyanine.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CML\Phthalocyanine.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

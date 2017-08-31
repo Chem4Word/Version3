@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Chem4Word.Core.Helpers
+namespace Chem4WordTests
 {
-    public static class ResourceHelper
+    public class ResourceHelper
     {
-        public static Stream GetBinaryResource(Assembly assembly, string resourceName)
+        private static Stream GetBinaryResource(string resourceName)
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
             Stream data = null;
 
             string fullName = string.Empty;
@@ -30,26 +35,28 @@ namespace Chem4Word.Core.Helpers
             {
                 data = assembly.GetManifestResourceStream(fullName);
             }
-            
+
             if (count != 1)
             {
-                Debug.Assert(false, "Unique match not found");
+                return null;
             }
 
             return data;
         }
 
-        public static string GetStringResource(Assembly assembly, string resourceName)
+        public static string GetStringResource(string resourceName)
         {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
             string data = null;
 
-            var resource = GetBinaryResource(assembly, resourceName);
+            var resource = GetBinaryResource(resourceName);
             if (resource != null)
             {
                 var textStreamReader = new StreamReader(resource);
                 data = textStreamReader.ReadToEnd();
 
-                // Repair any broken line feeds to Windows style
+                // Repair any "broken" line feeds to Windows style
                 char etx = (char)3;
                 string temp = data.Replace("\r\n", $"{etx}");
                 temp = temp.Replace("\n", $"{etx}");
@@ -59,16 +66,6 @@ namespace Chem4Word.Core.Helpers
             }
 
             return data;
-        }
-
-        public static void WriteResource(Assembly assembly, string resourceName, string destPath)
-        {
-            Stream stream = GetBinaryResource(assembly, resourceName);
-
-            using (var fileStream = new FileStream(destPath, FileMode.Create, FileAccess.Write))
-            {
-                stream.CopyTo(fileStream);
-            }
         }
     }
 }

@@ -1,0 +1,28 @@
+<cml:cml
+  xmlns:conventions="http://www.xml-cml.org/convention/"
+  xmlns:cml="http://www.xml-cml.org/schema"
+  xmlns:cmlDict="http://www.xml-cml.org/dictionary/cml/"
+  xmlns:nameDict="http://www.xml-cml.org/dictionary/cml/name/"
+  xmlns:c4w="http://www.chem4word.com/cml"
+  conventions="convention:molecular">
+  <cml:molecule id="m1">
+    <cml:formula concise="C 6 H 6" />
+    <cml:formula convention="chemspider:Smiles" inline="c1ccccc1" concise="C 6 H 6" />
+    <cml:formula convention="chemspider:Formula" inline="C6H6" concise="C 6 H 6" />
+    <cml:name id="m1.n1" dictRef="chemspider:Id">236</cml:name>
+    <cml:name id="m1.n2" dictRef="chemspider:Synonym">Benzene</cml:name>
+    <cml:name id="m1.n3" dictRef="chemspider:Inchikey">UHOVQNZJYSORNB-UHFFFAOYSA-N</cml:name>
+    <cml:atom id="a1" elementType="C" x2="347.50000000000011" y2="145" />
+    <cml:atom id="a2" elementType="C" x2="373.48076211353316" y2="160" />
+    <cml:atom id="a3" elementType="C" x2="373.48076211353316" y2="190" />
+    <cml:atom id="a4" elementType="C" x2="347.50000000000011" y2="205" />
+    <cml:atom id="a5" elementType="C" x2="321.51923788646695" y2="190.00000000000011" />
+    <cml:atom id="a6" elementType="C" x2="321.51923788646684" y2="160.00000000000011" />
+    <cml:bond id="b1" atomRefs2="a1 a2" order="S" />
+    <cml:bond id="b2" atomRefs2="a6 a1" order="D" />
+    <cml:bond id="b3" atomRefs2="a2 a3" order="D" />
+    <cml:bond id="b4" atomRefs2="a3 a4" order="S" />
+    <cml:bond id="b5" atomRefs2="a4 a5" order="D" />
+    <cml:bond id="b6" atomRefs2="a5 a6" order="S" />
+  </cml:molecule>
+</cml:cml>

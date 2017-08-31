@@ -1,0 +1,84 @@
+﻿<cml:cml
+    xmlns:conventions='http://www.xml-cml.org/convention/'
+    xmlns:cml='http://www.xml-cml.org/schema'
+    xmlns:cmlDict='http://www.xml-cml.org/dictionary/cml/'
+    xmlns:nameDict='http://www.xml-cml.org/dictionary/cml/name/'
+    xmlns:c4w='http://www.chem4word.com/cml'
+    conventions='convention:molecular'>
+  <cml:molecule id='m1'>
+    <cml:formula id='m1.f0' concise='C 19 H 28 O 2' />
+    <cml:formula id='m1.f1' convention='chemspider:Smiles' inline='C[C@]12CC[C@H]3[C@H]([C@@H]1CC[C@@H]2O)CCC4=CC(=O)CC[C@]34C' concise='C 19 H 28 O 2' />
+    <cml:formula id='m1.f2' convention='chemspider:Formula' inline='C19H28O2' concise='C 19 H 28 O 2' />
+    <cml:name id='m1.n1' dictRef='chemspider:Id'>5791</cml:name>
+    <cml:name id='m1.n2' dictRef='chemspider:Synonym'>(17beta)-17-Hydroxyandrost-4-en-3-one</cml:name>
+    <cml:name id='m1.n3' dictRef='chemspider:Inchikey'>MUMGGOZAMZWBJJ-DYKIIFRCSA-N</cml:name>
+    <cml:name id='m1.n4' dictRef='chem4word:Synonym'>testosterone</cml:name>
+    <cml:atom id='a1' elementType='C' x2='301.24677590909027' y2='178.24672786488574' />
+    <cml:atom id='a2' elementType='C' x2='279.62489693599679' y2='190.7304917061636' />
+    <cml:atom id='a3' elementType='C' x2='279.62489693599679' y2='215.69801938871814' />
+    <cml:atom id='a4' elementType='C' x2='301.24677590909027' y2='228.18178322999597' />
+    <cml:atom id='a5' elementType='C' x2='322.86865488218257' y2='215.69801938871814' />
+    <cml:atom id='a6' elementType='C' x2='322.86865488218257' y2='190.7304917061636' />
+    <cml:atom id='a7' elementType='C' x2='344.49053385527475' y2='178.24672786488574' />
+    <cml:atom id='a8' elementType='C' x2='366.11241282836829' y2='190.7304917061636' />
+    <cml:atom id='a9' elementType='C' x2='366.11241282836829' y2='215.69801938871814' />
+    <cml:atom id='a10' elementType='C' x2='344.49053385527475' y2='228.18178322999597' />
+    <cml:atom id='a11' elementType='C' x2='387.73429153838521' y2='178.24672740923887' />
+    <cml:atom id='a12' elementType='C' x2='411.4794097723684' y2='185.96012207758241' />
+    <cml:atom id='a13' elementType='C' x2='426.15389231488371' y2='165.76253931792553' />
+    <cml:atom id='a14' elementType='C' x2='411.47913926042588' y2='145.56348902434493' />
+    <cml:atom id='a15' elementType='C' x2='387.73429101223456' y2='153.27919972668315' />
+    <cml:atom id='a16' elementType='C' x2='366.11241177606587' y2='140.7954363410534' />
+    <cml:atom id='a17' elementType='C' x2='344.49053306604878' y2='153.27920063797816' />
+    <cml:atom id='a18' elementType='C' x2='388.56060205926906' y2='128.44898267129551' />
+    <cml:atom id='a19' elementType='O' x2='419.19439029609691' y2='121.81849141582973' />
+    <cml:atom id='a20' elementType='H' x2='436.9971406062632' y2='140.50957587554976' />
+    <cml:atom id='a21' elementType='H' x2='387.73429153838521' y2='203.21370580014332' />
+    <cml:atom id='a22' elementType='H' x2='366.11241282836829' y2='165.76351331525922' />
+    <cml:atom id='a23' elementType='H' x2='344.49053385527475' y2='203.21370625579021' />
+    <cml:atom id='a24' elementType='C' x2='322.86865488218257' y2='165.76351331525922' />
+    <cml:atom id='a25' elementType='O' x2='258.0028593937368' y2='228.18150858417027' />
+    <cml:bond id='b1' atomRefs2='a1 a2' order='S' />
+    <cml:bond id='b2' atomRefs2='a1 a6' order='S' />
+    <cml:bond id='b3' atomRefs2='a2 a3' order='S' />
+    <cml:bond id='b4' atomRefs2='a3 a4' order='S' />
+    <cml:bond id='b5' atomRefs2='a3 a25' order='D' />
+    <cml:bond id='b6' atomRefs2='a4 a5' order='D' />
+    <cml:bond id='b7' atomRefs2='a6 a5' order='S' />
+    <cml:bond id='b8' atomRefs2='a5 a10' order='S' />
+    <cml:bond id='b9' atomRefs2='a7 a6' order='S' />
+    <cml:bond id='b10' atomRefs2='a6 a24' order='S'>
+      <cml:bondStereo>W</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b11' atomRefs2='a7 a8' order='S' />
+    <cml:bond id='b12' atomRefs2='a17 a7' order='S' />
+    <cml:bond id='b13' atomRefs2='a7 a23' order='S'>
+      <cml:bondStereo>H</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b14' atomRefs2='a9 a8' order='S' />
+    <cml:bond id='b15' atomRefs2='a8 a11' order='S' />
+    <cml:bond id='b16' atomRefs2='a8 a22' order='S'>
+      <cml:bondStereo>W</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b17' atomRefs2='a10 a9' order='S' />
+    <cml:bond id='b18' atomRefs2='a11 a12' order='S' />
+    <cml:bond id='b19' atomRefs2='a15 a11' order='S' />
+    <cml:bond id='b20' atomRefs2='a11 a21' order='S'>
+      <cml:bondStereo>H</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b21' atomRefs2='a12 a13' order='S' />
+    <cml:bond id='b22' atomRefs2='a14 a13' order='S' />
+    <cml:bond id='b23' atomRefs2='a14 a15' order='S' />
+    <cml:bond id='b24' atomRefs2='a14 a19' order='S'>
+      <cml:bondStereo>W</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b25' atomRefs2='a14 a20' order='S'>
+      <cml:bondStereo>H</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b26' atomRefs2='a16 a15' order='S' />
+    <cml:bond id='b27' atomRefs2='a15 a18' order='S'>
+      <cml:bondStereo>W</cml:bondStereo>
+    </cml:bond>
+    <cml:bond id='b28' atomRefs2='a16 a17' order='S' />
+  </cml:molecule>
+</cml:cml>
