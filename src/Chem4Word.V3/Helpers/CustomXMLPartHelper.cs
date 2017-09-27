@@ -44,7 +44,7 @@ namespace Chem4Word.Helpers
 
         public static string GuidFromTag(string tag)
         {
-            string guid = null;
+            string guid = string.Empty;
 
             if (!string.IsNullOrEmpty(tag))
             {
@@ -83,60 +83,19 @@ namespace Chem4Word.Helpers
 
         public static string GetCmlId(CustomXMLPart xmlPart)
         {
-            return GetCmlId(xmlPart.XML);
-        }
-
-        public static string GetCmlId(string cml)
-        {
-            string result = null;
+            string result = string.Empty;
 
             XmlDocument xdoc = new XmlDocument();
-            xdoc.LoadXml(cml);
+            xdoc.LoadXml(xmlPart.XML);
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(xdoc.NameTable);
             nsmgr.AddNamespace("cml", "http://www.xml-cml.org/schema");
             nsmgr.AddNamespace("c4w", "http://www.chem4word.com/cml");
 
-            XmlNodeList nodes = xdoc.SelectNodes("//cml:cml", nsmgr);
-            if (nodes != null && nodes.Count > 0)
+            XmlNode node = xdoc.SelectSingleNode("//c4w:customXmlPartGuid", nsmgr);
+            if (node != null)
             {
-                //Debug.WriteLine("Found " + molecules.Count + " cml");
-                try
-                {
-                    XmlAttribute att = nodes[0].Attributes["id"];
-                    result = att.Value;
-                }
-                catch (Exception)
-                {
-                    // Do Nothing
-                }
-            }
-            else
-            {
-                // Handle case when cml namespace fails
-                nodes = xdoc.SelectNodes("//cml");
-                if (nodes != null && nodes.Count > 0)
-                {
-                    Debug.WriteLine("Found " + nodes.Count + " cml");
-                    try
-                    {
-                        XmlAttribute att = nodes[0].Attributes["id"];
-                        result = att.Value;
-                    }
-                    catch (Exception)
-                    {
-                        // Do Nothing
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(result))
-            {
-                XmlNode node = xdoc.SelectSingleNode("//c4w:customXmlPartGuid", nsmgr);
-                if (node != null)
-                {
-                    Debug.WriteLine(node.InnerText);
-                    result = node.InnerText;
-                }
+                Debug.WriteLine(node.InnerText);
+                result = node.InnerText;
             }
 
             return result;
