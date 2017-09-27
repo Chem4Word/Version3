@@ -44,11 +44,11 @@ namespace Chem4Word.Helpers
 
         public static string GuidFromTag(string tag)
         {
-            string guid = tag;
+            string guid = null;
 
-            if (tag.Contains(":"))
+            if (!string.IsNullOrEmpty(tag))
             {
-                guid = tag.Split(':')[1];
+                guid = tag.Contains(":") ? tag.Split(':')[1] : tag;
             }
 
             return guid;
@@ -56,21 +56,24 @@ namespace Chem4Word.Helpers
 
         public static CustomXMLPart GetCustomXmlPart(string id, Word.Document activeDocument)
         {
-            string guid = GuidFromTag(id);
-
             CustomXMLPart result = null;
 
-            Word.Document doc = activeDocument;
+            string guid = GuidFromTag(id);
 
-            foreach (CustomXMLPart xmlPart in doc.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema"))
+            if (!string.IsNullOrEmpty(guid))
             {
-                string cmlId = GetCmlId(xmlPart);
-                if (!string.IsNullOrEmpty(cmlId))
+                Word.Document doc = activeDocument;
+
+                foreach (CustomXMLPart xmlPart in doc.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema"))
                 {
-                    if (cmlId.Equals(guid))
+                    string cmlId = GetCmlId(xmlPart);
+                    if (!string.IsNullOrEmpty(cmlId))
                     {
-                        result = xmlPart;
-                        break;
+                        if (cmlId.Equals(guid))
+                        {
+                            result = xmlPart;
+                            break;
+                        }
                     }
                 }
             }
