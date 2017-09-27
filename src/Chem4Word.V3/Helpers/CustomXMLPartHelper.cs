@@ -144,7 +144,7 @@ namespace Chem4Word.Helpers
 
         public static void RemoveOrphanedXmlParts(Word.Document doc)
         {
-            Diagnostics(doc, "Before RemoveOrphanedXmlParts()");
+            //Diagnostics(doc, "Before RemoveOrphanedXmlParts()");
 
             Dictionary<string, int> referencedXmlParts = new Dictionary<string, int>();
 
@@ -154,9 +154,12 @@ namespace Chem4Word.Helpers
                 {
                     string guid = GuidFromTag(cc.Tag);
 
-                    if (!referencedXmlParts.ContainsKey(guid))
+                    if (!string.IsNullOrEmpty(guid))
                     {
-                        referencedXmlParts.Add(guid, 1);
+                        if (!referencedXmlParts.ContainsKey(guid))
+                        {
+                            referencedXmlParts.Add(guid, 1);
+                        }
                     }
                 }
             }
@@ -170,7 +173,7 @@ namespace Chem4Word.Helpers
                 }
             }
 
-            Diagnostics(doc, "After RemoveOrphanedXmlParts()");
+            //Diagnostics(doc, "After RemoveOrphanedXmlParts()");
         }
 
         public static void Diagnostics(Word.Document doc, string when)
