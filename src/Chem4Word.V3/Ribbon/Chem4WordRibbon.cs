@@ -483,7 +483,6 @@ namespace Chem4Word
             }
         }
 
-
         public void ActivateChemistryTab()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
