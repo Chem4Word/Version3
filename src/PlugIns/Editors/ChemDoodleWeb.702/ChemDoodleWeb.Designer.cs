@@ -57,9 +57,12 @@
             // 
             // browser
             // 
+            this.browser.AllowNavigation = false;
+            this.browser.AllowWebBrowserDrop = false;
             this.browser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.browser.IsWebBrowserContextMenuEnabled = false;
             this.browser.Location = new System.Drawing.Point(0, 0);
             this.browser.MinimumSize = new System.Drawing.Size(23, 25);
             this.browser.Name = "browser";
