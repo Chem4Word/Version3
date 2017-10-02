@@ -74,10 +74,13 @@ namespace Chem4Word.Navigator
                     foreach (NavigatorItem navigatorItem in navItems)
                     {
                         string guid = CustomXmlPartHelper.GuidFromTag(navigatorItem.CMLId);
-                        if (!added.ContainsKey(guid))
+                        if (!string.IsNullOrEmpty(guid))
                         {
-                            NavigatorItems.Add(navigatorItem);
-                            added.Add(guid, 1);
+                            if (!added.ContainsKey(guid))
+                            {
+                                NavigatorItems.Add(navigatorItem);
+                                added.Add(guid, 1);
+                            }
                         }
                     }
 

@@ -1384,7 +1384,6 @@ namespace Chem4Word
                     Word.Document doc = NewContentControl.Application.ActiveDocument;
                     Word.Application app = Globals.Chem4WordV3.Application;
                     CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(NewContentControl.Tag, app.ActiveDocument);
-
                     if (cxml == null)
                     {
                         if (doc.Application.Documents.Count > 1)
