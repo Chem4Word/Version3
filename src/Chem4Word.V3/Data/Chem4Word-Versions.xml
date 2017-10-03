@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This file must be uploaded to http://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
+<!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
+  <Version>
+    <Number>3.0.3 Beta 3</Number>
+    <IsBeta>true</IsBeta>
+    <Released>04-Oct-2017</Released>
+    <Changes>
+      <Change>Fix some null poniter exceptions caused by legacy (V2) data</Change>
+      <Change>Add telemetry to ChemDoodle Web Editor to monitor start up time</Change>
+      <Change>Fix ChEBI Search</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.2.Beta.2.msi</Url>
+  </Version>
   <Version>
     <Number>3.0.2 Beta 2</Number>
     <IsBeta>true</IsBeta>
@@ -8,7 +19,7 @@
     <Changes>
       <Change>Beta 2</Change>
     </Changes>
-    <Url>http://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.2.Beta.2.msi</Url>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.2.Beta.2.msi</Url>
   </Version>
   <Version>
     <Number>3.0.1 Beta 1</Number>
@@ -17,7 +28,7 @@
     <Changes>
       <Change>Beta 1</Change>
     </Changes>
-    <Url>http://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.1.Beta.1.msi</Url>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.1.Beta.1.msi</Url>
   </Version>
   <Version>
     <Number>3.0.0 Beta 1</Number>
@@ -26,6 +37,6 @@
     <Changes>
       <Change>Alpha</Change>
     </Changes>
-    <Url>http://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.0.Alpha.msi</Url>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.0.Alpha.msi</Url>
   </Version>
 </ChangeLog>
