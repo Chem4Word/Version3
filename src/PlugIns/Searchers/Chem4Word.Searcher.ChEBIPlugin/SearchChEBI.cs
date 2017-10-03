@@ -46,7 +46,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void EnableImport()
         {
             bool state = ResultsListView.SelectedItems.Count > 0 &&
-                                   flexDisplayControl1.Chemistry != null; ;
+                                   flexDisplayControl1.Chemistry != null;
             ImportButton.Enabled = state;
             ShowMolfile.Enabled = state;
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.ebi.ac.uk/webservices/chebi" name="ChebiWebServices" targetNamespace="http://www.ebi.ac.uk/webservices/chebi" xmlns="http://schemas.xmlsoap.org/wsdl/">
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://www.ebi.ac.uk/webservices/chebi" name="ChebiWebServices" targetNamespace="https://www.ebi.ac.uk/webservices/chebi" xmlns="http://schemas.xmlsoap.org/wsdl/">
   <types>
-    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.ebi.ac.uk/webservices/chebi">
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://www.ebi.ac.uk/webservices/chebi">
       <xsd:complexType name="LiteEntity">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="chebiId" type="xsd:string" />
@@ -54,7 +54,7 @@
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="OntologyElement" type="tns:OntologyDataItem" />
         </xsd:sequence>
       </xsd:complexType>
-      <xsd:complexType name="CompoundOrigins">
+      <xsd:complexType name="CompoundOriginDataItem">
         <xsd:sequence>
           <xsd:element minOccurs="1" maxOccurs="1" name="speciesText" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="speciesAccession" type="xsd:string" />
@@ -77,6 +77,7 @@
           <xsd:element minOccurs="0" maxOccurs="1" name="inchiKey" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="charge" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="mass" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="monoisotopicMass" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="1" name="entityStar" type="xsd:int" />
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="SecondaryChEBIIds" type="xsd:string" />
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="Synonyms" type="tns:DataItem" />
@@ -89,7 +90,7 @@
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="OntologyParents" type="tns:OntologyDataItem" />
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="OntologyChildren" type="tns:OntologyDataItem" />
           <xsd:element minOccurs="0" maxOccurs="unbounded" name="GeneralComments" type="tns:CommentDataItem" />
-          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CompoundOrigins" type="tns:CompoundOrigins" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="CompoundOrigins" type="tns:CompoundOriginDataItem" />
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="UpdatedPolymer">
@@ -117,9 +118,11 @@
           <xsd:enumeration value="DATABASE LINK/REGISTRY NUMBER/CITATION" />
           <xsd:enumeration value="FORMULA" />
           <xsd:enumeration value="MASS" />
+          <xsd:enumeration value="MONOISOTOPIC MASS" />
           <xsd:enumeration value="CHARGE" />
           <xsd:enumeration value="INCHI/INCHI KEY" />
           <xsd:enumeration value="SMILES" />
+          <xsd:enumeration value="SPECIES" />
         </xsd:restriction>
       </xsd:simpleType>
       <xsd:simpleType name="StructureSearchCategory">
