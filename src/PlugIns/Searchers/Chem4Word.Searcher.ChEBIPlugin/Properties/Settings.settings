@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Chem4Word.Searcher.ChEBIPlugin.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Chem4Word_Searcher_ChEBIPlugin_uk_ac_ebi_www_ChebiWebServiceService" Type="System.String" Scope="Application">
+    <Setting Name="Chem4Word_Searcher_ChEBIPlugin_uk_ac_ebi_www_ChebiWebServiceService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://www.ebi.ac.uk:80/webservices/chebi/2.0/webservice</Value>
     </Setting>
   </Settings>

@@ -26,7 +26,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Web.Services.WebServiceBindingAttribute(Name="ChebiWebServiceBinding", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Web.Services.WebServiceBindingAttribute(Name="ChebiWebServiceBinding", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class ChebiWebServiceService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback getLiteEntityOperationCompleted;
@@ -109,8 +109,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getLiteEntityResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getLiteEntityResponse getLiteEntity([System.Xml.Serialization.XmlElementAttribute("getLiteEntity", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getLiteEntity getLiteEntity1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getLiteEntityResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getLiteEntityResponse getLiteEntity([System.Xml.Serialization.XmlElementAttribute("getLiteEntity", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getLiteEntity getLiteEntity1) {
             object[] results = this.Invoke("getLiteEntity", new object[] {
                         getLiteEntity1});
             return ((getLiteEntityResponse)(results[0]));
@@ -139,8 +139,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getCompleteEntityResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getCompleteEntityResponse getCompleteEntity([System.Xml.Serialization.XmlElementAttribute("getCompleteEntity", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getCompleteEntity getCompleteEntity1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getCompleteEntityResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getCompleteEntityResponse getCompleteEntity([System.Xml.Serialization.XmlElementAttribute("getCompleteEntity", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getCompleteEntity getCompleteEntity1) {
             object[] results = this.Invoke("getCompleteEntity", new object[] {
                         getCompleteEntity1});
             return ((getCompleteEntityResponse)(results[0]));
@@ -169,9 +169,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlArrayAttribute("getCompleteEntityByListResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+        [return: System.Xml.Serialization.XmlArrayAttribute("getCompleteEntityByListResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
         [return: System.Xml.Serialization.XmlArrayItemAttribute("return", IsNullable=false)]
-        public Entity[] getCompleteEntityByList([System.Xml.Serialization.XmlArrayAttribute("getCompleteEntityByList", Namespace="http://www.ebi.ac.uk/webservices/chebi")] [System.Xml.Serialization.XmlArrayItemAttribute("ListOfChEBIIds", IsNullable=false)] string[] getCompleteEntityByList1) {
+        public Entity[] getCompleteEntityByList([System.Xml.Serialization.XmlArrayAttribute("getCompleteEntityByList", Namespace="https://www.ebi.ac.uk/webservices/chebi")] [System.Xml.Serialization.XmlArrayItemAttribute("ListOfChEBIIds", IsNullable=false)] string[] getCompleteEntityByList1) {
             object[] results = this.Invoke("getCompleteEntityByList", new object[] {
                         getCompleteEntityByList1});
             return ((Entity[])(results[0]));
@@ -200,8 +200,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getOntologyParentsResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getOntologyParentsResponse getOntologyParents([System.Xml.Serialization.XmlElementAttribute("getOntologyParents", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getOntologyParents getOntologyParents1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getOntologyParentsResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getOntologyParentsResponse getOntologyParents([System.Xml.Serialization.XmlElementAttribute("getOntologyParents", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getOntologyParents getOntologyParents1) {
             object[] results = this.Invoke("getOntologyParents", new object[] {
                         getOntologyParents1});
             return ((getOntologyParentsResponse)(results[0]));
@@ -230,8 +230,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getOntologyChildrenResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getOntologyChildrenResponse getOntologyChildren([System.Xml.Serialization.XmlElementAttribute("getOntologyChildren", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getOntologyChildren getOntologyChildren1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getOntologyChildrenResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getOntologyChildrenResponse getOntologyChildren([System.Xml.Serialization.XmlElementAttribute("getOntologyChildren", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getOntologyChildren getOntologyChildren1) {
             object[] results = this.Invoke("getOntologyChildren", new object[] {
                         getOntologyChildren1});
             return ((getOntologyChildrenResponse)(results[0]));
@@ -260,8 +260,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getLiteEntityResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getLiteEntityResponse getAllOntologyChildrenInPath([System.Xml.Serialization.XmlElementAttribute("getAllOntologyChildrenInPath", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getAllOntologyChildrenInPath getAllOntologyChildrenInPath1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getLiteEntityResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getLiteEntityResponse getAllOntologyChildrenInPath([System.Xml.Serialization.XmlElementAttribute("getAllOntologyChildrenInPath", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getAllOntologyChildrenInPath getAllOntologyChildrenInPath1) {
             object[] results = this.Invoke("getAllOntologyChildrenInPath", new object[] {
                         getAllOntologyChildrenInPath1});
             return ((getLiteEntityResponse)(results[0]));
@@ -290,8 +290,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getStructureSearchResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getLiteEntityResponse getStructureSearch([System.Xml.Serialization.XmlElementAttribute("getStructureSearch", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getStructureSearch getStructureSearch1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getStructureSearchResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getLiteEntityResponse getStructureSearch([System.Xml.Serialization.XmlElementAttribute("getStructureSearch", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getStructureSearch getStructureSearch1) {
             object[] results = this.Invoke("getStructureSearch", new object[] {
                         getStructureSearch1});
             return ((getLiteEntityResponse)(results[0]));
@@ -320,8 +320,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Bare)]
-        [return: System.Xml.Serialization.XmlElementAttribute("getUpdatedPolymerResponse", Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-        public getUpdatedPolymerResponse getUpdatedPolymer([System.Xml.Serialization.XmlElementAttribute("getUpdatedPolymer", Namespace="http://www.ebi.ac.uk/webservices/chebi")] getUpdatedPolymer getUpdatedPolymer1) {
+        [return: System.Xml.Serialization.XmlElementAttribute("getUpdatedPolymerResponse", Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+        public getUpdatedPolymerResponse getUpdatedPolymer([System.Xml.Serialization.XmlElementAttribute("getUpdatedPolymer", Namespace="https://www.ebi.ac.uk/webservices/chebi")] getUpdatedPolymer getUpdatedPolymer1) {
             object[] results = this.Invoke("getUpdatedPolymer", new object[] {
                         getUpdatedPolymer1});
             return ((getUpdatedPolymerResponse)(results[0]));
@@ -368,11 +368,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getLiteEntity {
         
         private string searchField;
@@ -425,9 +425,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public enum SearchCategory {
         
         /// <remarks/>
@@ -463,6 +463,10 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         MASS,
         
         /// <remarks/>
+        [System.Xml.Serialization.XmlEnumAttribute("MONOISOTOPIC MASS")]
+        MONOISOTOPICMASS,
+        
+        /// <remarks/>
         CHARGE,
         
         /// <remarks/>
@@ -471,12 +475,15 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         SMILES,
+        
+        /// <remarks/>
+        SPECIES,
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public enum StarsCategory {
         
         /// <remarks/>
@@ -492,11 +499,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class UpdatedPolymer {
         
         private string updatedStructureField;
@@ -549,11 +556,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getUpdatedPolymerResponse {
         
         private UpdatedPolymer returnField;
@@ -570,11 +577,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getUpdatedPolymer {
         
         private string chebiIdField;
@@ -604,11 +611,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getStructureSearch {
         
         private string structureField;
@@ -673,9 +680,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public enum StructureType {
         
         /// <remarks/>
@@ -689,9 +696,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public enum StructureSearchCategory {
         
         /// <remarks/>
@@ -705,11 +712,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getAllOntologyChildrenInPath {
         
         private string chebiIdField;
@@ -750,9 +757,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public enum RelationshipType {
         
         /// <remarks/>
@@ -797,11 +804,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getOntologyChildrenResponse {
         
         private OntologyDataItem[] returnField;
@@ -819,11 +826,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class OntologyDataItem {
         
         private string chebiNameField;
@@ -914,11 +921,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class CommentDataItem {
         
         private string textField;
@@ -947,11 +954,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getOntologyChildren {
         
         private string chebiIdField;
@@ -968,11 +975,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getOntologyParentsResponse {
         
         private OntologyDataItem[] returnField;
@@ -990,11 +997,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getOntologyParents {
         
         private string chebiIdField;
@@ -1011,12 +1018,12 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
-    public partial class CompoundOrigins {
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
+    public partial class CompoundOriginDataItem {
         
         private string speciesTextField;
         
@@ -1116,11 +1123,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class StructureDataItem {
         
         private string structureField;
@@ -1199,11 +1206,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class DataItem {
         
         private string dataField;
@@ -1257,11 +1264,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class Entity {
         
         private string chebiIdField;
@@ -1281,6 +1288,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         private string chargeField;
         
         private string massField;
+        
+        private string monoisotopicMassField;
         
         private int entityStarField;
         
@@ -1308,7 +1317,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         private CommentDataItem[] generalCommentsField;
         
-        private CompoundOrigins[] compoundOriginsField;
+        private CompoundOriginDataItem[] compoundOriginsField;
         
         /// <remarks/>
         public string chebiId {
@@ -1397,6 +1406,16 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
             }
             set {
                 this.massField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string monoisotopicMass {
+            get {
+                return this.monoisotopicMassField;
+            }
+            set {
+                this.monoisotopicMassField = value;
             }
         }
         
@@ -1544,7 +1563,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("CompoundOrigins")]
-        public CompoundOrigins[] CompoundOrigins {
+        public CompoundOriginDataItem[] CompoundOrigins {
             get {
                 return this.compoundOriginsField;
             }
@@ -1555,11 +1574,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getCompleteEntityResponse {
         
         private Entity returnField;
@@ -1576,11 +1595,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getCompleteEntity {
         
         private string chebiIdField;
@@ -1597,11 +1616,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class LiteEntity {
         
         private string chebiIdField;
@@ -1680,11 +1699,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.ebi.ac.uk/webservices/chebi")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="https://www.ebi.ac.uk/webservices/chebi")]
     public partial class getLiteEntityResponse {
         
         private LiteEntity[] returnField;
@@ -1702,11 +1721,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getLiteEntityCompletedEventHandler(object sender, getLiteEntityCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getLiteEntityCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1728,11 +1747,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getCompleteEntityCompletedEventHandler(object sender, getCompleteEntityCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getCompleteEntityCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1754,11 +1773,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getCompleteEntityByListCompletedEventHandler(object sender, getCompleteEntityByListCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getCompleteEntityByListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1780,11 +1799,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getOntologyParentsCompletedEventHandler(object sender, getOntologyParentsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getOntologyParentsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1806,11 +1825,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getOntologyChildrenCompletedEventHandler(object sender, getOntologyChildrenCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getOntologyChildrenCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1832,11 +1851,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getAllOntologyChildrenInPathCompletedEventHandler(object sender, getAllOntologyChildrenInPathCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getAllOntologyChildrenInPathCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1858,11 +1877,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getStructureSearchCompletedEventHandler(object sender, getStructureSearchCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getStructureSearchCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -1884,11 +1903,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin.ChEBI {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     public delegate void getUpdatedPolymerCompletedEventHandler(object sender, getUpdatedPolymerCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1087.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getUpdatedPolymerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
