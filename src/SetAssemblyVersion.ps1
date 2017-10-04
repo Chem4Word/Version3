@@ -164,3 +164,14 @@ $xml = [xml](Get-Content $wixProj)
 $dottedname = $name.Replace(" ", ".")
 $xml.Project.PropertyGroup[0].OutputName = "Chem4Word-Setup.$($version).$($dottedname)"
 $xml.Save($wixProj)
+
+# ---------------------------------------------------------- #
+
+Write-Host " Updating 'SignFiles.cmd'" -ForegroundColor Yellow
+
+$file = "$($pwd)\SignFiles.cmd"
+$findPattern = 'set release=Chem4Word-Setup.*'
+$replaceWith = "set release=Chem4Word-Setup.$($version).$($dottedname).msi"
+#(Get-Content $file).Replace($findPattern, $replaceWith) | Set-Content $file
+
+(Get-Content $file) | ForEach-Object { $_ -replace $findPattern, $replaceWith } | Set-Content $file
