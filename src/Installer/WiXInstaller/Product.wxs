@@ -122,7 +122,7 @@
       <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
       <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="DisplayUserManual">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
     </UI>
-    <CustomAction Id="DisplayUserManual" Directory="MANUAL" ExeCommand="cmd.exe /c start Chem4Word-V3-User-Manual.docx" Execute="immediate" Return="asyncNoWait" />
+    <CustomAction Id="DisplayUserManual" Directory="MANUAL" ExeCommand="cmd.exe /c start Chem4Word-Version3-User-Manual.docx" Execute="immediate" Return="asyncNoWait" />
     <UIRef Id="WixUI_Common" />
   </Product>
   <!-- Define directory structure -->
@@ -234,8 +234,8 @@
   <!-- The User Manual -->
   <Fragment>
     <ComponentGroup Id="Manual" Directory="MANUAL">
-      <Component Id="Chem4Word.V3.User.Manual">
-        <File Id="Chem4Word.V3.User.Manual.docx" Source="$(var.Chem4Word.V3.TargetDir)\Manual\Chem4Word-V3-User-Manual.docx" />
+      <Component Id="Chem4Word.Version3.User.Manual">
+        <File Id="Chem4Word.Version3.User.Manual.docx" Source="$(var.Chem4Word.V3.TargetDir)..\..\..\..\doc\Chem4Word-Version3-User-Manual.docx" />
       </Component>
     </ComponentGroup>
   </Fragment>

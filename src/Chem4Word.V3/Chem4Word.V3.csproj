@@ -438,9 +438,6 @@
     <None Include="Data\This-Version.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Manual\Chem4Word-V3-User-Manual.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
     <None Include="Resources\TestFiles\Testosterone.xml" />
     <None Include="Resources\TestFiles\TwoSingleBondMolecules.xml" />
