@@ -18,3 +18,7 @@ git checkout branchname
 
 More command line and visual studio hints at
 https://www.visualstudio.com/en-us/docs/git/command-prompt
+
+https://help.github.com/articles/dealing-with-line-endings/
+force crlf
+git config core.autocrlf true
