@@ -24,6 +24,9 @@
 *.jpg binary
 *.pdf binary
 *.docx binary
+*.xlsx binary
 *.zip binary
 *.ico binary
+*.exe binary
+*.dll binary
 Library.db binary
