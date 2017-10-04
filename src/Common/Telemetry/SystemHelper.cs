@@ -378,8 +378,8 @@ namespace Chem4Word.Telemetry
 
             try
             {
-                string url1 = "http://www.chem4word.co.uk/files/client-ip.php"; // IPv4 & IPv6
-                string url2 = "http://chem4word.azurewebsites.net/client-ip.php"; // IPv4 only
+                string url1 = "https://www.chem4word.co.uk/files/client-ip.php"; // IPv4 & IPv6
+                string url2 = "https://chem4word.azurewebsites.net/client-ip.php"; // IPv4 only
 
                 // if (even) {url1} else {url2}
                 string url = _retryCount % 2 == 0 ? url1 : url2;

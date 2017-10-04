@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Windows.Forms;
-using Chem4Word.Core.Helpers;
+﻿using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using IChem4Word.Contracts;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace Chem4Word.Editor.ChemDoodleWeb800
 {
@@ -46,6 +46,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
         private bool _eventsEnabled = false;
         private bool _saveSettings = false;
+
+        private Stopwatch _sw = new Stopwatch();
 
         public ChemDoodleWeb()
         {
@@ -135,6 +137,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
+                _sw.Start();
 
                 _eventsEnabled = false;
 
@@ -147,9 +150,13 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 this.Show();
                 Application.DoEvents();
 
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
                 string otherVersion = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-702.txt");
                 if (File.Exists(otherVersion))
                 {
+                    Telemetry.Write(module, "Information", "Deleting CDW 702 resources from disk");
                     File.Delete(otherVersion);
                     DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
@@ -157,6 +164,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-800.txt");
                 if (!File.Exists(markerFile))
                 {
+                    Telemetry.Write(module, "Information", "Writing resources to disk");
                     File.WriteAllText(markerFile, "Delete this file to refresh ChemDoodle Web");
 
                     Stream stream = ResourceHelper.GetBinaryResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.ChemDoodleWeb_800.zip");
@@ -174,6 +182,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                     File.WriteAllText(Path.Combine(ProductAppDataPath, "Chem4Word.js"), jsfile);
                 }
 
+                Telemetry.Write(module, "Information", "Writing html to disk");
                 string htmlfile = "";
                 if (IsSingleMolecule)
                 {
@@ -191,10 +200,15 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 }
                 File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
 
+                long sofar = sw.ElapsedMilliseconds;
+
+                Telemetry.Write(module, "Information", $"Writing resources to disk took {sofar}ms");
+
                 _tempJson = Before_JSON;
 
                 _eventsEnabled = true;
 
+                Telemetry.Write(module, "Information", $"Starting browser");
                 browser.Navigate(Path.Combine(ProductAppDataPath, "Editor.html"));
             }
             catch (Exception ex)
@@ -211,6 +225,9 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 object obj = null;
 
                 _eventsEnabled = false;
+
+                long sofar = _sw.ElapsedMilliseconds;
+                Telemetry.Write(module, "Information", $"ChemDoodle Web loaded in {sofar}ms");
 
                 this.Text = ms_AppTitle + ExecuteJavaScript("GetVersion");
 
@@ -256,8 +273,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                     Before_Formula = obj.ToString();
                 }
 
-                _eventsEnabled = true;
+                long sofar2 = _sw.ElapsedMilliseconds;
+                Telemetry.Write(module, "Information", $"ChemDoodle Web ready in {sofar2}ms");
 
+                _eventsEnabled = true;
+                _sw.Reset();
                 Cursor.Current = Cursors.Default;
             }
             catch (Exception ex)
