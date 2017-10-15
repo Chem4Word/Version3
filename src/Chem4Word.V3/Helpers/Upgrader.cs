@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -17,8 +18,14 @@ namespace Chem4Word.Helpers
 {
     public static class Upgrader
     {
+        private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
+
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+
         public static DialogResult UpgradeIsRequired(Word.Document doc)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             DialogResult result = DialogResult.No;
 
             int count = LegacyChemistryCount(doc);
@@ -34,13 +41,16 @@ namespace Chem4Word.Helpers
                 sb.AppendLine("");
                 sb.AppendLine("This operation can't be undone.");
                 result = UserInteractions.AskUserYesNo(sb.ToString());
+                Globals.Chem4WordV3.Telemetry.Write(module, "information", "Detected legacy chemistry");
             }
 
             return result;
         }
 
-        private static int LegacyChemistryCount(Word.Document doc)
+        public static int LegacyChemistryCount(Word.Document doc)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             int count = 0;
 
             foreach (Word.ContentControl cc in doc.ContentControls)
@@ -56,6 +66,8 @@ namespace Chem4Word.Helpers
 
         public static void DoUpgrade(Word.Document doc)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             int sel = doc.Application.Selection.Range.Start;
             Globals.Chem4WordV3.DisableDocumentEvents(doc);
 
@@ -111,11 +123,14 @@ namespace Chem4Word.Helpers
             Globals.Chem4WordV3.EnableDocumentEvents(doc);
             doc.Application.Selection.SetRange(sel, sel);
 
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Upgraded {upgradedCCs} Chemistry Objects for {upgradedXml} Structures");
             UserInteractions.AlertUser($"Upgrade Completed{Environment.NewLine}{Environment.NewLine}Upgraded {upgradedCCs} Chemistry Objects for {upgradedXml} Structures");
         }
 
         private static void EraseChemistryZones(Word.Document doc)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             foreach (CustomXMLPart xmlPart in doc.CustomXMLParts)
             {
                 string xml = xmlPart.XML;
@@ -128,6 +143,8 @@ namespace Chem4Word.Helpers
 
         private static string GetDepictionValue(string cml, string xPath)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             string result = null;
 
             XDocument xDocument = XDocument.Parse(cml);
@@ -159,6 +176,8 @@ namespace Chem4Word.Helpers
 
         private static List<UpgradeTarget> CollectData(Word.Document doc)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             List<UpgradeTarget> targets = new List<UpgradeTarget>();
 
             Word.Selection sel = doc.Application.Selection;

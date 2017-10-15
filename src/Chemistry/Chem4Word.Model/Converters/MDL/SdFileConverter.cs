@@ -32,65 +32,70 @@ namespace Chem4Word.Model.Converters
 
         public Model Import(object data)
         {
-            Model model = new Model();
+            Model model = null;
 
             if (data != null)
             {
-                // Convert incoming string to a stream
-                MemoryStream stream = new MemoryStream();
-                StreamWriter writer = new StreamWriter(stream);
-                writer.Write((string)data);
-                writer.Flush();
-                stream.Position = 0;
-
-                StreamReader sr = new StreamReader(stream);
-
-                Molecule molecule = null;
-
-                SdfState state = SdfState.Null;
-
-                string message = null;
-
-                while (!sr.EndOfStream)
+                string dataAsString = (string) data;
+                if (!dataAsString.Contains("v3000") && !dataAsString.Contains("V3000"))
                 {
-                    switch (state)
+                    model = new Model();
+                    // Convert incoming string to a stream
+                    MemoryStream stream = new MemoryStream();
+                    StreamWriter writer = new StreamWriter(stream);
+                    writer.Write(dataAsString);
+                    writer.Flush();
+                    stream.Position = 0;
+
+                    StreamReader sr = new StreamReader(stream);
+
+                    Molecule molecule = null;
+
+                    SdfState state = SdfState.Null;
+
+                    string message = null;
+
+                    while (!sr.EndOfStream)
                     {
-                        case SdfState.Null:
-                        case SdfState.EndOfData:
-                            molecule = new Molecule();
-                            //NOTE:  do NOT add an empty molecule to the model.  Add it AFTER it's been populated
-                            //model.Molecules.Add(molecule);
-                            CtabProcessor pct = new CtabProcessor();
-                            state = pct.ImportFromStream(sr, molecule, out message);
-                            //THIS is where you should add the molecule!
-                            model.Molecules.Add(molecule);
-                            break;
+                        switch (state)
+                        {
+                            case SdfState.Null:
+                            case SdfState.EndOfData:
+                                molecule = new Molecule();
+                                //NOTE:  do NOT add an empty molecule to the model.  Add it AFTER it's been populated
+                                //model.Molecules.Add(molecule);
+                                CtabProcessor pct = new CtabProcessor();
+                                state = pct.ImportFromStream(sr, molecule, out message);
+                                //THIS is where you should add the molecule!
+                                model.Molecules.Add(molecule);
+                                break;
 
-                        case SdfState.EndOfCtab:
-                            DataProcessor dp = new DataProcessor(_propertyTypes);
-                            state = dp.ImportFromStream(sr, molecule, out message);
-                            break;
+                            case SdfState.EndOfCtab:
+                                DataProcessor dp = new DataProcessor(_propertyTypes);
+                                state = dp.ImportFromStream(sr, molecule, out message);
+                                break;
 
-                        case SdfState.Error:
-                            // Swallow rest of stream
-                            string dumpOnError = sr.ReadToEnd();
-                            break;
+                            case SdfState.Error:
+                                // Swallow rest of stream
+                                string dumpOnError = sr.ReadToEnd();
+                                break;
 
-                        case SdfState.Unsupported:
-                            // Swallow rest of stream
-                            string dumponUnsupported = sr.ReadToEnd();
-                            break;
+                            case SdfState.Unsupported:
+                                // Swallow rest of stream
+                                string dumponUnsupported = sr.ReadToEnd();
+                                break;
+                        }
                     }
+
+                    //if (model.MeanBondLength < 5 || model.MeanBondLength > 100)
+                    //{
+                    //    model.ScaleToAverageBondLength(20);
+                    //}
+
+                    // Can't use RebuildMolecules() as it trashes the formulae and labels
+                    //model.RebuildMolecules();
+                    model.RefreshMolecules();
                 }
-
-                //if (model.MeanBondLength < 5 || model.MeanBondLength > 100)
-                //{
-                //    model.ScaleToAverageBondLength(20);
-                //}
-
-                // Can't use RebuildMolecules() as it trashes the formulae and labels
-                //model.RebuildMolecules();
-                model.RefreshMolecules();
             }
 
             return model;
