@@ -460,8 +460,15 @@ namespace Chem4Word
                     }
                     else
                     {
-                        Exception x = new Exception("Could not import file");
-                        new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, x).ShowDialog();
+                        if (mol.ToLower().Contains("v3000"))
+                        {
+                            UserInteractions.InformUser("Sorry, V3000 molfiles are not supported");
+                        }
+                        else
+                        {
+                            Exception x = new Exception("Could not import file");
+                            new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, x).ShowDialog();
+                        }
                     }
                 }
             }

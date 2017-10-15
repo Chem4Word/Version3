@@ -1119,6 +1119,10 @@ namespace Chem4Word
                             Upgrader.DoUpgrade(doc);
                             //EnableDocumentEvents(doc);
                         }
+                        else
+                        {
+                            Telemetry.Write(module, "Information", "User chose not to upgrade legacy chemistry");
+                        }
 
                         foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                         {
@@ -1218,21 +1222,20 @@ namespace Chem4Word
 
                 if (!doc.ReadOnly)
                 {
-                    //// Exclude templates from Orphan checks
-                    //if (!doc.Name.ToLower().EndsWith(".dotm"))
-                    //{
-                    //}
-                    // Handle Word 2013+ AutoSave
-                    if (WordVersion >= 2013)
+                    if (Upgrader.LegacyChemistryCount(doc) == 0)
                     {
-                        if (!doc.IsInAutosave)
+                        // Handle Word 2013+ AutoSave
+                        if (WordVersion >= 2013)
+                        {
+                            if (!doc.IsInAutosave)
+                            {
+                                CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
+                            }
+                        }
+                        else
                         {
                             CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
                         }
-                    }
-                    else
-                    {
-                        CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
                     }
                 }
             }

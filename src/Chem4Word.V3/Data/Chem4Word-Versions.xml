@@ -2,6 +2,16 @@
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
   <Version>
+    <Number>3.0.4 Beta 4</Number>
+    <IsBeta>true</IsBeta>
+    <Released>15-Oct-2017</Released>
+    <Changes>
+      <Change>Prevent legacy chemistry being erased when saving document, if user chose not to upgrade</Change>
+      <Change>Prevent error if user tries to insert V3000 molfile</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.4.Beta.4.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.3 Beta 3</Number>
     <IsBeta>true</IsBeta>
     <Released>04-Oct-2017</Released>
