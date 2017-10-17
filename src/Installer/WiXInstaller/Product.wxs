@@ -75,7 +75,7 @@
       <DirectorySearch Id="Word2016Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>
-      <!-- added to handle O365 installations-->
+      <!-- added to handle O365 installations -the setup program also needs to be tested with this as it downloads a new version of it -->
       <DirectorySearch Id="Word2016O365x86" Path="[ProgramFilesFolder]\Microsoft Office\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>
