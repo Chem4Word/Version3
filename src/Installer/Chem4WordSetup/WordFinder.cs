@@ -13,6 +13,7 @@ namespace Chem4WordSetup
         private const string _template1 = @"Microsoft Office\Office{0}";
 
         private const string _template16 = @"Microsoft Office\root\Office{0}";
+        private const string _template365 = @"Microsoft Office\Office{0}";
 
         // Click To Run
         private const string _template2 = @"Microsoft Office {0}\Client{1}\Root\Office{0}";
@@ -66,19 +67,21 @@ namespace Chem4WordSetup
             bool found = false;
 
             string path = "";
-
+            string path365 = "";
+            //try the non-office and office 365 installation
             if (version == 16)
             {
                 path = Path.Combine(programFiles, string.Format(_template16, version));
+                path365 = Path.Combine(programFiles, string.Format(_template365, version));
             }
             else
             {
                 path = Path.Combine(programFiles, string.Format(_template1, version));
             }
 
-            if (Directory.Exists(path))
+            if (Directory.Exists(path) || Directory.Exists(path365))
             {
-                found = File.Exists(Path.Combine(path, _wordExe));
+                found = File.Exists(Path.Combine(path, _wordExe)) || File.Exists(Path.Combine(path365, _wordExe));
             }
 
             if (!found)

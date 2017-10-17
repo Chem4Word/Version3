@@ -75,6 +75,13 @@
       <DirectorySearch Id="Word2016Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>
+      <!-- added to handle O365 installations -the setup program also needs to be tested with this as it downloads a new version of it -->
+      <DirectorySearch Id="Word2016O365x86" Path="[ProgramFilesFolder]\Microsoft Office\Office16" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
+      </DirectorySearch>
+      <DirectorySearch Id="Word2016O365x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office16" Depth="1">
+        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
+      </DirectorySearch>
     </Property>
     <Condition Message="This application requires Microsoft Word 2010, 2013 or 2016. Please install it then run this installer again."><![CDATA[Installed OR WORD2010 OR WORD2013 OR WORD2016]]></Condition>
     <!-- https://msdn.microsoft.com/library/aa370556.aspx -->
