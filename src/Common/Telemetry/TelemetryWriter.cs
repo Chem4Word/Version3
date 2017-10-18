@@ -97,12 +97,19 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", $"Debug - Environment.Is64BitProcess: {Environment.Is64BitProcess}");
 #endif
 
+            // Log Sysytem
             WritePrivate("StartUp", "Information", _helper.SystemOs);
             WritePrivate("Startup", "Information", _helper.DotNetVersion);
 
+            // Log IP Address
             WritePrivate("StartUp", "Information", _helper.IpAddress);
             WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
+
+            // Log Word
+            WritePrivate("StartUp", "Information", Environment.GetCommandLineArgs()[0]);
             WritePrivate("StartUp", "Information", _helper.WordProduct);
+
+            // Log Add-In Version
             // ToDo: Add extra info to AddInVersion
             WritePrivate("StartUp", "Information", _helper.AddInVersion);
 

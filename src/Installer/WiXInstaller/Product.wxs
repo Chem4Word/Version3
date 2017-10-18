@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!-- For automatic upgrade to work only first three parts of version number are used -->
-  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.4 Beta 4" Manufacturer="Chem4Word" Version="3.0.4.6497" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
+  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.5 Beta 5" Manufacturer="Chem4Word" Version="3.0.5.6500" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of Chem4Word is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
@@ -55,7 +55,7 @@
       <DirectorySearch Id="Word2013x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office15" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
       </DirectorySearch>
-      <DirectorySearch Id="Word2013Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 15\ClientX86\Root\Office15" Depth="1">
+      <DirectorySearch Id="Word2013Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 15\ClientX64\Root\Office15" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
       </DirectorySearch>
       <DirectorySearch Id="Word2013Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 15\ClientX86\Root\Office15" Depth="1">
@@ -69,13 +69,12 @@
       <DirectorySearch Id="Word2016x64" Path="[ProgramFiles64Folder]\Microsoft Office\root\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>
-      <DirectorySearch Id="Word2016Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
+      <DirectorySearch Id="Word2016Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 16\ClientX64\Root\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>
       <DirectorySearch Id="Word2016Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>
-      <!-- added to handle O365 installations -the setup program also needs to be tested with this as it downloads a new version of it -->
       <DirectorySearch Id="Word2016O365x86" Path="[ProgramFilesFolder]\Microsoft Office\Office16" Depth="1">
         <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
       </DirectorySearch>

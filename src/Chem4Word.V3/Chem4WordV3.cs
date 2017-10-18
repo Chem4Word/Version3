@@ -1115,13 +1115,7 @@ namespace Chem4Word
                         DialogResult answer = Upgrader.UpgradeIsRequired(doc);
                         if (answer == DialogResult.Yes)
                         {
-                            //DisableDocumentEvents(doc);
                             Upgrader.DoUpgrade(doc);
-                            //EnableDocumentEvents(doc);
-                        }
-                        else
-                        {
-                            Telemetry.Write(module, "Information", "User chose not to upgrade legacy chemistry");
                         }
 
                         foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
