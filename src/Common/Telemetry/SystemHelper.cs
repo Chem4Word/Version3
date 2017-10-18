@@ -415,7 +415,7 @@ namespace Chem4Word.Telemetry
                                     if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
                                     {
                                         IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress V6 got from {url} on attempt {_retryCount + 1}";
+                                        IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
                                     }
                                 }
 
@@ -430,7 +430,7 @@ namespace Chem4Word.Telemetry
                                     if (ipV4Parts.Length == 4)
                                     {
                                         IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress V4 got from {url} on attempt {_retryCount + 1}";
+                                        IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
                                     }
                                 }
 

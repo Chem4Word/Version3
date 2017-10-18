@@ -69,9 +69,9 @@ namespace Chem4WordSetup
 
             #region Detect Word
 
-            isWordInstalled = OfficeFinder.WordExists(2010)
+            isWordInstalled = OfficeFinder.WordExists(2016)
                 || OfficeFinder.WordExists(2013)
-                || OfficeFinder.WordExists(2016);
+                || OfficeFinder.WordExists(2010);
 
             #endregion Detect Word
 

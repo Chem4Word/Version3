@@ -2,6 +2,15 @@
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
   <Version>
+    <Number>3.0.5 Beta 5</Number>
+    <IsBeta>true</IsBeta>
+    <Released>18-Oct-2017</Released>
+    <Changes>
+      <Change>Fix glitch with detection of Office 365 (2016) installation</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.5.Beta.5.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.4 Beta 4</Number>
     <IsBeta>true</IsBeta>
     <Released>15-Oct-2017</Released>
