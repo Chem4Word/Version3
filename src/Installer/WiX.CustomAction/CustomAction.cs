@@ -2,6 +2,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using System;
 using System.IO;
+using Chem4Word.Common;
 
 namespace WiX.CustomAction
 {
@@ -89,9 +90,8 @@ namespace WiX.CustomAction
         {
             session.Log("Begin FindWord()");
 
-            // ONLY Set session["WinWordPath"] only if valid version of word found !
-            //session["WinWordPath"] = @"C:\Program Files\Microsoft Office\root\Office16\winword.exe";
-            session["WinWordPath"] = @"FOUND";
+            OfficeHelper helper = new OfficeHelper();
+            session["WinWordPath"] = helper.GetWinWordPath();
 
             session.Log("End FindWord()");
             return ActionResult.Success;
