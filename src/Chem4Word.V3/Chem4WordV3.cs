@@ -1113,9 +1113,17 @@ namespace Chem4Word
                         Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
 
                         DialogResult answer = Upgrader.UpgradeIsRequired(doc);
-                        if (answer == DialogResult.Yes)
+                        switch (answer)
                         {
-                            Upgrader.DoUpgrade(doc);
+                            case DialogResult.Yes:
+                                Upgrader.DoUpgrade(doc);
+                                break;
+                            case DialogResult.No:
+                                Telemetry.Write(module, "Information", "User chose not to upgrade");
+                                break;
+                            case DialogResult.Cancel:
+                                // Returns Cancel if nothing to do
+                                break;
                         }
 
                         foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)

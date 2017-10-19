@@ -26,7 +26,7 @@ namespace Chem4Word.Helpers
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            DialogResult result = DialogResult.No;
+            DialogResult result = DialogResult.Cancel;
 
             int count = LegacyChemistryCount(doc);
 
