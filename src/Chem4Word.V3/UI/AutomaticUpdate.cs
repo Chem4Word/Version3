@@ -195,7 +195,7 @@ namespace Chem4Word.UI
                         break;
                     }
 
-                    AddHeaderLine("Version " + thisVersionNumber + "; Released " + thisVersionDate.ToString("dd-MMM-yyyy"), Color.Blue);
+                    AddHeaderLine("Version " + thisVersionNumber + "; Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture), Color.Blue);
                     var changes = version.XPathSelectElements("Changes/Change");
                     foreach (var change in changes)
                     {
