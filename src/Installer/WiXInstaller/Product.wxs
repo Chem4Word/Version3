@@ -91,12 +91,17 @@
     <!-- https://blogs.msdn.microsoft.com/jschaffe/2012/10/23/creating-wix-custom-actions-in-c-and-passing-parameters/ -->
     <!-- https://www.codeproject.com/Articles/132918/Creating-Custom-Action-for-WIX-Written-in-Managed -->
     <Binary Id="WiX.CustomAction.dll" SourceFile="..\Wix.CustomAction\bin\x86\$(var.Configuration)\WiX.CustomAction.CA.dll" />
+    <CustomAction Id="FindWinwordPath" BinaryKey="WiX.CustomAction.dll" DllEntry="FindWord" Return="check" Execute="immediate"/>
     <CustomAction Id="SetupChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="SetupChem4Word" Return="check" Execute="deferred" Impersonate="no" />
     <CustomAction Id="RemoveChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="RemoveChem4Word" Return="check" Execute="deferred" Impersonate="no" />
+    <InstallUISequence>
+      <Custom Action="FindWinwordPath" Before="LaunchConditions" />
+    </InstallUISequence>
     <InstallExecuteSequence>
       <Custom Action="SetupChem4Word" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="RemoveChem4Word" Before="InstallFinalize">Installed</Custom>
     </InstallExecuteSequence>
+    <Condition Message="Word Version 2010 or greater must be installed"><![CDATA[Installed OR WinWordPath]]></Condition>
     <Property Id="VSTODESIGNTIME">
       <RegistrySearch Id="VSTODesignTime" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO_DT\VS10\Feature" Type="raw" />
     </Property>

@@ -84,6 +84,19 @@ namespace WiX.CustomAction
             return ActionResult.Success;
         }
 
+        [CustomAction]
+        public static ActionResult FindWord(Session session)
+        {
+            session.Log("Begin FindWord()");
+
+            // ONLY Set session["WinWordPath"] only if valid version of word found !
+            //session["WinWordPath"] = @"C:\Program Files\Microsoft Office\root\Office16\winword.exe";
+            session["WinWordPath"] = @"FOUND";
+
+            session.Log("End FindWord()");
+            return ActionResult.Success;
+        }
+
         private static void OpenRegistry(Session session, string manifestLocation)
         {
             session.Log(" Begin OpenRegistry()");
