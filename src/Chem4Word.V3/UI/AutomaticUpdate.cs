@@ -242,59 +242,5 @@ namespace Chem4Word.UI
             richTextBox1.AppendText(line + Environment.NewLine);
             richTextBox1.SelectionBullet = false;
         }
-
-        private string LookForUninstall(string root, string branch, string name)
-        {
-            string result = string.Empty;
-
-            try
-            {
-                RegistryKey key = null;
-                switch (root)
-                {
-                    case "HKLM":
-                        key = Registry.LocalMachine.OpenSubKey(branch);
-                        break;
-
-                    case "HKCU":
-                        key = Registry.CurrentUser.OpenSubKey(branch);
-                        break;
-                }
-
-                if (key != null)
-                {
-                    //string[] xx = RegistryUtility.GetSubKeys();
-
-                    foreach (string subkeyName in key.GetSubKeyNames())
-                    {
-                        using (RegistryKey subkey = key.OpenSubKey(subkeyName))
-                        {
-                            //Debug.WriteLine("Found key " + subkeyName);
-                            if (subkey != null)
-                            {
-                                string displayName = subkey.GetValue("DisplayName") as string;
-                                //Debug.WriteLine(" Display Name is " + displayName);
-                                if (!string.IsNullOrEmpty(displayName))
-                                {
-                                    if (displayName.ToLower().Equals(name.ToLower()))
-                                    {
-                                        result = subkeyName;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    key = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                //
-            }
-
-            return result;
-        }
     }
 }
