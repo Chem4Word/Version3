@@ -90,9 +90,10 @@ namespace WiX.CustomAction
         {
             session.Log("Begin FindWord()");
 
-            if (OfficeHelper.GetWinWordVersion() >= 2010)
+            int officeVersion = OfficeHelper.GetWinWordVersion();
+            if (officeVersion >= 2010)
             {
-                session["WinWordPath"] = "Something";
+                session["WinWordVersion"] = officeVersion.ToString();
             }
 
             session.Log("End FindWord()");

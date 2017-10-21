@@ -101,7 +101,7 @@
       <Custom Action="SetupChem4Word" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="RemoveChem4Word" Before="InstallFinalize">Installed</Custom>
     </InstallExecuteSequence>
-    <Condition Message="Word Version 2010 or greater must be installed"><![CDATA[Installed OR WinWordPath]]></Condition>
+    <Condition Message="Word Version 2010 or greater must be installed"><![CDATA[Installed OR WinWordVesrion]]></Condition>
     <Property Id="VSTODESIGNTIME">
       <RegistrySearch Id="VSTODesignTime" Root="HKLM" Key="SOFTWARE\Microsoft\VSTO_DT\VS10\Feature" Type="raw" />
     </Property>
