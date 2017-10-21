@@ -2,7 +2,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using System;
 using System.IO;
-using Chem4Word.Common;
+using Chem4Word.Shared;
 
 namespace WiX.CustomAction
 {
@@ -90,8 +90,10 @@ namespace WiX.CustomAction
         {
             session.Log("Begin FindWord()");
 
-            OfficeHelper helper = new OfficeHelper();
-            session["WinWordPath"] = helper.GetWinWordPath();
+            if (OfficeHelper.GetWinWordVersion() >= 2010)
+            {
+                session["WinWordPath"] = "Something";
+            }
 
             session.Log("End FindWord()");
             return ActionResult.Success;

@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Shared;
 using DownloadProgressChangedEventArgs = System.Net.DownloadProgressChangedEventArgs;
 
 namespace Chem4WordSetup
@@ -69,9 +70,10 @@ namespace Chem4WordSetup
 
             #region Detect Word
 
-            isWordInstalled = OfficeFinder.WordExists(2016)
-                || OfficeFinder.WordExists(2013)
-                || OfficeFinder.WordExists(2010);
+            isWordInstalled = OfficeHelper.GetWinWordVersion() >= 2010;
+            //isWordInstalled = OfficeFinder.WordExists(2016)
+            //    || OfficeFinder.WordExists(2013)
+            //    || OfficeFinder.WordExists(2010);
 
             #endregion Detect Word
 

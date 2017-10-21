@@ -63,15 +63,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\OfficeHelper.cs">
+      <Link>OfficeHelper.cs</Link>
+    </Compile>
     <Compile Include="CustomAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="CustomAction.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Chem4Word.Common\Chem4Word.Common.csproj">
-      <Project>{78ec909d-65e6-45f8-bc84-5e7ec07c7dcd}</Project>
-      <Name>Chem4Word.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(WixCATargetsPath)" Condition=" '$(WixCATargetsPath)' != '' " />
