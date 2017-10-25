@@ -14,12 +14,42 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            result = GetFromRegistry();
+            result = GetFromRegistryMethod1();
+
+            if (result == null)
+            {
+                result = GetFromRegistryMethod2();
+            }
 
             if (result == null)
             {
                 result = GetFromKnownPathSearch();
             }
+
+            return result;
+        }
+
+        private static string GetFromRegistryMethod2()
+        {
+            string result = null;
+
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Word.Application\CurVer == "Word.Application.15"
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Word.Application.15\CLSID == "{000209FF-0000-0000-C000-000000000046}"
+
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32 == "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32 == "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+
+            // OR
+
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\14.0\Word\InstallRoot
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot
+
+            // OR
+
+            // If HKLM\Software\WOW6432Node exists then Windows is 64-bit.
+            // If HKLM\Software\WOW6432Node\Microsoft\Office exists, then Office is 32-bit.
+            // If HKLM\Software\WOW6432Node\Microsoft\Office does not exist, but HKLM\Software\Microsoft\Office does exist, then Office is 64-bit.
+            // If HKLM\Software\WOW6432Node does not exist, then Windows and Office are 32-bit.
 
             return result;
         }
@@ -116,7 +146,7 @@ namespace Chem4Word.Shared
             return foundAt;
         }
 
-        private static string GetFromRegistry()
+        private static string GetFromRegistryMethod1()
         {
             string result = null;
 
