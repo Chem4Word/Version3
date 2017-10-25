@@ -41,15 +41,8 @@ namespace Chem4Word.Shared
 
             // OR
 
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\14.0\Word\InstallRoot
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot
-
-            // OR
-
-            // If HKLM\Software\WOW6432Node exists then Windows is 64-bit.
-            // If HKLM\Software\WOW6432Node\Microsoft\Office exists, then Office is 32-bit.
-            // If HKLM\Software\WOW6432Node\Microsoft\Office does not exist, but HKLM\Software\Microsoft\Office does exist, then Office is 64-bit.
-            // If HKLM\Software\WOW6432Node does not exist, then Windows and Office are 32-bit.
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files\Microsoft Office\root\Office16\"
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files (x86)\Microsoft Office\root\Office16\"
 
             return result;
         }
@@ -65,12 +58,12 @@ namespace Chem4Word.Shared
                 @"Microsoft Office {0}\Client{1}\Root\Office{0}"
             };
             int[] versions = {16, 15, 14, 17};
-            string programFiles;
 
             foreach (var version in versions)
             {
                 foreach (var template in templates)
                 {
+                    string programFiles;
                     if (Environment.Is64BitOperatingSystem)
                     {
                         programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);

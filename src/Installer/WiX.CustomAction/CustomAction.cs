@@ -93,10 +93,12 @@ namespace WiX.CustomAction
             int officeVersion = OfficeHelper.GetWinWordVersion();
             if (officeVersion >= 2010)
             {
-                session["WinWordVersion"] = officeVersion.ToString();
+                // Must be UPPERCASE
+                session["WINWORDVERSION"] = officeVersion.ToString();
             }
 
             session.Log("End FindWord()");
+
             return ActionResult.Success;
         }
 
