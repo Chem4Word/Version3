@@ -278,9 +278,39 @@ namespace Chem4Word.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Help {
+            get {
+                object obj = ResourceManager.GetObject("Help", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Home {
+            get {
+                object obj = ResourceManager.GetObject("Home", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Import {
             get {
                 object obj = ResourceManager.GetObject("Import", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Information {
+            get {
+                object obj = ResourceManager.GetObject("Information", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -321,6 +351,16 @@ namespace Chem4Word.Properties {
         internal static System.Drawing.Bitmap LabelValid {
             get {
                 object obj = ResourceManager.GetObject("LabelValid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Manual {
+            get {
+                object obj = ResourceManager.GetObject("Manual", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

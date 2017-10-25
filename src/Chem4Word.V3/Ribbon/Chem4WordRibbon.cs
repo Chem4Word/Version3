@@ -1472,29 +1472,6 @@ namespace Chem4Word
             AfterButtonChecks(sender as RibbonButton);
         }
 
-        private void OnAboutClick(object sender, RibbonControlEventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
-
-            try
-            {
-                About fa = new About();
-                fa.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
-                fa.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
-        }
-
         private void OnViewAsItemsLoading(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -2066,6 +2043,106 @@ namespace Chem4Word
             {
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
+        }
+
+        private void OnShowAboutClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+
+            try
+            {
+                About fa = new About();
+                fa.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
+                fa.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnShowHomeClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+
+            try
+            {
+                Process.Start("https://www.chem4word.co.uk");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnCheckForUpdatesClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
+                if (key != null)
+                {
+                    key.DeleteValue(Constants.RegistryValueNameLastCheck);
+                    key.DeleteValue(Constants.RegistryValueNameVersionsBehind);
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnReadManualClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+
+            try
+            {
+                string userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Manual", "Chem4Word-Version3-User-Manual.docx");
+                if (File.Exists(userManual))
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
+                    Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
+                }
+                else
+                {
+                    userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, @"..\..\..\..\doc", "Chem4Word-Version3-User-Manual.docx");
+                    if (File.Exists(userManual))
+                    {
+                        Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
+                        Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnAboutClick(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void OnHomeClick(object sender, RibbonControlEventArgs e)
+        {
+
         }
     }
 }

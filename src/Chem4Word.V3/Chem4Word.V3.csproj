@@ -415,7 +415,11 @@
     <Content Include="Resources\Button Images\DocumentFind.png" />
     <Content Include="Resources\Button Images\DocumentMake.png" />
     <Content Include="Resources\Button Images\Export.png" />
+    <Content Include="Resources\Button Images\Help.png" />
+    <Content Include="Resources\Button Images\Home.png" />
     <Content Include="Resources\Button Images\Import.png" />
+    <Content Include="Resources\Button Images\Information.png" />
+    <Content Include="Resources\Button Images\Manual.png" />
     <Content Include="Resources\Button Images\Navigation-32.png" />
     <Content Include="Resources\Button Images\Office-2016\Edit-Labels.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Open.png" />
