@@ -223,18 +223,18 @@ namespace Chem4Word
                     UserInteractions.StopUser(sb.ToString());
                 }
 
+                // Set parameter mustBeSigned true if assemblies must be signed by us
+                LoadPlugIns(false);
+                ListPlugInsFound();
+
+                ConfigWatcher cw = new ConfigWatcher(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath);
+
                 string libraryTarget = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProgramDataPath, Constants.LibraryFileName);
                 if (!File.Exists(libraryTarget))
                 {
                     ResourceHelper.WriteResource(Assembly.GetExecutingAssembly(), "Data.Library.db", libraryTarget);
                 }
                 LibraryNames = LibraryModel.GetLibraryNames();
-
-                // Set parameter mustBeSigned true if assemblies must be signed by us
-                LoadPlugIns(false);
-                ListPlugInsFound();
-
-                ConfigWatcher cw = new ConfigWatcher(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath);
 
                 // Deliberate crash to test Error Reporting
                 //int ii = 2;
@@ -537,15 +537,18 @@ namespace Chem4Word
 
             IChem4WordEditor plugin = null;
 
-            foreach (IChem4WordEditor ice in Editors)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (ice.Name.Equals(name))
+                foreach (IChem4WordEditor ice in Editors)
                 {
-                    plugin = ice;
-                    plugin.Telemetry = Telemetry;
-                    plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
-                    plugin.TopLeft = WordTopLeft;
-                    break;
+                    if (ice.Name.Equals(name))
+                    {
+                        plugin = ice;
+                        plugin.Telemetry = Telemetry;
+                        plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
+                        plugin.TopLeft = WordTopLeft;
+                        break;
+                    }
                 }
             }
 
@@ -558,15 +561,18 @@ namespace Chem4Word
 
             IChem4WordRenderer plugin = null;
 
-            foreach (IChem4WordRenderer ice in Renderers)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (ice.Name.Equals(name))
+                foreach (IChem4WordRenderer ice in Renderers)
                 {
-                    plugin = ice;
-                    plugin.Telemetry = Telemetry;
-                    plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
-                    plugin.TopLeft = WordTopLeft;
-                    break;
+                    if (ice.Name.Equals(name))
+                    {
+                        plugin = ice;
+                        plugin.Telemetry = Telemetry;
+                        plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
+                        plugin.TopLeft = WordTopLeft;
+                        break;
+                    }
                 }
             }
 
@@ -579,15 +585,18 @@ namespace Chem4Word
 
             IChem4WordSearcher plugin = null;
 
-            foreach (IChem4WordSearcher ice in Searchers)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (ice.Name.Equals(name))
+                foreach (IChem4WordSearcher ice in Searchers)
                 {
-                    plugin = ice;
-                    plugin.Telemetry = Telemetry;
-                    plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
-                    plugin.TopLeft = WordTopLeft;
-                    break;
+                    if (ice.Name.Equals(name))
+                    {
+                        plugin = ice;
+                        plugin.Telemetry = Telemetry;
+                        plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
+                        plugin.TopLeft = WordTopLeft;
+                        break;
+                    }
                 }
             }
 

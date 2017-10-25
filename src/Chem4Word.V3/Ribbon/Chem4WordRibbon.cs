@@ -1520,17 +1520,20 @@ namespace Chem4Word
             {
                 WebSearchMenu.Items.Clear();
 
-                foreach (IChem4WordSearcher searcher in Globals.Chem4WordV3.Searchers.OrderBy(s => s.DisplayOrder))
+                if (Globals.Chem4WordV3.Searchers != null)
                 {
-                    RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
+                    foreach (IChem4WordSearcher searcher in Globals.Chem4WordV3.Searchers.OrderBy(s => s.DisplayOrder))
+                    {
+                        RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
 
-                    ribbonButton.Label = searcher.ShortName;
-                    ribbonButton.Tag = searcher.Name;
-                    ribbonButton.SuperTip = searcher.Description;
-                    ribbonButton.Image = searcher.Image;
-                    ribbonButton.Click += OnSearcherClick;
+                        ribbonButton.Label = searcher.ShortName;
+                        ribbonButton.Tag = searcher.Name;
+                        ribbonButton.SuperTip = searcher.Description;
+                        ribbonButton.Image = searcher.Image;
+                        ribbonButton.Click += OnSearcherClick;
 
-                    WebSearchMenu.Items.Add(ribbonButton);
+                        WebSearchMenu.Items.Add(ribbonButton);
+                    }
                 }
             }
             catch (Exception ex)
