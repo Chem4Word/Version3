@@ -57,7 +57,6 @@
             // 
             // browser
             // 
-            this.browser.AllowNavigation = false;
             this.browser.AllowWebBrowserDrop = false;
             this.browser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 

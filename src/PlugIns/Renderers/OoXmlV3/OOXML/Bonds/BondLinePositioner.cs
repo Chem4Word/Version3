@@ -202,7 +202,6 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                                     break;
 
                                 default:
-
                                     switch (bond.Stereo)
                                     {
                                         case BondStereo.Cis:

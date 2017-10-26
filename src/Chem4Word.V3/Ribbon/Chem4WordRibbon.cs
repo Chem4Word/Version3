@@ -1070,78 +1070,87 @@ namespace Chem4Word
 
                         foreach (Molecule mol in afterModel.Molecules)
                         {
-                            pb.Show();
-                            pb.Increment(1);
-                            pb.Message = $"Fetching InChiKey from ChemSpider for molecule {mol.Id}";
-
-                            Model.Model temp = new Model.Model();
-                            temp.Molecules.Add(mol);
-                            string afterMolFile = molConverter.Export(temp);
-                            mol.ConciseFormula = mol.CalculatedFormula();
-
-                            Chemspider cs = new Chemspider(Globals.Chem4WordV3.Telemetry);
-                            string inchiKey = cs.GetInchiKey(afterMolFile);
-
-                            pb.Increment(1);
-                            pb.Message = $"Fetching Synonyms from ChemSpider for molecule {mol.Id}";
-
-                            Dictionary<string, string> synonyms = cs.GetSynonyms(inchiKey);
-                            if (string.IsNullOrEmpty(inchiKey))
+                            List<Bond> nullBonds = mol.Bonds.Where(b => b.OrderValue.Value < 1).ToList();
+                            if (nullBonds.Any())
                             {
-                                synonyms.Add(Constants.ChemspiderInchiKeyName, "Unknown");
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Not sending structure to ChemSpider as it has bonds with order of less than one");
                             }
                             else
                             {
-                                synonyms.Add(Constants.ChemspiderInchiKeyName, inchiKey);
-                            }
+                                pb.Show();
+                                pb.Increment(1);
+                                pb.Message = $"Fetching InChiKey from ChemSpider for molecule {mol.Id}";
 
-                            foreach (KeyValuePair<string, string> kvp in synonyms)
-                            {
-                                bool updated;
-                                switch (kvp.Key)
+                                Model.Model temp = new Model.Model();
+                                temp.Molecules.Add(mol);
+
+                                string afterMolFile = molConverter.Export(temp);
+                                mol.ConciseFormula = mol.CalculatedFormula();
+
+                                Chemspider cs = new Chemspider(Globals.Chem4WordV3.Telemetry);
+                                string inchiKey = cs.GetInchiKey(afterMolFile);
+
+                                pb.Increment(1);
+                                pb.Message = $"Fetching Synonyms from ChemSpider for molecule {mol.Id}";
+
+                                Dictionary<string, string> synonyms = cs.GetSynonyms(inchiKey);
+                                if (string.IsNullOrEmpty(inchiKey))
                                 {
-                                    case Constants.ChemspiderFormulaName:
-                                    case Constants.ChemSpiderSmilesName:
-                                        updated = false;
-                                        foreach (var formula in mol.Formulas)
-                                        {
-                                            if (formula.Convention.Equals(kvp.Key))
-                                            {
-                                                formula.Inline = kvp.Value;
-                                                updated = true;
-                                                break;
-                                            }
-                                        }
-                                        if (!updated)
-                                        {
-                                            Formula f = new Formula();
-                                            f.Convention = kvp.Key;
-                                            f.Inline = kvp.Value;
-                                            mol.Formulas.Add(f);
-                                        }
-                                        break;
+                                    synonyms.Add(Constants.ChemspiderInchiKeyName, "Unknown");
+                                }
+                                else
+                                {
+                                    synonyms.Add(Constants.ChemspiderInchiKeyName, inchiKey);
+                                }
 
-                                    case Constants.ChemspiderIdName:
-                                    case Constants.ChemSpiderSynonymName:
-                                    case Constants.ChemspiderInchiKeyName:
-                                        updated = false;
-                                        foreach (var name in mol.ChemicalNames)
-                                        {
-                                            if (name.DictRef.Equals(kvp.Key))
+                                foreach (KeyValuePair<string, string> kvp in synonyms)
+                                {
+                                    bool updated;
+                                    switch (kvp.Key)
+                                    {
+                                        case Constants.ChemspiderFormulaName:
+                                        case Constants.ChemSpiderSmilesName:
+                                            updated = false;
+                                            foreach (var formula in mol.Formulas)
                                             {
-                                                name.Name = kvp.Value;
-                                                updated = true;
-                                                break;
+                                                if (formula.Convention.Equals(kvp.Key))
+                                                {
+                                                    formula.Inline = kvp.Value;
+                                                    updated = true;
+                                                    break;
+                                                }
                                             }
-                                        }
-                                        if (!updated)
-                                        {
-                                            ChemicalName n = new ChemicalName();
-                                            n.DictRef = kvp.Key;
-                                            n.Name = kvp.Value;
-                                            mol.ChemicalNames.Add(n);
-                                        }
-                                        break;
+                                            if (!updated)
+                                            {
+                                                Formula f = new Formula();
+                                                f.Convention = kvp.Key;
+                                                f.Inline = kvp.Value;
+                                                mol.Formulas.Add(f);
+                                            }
+                                            break;
+
+                                        case Constants.ChemspiderIdName:
+                                        case Constants.ChemSpiderSynonymName:
+                                        case Constants.ChemspiderInchiKeyName:
+                                            updated = false;
+                                            foreach (var name in mol.ChemicalNames)
+                                            {
+                                                if (name.DictRef.Equals(kvp.Key))
+                                                {
+                                                    name.Name = kvp.Value;
+                                                    updated = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (!updated)
+                                            {
+                                                ChemicalName n = new ChemicalName();
+                                                n.DictRef = kvp.Key;
+                                                n.Name = kvp.Value;
+                                                mol.ChemicalNames.Add(n);
+                                            }
+                                            break;
+                                    }
                                 }
                             }
                         }
