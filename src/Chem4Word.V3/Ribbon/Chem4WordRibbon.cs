@@ -560,7 +560,7 @@ namespace Chem4Word
                         {
                             DateTime last = SafeDate.Parse(lastChecked);
                             TimeSpan delta = DateTime.Today - last;
-                            if (delta.Days < days)
+                            if (delta.TotalDays < days)
                             {
                                 doCheck = false;
                             }
