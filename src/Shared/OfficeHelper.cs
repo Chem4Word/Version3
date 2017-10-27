@@ -14,7 +14,7 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            result = GetFromRegistryMethod1();
+            //result = GetFromRegistryMethod1();
 
             if (result == null)
             {
@@ -33,11 +33,39 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Word.Application\CurVer == "Word.Application.15"
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Word.Application.15\CLSID == "{000209FF-0000-0000-C000-000000000046}"
+            RegistryKey registryKey;
 
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32 == "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
-            // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32 == "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+            // Open HKEY_CLASSES_ROOT\Word.Application\CurVer
+            registryKey = OpenRegistryKey(Registry.ClassesRoot, @"Word.Application\CurVer");
+            if (registryKey != null)
+            {
+                // Get Value --> "Word.Application.15"
+                string path = registryKey.GetValue(string.Empty).ToString();
+                if (!string.IsNullOrEmpty(path))
+                {
+                    // Open HKEY_CLASSES_ROOT\Word.Application.15\CLSID
+                    registryKey = OpenRegistryKey(Registry.ClassesRoot, $@"{path}\CLSID");
+                    if (registryKey != null)
+                    {
+                        // Get Value  --> "{000209FF-0000-0000-C000-000000000046}"
+                        string classId = registryKey.GetValue(string.Empty).ToString();
+                        if (!string.IsNullOrEmpty(classId))
+                        {
+                            // Open HKEY_CLASSES_ROOT\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
+                            registryKey = OpenRegistryKey(Registry.ClassesRoot, $@"CLSID\{classId}\LocalServer32");
+                            if (registryKey != null)
+                            {
+                                // Get Value  --> "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+                                string server = registryKey.GetValue(string.Empty).ToString();
+                            }
+                            else
+                            {
+                                // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32 == "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+                            }
+                        }
+                    }
+                }
+            }
 
             // OR
 
@@ -45,6 +73,14 @@ namespace Chem4Word.Shared
             // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files (x86)\Microsoft Office\root\Office16\"
 
             return result;
+        }
+
+        private static RegistryKey OpenRegistryKey(RegistryKey rootKey, string path)
+        {
+            RegistryKey rk = rootKey;
+            rk.OpenSubKey(path, false);
+
+            return rk;
         }
 
         private static string GetFromKnownPathSearch()
