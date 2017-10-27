@@ -3,6 +3,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.AccessControl;
 using Microsoft.Win32;
 
 namespace Chem4Word.Shared
@@ -33,36 +34,30 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            RegistryKey registryKey;
-
-            // Open HKEY_CLASSES_ROOT\Word.Application\CurVer
-            registryKey = OpenRegistryKey(Registry.ClassesRoot, @"Word.Application\CurVer");
-            if (registryKey != null)
+            // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Word.Application\CurVer
+            string currentVersion = GetRegistryValue(Registry.LocalMachine, @"SOFTWARE\Classes\Word.Application\CurVer", null);
+            if (!string.IsNullOrEmpty(currentVersion))
             {
-                // Get Value --> "Word.Application.15"
-                string path = registryKey.GetValue(string.Empty).ToString();
-                if (!string.IsNullOrEmpty(path))
+                // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Word.Application.14\CLSID
+                string classId = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Classes\{currentVersion}\CLSID", null);
+                if (!string.IsNullOrEmpty(classId))
                 {
-                    // Open HKEY_CLASSES_ROOT\Word.Application.15\CLSID
-                    registryKey = OpenRegistryKey(Registry.ClassesRoot, $@"{path}\CLSID");
-                    if (registryKey != null)
+                    // Try Wow6432Node
+                    // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
+                    string localServer32 = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Wow6432Node\Classes\CLSID\{classId}\LocalServer32", null);
+                    if (!string.IsNullOrEmpty(localServer32))
                     {
-                        // Get Value  --> "{000209FF-0000-0000-C000-000000000046}"
-                        string classId = registryKey.GetValue(string.Empty).ToString();
-                        if (!string.IsNullOrEmpty(classId))
-                        {
-                            // Open HKEY_CLASSES_ROOT\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
-                            registryKey = OpenRegistryKey(Registry.ClassesRoot, $@"CLSID\{classId}\LocalServer32");
-                            if (registryKey != null)
-                            {
-                                // Get Value  --> "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
-                                string server = registryKey.GetValue(string.Empty).ToString();
-                            }
-                            else
-                            {
-                                // HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32 == "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
-                            }
-                        }
+                        // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+                        result = localServer32.Split(' ')[0];
+                    }
+
+                    // Try alternative
+                    // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
+                    string localServer64 = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Classes\CLSID\{classId}\LocalServer32", null);
+                    if (!string.IsNullOrEmpty(localServer64))
+                    {
+                        // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+                        result = localServer64.Split(' ')[0];
                     }
                 }
             }
@@ -75,12 +70,22 @@ namespace Chem4Word.Shared
             return result;
         }
 
-        private static RegistryKey OpenRegistryKey(RegistryKey rootKey, string path)
+        private static string GetRegistryValue(RegistryKey rootKey, string path, string value)
         {
-            RegistryKey rk = rootKey;
-            rk.OpenSubKey(path, false);
+            string result = null;
 
-            return rk;
+            RegistryKey rk = rootKey;
+            rk = rk.OpenSubKey(path, false);
+            if (rk != null)
+            {
+                result = rk.GetValue(value) as string;
+            }
+            else
+            {
+                Debug.WriteLine("");
+            }
+
+            return result;
         }
 
         private static string GetFromKnownPathSearch()
