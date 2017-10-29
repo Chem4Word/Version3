@@ -53,7 +53,7 @@ namespace Chem4Word.WebServices
             }
 
             TimeSpan ts = DateTime.Now - started;
-            Telemetry.Write(module, "Verbose", "Duration " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
+            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
 
             return result;
         }
@@ -154,7 +154,7 @@ namespace Chem4Word.WebServices
             }
 
             TimeSpan ts = DateTime.Now - started;
-            Telemetry.Write(module, "Verbose", "Duration " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
+            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
 
             return result;
         }
@@ -216,7 +216,7 @@ namespace Chem4Word.WebServices
             }
 
             TimeSpan ts = DateTime.Now - started;
-            Telemetry.Write(module, "Verbose", "Duration " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
+            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
 
             return result;
         }

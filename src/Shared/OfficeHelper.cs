@@ -42,30 +42,43 @@ namespace Chem4Word.Shared
                 string classId = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Classes\{currentVersion}\CLSID", null);
                 if (!string.IsNullOrEmpty(classId))
                 {
-                    // Try Wow6432Node
+                    // Try Wow6432Node first
                     // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
                     string localServer32 = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Wow6432Node\Classes\CLSID\{classId}\LocalServer32", null);
                     if (!string.IsNullOrEmpty(localServer32))
                     {
                         // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+                        //    or  "C:\Program Files\Microsoft Office\Root\Office16\WINWORD.EXE" /Automation
                         result = localServer32.Split(' ')[0];
                     }
 
-                    // Try alternative
-                    // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
-                    string localServer64 = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Classes\CLSID\{classId}\LocalServer32", null);
-                    if (!string.IsNullOrEmpty(localServer64))
+                    if (string.IsNullOrEmpty(result))
                     {
-                        // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
-                        result = localServer64.Split(' ')[0];
+                        // Try alternative
+                        // Get HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{000209FF-0000-0000-C000-000000000046}\LocalServer32
+                        string localServer64 = GetRegistryValue(Registry.LocalMachine, $@"SOFTWARE\Classes\CLSID\{classId}\LocalServer32", null);
+                        if (!string.IsNullOrEmpty(localServer64))
+                        {
+                            // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
+                            //    or  "C:\Program Files\Microsoft Office\Root\Office16\WINWORD.EXE" /Automation
+                            result = localServer64.Split(' ')[0];
+                        }
                     }
                 }
             }
+
+            return result;
+        }
+
+        private static string GetFromRegistryMethod3()
+        {
+            string result = null;
 
             // OR
 
             // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files\Microsoft Office\root\Office16\"
             // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files (x86)\Microsoft Office\root\Office16\"
+
 
             return result;
         }
@@ -184,23 +197,12 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            string name = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
+            string path = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
 
-            // 1. Look inside CURRENT_USER:
-            RegistryKey mainKey = Registry.CurrentUser;
-            mainKey = mainKey.OpenSubKey(name, false);
-
-            if (mainKey == null)
+            result = GetRegistryValue(Registry.LocalMachine, path, null);
+            if (string.IsNullOrEmpty(result))
             {
-                //2. Look inside LOCAL_MACHINE:
-                mainKey = Registry.LocalMachine;
-                mainKey = mainKey.OpenSubKey(name, false);
-            }
-
-            if (mainKey != null)
-            {
-                string path = mainKey.GetValue(string.Empty).ToString();
-                result = path;
+                result = GetRegistryValue(Registry.CurrentUser, path, null);
             }
 
             return result;

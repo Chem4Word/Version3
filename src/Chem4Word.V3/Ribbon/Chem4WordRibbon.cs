@@ -76,7 +76,7 @@ namespace Chem4Word
         private void OnRenderAsButtonClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             Word.Application app = Globals.Chem4WordV3.Application;
             Word.Document doc = app.ActiveDocument;
@@ -197,7 +197,7 @@ namespace Chem4Word
         private void AddDynamicMenuItems()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 ShowAsMenu.Items.Clear();
@@ -316,7 +316,7 @@ namespace Chem4Word
         private void OnDrawOrEditClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             PerformEdit();
             AfterButtonChecks(sender as RibbonButton);
@@ -325,7 +325,7 @@ namespace Chem4Word
         private void OnOptionsClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1309,7 +1309,7 @@ namespace Chem4Word
         private void OnViewCmlClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1347,7 +1347,7 @@ namespace Chem4Word
         private void OnImportClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             InsertFile();
             AfterButtonChecks(sender as RibbonButton);
@@ -1356,7 +1356,7 @@ namespace Chem4Word
         private void OnExportClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             ExportFile();
             AfterButtonChecks(sender as RibbonButton);
@@ -1428,7 +1428,7 @@ namespace Chem4Word
         private void OnEditLabelsClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1484,7 +1484,7 @@ namespace Chem4Word
         private void OnViewAsItemsLoading(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1500,7 +1500,7 @@ namespace Chem4Word
         private void OnSearchItemsLoading(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1532,7 +1532,7 @@ namespace Chem4Word
         private void OnSearcherClick(object sender, RibbonControlEventArgs ribbonControlEventArgs)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1647,7 +1647,7 @@ namespace Chem4Word
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1705,7 +1705,7 @@ namespace Chem4Word
         private void OnNavigatorClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1812,7 +1812,7 @@ namespace Chem4Word
         private void OnLibraryClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1928,7 +1928,7 @@ namespace Chem4Word
         private void OnSeparateClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             Word.Application app = Globals.Chem4WordV3.Application;
             Word.Document doc = app.ActiveDocument;
@@ -2035,7 +2035,7 @@ namespace Chem4Word
         private void OnUpdateClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -2057,7 +2057,7 @@ namespace Chem4Word
         private void OnShowAboutClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -2080,7 +2080,7 @@ namespace Chem4Word
         private void OnShowHomeClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -2096,7 +2096,7 @@ namespace Chem4Word
         private void OnCheckForUpdatesClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -2117,7 +2117,7 @@ namespace Chem4Word
         private void OnReadManualClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {

@@ -62,7 +62,7 @@ namespace Chem4Word.UI
         private void OnChemDoodleClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -77,7 +77,7 @@ namespace Chem4Word.UI
         private void OnTeamsiteLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -92,7 +92,7 @@ namespace Chem4Word.UI
         private void OnFacebookLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -107,7 +107,7 @@ namespace Chem4Word.UI
         private void OnCambridgeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -122,7 +122,7 @@ namespace Chem4Word.UI
         private void OnSponsorLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -137,7 +137,7 @@ namespace Chem4Word.UI
         private void OnSourceCodeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {

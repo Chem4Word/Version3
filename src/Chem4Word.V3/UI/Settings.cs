@@ -49,7 +49,7 @@ namespace Chem4Word.UI
         private void OnOkClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -223,7 +223,7 @@ namespace Chem4Word.UI
         private void OnSetDefaultsClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -296,7 +296,7 @@ namespace Chem4Word.UI
         private void OnEditorSettingsClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -313,7 +313,7 @@ namespace Chem4Word.UI
         private void OnRendererSettingsClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -330,7 +330,7 @@ namespace Chem4Word.UI
         private void OnSearcherSettingsClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -442,7 +442,7 @@ namespace Chem4Word.UI
         private void OnGalleryImportClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -554,7 +554,7 @@ namespace Chem4Word.UI
         private void OnClearLibraryClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -590,7 +590,7 @@ namespace Chem4Word.UI
         private void OnOpenSettingsFolderClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -605,7 +605,7 @@ namespace Chem4Word.UI
         private void OnOpenLibraryFolderClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -620,7 +620,7 @@ namespace Chem4Word.UI
         private void OnOpenPlugInFolderClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {

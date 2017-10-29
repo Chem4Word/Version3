@@ -75,7 +75,7 @@ namespace Chem4Word.UI
         private void OnReleasesPageLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -91,7 +91,7 @@ namespace Chem4Word.UI
         private void OnRichTextBoxLinkClicked(object sender, LinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -122,7 +122,7 @@ namespace Chem4Word.UI
         private void OnUpdateNowClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -149,7 +149,7 @@ namespace Chem4Word.UI
         private void OnUpdateLaterClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {

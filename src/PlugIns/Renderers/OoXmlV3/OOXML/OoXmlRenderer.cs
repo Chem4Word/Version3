@@ -266,7 +266,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             Debug.WriteLine("Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
             _telemetry.Write(module, "Verbose", $"{_chemistryModel.Molecules.Count} molecules contained {_chemistryModel.AllAtoms.Count} atoms and {_chemistryModel.AllBonds.Count} bonds");
-            _telemetry.Write(module, "Verbose", "Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            _telemetry.Write(module, "Timing", "Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
 
             ShutDownProgress(pb);
 
