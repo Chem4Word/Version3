@@ -10,9 +10,14 @@ namespace Chem4Word.Shared
 {
     public static class OfficeHelper
     {
+        private static string WinwordAppPath = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
+
+        private static string InstallRootTemplate64 = @"SOFTWARE\Microsoft\Office\{0}.0\Word\InstallRoot";
+        private static string InstallRootTemplate32 = @"SOFTWARE\Wow6432Node\Microsoft\Office\{0}.0\Word\InstallRoot";
+
         private static int[] OfficeVersions = { 16, 15, 14, 17 };
 
-        private static string[] templates =
+        private static string[] FileSearchTemplates =
         {
             @"Microsoft Office\Office{0}",
             @"Microsoft Office\root\Office{0}",
@@ -47,12 +52,10 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            string path = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
-
-            result = GetRegistryValue(Registry.LocalMachine, path, null);
+            result = GetRegistryValue(Registry.LocalMachine, WinwordAppPath, null);
             if (string.IsNullOrEmpty(result))
             {
-                result = GetRegistryValue(Registry.CurrentUser, path, null);
+                result = GetRegistryValue(Registry.CurrentUser, WinwordAppPath, null);
             }
 
             return result;
@@ -110,15 +113,12 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            string template64 = @"SOFTWARE\Microsoft\Office\{0}.0\Word\InstallRoot";
-            string template32 = @"SOFTWARE\Wow6432Node\Microsoft\Office\{0}.0\Word\InstallRoot";
-
             // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files\Microsoft Office\root\Office16\"
             // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files (x86)\Microsoft Office\root\Office16\"
 
             foreach (var version in OfficeVersions)
             {
-                string search = string.Format(template32, version);
+                string search = string.Format(InstallRootTemplate32, version);
                 string path = GetRegistryValue(Registry.LocalMachine, search, "Path");
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -132,7 +132,7 @@ namespace Chem4Word.Shared
                     }
                 }
 
-                search = string.Format(template64, version);
+                search = string.Format(InstallRootTemplate64, version);
                 path = GetRegistryValue(Registry.LocalMachine, search, "Path");
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -174,7 +174,7 @@ namespace Chem4Word.Shared
 
             foreach (var version in OfficeVersions)
             {
-                foreach (var template in templates)
+                foreach (var template in FileSearchTemplates)
                 {
                     string programFiles;
                     if (Environment.Is64BitOperatingSystem)
