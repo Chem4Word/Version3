@@ -10,12 +10,20 @@ namespace Chem4Word.Shared
 {
     public static class OfficeHelper
     {
+        private static int[] OfficeVersions = { 16, 15, 14, 17 };
+
+        private static string[] templates =
+        {
+            @"Microsoft Office\Office{0}",
+            @"Microsoft Office\root\Office{0}",
+            @"Microsoft Office {0}\Client{1}\Root\Office{0}"
+        };
 
         public static string GetWinWordPath()
         {
             string result = null;
 
-            //result = GetFromRegistryMethod1();
+            result = GetFromRegistryMethod1();
 
             if (result == null)
             {
@@ -24,7 +32,27 @@ namespace Chem4Word.Shared
 
             if (result == null)
             {
+                result = GetFromRegistryMethod3();
+            }
+
+            if (result == null)
+            {
                 result = GetFromKnownPathSearch();
+            }
+
+            return result;
+        }
+
+        private static string GetFromRegistryMethod1()
+        {
+            string result = null;
+
+            string path = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
+
+            result = GetRegistryValue(Registry.LocalMachine, path, null);
+            if (string.IsNullOrEmpty(result))
+            {
+                result = GetRegistryValue(Registry.CurrentUser, path, null);
             }
 
             return result;
@@ -49,7 +77,11 @@ namespace Chem4Word.Shared
                     {
                         // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
                         //    or  "C:\Program Files\Microsoft Office\Root\Office16\WINWORD.EXE" /Automation
-                        result = localServer32.Split(' ')[0];
+                        string temp = localServer32.Split('/')[0].Trim();
+                        if (File.Exists(temp))
+                        {
+                            result = temp;
+                        }
                     }
 
                     if (string.IsNullOrEmpty(result))
@@ -61,7 +93,11 @@ namespace Chem4Word.Shared
                         {
                             // Expect "C:\PROGRA~2\MICROS~1\Office15\WINWORD.EXE /Automation"
                             //    or  "C:\Program Files\Microsoft Office\Root\Office16\WINWORD.EXE" /Automation
-                            result = localServer64.Split(' ')[0];
+                            string temp = localServer64.Split('/')[0].Trim();
+                            if (File.Exists(temp))
+                            {
+                                result = temp;
+                            }
                         }
                     }
                 }
@@ -74,11 +110,42 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            // OR
+            string template64 = @"SOFTWARE\Microsoft\Office\{0}.0\Word\InstallRoot";
+            string template32 = @"SOFTWARE\Wow6432Node\Microsoft\Office\{0}.0\Word\InstallRoot";
 
             // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files\Microsoft Office\root\Office16\"
             // HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\14.0\Word\InstallRoot == "C:\Program Files (x86)\Microsoft Office\root\Office16\"
 
+            foreach (var version in OfficeVersions)
+            {
+                string search = string.Format(template32, version);
+                string path = GetRegistryValue(Registry.LocalMachine, search, "Path");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    if (Directory.Exists(path))
+                    {
+                        if (File.Exists(Path.Combine(path, "WinWord.exe")))
+                        {
+                            result = Path.Combine(path, "WinWord.exe");
+                            break;
+                        }
+                    }
+                }
+
+                search = string.Format(template64, version);
+                path = GetRegistryValue(Registry.LocalMachine, search, "Path");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    if (Directory.Exists(path))
+                    {
+                        if (File.Exists(Path.Combine(path, "WinWord.exe")))
+                        {
+                            result = Path.Combine(path, "WinWord.exe");
+                            break;
+                        }
+                    }
+                }
+            }
 
             return result;
         }
@@ -105,15 +172,7 @@ namespace Chem4Word.Shared
         {
             string result = null;
 
-            string[] templates =
-            {
-                @"Microsoft Office\Office{0}",
-                @"Microsoft Office\root\Office{0}",
-                @"Microsoft Office {0}\Client{1}\Root\Office{0}"
-            };
-            int[] versions = {16, 15, 14, 17};
-
-            foreach (var version in versions)
+            foreach (var version in OfficeVersions)
             {
                 foreach (var template in templates)
                 {
@@ -191,21 +250,6 @@ namespace Chem4Word.Shared
             }
 
             return foundAt;
-        }
-
-        private static string GetFromRegistryMethod1()
-        {
-            string result = null;
-
-            string path = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
-
-            result = GetRegistryValue(Registry.LocalMachine, path, null);
-            if (string.IsNullOrEmpty(result))
-            {
-                result = GetRegistryValue(Registry.CurrentUser, path, null);
-            }
-
-            return result;
         }
 
         public static int GetWinWordVersion(string path = null)
