@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Chem4Word.Shared;
 
 namespace Chem4Word.Telemetry
 {
@@ -108,118 +109,8 @@ namespace Chem4Word.Telemetry
 
             try
             {
-                #region Get Office Product String
-
-                string officeProductName = "";
-
-                RegistryKey localMachine = Registry.LocalMachine;
-
-                #region Get Guid
-
-                string value1 = string.Empty;
-
-                RegistryKey key1 = Registry.ClassesRoot.OpenSubKey("Word.Document");
-                if (key1 != null)
-                {
-                    RegistryKey current = key1.OpenSubKey("CurVer");
-                    if (current != null)
-                    {
-                        value1 = current.GetValue("").ToString();
-                    }
-                }
-                //Debug.WriteLine(@"Word.Document\CurVer\(default) --> " + value1);
-
-                string value2 = string.Empty;
-
-                if (!string.IsNullOrEmpty(value1))
-                {
-                    RegistryKey key2 = Registry.ClassesRoot.OpenSubKey(value1);
-                    if (key2 != null)
-                    {
-                        RegistryKey icon = key2.OpenSubKey("DefaultIcon");
-                        if (icon != null)
-                        {
-                            value2 = icon.GetValue("").ToString();
-                        }
-                    }
-                    //Debug.WriteLine(value1 + @"\DefaultIcon\(default) --> " + value2);
-                }
-
-                if (!string.IsNullOrEmpty(value2))
-                {
-                    int start = value2.IndexOf("{", StringComparison.Ordinal);
-                    int end = value2.IndexOf("}", StringComparison.Ordinal);
-                    if (end > start)
-                    {
-                        string officeGuid = value2.Substring(start, end - start + 1);
-                        Debug.WriteLine("Office Guid: " + officeGuid);
-
-                        officeProductName = DecodeOfficeGuid(officeGuid);
-                    }
-                }
-
-                #endregion Get Guid
-
-                #endregion Get Office Product String
-
-                #region Get Word Version
-
-                string wordVersionNumber = "";
-                string name = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
-
-                // 1. looks inside CURRENT_USER:
-                RegistryKey mainKey = Registry.CurrentUser;
-                mainKey = mainKey.OpenSubKey(name, false);
-
-                if (mainKey == null)
-                {
-                    //2. looks inside LOCAL_MACHINE:
-                    mainKey = Registry.LocalMachine;
-                    mainKey = mainKey.OpenSubKey(name, false);
-                }
-
-                if (mainKey != null)
-                {
-                    string path = mainKey.GetValue(string.Empty).ToString();
-                    try
-                    {
-                        path = path.Replace("\"", "");
-                        FileVersionInfo fi = FileVersionInfo.GetVersionInfo(path);
-                        wordVersionNumber = fi.FileVersion;
-
-                        // Handle product not found in uninstall section
-                        if (string.IsNullOrEmpty(officeProductName))
-                        {
-                            officeProductName = fi.ProductName;
-                        }
-                        // Get a bit more information about this version
-                        if (officeProductName.Contains("-0000000FF1CE}"))
-                        {
-                            officeProductName += Environment.NewLine + fi.ProductName;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                    }
-
-                    // Generate single number from major of word's version number
-                    WordVersion = GetOfficeVersionNumber(wordVersionNumber);
-
-                    string sp = GetOfficeServicePack(wordVersionNumber);
-                    if (!string.IsNullOrEmpty(sp))
-                    {
-                        officeProductName = officeProductName + sp;
-                    }
-
-                    WordProduct = (officeProductName + " [" + wordVersionNumber + "]");
-                }
-                else
-                {
-                    WordProduct = "Microsoft Word not found !";
-                }
-
-                #endregion Get Word Version
+                WordProduct = OfficeHelper.GetWordProduct();
+                WordVersion = OfficeHelper.GetWinWordVersion();
             }
             catch (Exception ex)
             {

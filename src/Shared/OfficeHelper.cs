@@ -3,7 +3,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Security.AccessControl;
 using Microsoft.Win32;
 
 namespace Chem4Word.Shared
@@ -24,7 +23,393 @@ namespace Chem4Word.Shared
             @"Microsoft Office {0}\Client{1}\Root\Office{0}"
         };
 
-        public static string GetWinWordPath()
+        public static int GetWinWordVersion(string path = null)
+        {
+            string wordVersionNumber = String.Empty;
+
+            if (path == null)
+            {
+                path = GetWinWordPath();
+            }
+            if (!string.IsNullOrEmpty(path))
+            {
+                try
+                {
+                    // Strip off any quotes
+                    path = path.Replace("\"", "");
+                    FileVersionInfo fi = FileVersionInfo.GetVersionInfo(path);
+                    wordVersionNumber = fi.FileVersion;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+
+            return HumanOfficeVersion(wordVersionNumber);
+        }
+
+        public static string GetWordProduct()
+        {
+            string result = "";
+
+            string officeProductName = GetOfficeProductName();
+
+            string pathToWinword = GetWinWordPath();
+            FileVersionInfo fi = FileVersionInfo.GetVersionInfo(pathToWinword);
+            string wordVersionNumber = fi.FileVersion;
+
+            if (string.IsNullOrEmpty(officeProductName))
+            {
+                officeProductName = fi.ProductName;
+            }
+
+            string servicePack = GetOfficeServicePack(fi.FileVersion);
+            if (!string.IsNullOrEmpty(servicePack))
+            {
+                officeProductName = officeProductName + " " + servicePack;
+            }
+
+            // Get a bit more information about this version
+            if (officeProductName.Contains("-0000000FF1CE}"))
+            {
+                officeProductName += Environment.NewLine + fi.ProductName;
+            }
+
+            result = officeProductName + " [" + wordVersionNumber + "]";
+
+            return result;
+        }
+
+        public static string GetOfficeProductName()
+        {
+            string result = null;
+
+            // Get HKEY_CLASSES_ROOT\Word.Document\CurVer
+            string currentVersion = GetRegistryValue(Registry.ClassesRoot, @"Word.Document\CurVer", null);
+            if (!string.IsNullOrEmpty(currentVersion))
+            {
+                // Get HKEY_CLASSES_ROOT\Word.Document.12\DefaultIcon
+                string defaultIcon = GetRegistryValue(Registry.ClassesRoot, $@"{currentVersion}\DefaultIcon", null);
+                if (!string.IsNullOrEmpty(defaultIcon))
+                {
+                    int start = defaultIcon.IndexOf("{", StringComparison.Ordinal);
+                    int end = defaultIcon.IndexOf("}", StringComparison.Ordinal);
+                    if (end > start)
+                    {
+                        string officeGuid = defaultIcon.Substring(start, end - start + 1);
+                        Debug.WriteLine("Office Guid: " + officeGuid);
+
+                        result = DecodeOfficeGuid(officeGuid);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static string DecodeOfficeGuid(string officeGuid)
+        {
+            // Office 2007 https://support.microsoft.com/en-us/kb/928516
+            // Office 2010 https://support.microsoft.com/en-us/kb/2186281
+            // Office 2013 https://support.microsoft.com/en-us/kb/2786054
+            // Office 2016 https://support.microsoft.com/en-us/kb/3120274
+
+            //           1         2         3
+            // 01234567890123456789012345678901234567
+            // {BRMMmmmm-PPPP-LLLL-p000-D000000FF1CE}
+
+            // The following table describes the characters of the GUID.
+            // B    Release version 0-9, A-F
+            // R    Release type 0-9, A-F
+            // MM   Major version 0-9
+            // mmmm Minor version 0-9
+            // PPPP Product ID 0-9, A-F
+            // LLLL Language identifier 0-9, A-F
+            // p    0 for x86, 1 for x64 0-1
+            // 000  Reserved for future use, currently 0 0
+            // D    1 for debug, 0 for ship 0-1
+            // 000000FF1CE Office Family ID
+
+            string result = "";
+
+            string releaseVersion = officeGuid.Substring(1, 1);
+            string releaseType = officeGuid.Substring(2, 1);
+            string majorVersion = officeGuid.Substring(3, 2);
+            string minorVersion = officeGuid.Substring(5, 4);
+            string productId = officeGuid.Substring(10, 4);
+            string language = officeGuid.Substring(15, 4);
+            string bitFlag = officeGuid.Substring(20, 1);
+            string debugFlag = officeGuid.Substring(25, 1);
+
+            int major = int.Parse(majorVersion);
+
+            switch (major)
+            {
+                case 12:
+
+                    #region Office 2007
+
+                    switch (productId)
+                    {
+                        case "0011":
+                            result = "Microsoft Office Professional Plus 2007";
+                            break;
+
+                        case "0012":
+                            result = "Microsoft Office Standard 2007";
+                            break;
+
+                        case "0013":
+                            result = "Microsoft Office Basic 2007";
+                            break;
+
+                        case "0014":
+                            result = "Microsoft Office Professional 2007";
+                            break;
+
+                        case "001B":
+                            result = "Microsoft Office Word 2007";
+                            break;
+
+                        case "002E":
+                            result = "Microsoft Office Ultimate 2007";
+                            break;
+
+                        case "002F":
+                            result = "Microsoft Office Home and Student 2007";
+                            break;
+
+                        case "0030":
+                            result = "Microsoft Office Enterprise 2007";
+                            break;
+
+                        case "0031":
+                            result = "Microsoft Office Professional Hybrid 2007";
+                            break;
+
+                        case "0033":
+                            result = "Microsoft Office Personal 2007";
+                            break;
+
+                        case "0035":
+                            result = "Microsoft Office Professional Hybrid 2007";
+                            break;
+
+                        case "00BA":
+                            result = "Microsoft Office Groove 2007";
+                            break;
+
+                        case "00CA":
+                            result = "Microsoft Office Small Business 2007";
+                            break;
+
+                        default:
+                            result = "Microsoft Office 2007 " + officeGuid;
+                            break;
+                    }
+                    break;
+
+                #endregion Office 2007
+
+                case 14:
+
+                    #region Office 2010
+
+                    switch (productId)
+                    {
+                        case "0011":
+                            result = "Microsoft Office Professional Plus 2010";
+                            break;
+
+                        case "0012":
+                            result = "Microsoft Office Standard 2010";
+                            break;
+
+                        case "0013":
+                            result = "Microsoft Office Home and Business 2010";
+                            break;
+
+                        case "0014":
+                            result = "Microsoft Office Professional 2010";
+                            break;
+
+                        case "001B":
+                            result = "Microsoft Word 2010";
+                            break;
+
+                        case "002F":
+                            result = "Microsoft Office Home and Student 2010";
+                            break;
+
+                        case "003D":
+                            result = "Microsoft Office Home and Student 2010";
+                            break;
+
+                        case "008B":
+                            result = "Microsoft Office Small Business Basics 2010";
+                            break;
+
+                        case "011D":
+                            result = "Microsoft Office Professional Plus Subscription 2010";
+                            break;
+
+                        default:
+                            result = "Microsoft Office 2010 " + officeGuid;
+                            break;
+                    }
+                    break;
+
+                #endregion Office 2010
+
+                case 15:
+
+                    #region Office 2013
+
+                    switch (productId)
+                    {
+                        case "000F":
+                            result = "Microsoft Office 365 (2013) Pro Plus";
+                            break;
+
+                        case "0011":
+                            result = "Microsoft Office Professional Plus 2013";
+                            break;
+
+                        case "0012":
+                            result = "Microsoft Office Standard 2013";
+                            break;
+
+                        case "0013":
+                            result = "Microsoft Office Home and Business 2013";
+                            break;
+
+                        case "0014":
+                            result = "Microsoft Office Professional 2013";
+                            break;
+
+                        case "001B":
+                            result = "Microsoft Word 2013";
+                            break;
+
+                        case "002F":
+                            result = "Microsoft Office Home and Student 2013";
+                            break;
+
+                        default:
+                            result = "Microsoft Office 2013 " + officeGuid;
+                            break;
+                    }
+                    break;
+
+                #endregion Office 2013
+
+                case 16:
+
+                    #region Office 2016
+
+                    switch (productId)
+                    {
+                        case "000F":
+                            result = "Microsoft Office 2016 Professional Plus";
+                            break;
+
+                        case "0011":
+                            result = "Microsoft Office Professional Plus 2016";
+                            break;
+
+                        case "0012":
+                            result = "Microsoft Office Standard 2016";
+                            break;
+
+                        case "001B":
+                            result = "Microsoft Word 2016";
+                            break;
+
+                        default:
+                            result = "Microsoft Office 2016 " + officeGuid;
+                            break;
+                    }
+                    break;
+
+                    #endregion Office 2016
+            }
+
+            #region 32 / 64 bit
+
+            if (bitFlag.Equals("1"))
+            {
+                result += " 64bit";
+            }
+            else
+            {
+                result += " 32bit";
+            }
+
+            #endregion 32 / 64 bit
+
+            return result;
+        }
+
+        private static string GetOfficeServicePack(string wordVersionString)
+        {
+            // Source: https://buildnumbers.wordpress.com/office/
+            // Plus correction from https://support.microsoft.com/en-us/kb/2121559
+            string servicePack = "";
+            string[] parts = wordVersionString.Split('.');
+            int major = int.Parse(parts[0]);
+            int build = int.Parse(parts[2]);
+            switch (major)
+            {
+                case 12: // Word 2007
+                    if (build >= 6213)
+                    {
+                        servicePack = "SP1";
+                    }
+                    if (build >= 6425)
+                    {
+                        servicePack = "SP2";
+                    }
+                    if (build >= 6607)
+                    {
+                        servicePack = "SP3";
+                    }
+                    break;
+
+                case 14: // Word 2010
+                    if (build >= 6029)
+                    {
+                        servicePack = "SP1";
+                    }
+                    if (build >= 7015)
+                    {
+                        servicePack = "SP2";
+                    }
+                    break;
+
+                case 15: // Word 2013
+                    if (build >= 4569)
+                    {
+                        servicePack = "SP1";
+                    }
+                    break;
+
+                case 16: // Word 2016
+                    break;
+
+                case 17: // Word 2019
+                    break;
+            }
+
+            if (!string.IsNullOrEmpty(servicePack))
+            {
+                servicePack = " " + servicePack;
+            }
+
+            return servicePack;
+        }
+
+        private static string GetWinWordPath()
         {
             string result = null;
 
@@ -170,6 +555,8 @@ namespace Chem4Word.Shared
 
         private static string GetFromKnownPathSearch()
         {
+            // http://www.ryadel.com/en/microsoft-office-default-installation-folders-versions/
+
             string result = null;
 
             foreach (var version in OfficeVersions)
@@ -252,32 +639,6 @@ namespace Chem4Word.Shared
             return foundAt;
         }
 
-        public static int GetWinWordVersion(string path = null)
-        {
-            string wordVersionNumber = String.Empty;
-
-            if (path == null)
-            {
-                path = GetWinWordPath();
-            }
-            if (!string.IsNullOrEmpty(path))
-            {
-                try
-                {
-                    // Strip off any quotes
-                    path = path.Replace("\"", "");
-                    FileVersionInfo fi = FileVersionInfo.GetVersionInfo(path);
-                    wordVersionNumber = fi.FileVersion;
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                }
-            }
-
-            return HumanOfficeVersion(wordVersionNumber);
-        }
-
         // Generate Human version number from major of word's internal version number
         private static int HumanOfficeVersion(string wordVersionString)
         {
@@ -312,6 +673,5 @@ namespace Chem4Word.Shared
             }
             return version;
         }
-
     }
 }
