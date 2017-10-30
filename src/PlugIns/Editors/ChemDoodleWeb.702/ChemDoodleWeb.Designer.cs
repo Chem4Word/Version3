@@ -68,7 +68,7 @@
             this.browser.ScrollBarsEnabled = false;
             this.browser.Size = new System.Drawing.Size(710, 425);
             this.browser.TabIndex = 0;
-            this.browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.browser_DocumentCompleted);
+            this.browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.Browser_DocumentCompleted);
             // 
             // btnCancel
             // 

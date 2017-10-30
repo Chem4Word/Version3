@@ -217,7 +217,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
         }
 
-        private void browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
