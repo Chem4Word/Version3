@@ -33,13 +33,13 @@
             this.labelTitle = new System.Windows.Forms.Label();
             this.labelVersion = new System.Windows.Forms.Label();
             this.labelBody1 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelChemDoodleWeb = new System.Windows.Forms.Label();
             this.pictureBoxChemDoodle = new System.Windows.Forms.PictureBox();
             this.linkToTeamSite = new System.Windows.Forms.LinkLabel();
             this.linkToFacebook = new System.Windows.Forms.LinkLabel();
             this.linkToCambridge = new System.Windows.Forms.LinkLabel();
             this.linkToSponsor = new System.Windows.Forms.LinkLabel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelChem4WordIsFree = new System.Windows.Forms.Label();
             this.linkToSourceCode = new System.Windows.Forms.LinkLabel();
             this.linkToYouTube = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -93,16 +93,16 @@
             this.labelBody1.TabIndex = 3;
             this.labelBody1.Text = resources.GetString("labelBody1.Text");
             // 
-            // label1
+            // labelChemDoodleWeb
             // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(4, 246);
-            this.label1.MaximumSize = new System.Drawing.Size(408, 246);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(370, 30);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Chem4Word incorporates an on-line Open Source HTML5 Chemistry Editor - ChemDoodle" +
+            this.labelChemDoodleWeb.BackColor = System.Drawing.Color.Transparent;
+            this.labelChemDoodleWeb.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelChemDoodleWeb.Location = new System.Drawing.Point(4, 246);
+            this.labelChemDoodleWeb.MaximumSize = new System.Drawing.Size(408, 246);
+            this.labelChemDoodleWeb.Name = "labelChemDoodleWeb";
+            this.labelChemDoodleWeb.Size = new System.Drawing.Size(370, 30);
+            this.labelChemDoodleWeb.TabIndex = 4;
+            this.labelChemDoodleWeb.Text = "Chem4Word incorporates an on-line Open Source HTML5 Chemistry Editor - ChemDoodle" +
     " Web Components";
             // 
             // pictureBoxChemDoodle
@@ -166,16 +166,16 @@
             this.linkToSponsor.Text = "Visit our page on our sponsor\'s web site (The .NET Foundation)";
             this.linkToSponsor.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnSponsorLinkClicked);
             // 
-            // label2
+            // labelChem4WordIsFree
             // 
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(4, 385);
-            this.label2.MaximumSize = new System.Drawing.Size(560, 246);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(496, 53);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "The Chemistry Add-In for Microsoft Word is available for free.  Your feedback is " +
+            this.labelChem4WordIsFree.BackColor = System.Drawing.Color.Transparent;
+            this.labelChem4WordIsFree.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelChem4WordIsFree.Location = new System.Drawing.Point(4, 385);
+            this.labelChem4WordIsFree.MaximumSize = new System.Drawing.Size(560, 246);
+            this.labelChem4WordIsFree.Name = "labelChem4WordIsFree";
+            this.labelChem4WordIsFree.Size = new System.Drawing.Size(496, 53);
+            this.labelChem4WordIsFree.TabIndex = 10;
+            this.labelChem4WordIsFree.Text = "The Chemistry Add-In for Microsoft Word is available for free.  Your feedback is " +
     "important to us. Join our Facebook group to let us know if you have any suggesti" +
     "ons or problems using it.";
             // 
@@ -211,13 +211,13 @@
             this.Controls.Add(this.linkToYouTube);
             this.Controls.Add(this.labelTitle);
             this.Controls.Add(this.linkToSourceCode);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelChem4WordIsFree);
             this.Controls.Add(this.linkToSponsor);
             this.Controls.Add(this.linkToCambridge);
             this.Controls.Add(this.linkToFacebook);
             this.Controls.Add(this.linkToTeamSite);
             this.Controls.Add(this.pictureBoxChemDoodle);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelChemDoodleWeb);
             this.Controls.Add(this.labelBody1);
             this.Controls.Add(this.labelVersion);
             this.Controls.Add(this.pictureBox1);
@@ -243,13 +243,13 @@
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Label labelVersion;
         private System.Windows.Forms.Label labelBody1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelChemDoodleWeb;
         private System.Windows.Forms.PictureBox pictureBoxChemDoodle;
         private System.Windows.Forms.LinkLabel linkToTeamSite;
         private System.Windows.Forms.LinkLabel linkToFacebook;
         private System.Windows.Forms.LinkLabel linkToCambridge;
         private System.Windows.Forms.LinkLabel linkToSponsor;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelChem4WordIsFree;
         private System.Windows.Forms.LinkLabel linkToSourceCode;
         private System.Windows.Forms.LinkLabel linkToYouTube;
     }

@@ -26,13 +26,14 @@ namespace Chem4Word.UI
                 labelTitle.Parent = pictureBox1;
                 labelVersion.Parent = pictureBox1;
                 labelBody1.Parent = pictureBox1;
-                label1.Parent = pictureBox1;
-                label2.Parent = pictureBox1;
+                labelChemDoodleWeb.Parent = pictureBox1;
+                labelChem4WordIsFree.Parent = pictureBox1;
                 linkToCambridge.Parent = pictureBox1;
                 linkToSourceCode.Parent = pictureBox1;
                 linkToFacebook.Parent = pictureBox1;
                 linkToSponsor.Parent = pictureBox1;
                 linkToTeamSite.Parent = pictureBox1;
+                linkToYouTube.Parent = pictureBox1;
             }
             catch (Exception ex)
             {
