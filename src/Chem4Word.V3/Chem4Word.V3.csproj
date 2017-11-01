@@ -424,6 +424,7 @@
     <Content Include="Resources\Button Images\Office-2016\Edit-Labels.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Open.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Save.png" />
+    <Content Include="Resources\Button Images\Office-2016\Gallery-Delete.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Find.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Save.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Toggle.png" />

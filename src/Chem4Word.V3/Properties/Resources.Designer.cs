@@ -167,7 +167,7 @@ namespace Chem4Word.Properties {
         ///      &lt;cml:atom id=&quot;a0&quot; elementType=&quot;C&quot; x2=&quot;329.5&quot; y2=&quot;182.5&quot; /&gt;
         ///    &lt;/cml:atomArray&gt;
         ///    &lt;cml:bondArray&gt;&lt;/cml:bondArray&gt;
-        ///    &lt;cml:formula concise=&quot;C 1 H 4&quot;&gt;&lt;/cml:fo [rest of string was truncated]&quot;;.
+        ///    &lt;cml:formula concise=&quot;C 1 H 4&quot;&gt;&lt;/cml:formula&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EmptyStructure_cml {
             get {
@@ -231,6 +231,16 @@ namespace Chem4Word.Properties {
         internal static System.Drawing.Bitmap Find {
             get {
                 object obj = ResourceManager.GetObject("Find", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Gallery_Delete {
+            get {
+                object obj = ResourceManager.GetObject("Gallery_Delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -491,7 +501,7 @@ namespace Chem4Word.Properties {
         ///  &lt;cml:molecule id=&quot;m0&quot;&gt;
         ///    &lt;cml:atomArray&gt;
         ///      &lt;cml:atom id=&quot;a0&quot; elementType=&quot;C&quot; x2=&quot;224.047094455266&quot; y2=&quot;185.976299165086&quot; /&gt;
-        ///      &lt;cml:atom id=&quot;a1&quot; elementType=&quot;C&quot; x2=&quot;207.240279628879&quot; y2=&quot;176.27259545 [rest of string was truncated]&quot;;.
+        ///      &lt;cml:atom id=&quot;a1&quot; elementType=&quot;C&quot; x2=&quot;207.240279628879&quot; y2=&quot;176.272595454701&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Testosterone_cml {
             get {
@@ -525,7 +535,7 @@ namespace Chem4Word.Properties {
         ///  &lt;cml:molecule id=&quot;m0&quot; xmlns:cml=&quot;http://www.xml-cml.org/schema&quot;&gt;
         ///    &lt;cml:atomArray&gt;
         ///      &lt;cml:atom id=&quot;a0&quot; elementType=&quot;C&quot; x2=&quot;297&quot; y2=&quot;141&quot; /&gt;
-        ///      &lt;cml:atom id=&quot;a1&quot; elementType=&quot;C&quot; x2=&quot;314.320508075689&quot;  [rest of string was truncated]&quot;;.
+        ///      &lt;cml:atom id=&quot;a1&quot; elementType=&quot;C&quot; x2=&quot;314.320508075689&quot; y2=&quot;1 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TwoSingleBondMolecules_cml {
             get {
