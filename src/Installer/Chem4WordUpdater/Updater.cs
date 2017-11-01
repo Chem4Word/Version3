@@ -17,7 +17,7 @@ namespace Chem4WordUpdater
         private bool _downloadCompleted;
         private string _downloadedFile;
         private string _downloadSource = string.Empty;
-        private bool _closedByUser = false;
+        private bool _userCancelledUpdate = false;
 
         private int _retryCount = 0;
 
@@ -43,7 +43,7 @@ namespace Chem4WordUpdater
         {
             RegistryHelper.WriteAction("Update was cancelled by User");
             timer1.Enabled = false;
-            _closedByUser = true;
+            _userCancelledUpdate = true;
             _webClient.CancelAsync();
             Close();
         }
@@ -68,6 +68,7 @@ namespace Chem4WordUpdater
                     MessageBox.Show($"Error {exitCode} while installing {_downloadSource}", "Chem4Word Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
+                _userCancelledUpdate = true;
                 Close();
             }
         }
@@ -128,7 +129,7 @@ namespace Chem4WordUpdater
         private void OnDownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
             RegistryHelper.WriteAction("Download complete");
-            progressBar1.Value = 0;
+            progressBar1.Value = 100;
 
             if (e.Cancelled)
             {
@@ -165,6 +166,8 @@ namespace Chem4WordUpdater
                 else
                 {
                     _downloadCompleted = true;
+                    UpdateNow.Enabled = false;
+                    Information.Text = "Your update has been downloaded.  It will be automatically installed once all Microsoft Word processes are closed.";
                 }
             }
         }
@@ -207,9 +210,9 @@ namespace Chem4WordUpdater
 
         private void Updater_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_closedByUser)
+            if (!_userCancelledUpdate)
             {
-                
+                e.Cancel = true;
             }
         }
     }
