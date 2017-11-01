@@ -540,6 +540,7 @@
     <Content Include="Resources\Button Images\TrashVista.png" />
     <Content Include="Resources\Button Images\Xml.png" />
     <Content Include="Resources\About Images\ChemDoodleWebBadge.png" />
+    <Content Include="Resources\Button Images\YouTube.png" />
     <Content Include="Resources\EmptyStructure.xml">
       <SubType>Designer</SubType>
     </Content>

@@ -41,6 +41,7 @@
             this.linkToSponsor = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.linkToSourceCode = new System.Windows.Forms.LinkLabel();
+            this.linkToYouTube = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxChemDoodle)).BeginInit();
             this.SuspendLayout();
@@ -133,7 +134,7 @@
             // 
             this.linkToFacebook.AutoSize = true;
             this.linkToFacebook.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkToFacebook.Location = new System.Drawing.Point(4, 441);
+            this.linkToFacebook.Location = new System.Drawing.Point(4, 452);
             this.linkToFacebook.Name = "linkToFacebook";
             this.linkToFacebook.Size = new System.Drawing.Size(143, 14);
             this.linkToFacebook.TabIndex = 7;
@@ -145,7 +146,7 @@
             // 
             this.linkToCambridge.AutoSize = true;
             this.linkToCambridge.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkToCambridge.Location = new System.Drawing.Point(4, 305);
+            this.linkToCambridge.Location = new System.Drawing.Point(4, 322);
             this.linkToCambridge.Name = "linkToCambridge";
             this.linkToCambridge.Size = new System.Drawing.Size(311, 14);
             this.linkToCambridge.TabIndex = 8;
@@ -157,7 +158,7 @@
             // 
             this.linkToSponsor.AutoSize = true;
             this.linkToSponsor.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkToSponsor.Location = new System.Drawing.Point(4, 324);
+            this.linkToSponsor.Location = new System.Drawing.Point(4, 340);
             this.linkToSponsor.Name = "linkToSponsor";
             this.linkToSponsor.Size = new System.Drawing.Size(359, 14);
             this.linkToSponsor.TabIndex = 9;
@@ -169,7 +170,7 @@
             // 
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(4, 374);
+            this.label2.Location = new System.Drawing.Point(4, 385);
             this.label2.MaximumSize = new System.Drawing.Size(560, 246);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(496, 53);
@@ -182,7 +183,7 @@
             // 
             this.linkToSourceCode.AutoSize = true;
             this.linkToSourceCode.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkToSourceCode.Location = new System.Drawing.Point(4, 343);
+            this.linkToSourceCode.Location = new System.Drawing.Point(4, 358);
             this.linkToSourceCode.Name = "linkToSourceCode";
             this.linkToSourceCode.Size = new System.Drawing.Size(289, 14);
             this.linkToSourceCode.TabIndex = 11;
@@ -190,11 +191,24 @@
             this.linkToSourceCode.Text = "Visit our GitHub repository to view the source code";
             this.linkToSourceCode.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnSourceCodeLinkClicked);
             // 
+            // linkToYouTube
+            // 
+            this.linkToYouTube.AutoSize = true;
+            this.linkToYouTube.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkToYouTube.Location = new System.Drawing.Point(4, 304);
+            this.linkToYouTube.Name = "linkToYouTube";
+            this.linkToYouTube.Size = new System.Drawing.Size(126, 14);
+            this.linkToYouTube.TabIndex = 12;
+            this.linkToYouTube.TabStop = true;
+            this.linkToYouTube.Text = "Tutorials on YouTube";
+            this.linkToYouTube.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnYouTubeLinkClicked);
+            // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(513, 513);
+            this.Controls.Add(this.linkToYouTube);
             this.Controls.Add(this.labelTitle);
             this.Controls.Add(this.linkToSourceCode);
             this.Controls.Add(this.label2);
@@ -237,5 +251,6 @@
         private System.Windows.Forms.LinkLabel linkToSponsor;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkToSourceCode;
+        private System.Windows.Forms.LinkLabel linkToYouTube;
     }
 }

@@ -2144,14 +2144,20 @@ namespace Chem4Word
             AfterButtonChecks(sender as RibbonButton);
         }
 
-        private void OnAboutClick(object sender, RibbonControlEventArgs e)
+        private void OnYouTube_Click(object sender, RibbonControlEventArgs e)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-        }
-
-        private void OnHomeClick(object sender, RibbonControlEventArgs e)
-        {
-
+            try
+            {
+                Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
         }
     }
 }

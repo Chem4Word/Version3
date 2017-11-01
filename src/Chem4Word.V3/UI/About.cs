@@ -148,5 +148,20 @@ namespace Chem4Word.UI
                 new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
+
+        private void OnYouTubeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
     }
 }
