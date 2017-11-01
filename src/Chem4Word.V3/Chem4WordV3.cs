@@ -1117,9 +1117,12 @@ namespace Chem4Word
                         // Call disable first to ensure events not registered multiple times
                         DisableDocumentEvents(doc);
 
-                        Ribbon.ShowNavigator.Checked = false;
-                        Ribbon.ShowLibrary.Checked = LibraryState;
-                        Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                        if (Ribbon != null)
+                        {
+                            Ribbon.ShowNavigator.Checked = false;
+                            Ribbon.ShowLibrary.Checked = LibraryState;
+                            Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                        }
 
                         DialogResult answer = Upgrader.UpgradeIsRequired(doc);
                         switch (answer)
@@ -1145,7 +1148,10 @@ namespace Chem4Word
                                     if (taskPane.Title.Equals(Constants.NavigatorTaskPaneTitle))
                                     {
                                         Debug.WriteLine($"Found Navigator Task Pane. Visible: {taskPane.Visible}");
-                                        Ribbon.ShowNavigator.Checked = taskPane.Visible;
+                                        if (Ribbon != null)
+                                        {
+                                            Ribbon.ShowNavigator.Checked = taskPane.Visible;
+                                        }
                                         break;
                                     }
                                 }
@@ -1165,8 +1171,11 @@ namespace Chem4Word
                                     {
                                         Debug.WriteLine($"Found Gallery Task Pane. Visible: {taskPane.Visible}");
                                         //Ribbon.ToggleButtonGallery.Checked = taskPane.Visible;
-                                        taskPane.Visible = Ribbon.ShowLibrary.Checked;
-                                        Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                                        if (Ribbon != null)
+                                        {
+                                            taskPane.Visible = Ribbon.ShowLibrary.Checked;
+                                            Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                                        }
                                         libraryFound = true;
                                         break;
                                     }
@@ -1176,7 +1185,7 @@ namespace Chem4Word
 
                         if (!libraryFound)
                         {
-                            if (Ribbon.ShowLibrary.Checked)
+                            if (Ribbon != null && Ribbon.ShowLibrary.Checked)
                             {
                                 OfficeTools.CustomTaskPane custTaskPane =
                                     Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
@@ -1499,7 +1508,7 @@ namespace Chem4Word
                     SelectChemistry(sel);
                     if (ChemistrySelected)
                     {
-                        Ribbon.ActivateChemistryTab();
+                        Ribbon?.ActivateChemistryTab();
                     }
                 }
             }
