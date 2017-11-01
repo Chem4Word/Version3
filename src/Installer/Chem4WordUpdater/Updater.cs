@@ -63,13 +63,17 @@ namespace Chem4WordUpdater
                 int exitCode = RunProcess(_downloadedFile, "/passive");
                 RegistryHelper.WriteAction($"Chem4Word ExitCode: {exitCode}");
 
-                if (exitCode != 0)
+                if (exitCode == 0)
+                {
+                    _userCancelledUpdate = true;
+                    Close();
+                }
+                else
                 {
                     MessageBox.Show($"Error {exitCode} while installing {_downloadSource}", "Chem4Word Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Information.Text = $"Error {exitCode} while installing {_downloadSource}";
+                    UpdateNow.Enabled = true;
                 }
-
-                _userCancelledUpdate = true;
-                Close();
             }
         }
 
