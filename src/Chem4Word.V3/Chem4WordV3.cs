@@ -1139,6 +1139,7 @@ namespace Chem4Word
                         }
 
                         #region Handle Navigator Task Panes
+
                         try
                         {
                             foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
@@ -1165,6 +1166,7 @@ namespace Chem4Word
                         {
                             // Do Nothing
                         }
+
                         #endregion
 
 
