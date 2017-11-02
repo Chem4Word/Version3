@@ -6,13 +6,14 @@
     <IsBeta>true</IsBeta>
     <Released>01-Nov-2017</Released>
     <Changes>
-      <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it</Change>
+      <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check</Change>
       <Change>Prevent structures with half bonds being sent to ChemSpider</Change>
       <Change>Handle error when TaskPane has already been closed</Change>
       <Change>Handle error when Ribbon is null</Change>
       <Change>Handle error when Library can't be copied</Change>
+      <Change>Detect if multiple instances of Chem4WordSetup.exe being run</Change>
+      <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it</Change>
       <Change>Revised Office version detection</Change>
-      <Change>Add extra menus to Help</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.6.Beta.6.msi</Url>
   </Version>

@@ -58,3 +58,19 @@ private void btnWpf_Click(object sender, RibbonControlEventArgs e)
 // Insert / Update Chemistry into document
 
 public static string InsertChemistry(in out ContentControl cc string cml, )
+
+// https://stackoverflow.com/questions/19147/what-is-the-correct-way-to-create-a-single-instance-application
+
+static class Program
+{
+    static Mutex mutex = new Mutex(true, "{4B428D7D-CE6B-4315-89D3-A5566EA97B8C}");
+    [STAThread]
+    static void Main() {
+        if(mutex.WaitOne(TimeSpan.Zero, true)) {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+            mutex.ReleaseMutex();
+        } 
+    }
+}
