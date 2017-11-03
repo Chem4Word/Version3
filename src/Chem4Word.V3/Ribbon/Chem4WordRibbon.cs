@@ -630,7 +630,7 @@ namespace Chem4Word
                     File.Delete(oldVersionXmlFile);
                 }
 
-                string guid = Guid.NewGuid().ToString();
+                string guid = Guid.NewGuid().ToString("N");
                 string latestVersionXmlFile = Path.Combine(tempPath, guid + "-" + Constants.VersionHistoryFile);
 
                 string versionsLink = Constants.UpdateServer + Constants.VersionHistoryFile;

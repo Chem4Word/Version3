@@ -289,7 +289,8 @@ namespace Chem4WordSetup
                 string url = "https://www.chem4word.co.uk/files3/Chem4Word-Versions.xml";
 
                 string[] parts = url.Split('/');
-                xmlFile = _downloadedFile = Path.Combine(Path.GetTempPath(), parts[parts.Length - 1]);
+                string guid = Guid.NewGuid().ToString("N");
+                xmlFile = _downloadedFile = Path.Combine(Path.GetTempPath(), guid + "-" + parts[parts.Length - 1]);
 
                 _webClient = new WebClient();
                 _webClient.Headers.Add("user-agent", "Chem4Word Bootstrapper");
