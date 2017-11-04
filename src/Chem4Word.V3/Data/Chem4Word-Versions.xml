@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
+  <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
     <Number>3.0.5 Beta 6</Number>
     <IsBeta>true</IsBeta>
@@ -11,7 +12,7 @@
       <Change>Handle error when TaskPane has already been closed</Change>
       <Change>Handle error when Ribbon is null</Change>
       <Change>Handle error when Library can't be copied</Change>
-      <Change>Detect if multiple instances of Chem4WordSetup.exe being run</Change>
+      <Change>Make Chem4WordSetup.exe single instance</Change>
       <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it</Change>
       <Change>Revised Office version detection</Change>
     </Changes>
