@@ -13,6 +13,7 @@
       <Change>Handle error when Ribbon is null</Change>
       <Change>Handle error when Library can't be copied</Change>
       <Change>Make Chem4WordSetup.exe single instance</Change>
+      <Change>Allow Chem4Word-Versions.xml and updates to be deployed to multiple domains</Change>
       <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it</Change>
       <Change>Revised Office version detection</Change>
     </Changes>
