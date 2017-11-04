@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -604,6 +605,90 @@ namespace Chem4Word
             Globals.Chem4WordV3.SetUpdateButtonState();
         }
 
+        private string GetVersionsXmlFile()
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            string VersionsFile = "files3/Chem4Word-Versions.xml";
+            string PrimaryDomain = "https://www.chem4word.co.uk";
+            string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
+            string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
+
+            string contents = null;
+
+            bool foundOurXmlFile = false;
+            foreach (var domain in Domains)
+            {
+                HttpClient client = new HttpClient();
+                string exceptionMessage;
+
+                try
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Looking for Chem4Word-Versions.xml at {domain}");
+
+                    client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
+                    client.BaseAddress = new Uri(domain);
+                    var response = client.GetAsync(VersionsFile).Result;
+                    response.EnsureSuccessStatusCode();
+                    Debug.Write(response.StatusCode);
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    if (result.Contains(VersionsFileMarker))
+                    {
+                        foundOurXmlFile = true;
+                        contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                    }
+                    else
+                    {
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Chem4Word-Versions.xml at {domain} is corrupt");
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", result);
+                    }
+                }
+                catch (ArgumentNullException nex)
+                {
+                    exceptionMessage = GetExceptionMessages(nex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"ArgumentNullException: [{domain}] - {exceptionMessage}");
+                }
+                catch (HttpRequestException hex)
+                {
+                    exceptionMessage = GetExceptionMessages(hex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"HttpRequestException: [{domain}] - {exceptionMessage}");
+                }
+                catch (WebException wex)
+                {
+                    exceptionMessage = GetExceptionMessages(wex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"WebException: [{domain}] - {exceptionMessage}");
+                }
+                catch (Exception ex)
+                {
+                    exceptionMessage = GetExceptionMessages(ex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Exception: [{domain}] - {exceptionMessage}");
+                }
+                finally
+                {
+                    client.Dispose();
+                }
+                if (foundOurXmlFile)
+                {
+                    break;
+                }
+            }
+
+            return contents;
+        }
+
+        private string GetExceptionMessages(Exception ex)
+        {
+            string message = string.Empty;
+
+            message = ex.Message;
+            if (ex.InnerException != null)
+            {
+                message = message + Environment.NewLine + GetExceptionMessages(ex.InnerException);
+            }
+
+            return message;
+        }
+
         private bool FetchUpdateInfo()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -622,73 +707,34 @@ namespace Chem4Word
                 DateTime currentReleaseDate = SafeDate.Parse(Globals.Chem4WordV3.ThisVersion.Root.Element("Released").Value);
                 Debug.WriteLine("Current Version " + currentVersionNumber + " Released " + currentReleaseDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
 
-                string tempPath = Path.GetTempPath();
-
-                string oldVersionXmlFile = Path.Combine(tempPath, Constants.VersionHistoryFile);
-                if (File.Exists(oldVersionXmlFile))
+                string xml = GetVersionsXmlFile();
+                if (!string.IsNullOrEmpty(xml))
                 {
-                    File.Delete(oldVersionXmlFile);
-                }
+                    #region Got Our File
 
-                string guid = Guid.NewGuid().ToString("N");
-                string latestVersionXmlFile = Path.Combine(tempPath, guid + "-" + Constants.VersionHistoryFile);
-
-                string versionsLink = Constants.UpdateServer + Constants.VersionHistoryFile;
-                WebClient client = new WebClient();
-                client.Headers.Add("user-agent", "Chem4Word Add-In");
-                client.DownloadFile(versionsLink, latestVersionXmlFile);
-                client.Dispose();
-
-                if (File.Exists(latestVersionXmlFile))
-                {
-                    string fileContents = File.ReadAllText(latestVersionXmlFile);
-                    if (fileContents.Contains("<ChangeLog>"))
+                    Globals.Chem4WordV3.AllVersions = XDocument.Parse(xml);
+                    var versions = Globals.Chem4WordV3.AllVersions.XPathSelectElements("//Version");
+                    foreach (var version in versions)
                     {
-                        #region Got Our File
-
-                        Globals.Chem4WordV3.AllVersions = XDocument.Load(latestVersionXmlFile);
-                        var versions = Globals.Chem4WordV3.AllVersions.XPathSelectElements("//Version");
-                        foreach (var version in versions)
+                        var thisVersionNumber = version.Element("Number").Value;
+                        DateTime thisVersionDate = SafeDate.Parse(version.Element("Released").Value);
+                        Debug.WriteLine("New Version " + thisVersionNumber + " Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+                        if (thisVersionDate > currentReleaseDate)
                         {
-                            var thisVersionNumber = version.Element("Number").Value;
-                            DateTime thisVersionDate = SafeDate.Parse(version.Element("Released").Value);
-                            Debug.WriteLine("New Version " + thisVersionNumber + " Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
-                            if (thisVersionDate > currentReleaseDate)
-                            {
-                                Globals.Chem4WordV3.VersionsBehind++;
-                                updateRequired = true;
-                            }
+                            Globals.Chem4WordV3.VersionsBehind++;
+                            updateRequired = true;
                         }
-
-                        // Save VersionsBehind for next start up
-                        key.SetValue(Constants.RegistryValueNameVersionsBehind, Globals.Chem4WordV3.VersionsBehind.ToString());
-
-                        try
-                        {
-                            File.Delete(latestVersionXmlFile);
-                        }
-                        catch (Exception)
-                        {
-                            // Do Nothing
-                        }
-
-                        #endregion Got Our File
                     }
-                    else
-                    {
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"File '{Constants.VersionHistoryFile}' is corrupt");
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", fileContents);
 
-                        UpdateFailure f = new UpdateFailure();
-                        f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-                        f.WebPage = fileContents;
-                        f.ShowDialog();
-                    }
+                    // Save VersionsBehind for next start up
+                    key.SetValue(Constants.RegistryValueNameVersionsBehind, Globals.Chem4WordV3.VersionsBehind.ToString());
+
+                    #endregion Got Our File
                 }
             }
             else
             {
-                Globals.Chem4WordV3.Telemetry.Write(module, "Error", $"Failed to download file '{Constants.VersionHistoryFile}'");
+                Globals.Chem4WordV3.Telemetry.Write(module, "Error", $"Failed to parse resource 'Data.This-Version.xml'");
             }
 
             return updateRequired;

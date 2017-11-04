@@ -301,14 +301,7 @@ namespace Chem4WordSetup
                     if (result.Contains(VersionsFileMarker))
                     {
                         foundOurXmlFile = true;
-                        if (domain.Equals(PrimaryDomain))
-                        {
-                            contents = result;
-                        }
-                        else
-                        {
-                            contents = result.Replace(PrimaryDomain, domain);
-                        }
+                        contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
                     }
                     else
                     {

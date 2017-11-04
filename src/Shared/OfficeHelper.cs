@@ -114,6 +114,7 @@ namespace Chem4Word.Shared
             // Office 2010 https://support.microsoft.com/en-us/kb/2186281
             // Office 2013 https://support.microsoft.com/en-us/kb/2786054
             // Office 2016 https://support.microsoft.com/en-us/kb/3120274
+            // Office 2019 ???
 
             //           1         2         3
             // 01234567890123456789012345678901234567
@@ -332,7 +333,38 @@ namespace Chem4Word.Shared
                     }
                     break;
 
-                    #endregion Office 2016
+                #endregion Office 2016
+
+                case 17:
+
+                    #region Office 2019
+
+                    switch (productId)
+                    {
+                        case "000F":
+                            result = "Microsoft Office 2019 Professional Plus";
+                            break;
+
+                        case "0011":
+                            result = "Microsoft Office Professional Plus 2019";
+                            break;
+
+                        case "0012":
+                            result = "Microsoft Office Standard 2019";
+                            break;
+
+                        case "001B":
+                            result = "Microsoft Word 2019";
+                            break;
+
+                        default:
+                            result = "Microsoft Office 2019 " + officeGuid;
+                            break;
+                    }
+                    break;
+
+                #endregion Office 2019
+
             }
 
             #region 32 / 64 bit
