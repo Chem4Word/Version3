@@ -5,7 +5,7 @@
   <Version>
     <Number>3.0.7 Beta 7</Number>
     <IsBeta>true</IsBeta>
-    <Released>18-Oct-2017</Released>
+    <Released>18-Nov-2017</Released>
     <Changes>
       <Change>Change Updater to remove passive switch as this is causing issues</Change>
     </Changes>
