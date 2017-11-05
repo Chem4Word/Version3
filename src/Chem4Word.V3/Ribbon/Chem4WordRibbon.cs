@@ -678,9 +678,8 @@ namespace Chem4Word
 
         private string GetExceptionMessages(Exception ex)
         {
-            string message = string.Empty;
+            string message = ex.Message;
 
-            message = ex.Message;
             if (ex.InnerException != null)
             {
                 message = message + Environment.NewLine + GetExceptionMessages(ex.InnerException);

@@ -12,11 +12,6 @@ using Chem4Word.Shared;
 
 namespace Chem4WordSetup
 {
-    // Metro Icons
-    // Blue  = #FF2B579A
-    // Red   = #FFFF0000
-    // Green = #FF00FF00
-
     public partial class Setup : Form
     {
         private const string VersionsFile = "files3/Chem4Word-Versions.xml";
@@ -343,9 +338,8 @@ namespace Chem4WordSetup
 
         private string GetExceptionMessages(Exception ex)
         {
-            string message = string.Empty;
+            string message = ex.Message;
 
-            message = ex.Message;
             if (ex.InnerException != null)
             {
                 message = message + Environment.NewLine + GetExceptionMessages(ex.InnerException);

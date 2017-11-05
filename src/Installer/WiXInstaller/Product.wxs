@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!-- For automatic upgrade to work only first three parts of version number are used -->
-  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.5 Beta 5" Manufacturer="Chem4Word" Version="3.0.5.6500" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
+  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.6 Beta 6" Manufacturer="Chem4Word" Version="3.0.6.6518" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of Chem4Word is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
@@ -43,7 +43,7 @@
     <!-- https://blogs.msdn.microsoft.com/jschaffe/2012/10/23/creating-wix-custom-actions-in-c-and-passing-parameters/ -->
     <!-- https://www.codeproject.com/Articles/132918/Creating-Custom-Action-for-WIX-Written-in-Managed -->
     <Binary Id="WiX.CustomAction.dll" SourceFile="..\Wix.CustomAction\bin\x86\$(var.Configuration)\WiX.CustomAction.CA.dll" />
-    <CustomAction Id="FindWinwordPath" BinaryKey="WiX.CustomAction.dll" DllEntry="FindWord" Return="check" Execute="immediate"/>
+    <CustomAction Id="FindWinwordPath" BinaryKey="WiX.CustomAction.dll" DllEntry="FindWord" Return="check" Execute="immediate" />
     <CustomAction Id="SetupChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="SetupChem4Word" Return="check" Execute="deferred" Impersonate="no" />
     <CustomAction Id="RemoveChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="RemoveChem4Word" Return="check" Execute="deferred" Impersonate="no" />
     <InstallUISequence>
