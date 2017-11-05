@@ -60,7 +60,7 @@ namespace Chem4WordUpdater
                 Thread.Sleep(1000);
 
                 RegistryHelper.WriteAction("Running Chem4Word Update");
-                int exitCode = RunProcess(_downloadedFile, "/passive");
+                int exitCode = RunProcess(_downloadedFile, "");
                 RegistryHelper.WriteAction($"Chem4Word ExitCode: {exitCode}");
 
                 if (exitCode == 0)

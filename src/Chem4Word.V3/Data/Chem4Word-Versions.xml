@@ -3,9 +3,18 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
-    <Number>3.0.5 Beta 6</Number>
+    <Number>3.0.7 Beta 7</Number>
     <IsBeta>true</IsBeta>
-    <Released>01-Nov-2017</Released>
+    <Released>18-Oct-2017</Released>
+    <Changes>
+      <Change>Change Updater to remove passive switch as this is causing issues</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.7.Beta.7.msi</Url>
+  </Version>
+  <Version>
+    <Number>3.0.6 Beta 6</Number>
+    <IsBeta>true</IsBeta>
+    <Released>05-Nov-2017</Released>
     <Changes>
       <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check</Change>
       <Change>Prevent structures with half bonds being sent to ChemSpider</Change>
