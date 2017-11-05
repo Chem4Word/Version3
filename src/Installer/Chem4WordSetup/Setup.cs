@@ -479,7 +479,12 @@ namespace Chem4WordSetup
                                 }
                             }
 
+                            progressBar1.Value = 0;
+                            progressBar1.Maximum = 100;
+                            progressBar1.Value = 100;
+
                             AddInInstalled.Indicator = Properties.Resources.Yes;
+                            Information.Text = "Chem4Word successfully installed";
                             Action.Text = "Finish";
                         }
                         else
