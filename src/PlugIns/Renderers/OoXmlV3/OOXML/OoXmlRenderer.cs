@@ -2,6 +2,7 @@
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Model;
 using Chem4Word.Model.Converters;
+using Chem4Word.Model.Enums;
 using Chem4Word.Renderer.OoXmlV3.OOXML.Atoms;
 using Chem4Word.Renderer.OoXmlV3.OOXML.Bonds;
 using Chem4Word.Renderer.OoXmlV3.TTF;
@@ -11,12 +12,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Windows;
-using Chem4Word.Model.Enums;
 using A = DocumentFormat.OpenXml.Drawing;
 using Drawing = DocumentFormat.OpenXml.Wordprocessing.Drawing;
 using Point = System.Windows.Point;
@@ -125,7 +123,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 ProcessAtoms(mol, pb, moleculeNo, _pt);
 
                 Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-                //_telemetry.Write(module, "Verbose", $"Step 1 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+                //_telemetry.Write(module, "Timing", $"Step 1 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
                 sw.Reset();
                 sw.Start();
 
@@ -136,7 +134,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 ProcessBonds(mol, pb, moleculeNo);
 
                 Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-                //_telemetry.Write(module, "Verbose", $"Step 2 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+                //_telemetry.Write(module, "Timing", $"Step 2 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
                 sw.Reset();
                 sw.Start();
 
@@ -156,7 +154,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             IncreaseCanvasSize();
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Verbose", "Step 3 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 3 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
             sw.Reset();
             sw.Start();
 
@@ -172,7 +170,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 #endregion Step 4 - Shrink bond lines
 
                 Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-                //_telemetry.Write(module, "Verbose", "Step 4 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+                //_telemetry.Write(module, "Timing", "Step 4 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
                 sw.Reset();
                 sw.Start();
             }
@@ -196,7 +194,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 5 - Create main OoXml drawing objects
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Verbose", "Step 5 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 5 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
             sw.Reset();
             sw.Start();
 
@@ -234,7 +232,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 6 - Create and append OoXml objects for all Bond Lines
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Verbose", "Step 6 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 6 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
             sw.Reset();
             sw.Start();
 
@@ -248,7 +246,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 7 - Create and append OoXml objects for Atom Labels
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Verbose", "Step 7 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 7 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
             sw.Reset();
             sw.Start();
 
@@ -262,13 +260,12 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 8 - Append OoXml drawing objects to OoXml run object
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Verbose", "Step 8 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 8 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
             sw.Reset();
             sw.Start();
 
             Debug.WriteLine("Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            _telemetry.Write(module, "Verbose", $"{_chemistryModel.Molecules.Count} molecules contained {_chemistryModel.AllAtoms.Count} atoms and {_chemistryModel.AllBonds.Count} bonds");
-            _telemetry.Write(module, "Verbose", "Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            _telemetry.Write(module, "Timing", $"Rendering {_chemistryModel.Molecules.Count} molecules with {_chemistryModel.AllAtoms.Count} atoms and {_chemistryModel.AllBonds.Count} bonds took " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
 
             ShutDownProgress(pb);
 

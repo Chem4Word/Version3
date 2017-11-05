@@ -1,18 +1,30 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Chem4WordSetup
 {
     public static class RegistryHelper
     {
+        private static int _counter = 1;
+
         public static void WriteAction(string action)
         {
             RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordSetupRegistryKey);
             if (key != null)
             {
-                string actionName = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                key.SetValue(actionName, action);
+                int procId = 0;
+                try
+                {
+                    procId = Process.GetCurrentProcess().Id;
+                }
+                catch
+                {
+                    //
+                }
+                string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                key.SetValue($"{timestamp} [{procId}.{_counter++.ToString("000")}]", $"[{procId}] {action}");
             }
         }
     }

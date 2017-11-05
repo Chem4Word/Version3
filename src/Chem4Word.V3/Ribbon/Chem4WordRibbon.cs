@@ -20,6 +20,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -76,7 +77,7 @@ namespace Chem4Word
         private void OnRenderAsButtonClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             Word.Application app = Globals.Chem4WordV3.Application;
             Word.Document doc = app.ActiveDocument;
@@ -197,7 +198,7 @@ namespace Chem4Word
         private void AddDynamicMenuItems()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 ShowAsMenu.Items.Clear();
@@ -316,7 +317,7 @@ namespace Chem4Word
         private void OnDrawOrEditClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             PerformEdit();
             AfterButtonChecks(sender as RibbonButton);
@@ -325,7 +326,7 @@ namespace Chem4Word
         private void OnOptionsClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -560,7 +561,7 @@ namespace Chem4Word
                         {
                             DateTime last = SafeDate.Parse(lastChecked);
                             TimeSpan delta = DateTime.Today - last;
-                            if (delta.Days < days)
+                            if (delta.TotalDays < days)
                             {
                                 doCheck = false;
                             }
@@ -604,6 +605,89 @@ namespace Chem4Word
             Globals.Chem4WordV3.SetUpdateButtonState();
         }
 
+        private string GetVersionsXmlFile()
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            string VersionsFile = "files3/Chem4Word-Versions.xml";
+            string PrimaryDomain = "https://www.chem4word.co.uk";
+            string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
+            string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
+
+            string contents = null;
+
+            bool foundOurXmlFile = false;
+            foreach (var domain in Domains)
+            {
+                HttpClient client = new HttpClient();
+                string exceptionMessage;
+
+                try
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Looking for Chem4Word-Versions.xml at {domain}");
+
+                    client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
+                    client.BaseAddress = new Uri(domain);
+                    var response = client.GetAsync(VersionsFile).Result;
+                    response.EnsureSuccessStatusCode();
+                    Debug.Write(response.StatusCode);
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    if (result.Contains(VersionsFileMarker))
+                    {
+                        foundOurXmlFile = true;
+                        contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                    }
+                    else
+                    {
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Chem4Word-Versions.xml at {domain} is corrupt");
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", result);
+                    }
+                }
+                catch (ArgumentNullException nex)
+                {
+                    exceptionMessage = GetExceptionMessages(nex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"ArgumentNullException: [{domain}] - {exceptionMessage}");
+                }
+                catch (HttpRequestException hex)
+                {
+                    exceptionMessage = GetExceptionMessages(hex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"HttpRequestException: [{domain}] - {exceptionMessage}");
+                }
+                catch (WebException wex)
+                {
+                    exceptionMessage = GetExceptionMessages(wex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"WebException: [{domain}] - {exceptionMessage}");
+                }
+                catch (Exception ex)
+                {
+                    exceptionMessage = GetExceptionMessages(ex);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Exception: [{domain}] - {exceptionMessage}");
+                }
+                finally
+                {
+                    client.Dispose();
+                }
+                if (foundOurXmlFile)
+                {
+                    break;
+                }
+            }
+
+            return contents;
+        }
+
+        private string GetExceptionMessages(Exception ex)
+        {
+            string message = ex.Message;
+
+            if (ex.InnerException != null)
+            {
+                message = message + Environment.NewLine + GetExceptionMessages(ex.InnerException);
+            }
+
+            return message;
+        }
+
         private bool FetchUpdateInfo()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -622,73 +706,34 @@ namespace Chem4Word
                 DateTime currentReleaseDate = SafeDate.Parse(Globals.Chem4WordV3.ThisVersion.Root.Element("Released").Value);
                 Debug.WriteLine("Current Version " + currentVersionNumber + " Released " + currentReleaseDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
 
-                string tempPath = Path.GetTempPath();
-
-                string oldVersionXmlFile = Path.Combine(tempPath, Constants.VersionHistoryFile);
-                if (File.Exists(oldVersionXmlFile))
+                string xml = GetVersionsXmlFile();
+                if (!string.IsNullOrEmpty(xml))
                 {
-                    File.Delete(oldVersionXmlFile);
-                }
+                    #region Got Our File
 
-                string guid = Guid.NewGuid().ToString();
-                string latestVersionXmlFile = Path.Combine(tempPath, guid + "-" + Constants.VersionHistoryFile);
-
-                string versionsLink = Constants.UpdateServer + Constants.VersionHistoryFile;
-                WebClient client = new WebClient();
-                client.Headers.Add("user-agent", "Chem4Word Add-In");
-                client.DownloadFile(versionsLink, latestVersionXmlFile);
-                client.Dispose();
-
-                if (File.Exists(latestVersionXmlFile))
-                {
-                    string fileContents = File.ReadAllText(latestVersionXmlFile);
-                    if (fileContents.Contains("<ChangeLog>"))
+                    Globals.Chem4WordV3.AllVersions = XDocument.Parse(xml);
+                    var versions = Globals.Chem4WordV3.AllVersions.XPathSelectElements("//Version");
+                    foreach (var version in versions)
                     {
-                        #region Got Our File
-
-                        Globals.Chem4WordV3.AllVersions = XDocument.Load(latestVersionXmlFile);
-                        var versions = Globals.Chem4WordV3.AllVersions.XPathSelectElements("//Version");
-                        foreach (var version in versions)
+                        var thisVersionNumber = version.Element("Number").Value;
+                        DateTime thisVersionDate = SafeDate.Parse(version.Element("Released").Value);
+                        Debug.WriteLine("New Version " + thisVersionNumber + " Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+                        if (thisVersionDate > currentReleaseDate)
                         {
-                            var thisVersionNumber = version.Element("Number").Value;
-                            DateTime thisVersionDate = SafeDate.Parse(version.Element("Released").Value);
-                            Debug.WriteLine("New Version " + thisVersionNumber + " Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
-                            if (thisVersionDate > currentReleaseDate)
-                            {
-                                Globals.Chem4WordV3.VersionsBehind++;
-                                updateRequired = true;
-                            }
+                            Globals.Chem4WordV3.VersionsBehind++;
+                            updateRequired = true;
                         }
-
-                        // Save VersionsBehind for next start up
-                        key.SetValue(Constants.RegistryValueNameVersionsBehind, Globals.Chem4WordV3.VersionsBehind.ToString());
-
-                        try
-                        {
-                            File.Delete(latestVersionXmlFile);
-                        }
-                        catch (Exception)
-                        {
-                            // Do Nothing
-                        }
-
-                        #endregion Got Our File
                     }
-                    else
-                    {
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"File '{Constants.VersionHistoryFile}' is corrupt");
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", fileContents);
 
-                        UpdateFailure f = new UpdateFailure();
-                        f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-                        f.WebPage = fileContents;
-                        f.ShowDialog();
-                    }
+                    // Save VersionsBehind for next start up
+                    key.SetValue(Constants.RegistryValueNameVersionsBehind, Globals.Chem4WordV3.VersionsBehind.ToString());
+
+                    #endregion Got Our File
                 }
             }
             else
             {
-                Globals.Chem4WordV3.Telemetry.Write(module, "Error", $"Failed to download file '{Constants.VersionHistoryFile}'");
+                Globals.Chem4WordV3.Telemetry.Write(module, "Error", $"Failed to parse resource 'Data.This-Version.xml'");
             }
 
             return updateRequired;
@@ -1070,29 +1115,41 @@ namespace Chem4Word
 
                         foreach (Molecule mol in afterModel.Molecules)
                         {
-                            pb.Show();
-                            pb.Increment(1);
-                            pb.Message = $"Fetching InChiKey from ChemSpider for molecule {mol.Id}";
+                            Dictionary<string, string> synonyms = new Dictionary<string, string>();
 
-                            Model.Model temp = new Model.Model();
-                            temp.Molecules.Add(mol);
-                            string afterMolFile = molConverter.Export(temp);
-                            mol.ConciseFormula = mol.CalculatedFormula();
-
-                            Chemspider cs = new Chemspider(Globals.Chem4WordV3.Telemetry);
-                            string inchiKey = cs.GetInchiKey(afterMolFile);
-
-                            pb.Increment(1);
-                            pb.Message = $"Fetching Synonyms from ChemSpider for molecule {mol.Id}";
-
-                            Dictionary<string, string> synonyms = cs.GetSynonyms(inchiKey);
-                            if (string.IsNullOrEmpty(inchiKey))
+                            List<Bond> nullBonds = mol.Bonds.Where(b => b.OrderValue.Value < 1).ToList();
+                            if (nullBonds.Any())
                             {
-                                synonyms.Add(Constants.ChemspiderInchiKeyName, "Unknown");
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Not sending structure to ChemSpider as it has bonds with order of less than one");
+                                synonyms.Add(Constants.ChemspiderInchiKeyName, "Not Requested");
                             }
                             else
                             {
-                                synonyms.Add(Constants.ChemspiderInchiKeyName, inchiKey);
+                                pb.Show();
+                                pb.Increment(1);
+                                pb.Message = $"Fetching InChiKey from ChemSpider for molecule {mol.Id}";
+
+                                Model.Model temp = new Model.Model();
+                                temp.Molecules.Add(mol);
+
+                                string afterMolFile = molConverter.Export(temp);
+                                mol.ConciseFormula = mol.CalculatedFormula();
+
+                                Chemspider cs = new Chemspider(Globals.Chem4WordV3.Telemetry);
+                                string inchiKey = cs.GetInchiKey(afterMolFile);
+
+                                pb.Increment(1);
+                                pb.Message = $"Fetching Synonyms from ChemSpider for molecule {mol.Id}";
+
+                                synonyms = cs.GetSynonyms(inchiKey);
+                                if (string.IsNullOrEmpty(inchiKey))
+                                {
+                                    synonyms.Add(Constants.ChemspiderInchiKeyName, "Unknown");
+                                }
+                                else
+                                {
+                                    synonyms.Add(Constants.ChemspiderInchiKeyName, inchiKey);
+                                }
                             }
 
                             foreach (KeyValuePair<string, string> kvp in synonyms)
@@ -1300,7 +1357,7 @@ namespace Chem4Word
         private void OnViewCmlClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1338,7 +1395,7 @@ namespace Chem4Word
         private void OnImportClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             InsertFile();
             AfterButtonChecks(sender as RibbonButton);
@@ -1347,7 +1404,7 @@ namespace Chem4Word
         private void OnExportClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             ExportFile();
             AfterButtonChecks(sender as RibbonButton);
@@ -1419,7 +1476,7 @@ namespace Chem4Word
         private void OnEditLabelsClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1472,33 +1529,10 @@ namespace Chem4Word
             AfterButtonChecks(sender as RibbonButton);
         }
 
-        private void OnAboutClick(object sender, RibbonControlEventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
-
-            try
-            {
-                About fa = new About();
-                fa.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
-                fa.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
-        }
-
         private void OnViewAsItemsLoading(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1514,23 +1548,26 @@ namespace Chem4Word
         private void OnSearchItemsLoading(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 WebSearchMenu.Items.Clear();
 
-                foreach (IChem4WordSearcher searcher in Globals.Chem4WordV3.Searchers.OrderBy(s => s.DisplayOrder))
+                if (Globals.Chem4WordV3.Searchers != null)
                 {
-                    RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
+                    foreach (IChem4WordSearcher searcher in Globals.Chem4WordV3.Searchers.OrderBy(s => s.DisplayOrder))
+                    {
+                        RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
 
-                    ribbonButton.Label = searcher.ShortName;
-                    ribbonButton.Tag = searcher.Name;
-                    ribbonButton.SuperTip = searcher.Description;
-                    ribbonButton.Image = searcher.Image;
-                    ribbonButton.Click += OnSearcherClick;
+                        ribbonButton.Label = searcher.ShortName;
+                        ribbonButton.Tag = searcher.Name;
+                        ribbonButton.SuperTip = searcher.Description;
+                        ribbonButton.Image = searcher.Image;
+                        ribbonButton.Click += OnSearcherClick;
 
-                    WebSearchMenu.Items.Add(ribbonButton);
+                        WebSearchMenu.Items.Add(ribbonButton);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1543,7 +1580,7 @@ namespace Chem4Word
         private void OnSearcherClick(object sender, RibbonControlEventArgs ribbonControlEventArgs)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1658,7 +1695,7 @@ namespace Chem4Word
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1716,7 +1753,7 @@ namespace Chem4Word
         private void OnNavigatorClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1823,7 +1860,7 @@ namespace Chem4Word
         private void OnLibraryClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -1939,7 +1976,7 @@ namespace Chem4Word
         private void OnSeparateClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             Word.Application app = Globals.Chem4WordV3.Application;
             Word.Document doc = app.ActiveDocument;
@@ -2046,7 +2083,7 @@ namespace Chem4Word
         private void OnUpdateClick(object sender, RibbonControlEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -2063,6 +2100,112 @@ namespace Chem4Word
             {
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
+        }
+
+        private void OnShowAboutClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                About fa = new About();
+                fa.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
+                fa.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnShowHomeClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                Process.Start("https://www.chem4word.co.uk");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnCheckForUpdatesClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
+                if (key != null)
+                {
+                    key.DeleteValue(Constants.RegistryValueNameLastCheck);
+                    key.DeleteValue(Constants.RegistryValueNameVersionsBehind);
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnReadManualClick(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                string userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Manual", "Chem4Word-Version3-User-Manual.docx");
+                if (File.Exists(userManual))
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
+                    Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
+                }
+                else
+                {
+                    userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, @"..\..\..\..\doc", "Chem4Word-Version3-User-Manual.docx");
+                    if (File.Exists(userManual))
+                    {
+                        Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
+                        Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void OnYouTube_Click(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
         }
     }
 }

@@ -53,7 +53,12 @@ namespace Chem4Word
             this.ShowNavigator = this.Factory.CreateRibbonToggleButton();
             this.GroupOptions = this.Factory.CreateRibbonGroup();
             this.ChangeOptions = this.Factory.CreateRibbonButton();
-            this.About = this.Factory.CreateRibbonButton();
+            this.HelpMenu = this.Factory.CreateRibbonMenu();
+            this.ShowAbout = this.Factory.CreateRibbonButton();
+            this.ReadManual = this.Factory.CreateRibbonButton();
+            this.YouTube = this.Factory.CreateRibbonButton();
+            this.CheckNow = this.Factory.CreateRibbonButton();
+            this.ShowHome = this.Factory.CreateRibbonButton();
             this.Update = this.Factory.CreateRibbonButton();
             this.Chem4WordV3.SuspendLayout();
             this.GroupInputOutput.SuspendLayout();
@@ -219,7 +224,7 @@ namespace Chem4Word
             // GroupOptions
             // 
             this.GroupOptions.Items.Add(this.ChangeOptions);
-            this.GroupOptions.Items.Add(this.About);
+            this.GroupOptions.Items.Add(this.HelpMenu);
             this.GroupOptions.Items.Add(this.Update);
             this.GroupOptions.Label = "System";
             this.GroupOptions.Name = "GroupOptions";
@@ -234,15 +239,60 @@ namespace Chem4Word
             this.ChangeOptions.ShowImage = true;
             this.ChangeOptions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnOptionsClick);
             // 
-            // About
+            // HelpMenu
             // 
-            this.About.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.About.Image = global::Chem4Word.Properties.Resources.About;
-            this.About.Label = "About";
-            this.About.Name = "About";
-            this.About.ScreenTip = "About Chem4Word";
-            this.About.ShowImage = true;
-            this.About.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnAboutClick);
+            this.HelpMenu.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.HelpMenu.Image = global::Chem4Word.Properties.Resources.Help;
+            this.HelpMenu.Items.Add(this.ShowAbout);
+            this.HelpMenu.Items.Add(this.ReadManual);
+            this.HelpMenu.Items.Add(this.YouTube);
+            this.HelpMenu.Items.Add(this.CheckNow);
+            this.HelpMenu.Items.Add(this.ShowHome);
+            this.HelpMenu.Label = "Help";
+            this.HelpMenu.Name = "HelpMenu";
+            this.HelpMenu.ScreenTip = "Get Chem4Word Help";
+            this.HelpMenu.ShowImage = true;
+            // 
+            // ShowAbout
+            // 
+            this.ShowAbout.Image = global::Chem4Word.Properties.Resources.Information;
+            this.ShowAbout.Label = "About";
+            this.ShowAbout.Name = "ShowAbout";
+            this.ShowAbout.ShowImage = true;
+            this.ShowAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnShowAboutClick);
+            // 
+            // ReadManual
+            // 
+            this.ReadManual.Description = "Read the User Manual";
+            this.ReadManual.Image = global::Chem4Word.Properties.Resources.Manual;
+            this.ReadManual.Label = "User Manual";
+            this.ReadManual.Name = "ReadManual";
+            this.ReadManual.ShowImage = true;
+            this.ReadManual.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnReadManualClick);
+            // 
+            // YouTube
+            // 
+            this.YouTube.Image = global::Chem4Word.Properties.Resources.YouTube;
+            this.YouTube.Label = "YouTube Videos";
+            this.YouTube.Name = "YouTube";
+            this.YouTube.ShowImage = true;
+            this.YouTube.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnYouTube_Click);
+            // 
+            // CheckNow
+            // 
+            this.CheckNow.Image = global::Chem4Word.Properties.Resources.SmallTick;
+            this.CheckNow.Label = "Check for Updates";
+            this.CheckNow.Name = "CheckNow";
+            this.CheckNow.ShowImage = true;
+            this.CheckNow.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnCheckForUpdatesClick);
+            // 
+            // ShowHome
+            // 
+            this.ShowHome.Image = global::Chem4Word.Properties.Resources.Home;
+            this.ShowHome.Label = "Chem4Word Home";
+            this.ShowHome.Name = "ShowHome";
+            this.ShowHome.ShowImage = true;
+            this.ShowHome.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnShowHomeClick);
             // 
             // Update
             // 
@@ -286,7 +336,6 @@ namespace Chem4Word
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ViewCml;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup GroupOptions;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton EditLabels;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton About;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu ShowAsMenu;
         internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton ShowNavigator;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu WebSearchMenu;
@@ -295,6 +344,12 @@ namespace Chem4Word
         internal Microsoft.Office.Tools.Ribbon.RibbonButton SaveToLibrary;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ArrangeMolecules;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Update;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu HelpMenu;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ShowAbout;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ShowHome;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton CheckNow;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ReadManual;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton YouTube;
     }
 
     partial class ThisRibbonCollection

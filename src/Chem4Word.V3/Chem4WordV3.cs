@@ -223,18 +223,18 @@ namespace Chem4Word
                     UserInteractions.StopUser(sb.ToString());
                 }
 
+                // Set parameter mustBeSigned true if assemblies must be signed by us
+                LoadPlugIns(false);
+                ListPlugInsFound();
+
+                ConfigWatcher cw = new ConfigWatcher(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath);
+
                 string libraryTarget = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProgramDataPath, Constants.LibraryFileName);
                 if (!File.Exists(libraryTarget))
                 {
                     ResourceHelper.WriteResource(Assembly.GetExecutingAssembly(), "Data.Library.db", libraryTarget);
                 }
                 LibraryNames = LibraryModel.GetLibraryNames();
-
-                // Set parameter mustBeSigned true if assemblies must be signed by us
-                LoadPlugIns(false);
-                ListPlugInsFound();
-
-                ConfigWatcher cw = new ConfigWatcher(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath);
 
                 // Deliberate crash to test Error Reporting
                 //int ii = 2;
@@ -537,15 +537,18 @@ namespace Chem4Word
 
             IChem4WordEditor plugin = null;
 
-            foreach (IChem4WordEditor ice in Editors)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (ice.Name.Equals(name))
+                foreach (IChem4WordEditor ice in Editors)
                 {
-                    plugin = ice;
-                    plugin.Telemetry = Telemetry;
-                    plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
-                    plugin.TopLeft = WordTopLeft;
-                    break;
+                    if (ice.Name.Equals(name))
+                    {
+                        plugin = ice;
+                        plugin.Telemetry = Telemetry;
+                        plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
+                        plugin.TopLeft = WordTopLeft;
+                        break;
+                    }
                 }
             }
 
@@ -558,15 +561,18 @@ namespace Chem4Word
 
             IChem4WordRenderer plugin = null;
 
-            foreach (IChem4WordRenderer ice in Renderers)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (ice.Name.Equals(name))
+                foreach (IChem4WordRenderer ice in Renderers)
                 {
-                    plugin = ice;
-                    plugin.Telemetry = Telemetry;
-                    plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
-                    plugin.TopLeft = WordTopLeft;
-                    break;
+                    if (ice.Name.Equals(name))
+                    {
+                        plugin = ice;
+                        plugin.Telemetry = Telemetry;
+                        plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
+                        plugin.TopLeft = WordTopLeft;
+                        break;
+                    }
                 }
             }
 
@@ -579,15 +585,18 @@ namespace Chem4Word
 
             IChem4WordSearcher plugin = null;
 
-            foreach (IChem4WordSearcher ice in Searchers)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (ice.Name.Equals(name))
+                foreach (IChem4WordSearcher ice in Searchers)
                 {
-                    plugin = ice;
-                    plugin.Telemetry = Telemetry;
-                    plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
-                    plugin.TopLeft = WordTopLeft;
-                    break;
+                    if (ice.Name.Equals(name))
+                    {
+                        plugin = ice;
+                        plugin.Telemetry = Telemetry;
+                        plugin.ProductAppDataPath = AddInInfo.ProductAppDataPath;
+                        plugin.TopLeft = WordTopLeft;
+                        break;
+                    }
                 }
             }
 
@@ -1108,70 +1117,109 @@ namespace Chem4Word
                         // Call disable first to ensure events not registered multiple times
                         DisableDocumentEvents(doc);
 
-                        Ribbon.ShowNavigator.Checked = false;
-                        Ribbon.ShowLibrary.Checked = LibraryState;
-                        Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                        if (Ribbon != null)
+                        {
+                            Ribbon.ShowNavigator.Checked = false;
+                            Ribbon.ShowLibrary.Checked = LibraryState;
+                            Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                        }
 
                         DialogResult answer = Upgrader.UpgradeIsRequired(doc);
-                        if (answer == DialogResult.Yes)
+                        switch (answer)
                         {
-                            Upgrader.DoUpgrade(doc);
+                            case DialogResult.Yes:
+                                Upgrader.DoUpgrade(doc);
+                                break;
+                            case DialogResult.No:
+                                Telemetry.Write(module, "Information", "User chose not to upgrade");
+                                break;
+                            case DialogResult.Cancel:
+                                // Returns Cancel if nothing to do
+                                break;
                         }
 
-                        foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
+                        #region Handle Navigator Task Panes
+
+                        try
                         {
-                            if (taskPane.Window != null)
+                            foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                             {
-                                string taskdoc = ((Word.Window)taskPane.Window).Document.Name;
-                                if (doc.Name.Equals(taskdoc))
+                                if (taskPane.Window != null)
                                 {
-                                    if (taskPane.Title.Equals(Constants.NavigatorTaskPaneTitle))
+                                    string taskdoc = ((Word.Window)taskPane.Window).Document.Name;
+                                    if (doc.Name.Equals(taskdoc))
                                     {
-                                        Debug.WriteLine($"Found Navigator Task Pane. Visible: {taskPane.Visible}");
-                                        Ribbon.ShowNavigator.Checked = taskPane.Visible;
-                                        break;
+                                        if (taskPane.Title.Equals(Constants.NavigatorTaskPaneTitle))
+                                        {
+                                            //Debug.WriteLine($"Found Navigator Task Pane. Visible: {taskPane.Visible}");
+                                            if (Ribbon != null)
+                                            {
+                                                Ribbon.ShowNavigator.Checked = taskPane.Visible;
+                                            }
+                                            break;
+                                        }
                                     }
                                 }
                             }
                         }
-
-                        bool libraryFound = false;
-
-                        foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
+                        catch
                         {
-                            if (taskPane.Window != null)
+                            // Do Nothing
+                        }
+
+                        #endregion
+
+
+                        #region Handle Library Task Panes
+
+                        try
+                        {
+                            bool libraryFound = false;
+
+                            foreach (var taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                             {
-                                string taskdoc = ((Word.Window)taskPane.Window).Document.Name;
-                                if (doc.Name.Equals(taskdoc))
+                                if (taskPane.Window != null)
                                 {
-                                    if (taskPane.Title.Equals(Constants.LibraryTaskPaneTitle))
+                                    string taskdoc = ((Word.Window)taskPane.Window).Document.Name;
+                                    if (doc.Name.Equals(taskdoc))
                                     {
-                                        Debug.WriteLine($"Found Gallery Task Pane. Visible: {taskPane.Visible}");
-                                        //Ribbon.ToggleButtonGallery.Checked = taskPane.Visible;
-                                        taskPane.Visible = Ribbon.ShowLibrary.Checked;
-                                        Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
-                                        libraryFound = true;
-                                        break;
+                                        if (taskPane.Title.Equals(Constants.LibraryTaskPaneTitle))
+                                        {
+                                            //Debug.WriteLine($"Found Gallery Task Pane. Visible: {taskPane.Visible}");
+                                            if (Ribbon != null)
+                                            {
+                                                taskPane.Visible = Ribbon.ShowLibrary.Checked;
+                                                Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                                            }
+                                            libraryFound = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        if (!libraryFound)
-                        {
-                            if (Ribbon.ShowLibrary.Checked)
+                            if (!libraryFound)
                             {
-                                OfficeTools.CustomTaskPane custTaskPane =
-                                    Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
-                                        Constants.LibraryTaskPaneTitle, Globals.Chem4WordV3.Application.ActiveWindow);
-                                // Opposite side to Navigator's default placement
-                                custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
-                                custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
-                                custTaskPane.VisibleChanged += Ribbon.OnLibraryPaneVisibleChanged;
-                                custTaskPane.Visible = true;
-                                (custTaskPane.Control as LibraryHost)?.Refresh();
+                                if (Ribbon != null && Ribbon.ShowLibrary.Checked)
+                                {
+                                    OfficeTools.CustomTaskPane custTaskPane =
+                                        Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
+                                            Constants.LibraryTaskPaneTitle, Globals.Chem4WordV3.Application.ActiveWindow);
+                                    // Opposite side to Navigator's default placement
+                                    custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
+                                    custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
+                                    custTaskPane.VisibleChanged += Ribbon.OnLibraryPaneVisibleChanged;
+                                    custTaskPane.Visible = true;
+                                    (custTaskPane.Control as LibraryHost)?.Refresh();
+                                }
                             }
                         }
+                        catch
+                        {
+                            // Do Nothing
+                        }
+
+                        #endregion
 
                         EnableDocumentEvents(doc);
 
@@ -1482,7 +1530,7 @@ namespace Chem4Word
                     SelectChemistry(sel);
                     if (ChemistrySelected)
                     {
-                        Ribbon.ActivateChemistryTab();
+                        Ribbon?.ActivateChemistryTab();
                     }
                 }
             }

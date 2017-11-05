@@ -4,20 +4,21 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using DownloadProgressChangedEventArgs = System.Net.DownloadProgressChangedEventArgs;
+using Chem4Word.Shared;
 
 namespace Chem4WordSetup
 {
-    // Metro Icons
-    // Blue  = #FF2B579A
-    // Red   = #FFFF0000
-    // Green = #FF00FF00
-
     public partial class Setup : Form
     {
+        private const string VersionsFile = "files3/Chem4Word-Versions.xml";
+        private const string PrimaryDomain = "https://www.chem4word.co.uk";
+        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
+        private const string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
+
         private const string RegistryKeyName = @"SOFTWARE\Chem4Word V3";
         private const string RegistryLastCheckValueName = "Last Update Check";
         private const string RegistryVersionsBehindValueName = "Versions Behind";
@@ -25,7 +26,7 @@ namespace Chem4WordSetup
         private const string DetectV2AddIn = @"Chemistry Add-in for Word\Chem4Word.AddIn.vsto";
         private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.AddIn.vsto";
 
-        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.1.Beta.1.msi";
+        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.4.Beta.4.msi";
 
         private WebClient _webClient;
         private string _downloadedFile = string.Empty;
@@ -69,9 +70,7 @@ namespace Chem4WordSetup
 
             #region Detect Word
 
-            isWordInstalled = OfficeFinder.WordExists(2016)
-                || OfficeFinder.WordExists(2013)
-                || OfficeFinder.WordExists(2010);
+            isWordInstalled = OfficeHelper.GetWinWordVersion() >= 2010;
 
             #endregion Detect Word
 
@@ -228,31 +227,24 @@ namespace Chem4WordSetup
                     AddInInstalled.Indicator = Properties.Resources.Waiting;
                     Application.DoEvents();
 
-                    RegistryHelper.WriteAction("Downloading https://www.chem4word.co.uk/files3/Chem4Word-Versions.xml");
-                    var xmlFile = GetVersionsXmlFile();
-
-                    if (!string.IsNullOrEmpty(xmlFile) && File.Exists(xmlFile))
+                    RegistryHelper.WriteAction("Downloading Chem4Word-Versions.xml");
+                    var xml = GetVersionsXmlFile();
+                    if (!string.IsNullOrEmpty(xml))
                     {
-                        RegistryHelper.WriteAction("Processing Chem4Word-Versions.xml");
-
-                        string fileContents = File.ReadAllText(xmlFile);
-                        if (fileContents.Contains("<ChangeLog>"))
+                        var x = XDocument.Parse(xml);
+                        var versions = x.XPathSelectElements("//Version");
+                        foreach (var element in versions)
                         {
-                            var x = XDocument.Load(xmlFile);
-                            var c4wVersions = x.XPathSelectElements("//Version");
-                            foreach (var c4wVersion in c4wVersions)
+                            if (string.IsNullOrEmpty(_latestVersion))
                             {
-                                if (string.IsNullOrEmpty(_latestVersion))
-                                {
-                                    _latestVersion = c4wVersion.Element("Url").Value;
-                                    RegistryHelper.WriteAction($"Latest version is {_latestVersion}");
-                                }
-                                break;
+                                _latestVersion = element.Element("Url")?.Value;
+                                RegistryHelper.WriteAction($"Latest version is {_latestVersion}");
                             }
+                            break;
                         }
                     }
 
-                    // Default to Beta 1
+                    // Default to Specific Beta
                     if (string.IsNullOrEmpty(_latestVersion))
                     {
                         _latestVersion = DefaultMsiFile;
@@ -283,27 +275,77 @@ namespace Chem4WordSetup
 
         private string GetVersionsXmlFile()
         {
-            string xmlFile;
+            string contents = null;
 
-            try
+            bool foundOurXmlFile = false;
+            foreach (var domain in Domains)
             {
-                string url = "https://www.chem4word.co.uk/files3/Chem4Word-Versions.xml";
+                HttpClient client = new HttpClient();
+                string exceptionMessage;
 
-                string[] parts = url.Split('/');
-                xmlFile = _downloadedFile = Path.Combine(Path.GetTempPath(), parts[parts.Length - 1]);
+                try
+                {
+                    RegistryHelper.WriteAction($"Looking for Chem4Word-Versions.xml at {domain}");
 
-                _webClient = new WebClient();
-                _webClient.Headers.Add("user-agent", "Chem4Word Bootstrapper");
-                _webClient.DownloadFile(url, xmlFile);
-                _webClient.Dispose();
+                    client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
+                    client.BaseAddress = new Uri(domain);
+                    var response = client.GetAsync(VersionsFile).Result;
+                    response.EnsureSuccessStatusCode();
+                    Debug.Write(response.StatusCode);
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    if (result.Contains(VersionsFileMarker))
+                    {
+                        foundOurXmlFile = true;
+                        contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                    }
+                    else
+                    {
+                        RegistryHelper.WriteAction($"Chem4Word-Versions.xml at {domain} is corrupt");
+                    }
+                }
+                catch (ArgumentNullException nex)
+                {
+                    exceptionMessage = GetExceptionMessages(nex);
+                    RegistryHelper.WriteAction($"ArgumentNullException: [{domain}] - {exceptionMessage}");
+                }
+                catch (HttpRequestException hex)
+                {
+                    exceptionMessage = GetExceptionMessages(hex);
+                    RegistryHelper.WriteAction($"HttpRequestException: [{domain}] - {exceptionMessage}");
+                }
+                catch (WebException wex)
+                {
+                    exceptionMessage = GetExceptionMessages(wex);
+                    RegistryHelper.WriteAction($"WebException: [{domain}] - {exceptionMessage}");
+                }
+                catch (Exception ex)
+                {
+                    exceptionMessage = GetExceptionMessages(ex);
+                    RegistryHelper.WriteAction($"Exception: [{domain}] - {exceptionMessage}");
+                }
+                finally
+                {
+                    client.Dispose();
+                }
+                if (foundOurXmlFile)
+                {
+                    break;
+                }
             }
-            catch (Exception ex)
+
+            return contents;
+        }
+
+        private string GetExceptionMessages(Exception ex)
+        {
+            string message = ex.Message;
+
+            if (ex.InnerException != null)
             {
-                RegistryHelper.WriteAction(ex.Message);
-                xmlFile = null;
+                message = message + Environment.NewLine + GetExceptionMessages(ex.InnerException);
             }
 
-            return xmlFile;
+            return message;
         }
 
         private void Action_Click(object sender, EventArgs e)

@@ -104,7 +104,7 @@ namespace Chem4Word.UI.UserControls
         private void OnDeleteFormulaClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {

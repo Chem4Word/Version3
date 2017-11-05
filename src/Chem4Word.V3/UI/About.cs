@@ -26,13 +26,14 @@ namespace Chem4Word.UI
                 labelTitle.Parent = pictureBox1;
                 labelVersion.Parent = pictureBox1;
                 labelBody1.Parent = pictureBox1;
-                label1.Parent = pictureBox1;
-                label2.Parent = pictureBox1;
+                labelChemDoodleWeb.Parent = pictureBox1;
+                labelChem4WordIsFree.Parent = pictureBox1;
                 linkToCambridge.Parent = pictureBox1;
                 linkToSourceCode.Parent = pictureBox1;
                 linkToFacebook.Parent = pictureBox1;
                 linkToSponsor.Parent = pictureBox1;
                 linkToTeamSite.Parent = pictureBox1;
+                linkToYouTube.Parent = pictureBox1;
             }
             catch (Exception ex)
             {
@@ -62,7 +63,7 @@ namespace Chem4Word.UI
         private void OnChemDoodleClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -77,7 +78,7 @@ namespace Chem4Word.UI
         private void OnTeamsiteLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -92,7 +93,7 @@ namespace Chem4Word.UI
         private void OnFacebookLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -107,7 +108,7 @@ namespace Chem4Word.UI
         private void OnCambridgeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -122,7 +123,7 @@ namespace Chem4Word.UI
         private void OnSponsorLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -137,11 +138,26 @@ namespace Chem4Word.UI
         private void OnSourceCodeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Globals.Chem4WordV3.Telemetry.Write(module, "Audit", "Fired");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 Process.Start("https://github.com/Chem4Word/Version3");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
+        private void OnYouTubeLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
             }
             catch (Exception ex)
             {

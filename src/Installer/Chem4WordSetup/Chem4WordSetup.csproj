@@ -75,6 +75,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\OfficeHelper.cs">
+      <Link>OfficeHelper.cs</Link>
+    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,7 +99,6 @@
     <Compile Include="TaskIndicator.Designer.cs">
       <DependentUpon>TaskIndicator.cs</DependentUpon>
     </Compile>
-    <Compile Include="WordFinder.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

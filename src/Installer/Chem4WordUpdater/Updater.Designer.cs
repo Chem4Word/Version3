@@ -60,12 +60,11 @@
             // Information
             // 
             this.Information.BackColor = System.Drawing.Color.Transparent;
-            this.Information.Location = new System.Drawing.Point(175, 232);
+            this.Information.Location = new System.Drawing.Point(175, 197);
             this.Information.Name = "Information";
-            this.Information.Size = new System.Drawing.Size(315, 38);
+            this.Information.Size = new System.Drawing.Size(306, 73);
             this.Information.TabIndex = 7;
-            this.Information.Text = "Your update is downloading. It will automatically install once all Microsoft Word" +
-    " processes are closed.";
+            this.Information.Text = "Your update is downloading ...";
             // 
             // timer1
             // 
@@ -80,7 +79,7 @@
             this.WordInstances.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.WordInstances.Name = "WordInstances";
             this.WordInstances.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.WordInstances.Size = new System.Drawing.Size(298, 196);
+            this.WordInstances.Size = new System.Drawing.Size(298, 164);
             this.WordInstances.TabIndex = 8;
             // 
             // label1

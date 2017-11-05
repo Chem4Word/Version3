@@ -2,6 +2,7 @@ using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using System;
 using System.IO;
+using Chem4Word.Shared;
 
 namespace WiX.CustomAction
 {
@@ -80,6 +81,23 @@ namespace WiX.CustomAction
             }
 
             session.Log("End RemoveChem4Word()");
+
+            return ActionResult.Success;
+        }
+
+        [CustomAction]
+        public static ActionResult FindWord(Session session)
+        {
+            session.Log("Begin FindWord()");
+
+            int officeVersion = OfficeHelper.GetWinWordVersion();
+            if (officeVersion >= 2010)
+            {
+                // Must be UPPERCASE
+                session["WINWORDVERSION"] = officeVersion.ToString();
+            }
+
+            session.Log("End FindWord()");
 
             return ActionResult.Success;
         }

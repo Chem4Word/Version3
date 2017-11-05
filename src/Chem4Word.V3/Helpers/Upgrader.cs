@@ -26,7 +26,7 @@ namespace Chem4Word.Helpers
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            DialogResult result = DialogResult.No;
+            DialogResult result = DialogResult.Cancel;
 
             int count = LegacyChemistryCount(doc);
 
@@ -41,7 +41,7 @@ namespace Chem4Word.Helpers
                 sb.AppendLine("");
                 sb.AppendLine("This operation can't be undone.");
                 result = UserInteractions.AskUserYesNo(sb.ToString());
-                Globals.Chem4WordV3.Telemetry.Write(module, "information", "Detected legacy chemistry");
+                Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Detected legacy chemistry");
             }
 
             return result;

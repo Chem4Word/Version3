@@ -488,7 +488,7 @@ namespace Chem4Word.UI
             // 
             // ClearLibraryButton
             // 
-            this.ClearLibraryButton.Image = global::Chem4Word.Properties.Resources.Gallery_Toggle;
+            this.ClearLibraryButton.Image = global::Chem4Word.Properties.Resources.Gallery_Delete;
             this.ClearLibraryButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ClearLibraryButton.Location = new System.Drawing.Point(25, 145);
             this.ClearLibraryButton.Name = "ClearLibraryButton";
@@ -509,7 +509,7 @@ namespace Chem4Word.UI
             this.groupBox1.Size = new System.Drawing.Size(530, 124);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Gallery Import";
+            this.groupBox1.Text = "Import";
             // 
             // lblGalleryDesc
             // 

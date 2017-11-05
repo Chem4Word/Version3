@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!-- For automatic upgrade to work only first three parts of version number are used -->
-  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.5 Beta 5" Manufacturer="Chem4Word" Version="3.0.5.6500" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
+  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.6 Beta 6" Manufacturer="Chem4Word" Version="3.0.6.6518" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of Chem4Word is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
@@ -33,56 +33,8 @@
         <FileSearch Name="Chem4Word.AddIn.dll" MinVersion="0.0.0.0" MaxVersion="99.99.9999.9999" />
       </DirectorySearch>
     </Property>
+    <Condition Message="This application requires Microsoft Word 2010 (or greater). Please install it then run this installer again."><![CDATA[Installed OR WINWORDVERSION]]></Condition>
     <Condition Message="Please uninstall version 2 of Chem4Word, then run this installer again."><![CDATA[Installed OR (NOT CHEM4WORDV2)]]></Condition>
-    <Property Id="WORD2010">
-      <DirectorySearch Id="Word2010x32" Path="[ProgramFilesFolder]\Microsoft Office\Office14" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2010x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office14" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2010Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 14\ClientX86\Root\Office14" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2010Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 14\ClientX64\Root\Office14" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="14.0.0.0" MaxVersion="14.99.9999.9999" />
-      </DirectorySearch>
-    </Property>
-    <Property Id="WORD2013">
-      <DirectorySearch Id="Word2013x32" Path="[ProgramFilesFolder]\Microsoft Office\Office15" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2013x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office15" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2013Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 15\ClientX64\Root\Office15" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2013Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 15\ClientX86\Root\Office15" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="15.0.0.0" MaxVersion="15.99.9999.9999" />
-      </DirectorySearch>
-    </Property>
-    <Property Id="WORD2016">
-      <DirectorySearch Id="Word2016x32" Path="[ProgramFilesFolder]\Microsoft Office\root\Office16" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2016x64" Path="[ProgramFiles64Folder]\Microsoft Office\root\Office16" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2016Ctrx32" Path="[ProgramFilesFolder]\Microsoft Office 16\ClientX64\Root\Office16" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2016Ctrx64" Path="[ProgramFiles64Folder]\Microsoft Office 16\ClientX86\Root\Office16" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2016O365x86" Path="[ProgramFilesFolder]\Microsoft Office\Office16" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
-      </DirectorySearch>
-      <DirectorySearch Id="Word2016O365x64" Path="[ProgramFiles64Folder]\Microsoft Office\Office16" Depth="1">
-        <FileSearch Name="winword.exe" MinVersion="16.0.0.0" MaxVersion="16.99.9999.9999" />
-      </DirectorySearch>
-    </Property>
-    <Condition Message="This application requires Microsoft Word 2010, 2013 or 2016. Please install it then run this installer again."><![CDATA[Installed OR WORD2010 OR WORD2013 OR WORD2016]]></Condition>
     <!-- https://msdn.microsoft.com/library/aa370556.aspx -->
     <Condition Message="This application is only supported on Windows 7, Windows Server 2008 R2, or higher."><![CDATA[Installed OR (VersionNT >= 601)]]></Condition>
     <!-- https://msdn.microsoft.com/en-us/library/ee942965(v=vs.110).aspx#detect_net -->
@@ -91,8 +43,12 @@
     <!-- https://blogs.msdn.microsoft.com/jschaffe/2012/10/23/creating-wix-custom-actions-in-c-and-passing-parameters/ -->
     <!-- https://www.codeproject.com/Articles/132918/Creating-Custom-Action-for-WIX-Written-in-Managed -->
     <Binary Id="WiX.CustomAction.dll" SourceFile="..\Wix.CustomAction\bin\x86\$(var.Configuration)\WiX.CustomAction.CA.dll" />
+    <CustomAction Id="FindWinwordPath" BinaryKey="WiX.CustomAction.dll" DllEntry="FindWord" Return="check" Execute="immediate" />
     <CustomAction Id="SetupChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="SetupChem4Word" Return="check" Execute="deferred" Impersonate="no" />
     <CustomAction Id="RemoveChem4Word" BinaryKey="WiX.CustomAction.dll" DllEntry="RemoveChem4Word" Return="check" Execute="deferred" Impersonate="no" />
+    <InstallUISequence>
+      <Custom Action="FindWinwordPath" Before="LaunchConditions" />
+    </InstallUISequence>
     <InstallExecuteSequence>
       <Custom Action="SetupChem4Word" Before="InstallFinalize">NOT Installed</Custom>
       <Custom Action="RemoveChem4Word" Before="InstallFinalize">Installed</Custom>

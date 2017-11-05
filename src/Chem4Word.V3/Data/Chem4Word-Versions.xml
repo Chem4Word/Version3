@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
+  <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
+  <Version>
+    <Number>3.0.5 Beta 6</Number>
+    <IsBeta>true</IsBeta>
+    <Released>01-Nov-2017</Released>
+    <Changes>
+      <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check</Change>
+      <Change>Prevent structures with half bonds being sent to ChemSpider</Change>
+      <Change>Handle error when TaskPane has already been closed</Change>
+      <Change>Handle error when Ribbon is null</Change>
+      <Change>Handle error when Library can't be copied</Change>
+      <Change>Make Chem4WordSetup.exe single instance</Change>
+      <Change>Allow Chem4Word-Versions.xml and updates to be deployed to multiple domains</Change>
+      <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it</Change>
+      <Change>Revised Office version detection</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.6.Beta.6.msi</Url>
+  </Version>
   <Version>
     <Number>3.0.5 Beta 5</Number>
     <IsBeta>true</IsBeta>
@@ -36,7 +54,7 @@
     <IsBeta>true</IsBeta>
     <Released>18-Jun-2017</Released>
     <Changes>
-      <Change>Beta 2</Change>
+      <Change>Installer testing - Do Not Use</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.2.Beta.2.msi</Url>
   </Version>
@@ -45,17 +63,8 @@
     <IsBeta>true</IsBeta>
     <Released>08-Jun-2017</Released>
     <Changes>
-      <Change>Beta 1</Change>
+      <Change>Installer testing - Do Not Use</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.1.Beta.1.msi</Url>
-  </Version>
-  <Version>
-    <Number>3.0.0 Beta 1</Number>
-    <IsBeta>true</IsBeta>
-    <Released>01-Jun-2017</Released>
-    <Changes>
-      <Change>Alpha</Change>
-    </Changes>
-    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.0.Alpha.msi</Url>
   </Version>
 </ChangeLog>

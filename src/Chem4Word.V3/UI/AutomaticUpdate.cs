@@ -43,18 +43,6 @@ namespace Chem4Word.UI
 
         public System.Windows.Point TopLeft { get; set; }
 
-        //private const int CP_NOCLOSE_BUTTON = 0x200;
-
-        //protected override CreateParams CreateParams
-        //{
-        //    get
-        //    {
-        //        CreateParams myCp = base.CreateParams;
-        //        myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
-        //        return myCp;
-        //    }
-        //}
-
         public AutomaticUpdate(IChem4WordTelemetry telemetry)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -75,7 +63,7 @@ namespace Chem4Word.UI
         private void OnReleasesPageLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -91,7 +79,7 @@ namespace Chem4Word.UI
         private void OnRichTextBoxLinkClicked(object sender, LinkClickedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -122,23 +110,42 @@ namespace Chem4Word.UI
         private void OnUpdateNowClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 string source = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Chem4WordUpdater.exe");
-                string destination = Path.Combine(Path.GetTempPath(), "Chem4WordUpdater.exe");
-                File.Copy(source, destination, true);
+                string userTempPath = Path.GetTempPath();
+                if (Directory.Exists(userTempPath))
+                {
+                    string destination = Path.Combine(userTempPath, "Chem4WordUpdater.exe");
+                    File.Copy(source, destination, true);
 
-                _telemetry.Write(module, "AutomaticUpdate", "Starting download of " + _downloadUrl);
+                    if (File.Exists(destination)
+                        && new FileInfo(destination).Length > 0)
+                    {
+                        _telemetry.Write(module, "AutomaticUpdate", "Starting updater, to download " + _downloadUrl);
 
-                ProcessStartInfo psi = new ProcessStartInfo();
-                psi.Arguments = _downloadUrl;
-                psi.FileName = destination;
-                Process.Start(psi);
+                        ProcessStartInfo psi = new ProcessStartInfo();
+                        psi.WorkingDirectory = userTempPath;
+                        psi.Arguments = _downloadUrl;
+                        psi.FileName = destination;
+                        Process.Start(psi);
 
-                _closedByCode = true;
-                Close();
+                        _closedByCode = true;
+                        Close();
+                    }
+                    else
+                    {
+                        _telemetry.Write(module, "AutomaticUpdate", "Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed.");
+                        MessageBox.Show($"Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed. Please download {_downloadUrl} manually and install it.");
+                    }
+                }
+                else
+                {
+                    _telemetry.Write(module, "AutomaticUpdate", $"Folder '{userTempPath}' not found.");
+                    MessageBox.Show($"Folder '{userTempPath}' not found. Please download {_downloadUrl} manually and install it.");
+                }
             }
             catch (Exception ex)
             {
@@ -149,7 +156,7 @@ namespace Chem4Word.UI
         private void OnUpdateLaterClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            _telemetry.Write(module, "Audit", "Fired");
+            _telemetry.Write(module, "Action", "Triggered");
 
             try
             {
@@ -195,7 +202,7 @@ namespace Chem4Word.UI
                         break;
                     }
 
-                    AddHeaderLine("Version " + thisVersionNumber + "; Released " + thisVersionDate.ToString("dd-MMM-yyyy"), Color.Blue);
+                    AddHeaderLine("Version " + thisVersionNumber + "; Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture), Color.Blue);
                     var changes = version.XPathSelectElements("Changes/Change");
                     foreach (var change in changes)
                     {
@@ -241,60 +248,6 @@ namespace Chem4Word.UI
             richTextBox1.SelectionColor = colour;
             richTextBox1.AppendText(line + Environment.NewLine);
             richTextBox1.SelectionBullet = false;
-        }
-
-        private string LookForUninstall(string root, string branch, string name)
-        {
-            string result = string.Empty;
-
-            try
-            {
-                RegistryKey key = null;
-                switch (root)
-                {
-                    case "HKLM":
-                        key = Registry.LocalMachine.OpenSubKey(branch);
-                        break;
-
-                    case "HKCU":
-                        key = Registry.CurrentUser.OpenSubKey(branch);
-                        break;
-                }
-
-                if (key != null)
-                {
-                    //string[] xx = RegistryUtility.GetSubKeys();
-
-                    foreach (string subkeyName in key.GetSubKeyNames())
-                    {
-                        using (RegistryKey subkey = key.OpenSubKey(subkeyName))
-                        {
-                            //Debug.WriteLine("Found key " + subkeyName);
-                            if (subkey != null)
-                            {
-                                string displayName = subkey.GetValue("DisplayName") as string;
-                                //Debug.WriteLine(" Display Name is " + displayName);
-                                if (!string.IsNullOrEmpty(displayName))
-                                {
-                                    if (displayName.ToLower().Equals(name.ToLower()))
-                                    {
-                                        result = subkeyName;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    key = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                //
-            }
-
-            return result;
         }
     }
 }

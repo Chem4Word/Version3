@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Chem4Word.Shared;
 
 namespace Chem4Word.Telemetry
 {
@@ -14,6 +15,9 @@ namespace Chem4Word.Telemetry
     {
         private string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
         private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+
+        private const string DetectionFile = "files3/client-ip.php";
+        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com"};
 
         public string MachineId { get; set; }
 
@@ -108,118 +112,8 @@ namespace Chem4Word.Telemetry
 
             try
             {
-                #region Get Office Product String
-
-                string officeProductName = "";
-
-                RegistryKey localMachine = Registry.LocalMachine;
-
-                #region Get Guid
-
-                string value1 = string.Empty;
-
-                RegistryKey key1 = Registry.ClassesRoot.OpenSubKey("Word.Document");
-                if (key1 != null)
-                {
-                    RegistryKey current = key1.OpenSubKey("CurVer");
-                    if (current != null)
-                    {
-                        value1 = current.GetValue("").ToString();
-                    }
-                }
-                //Debug.WriteLine(@"Word.Document\CurVer\(default) --> " + value1);
-
-                string value2 = string.Empty;
-
-                if (!string.IsNullOrEmpty(value1))
-                {
-                    RegistryKey key2 = Registry.ClassesRoot.OpenSubKey(value1);
-                    if (key2 != null)
-                    {
-                        RegistryKey icon = key2.OpenSubKey("DefaultIcon");
-                        if (icon != null)
-                        {
-                            value2 = icon.GetValue("").ToString();
-                        }
-                    }
-                    //Debug.WriteLine(value1 + @"\DefaultIcon\(default) --> " + value2);
-                }
-
-                if (!string.IsNullOrEmpty(value2))
-                {
-                    int start = value2.IndexOf("{", StringComparison.Ordinal);
-                    int end = value2.IndexOf("}", StringComparison.Ordinal);
-                    if (end > start)
-                    {
-                        string officeGuid = value2.Substring(start, end - start + 1);
-                        Debug.WriteLine("Office Guid: " + officeGuid);
-
-                        officeProductName = DecodeOfficeGuid(officeGuid);
-                    }
-                }
-
-                #endregion Get Guid
-
-                #endregion Get Office Product String
-
-                #region Get Word Version
-
-                string wordVersionNumber = "";
-                string name = @"Software\Microsoft\Windows\CurrentVersion\App Paths\winword.exe";
-
-                // 1. looks inside CURRENT_USER:
-                RegistryKey mainKey = Registry.CurrentUser;
-                mainKey = mainKey.OpenSubKey(name, false);
-
-                if (mainKey == null)
-                {
-                    //2. looks inside LOCAL_MACHINE:
-                    mainKey = Registry.LocalMachine;
-                    mainKey = mainKey.OpenSubKey(name, false);
-                }
-
-                if (mainKey != null)
-                {
-                    string path = mainKey.GetValue(string.Empty).ToString();
-                    try
-                    {
-                        path = path.Replace("\"", "");
-                        FileVersionInfo fi = FileVersionInfo.GetVersionInfo(path);
-                        wordVersionNumber = fi.FileVersion;
-
-                        // Handle product not found in uninstall section
-                        if (string.IsNullOrEmpty(officeProductName))
-                        {
-                            officeProductName = fi.ProductName;
-                        }
-                        // Get a bit more information about this version
-                        if (officeProductName.Contains("-0000000FF1CE}"))
-                        {
-                            officeProductName += Environment.NewLine + fi.ProductName;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Message);
-                    }
-
-                    // Generate single number from major of word's version number
-                    WordVersion = GetOfficeVersionNumber(wordVersionNumber);
-
-                    string sp = GetOfficeServicePack(wordVersionNumber);
-                    if (!string.IsNullOrEmpty(sp))
-                    {
-                        officeProductName = officeProductName + sp;
-                    }
-
-                    WordProduct = (officeProductName + " [" + wordVersionNumber + "]");
-                }
-                else
-                {
-                    WordProduct = "Microsoft Word not found !";
-                }
-
-                #endregion Get Word Version
+                WordProduct = OfficeHelper.GetWordProduct();
+                WordVersion = OfficeHelper.GetWinWordVersion();
             }
             catch (Exception ex)
             {
@@ -270,6 +164,19 @@ namespace Chem4Word.Telemetry
                 if (ndpKey != null)
                 {
                     int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
+
+
+                    // .Net 4.7.1
+                    if (releaseKey >= 461310)
+                    {
+                        DotNetVersion = $".NET 4.7 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 461308)
+                    {
+                        DotNetVersion = $".NET 4.7.1 (W10 1710) [{releaseKey}]";
+                        return;
+                    }
 
                     // .Net 4.7
                     if (releaseKey >= 460805)
@@ -372,92 +279,93 @@ namespace Chem4Word.Telemetry
 
         private void GetExternalIpAddress(object o)
         {
-            DateTime started = DateTime.Now;
-
             // http://www.ipv6proxy.net/ --> "Your IP address : 2600:3c00::f03c:91ff:fe93:dcd4"
 
             try
             {
-                string url1 = "https://www.chem4word.co.uk/files/client-ip.php"; // IPv4 & IPv6
-                string url2 = "https://chem4word.azurewebsites.net/client-ip.php"; // IPv4 only
-
-                // if (even) {url1} else {url2}
-                string url = _retryCount % 2 == 0 ? url1 : url2;
-
-                Debug.WriteLine("Fetching external IpAddress from " + url + " attempt " + _retryCount);
-                IpAddress = "IpAddress 0.0.0.0";
-
-                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-                if (request != null)
+                foreach (var domain in Domains)
                 {
-                    request.UserAgent = "Chem4Word Add-In";
-                    request.Timeout = 2000; // 2 seconds
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    if (HttpStatusCode.OK.Equals(response.StatusCode))
+                    try
                     {
-                        using (var reader = new StreamReader(response.GetResponseStream()))
+                        string url = $"{domain}/{DetectionFile}";
+
+                        Debug.WriteLine("Fetching external IpAddress from " + url + " attempt " + _retryCount);
+                        IpAddress = "IpAddress 0.0.0.0";
+
+                        HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                        if (request != null)
                         {
-                            string webPage = reader.ReadToEnd();
-
-                            if (webPage.StartsWith("Your IP address : "))
+                            request.UserAgent = "Chem4Word Add-In";
+                            request.Timeout = 2000; // 2 seconds
+                            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                            if (HttpStatusCode.OK.Equals(response.StatusCode))
                             {
-                                // Tidy Up the data
-                                webPage = webPage.Replace("Your IP address : ", "");
-                                webPage = webPage.Replace("<br/>", "");
-                                webPage = webPage.Replace("<br />", "");
-
-                                #region Detect IPv6
-
-                                if (webPage.Contains(":"))
+                                using (var reader = new StreamReader(response.GetResponseStream()))
                                 {
-                                    string[] ipV6Parts = webPage.Split(':');
-                                    // Must have between 4 and 8 parts
-                                    if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
+                                    string webPage = reader.ReadToEnd();
+
+                                    if (webPage.StartsWith("Your IP address : "))
                                     {
-                                        IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
+                                        // Tidy Up the data
+                                        webPage = webPage.Replace("Your IP address : ", "");
+                                        webPage = webPage.Replace("<br/>", "");
+                                        webPage = webPage.Replace("<br />", "");
+
+                                        #region Detect IPv6
+
+                                        if (webPage.Contains(":"))
+                                        {
+                                            string[] ipV6Parts = webPage.Split(':');
+                                            // Must have between 4 and 8 parts
+                                            if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
+                                            {
+                                                IpAddress = "IpAddress " + webPage;
+                                                IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
+                                                break;
+                                            }
+                                        }
+
+                                        #endregion Detect IPv6
+
+                                        #region Detect IPv4
+
+                                        if (webPage.Contains("."))
+                                        {
+                                            // Must have 4 parts
+                                            string[] ipV4Parts = webPage.Split('.');
+                                            if (ipV4Parts.Length == 4)
+                                            {
+                                                IpAddress = "IpAddress " + webPage;
+                                                IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
+                                                break;
+                                            }
+                                        }
+
+                                        #endregion Detect IPv4
                                     }
+
+                                    Debug.WriteLine(IpAddress);
                                 }
-
-                                #endregion Detect IPv6
-
-                                #region Detect IPv4
-
-                                if (webPage.Contains("."))
-                                {
-                                    // Must have 4 parts
-                                    string[] ipV4Parts = webPage.Split('.');
-                                    if (ipV4Parts.Length == 4)
-                                    {
-                                        IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
-                                    }
-                                }
-
-                                #endregion Detect IPv4
                             }
-
-                            Debug.WriteLine(IpAddress);
                         }
                     }
+                    catch
+                    {
+                        // Do Nothing
+                    }
+                    Thread.Sleep(500);
                 }
-
-                TimeSpan ts = DateTime.Now - started;
-                Debug.WriteLine("Obtaining External IP Address took " + ts.TotalMilliseconds.ToString("#,000.0" + "ms"));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 // Something went wrong
                 IpAddress = "IpAddress 0.0.0.0 - " + ex.Message;
-
-                TimeSpan ts = DateTime.Now - started;
-                Debug.WriteLine("Obtaining External IP Address failed in " + ts.TotalMilliseconds.ToString("#,000.0" + "ms"));
             }
 
             if (string.IsNullOrEmpty(IpAddress) || IpAddress.Contains("0.0.0.0"))
             {
-                if (_retryCount < 10)
+                if (_retryCount < 5)
                 {
                     _retryCount++;
                     Thread.Sleep(500);

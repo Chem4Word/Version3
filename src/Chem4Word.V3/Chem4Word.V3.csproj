@@ -237,6 +237,7 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Spatial, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Spatial.5.8.2\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
@@ -415,11 +416,16 @@
     <Content Include="Resources\Button Images\DocumentFind.png" />
     <Content Include="Resources\Button Images\DocumentMake.png" />
     <Content Include="Resources\Button Images\Export.png" />
+    <Content Include="Resources\Button Images\Help.png" />
+    <Content Include="Resources\Button Images\Home.png" />
     <Content Include="Resources\Button Images\Import.png" />
+    <Content Include="Resources\Button Images\Information.png" />
+    <Content Include="Resources\Button Images\Manual.png" />
     <Content Include="Resources\Button Images\Navigation-32.png" />
     <Content Include="Resources\Button Images\Office-2016\Edit-Labels.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Open.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Save.png" />
+    <Content Include="Resources\Button Images\Office-2016\Gallery-Delete.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Find.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Save.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Toggle.png" />
@@ -536,6 +542,7 @@
     <Content Include="Resources\Button Images\TrashVista.png" />
     <Content Include="Resources\Button Images\Xml.png" />
     <Content Include="Resources\About Images\ChemDoodleWebBadge.png" />
+    <Content Include="Resources\Button Images\YouTube.png" />
     <Content Include="Resources\EmptyStructure.xml">
       <SubType>Designer</SubType>
     </Content>
