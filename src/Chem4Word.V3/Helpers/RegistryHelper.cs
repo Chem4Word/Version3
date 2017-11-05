@@ -14,13 +14,6 @@ namespace Chem4Word.Helpers
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
 
-        public static int CheckForUpdates(int days)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-
-            return 0;
-        }
-
         public static void SendSetupActions()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -32,7 +25,16 @@ namespace Chem4Word.Helpers
                 foreach (var name in names)
                 {
                     string message = rk.GetValue(name).ToString();
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Setup", $"{name} {message}");
+
+                    string timestamp = name;
+                    int bracket = timestamp.IndexOf("[", StringComparison.InvariantCulture);
+                    if (bracket > 0)
+                    {
+                        timestamp = timestamp.Substring(0, bracket).Trim();
+                    }
+
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Setup", $"{timestamp} {message}");
+
                     rk.DeleteValue(name);
                 }
             }
@@ -49,7 +51,16 @@ namespace Chem4Word.Helpers
                 foreach (var name in names)
                 {
                     string message = rk.GetValue(name).ToString();
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Update", $"{name} {message}");
+
+                    string timestamp = name;
+                    int bracket = timestamp.IndexOf("[", StringComparison.InvariantCulture);
+                    if (bracket > 0)
+                    {
+                        timestamp = timestamp.Substring(0, bracket).Trim();
+                    }
+
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Setup", $"{timestamp} {message}");
+
                     rk.DeleteValue(name);
                 }
             }

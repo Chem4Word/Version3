@@ -23,8 +23,8 @@ namespace Chem4WordSetup
                 {
                     //
                 }
-                string actionName = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-                key.SetValue($"{actionName}-{_counter++}", $"[{procId}] {action}");
+                string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                key.SetValue($"{timestamp} [{procId}.{_counter++.ToString("000")}]", $"[{procId}] {action}");
             }
         }
     }
