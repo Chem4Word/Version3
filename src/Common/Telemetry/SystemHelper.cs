@@ -16,6 +16,9 @@ namespace Chem4Word.Telemetry
         private string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
         private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
+        private const string DetectionFile = "files3/client-ip.php";
+        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com"};
+
         public string MachineId { get; set; }
 
         public string SystemOs { get; set; }
@@ -263,92 +266,93 @@ namespace Chem4Word.Telemetry
 
         private void GetExternalIpAddress(object o)
         {
-            DateTime started = DateTime.Now;
-
             // http://www.ipv6proxy.net/ --> "Your IP address : 2600:3c00::f03c:91ff:fe93:dcd4"
 
             try
             {
-                string url1 = "https://www.chem4word.co.uk/files/client-ip.php"; // IPv4 & IPv6
-                string url2 = "https://chem4word.azurewebsites.net/client-ip.php"; // IPv4 only
-
-                // if (even) {url1} else {url2}
-                string url = _retryCount % 2 == 0 ? url1 : url2;
-
-                Debug.WriteLine("Fetching external IpAddress from " + url + " attempt " + _retryCount);
-                IpAddress = "IpAddress 0.0.0.0";
-
-                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-                if (request != null)
+                foreach (var domain in Domains)
                 {
-                    request.UserAgent = "Chem4Word Add-In";
-                    request.Timeout = 2000; // 2 seconds
-                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                    if (HttpStatusCode.OK.Equals(response.StatusCode))
+                    try
                     {
-                        using (var reader = new StreamReader(response.GetResponseStream()))
+                        string url = $"{domain}/{DetectionFile}";
+
+                        Debug.WriteLine("Fetching external IpAddress from " + url + " attempt " + _retryCount);
+                        IpAddress = "IpAddress 0.0.0.0";
+
+                        HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                        if (request != null)
                         {
-                            string webPage = reader.ReadToEnd();
-
-                            if (webPage.StartsWith("Your IP address : "))
+                            request.UserAgent = "Chem4Word Add-In";
+                            request.Timeout = 2000; // 2 seconds
+                            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                            if (HttpStatusCode.OK.Equals(response.StatusCode))
                             {
-                                // Tidy Up the data
-                                webPage = webPage.Replace("Your IP address : ", "");
-                                webPage = webPage.Replace("<br/>", "");
-                                webPage = webPage.Replace("<br />", "");
-
-                                #region Detect IPv6
-
-                                if (webPage.Contains(":"))
+                                using (var reader = new StreamReader(response.GetResponseStream()))
                                 {
-                                    string[] ipV6Parts = webPage.Split(':');
-                                    // Must have between 4 and 8 parts
-                                    if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
+                                    string webPage = reader.ReadToEnd();
+
+                                    if (webPage.StartsWith("Your IP address : "))
                                     {
-                                        IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
+                                        // Tidy Up the data
+                                        webPage = webPage.Replace("Your IP address : ", "");
+                                        webPage = webPage.Replace("<br/>", "");
+                                        webPage = webPage.Replace("<br />", "");
+
+                                        #region Detect IPv6
+
+                                        if (webPage.Contains(":"))
+                                        {
+                                            string[] ipV6Parts = webPage.Split(':');
+                                            // Must have between 4 and 8 parts
+                                            if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
+                                            {
+                                                IpAddress = "IpAddress " + webPage;
+                                                IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
+                                                break;
+                                            }
+                                        }
+
+                                        #endregion Detect IPv6
+
+                                        #region Detect IPv4
+
+                                        if (webPage.Contains("."))
+                                        {
+                                            // Must have 4 parts
+                                            string[] ipV4Parts = webPage.Split('.');
+                                            if (ipV4Parts.Length == 4)
+                                            {
+                                                IpAddress = "IpAddress " + webPage;
+                                                IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
+                                                break;
+                                            }
+                                        }
+
+                                        #endregion Detect IPv4
                                     }
+
+                                    Debug.WriteLine(IpAddress);
                                 }
-
-                                #endregion Detect IPv6
-
-                                #region Detect IPv4
-
-                                if (webPage.Contains("."))
-                                {
-                                    // Must have 4 parts
-                                    string[] ipV4Parts = webPage.Split('.');
-                                    if (ipV4Parts.Length == 4)
-                                    {
-                                        IpAddress = "IpAddress " + webPage;
-                                        IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
-                                    }
-                                }
-
-                                #endregion Detect IPv4
                             }
-
-                            Debug.WriteLine(IpAddress);
                         }
                     }
+                    catch
+                    {
+                        // Do Nothing
+                    }
+                    Thread.Sleep(500);
                 }
-
-                TimeSpan ts = DateTime.Now - started;
-                Debug.WriteLine("Obtaining External IP Address took " + ts.TotalMilliseconds.ToString("#,000.0" + "ms"));
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
                 // Something went wrong
                 IpAddress = "IpAddress 0.0.0.0 - " + ex.Message;
-
-                TimeSpan ts = DateTime.Now - started;
-                Debug.WriteLine("Obtaining External IP Address failed in " + ts.TotalMilliseconds.ToString("#,000.0" + "ms"));
             }
 
             if (string.IsNullOrEmpty(IpAddress) || IpAddress.Contains("0.0.0.0"))
             {
-                if (_retryCount < 10)
+                if (_retryCount < 5)
                 {
                     _retryCount++;
                     Thread.Sleep(500);
