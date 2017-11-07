@@ -41,7 +41,7 @@ namespace Chem4Word.Helpers
                 sb.AppendLine("");
                 sb.AppendLine("This operation can't be undone.");
                 result = UserInteractions.AskUserYesNo(sb.ToString());
-                Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Detected legacy chemistry");
+                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Detected {count} legacy chemistry ContentControl(s)");
             }
 
             return result;
@@ -122,9 +122,11 @@ namespace Chem4Word.Helpers
 
             Globals.Chem4WordV3.EnableDocumentEvents(doc);
             doc.Application.Selection.SetRange(sel, sel);
-
-            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Upgraded {upgradedCCs} Chemistry Objects for {upgradedXml} Structures");
-            UserInteractions.AlertUser($"Upgrade Completed{Environment.NewLine}{Environment.NewLine}Upgraded {upgradedCCs} Chemistry Objects for {upgradedXml} Structures");
+            if (upgradedCCs + upgradedXml > 0)
+            {
+                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Upgraded {upgradedCCs} Chemistry Objects for {upgradedXml} Structures");
+                UserInteractions.AlertUser($"Upgrade Completed{Environment.NewLine}{Environment.NewLine}Upgraded {upgradedCCs} Chemistry Objects for {upgradedXml} Structures");
+            }
         }
 
         private static void EraseChemistryZones(Word.Document doc)
