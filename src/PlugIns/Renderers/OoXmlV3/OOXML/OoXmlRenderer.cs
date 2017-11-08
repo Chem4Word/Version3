@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -123,7 +124,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 ProcessAtoms(mol, pb, moleculeNo, _pt);
 
                 Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-                //_telemetry.Write(module, "Timing", $"Step 1 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+                //_telemetry.Write(module, "Timing", $"Step 1 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
                 sw.Reset();
                 sw.Start();
 
@@ -134,7 +135,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 ProcessBonds(mol, pb, moleculeNo);
 
                 Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-                //_telemetry.Write(module, "Timing", $"Step 2 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+                //_telemetry.Write(module, "Timing", $"Step 2 for molecule {moleculeNo} took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
                 sw.Reset();
                 sw.Start();
 
@@ -154,7 +155,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             IncreaseCanvasSize();
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Timing", "Step 3 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 3 took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
             sw.Reset();
             sw.Start();
 
@@ -170,7 +171,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 #endregion Step 4 - Shrink bond lines
 
                 Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-                //_telemetry.Write(module, "Timing", "Step 4 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+                //_telemetry.Write(module, "Timing", "Step 4 took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
                 sw.Reset();
                 sw.Start();
             }
@@ -194,7 +195,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 5 - Create main OoXml drawing objects
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Timing", "Step 5 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 5 took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
             sw.Reset();
             sw.Start();
 
@@ -232,7 +233,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 6 - Create and append OoXml objects for all Bond Lines
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Timing", "Step 6 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 6 took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
             sw.Reset();
             sw.Start();
 
@@ -246,7 +247,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 7 - Create and append OoXml objects for Atom Labels
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Timing", "Step 7 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 7 took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
             sw.Reset();
             sw.Start();
 
@@ -260,11 +261,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             #endregion Step 8 - Append OoXml drawing objects to OoXml run object
 
             Debug.WriteLine("Elapsed time " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
-            //_telemetry.Write(module, "Timing", "Step 8 took " + sw.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            //_telemetry.Write(module, "Timing", "Step 8 took " + sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
             sw.Reset();
             sw.Start();
 
-            Debug.WriteLine("Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            Debug.WriteLine("Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
             _telemetry.Write(module, "Timing", $"Rendering {_chemistryModel.Molecules.Count} molecules with {_chemistryModel.AllAtoms.Count} atoms and {_chemistryModel.AllBonds.Count} bonds took " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
 
             ShutDownProgress(pb);

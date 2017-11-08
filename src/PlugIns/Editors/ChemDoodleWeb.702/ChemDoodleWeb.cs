@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -202,7 +203,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
 
                 long sofar = sw.ElapsedMilliseconds;
 
-                Telemetry.Write(module, "Timing", $"Writing resources to disk took {sofar.ToString("##,##0")}ms");
+                Telemetry.Write(module, "Timing", $"Writing resources to disk took {sofar.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
 
                 _tempJson = Before_JSON;
 
@@ -227,7 +228,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                 _eventsEnabled = false;
 
                 long sofar = _sw.ElapsedMilliseconds;
-                Telemetry.Write(module, "Timing", $"ChemDoodle Web loaded in {sofar}ms");
+                Telemetry.Write(module, "Timing", $"ChemDoodle Web loaded in {sofar.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
 
                 this.Text = ms_AppTitle + ExecuteJavaScript("GetVersion");
 
@@ -274,7 +275,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                 }
 
                 long sofar2 = _sw.ElapsedMilliseconds;
-                Telemetry.Write(module, "Timing", $"ChemDoodle Web ready in {sofar2.ToString("##,##0")}ms");
+                Telemetry.Write(module, "Timing", $"ChemDoodle Web ready in {sofar2.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
 
                 _eventsEnabled = true;
                 _sw.Reset();
