@@ -55,9 +55,17 @@ namespace Chem4Word.Helpers
 
             foreach (Word.ContentControl cc in doc.ContentControls)
             {
-                if (cc.Title != null && cc.Title.Equals(Constants.LegacyContentControlTitle))
+                try
                 {
-                    count++;
+                    if (cc.Title != null && cc.Title.Equals(Constants.LegacyContentControlTitle))
+                    {
+                        count++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"{ex.Message}");
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", $"{ex.StackTrace}");
                 }
             }
 
