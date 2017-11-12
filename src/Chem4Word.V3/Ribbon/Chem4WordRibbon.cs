@@ -2161,6 +2161,7 @@ namespace Chem4Word
             {
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
+
             int behind = CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             if (behind == 0)
             {
