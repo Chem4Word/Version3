@@ -10,10 +10,11 @@ namespace Chem4Word.Helpers
 {
     public class ConfigWatcher
     {
+        // Files to watch for
         private const string _filter = "*.json";
 
         // Config settings to watch
-        private Config[] watchedConfigs = {
+        private Config[] _watchedConfigs = {
             new Config { Name = "ShowHydrogens", Type = "bool" },
             new Config { Name = "ColouredAtoms", Type = "bool" },
             new Config { Name = "ShowCarbonLabels", Type = "bool" }};
@@ -27,9 +28,11 @@ namespace Chem4Word.Helpers
             _watchedPath = watchedPath;
 
             _watcher = new FileSystemWatcher();
+
             _watcher.Path = _watchedPath;
-            _watcher.NotifyFilter = NotifyFilters.LastWrite;
             _watcher.Filter = _filter;
+            _watcher.NotifyFilter = NotifyFilters.LastWrite;
+
             _watcher.Changed += OnChanged;
             _watcher.EnableRaisingEvents = true;
         }
@@ -52,7 +55,7 @@ namespace Chem4Word.Helpers
                     using (JsonTextReader reader = new JsonTextReader(sr))
                     {
                         JObject jObject = (JObject)JToken.ReadFrom(reader);
-                        foreach (var config in watchedConfigs)
+                        foreach (var config in _watchedConfigs)
                         {
                             JToken t = jObject[config.Name];
                             if (t != null)
@@ -78,7 +81,7 @@ namespace Chem4Word.Helpers
                                 using (JsonTextReader reader = new JsonTextReader(sr))
                                 {
                                     jObject = (JObject)JToken.ReadFrom(reader);
-                                    foreach (var config in watchedConfigs)
+                                    foreach (var config in _watchedConfigs)
                                     {
                                         JToken t = jObject[config.Name];
                                         if (t != null)
