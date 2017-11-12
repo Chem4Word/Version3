@@ -8,6 +8,7 @@
     <Released>18-Nov-2017</Released>
     <Changes>
       <Change>Change Updater to remove passive switch as this is causing issues</Change>
+      <Change>Add option to Render Carbon Atoms</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.7.Beta.7.msi</Url>
   </Version>

@@ -193,6 +193,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             chkShowMoleculeBox.Checked = RendererOptions.ShowMoleculeBoundingBoxes;
             chkShowRingCentres.Checked = RendererOptions.ShowRingCentres;
             chkShowAtomPositions.Checked = RendererOptions.ShowAtomPositions;
+            chkShowCarbonLabels.Checked = RendererOptions.ShowCarbonLabels;
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
@@ -244,6 +245,20 @@ namespace Chem4Word.Renderer.OoXmlV3
                 new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
 
+        }
+
+        private void chkShowCarbonLabels_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            try
+            {
+                RendererOptions.ShowCarbonLabels = chkShowCarbonLabels.Checked;
+                _dirty = true;
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
         }
     }
 }

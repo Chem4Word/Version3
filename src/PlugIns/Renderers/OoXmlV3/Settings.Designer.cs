@@ -33,6 +33,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.tabControlEx = new Chem4Word.Core.UI.Controls.TabControlEx();
             this.tabRendering = new System.Windows.Forms.TabPage();
+            this.chkShowCarbonLabels = new System.Windows.Forms.CheckBox();
             this.chkShowImplicitHydrogens = new System.Windows.Forms.CheckBox();
             this.chkColouredAtoms = new System.Windows.Forms.CheckBox();
             this.tabDebug = new System.Windows.Forms.TabPage();
@@ -65,6 +66,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             // 
             this.tabRendering.BackColor = System.Drawing.SystemColors.Control;
             this.tabRendering.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabRendering.Controls.Add(this.chkShowCarbonLabels);
             this.tabRendering.Controls.Add(this.chkShowImplicitHydrogens);
             this.tabRendering.Controls.Add(this.chkColouredAtoms);
             this.tabRendering.Location = new System.Drawing.Point(0, 20);
@@ -73,6 +75,20 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.tabRendering.Size = new System.Drawing.Size(428, 163);
             this.tabRendering.TabIndex = 0;
             this.tabRendering.Text = "Rendering";
+            // 
+            // chkShowCarbonLabels
+            // 
+            this.chkShowCarbonLabels.AutoSize = true;
+            this.chkShowCarbonLabels.Checked = true;
+            this.chkShowCarbonLabels.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowCarbonLabels.Location = new System.Drawing.Point(12, 82);
+            this.chkShowCarbonLabels.Margin = new System.Windows.Forms.Padding(4);
+            this.chkShowCarbonLabels.Name = "chkShowCarbonLabels";
+            this.chkShowCarbonLabels.Size = new System.Drawing.Size(165, 17);
+            this.chkShowCarbonLabels.TabIndex = 9;
+            this.chkShowCarbonLabels.Text = "Show All Carbon Atom Labels";
+            this.chkShowCarbonLabels.UseVisualStyleBackColor = true;
+            this.chkShowCarbonLabels.CheckedChanged += new System.EventHandler(this.chkShowCarbonLabels_CheckedChanged);
             // 
             // chkShowImplicitHydrogens
             // 
@@ -252,5 +268,6 @@ namespace Chem4Word.Renderer.OoXmlV3
         private System.Windows.Forms.CheckBox chkShowCharacterBox;
         private System.Windows.Forms.CheckBox chkShowMoleculeBox;
         private System.Windows.Forms.CheckBox chkShowAtomPositions;
+        private System.Windows.Forms.CheckBox chkShowCarbonLabels;
     }
 }

@@ -13,6 +13,15 @@ namespace Chem4Word.Controls
             InitializeComponent();
         }
 
+        public bool ShowCarbonLabels
+        {
+            get { return (bool)GetValue(ShowCarbonLabelsProperty); }
+            set { SetValue(ShowCarbonLabelsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowCarbonLabelsProperty
+            = DependencyProperty.Register("ShowCarbonLabels", typeof(bool), typeof(FlexDisplayControl), new PropertyMetadata(default(bool)));
+
         public object Chemistry
         {
             get { return (object)GetValue(ChemistryProperty); }

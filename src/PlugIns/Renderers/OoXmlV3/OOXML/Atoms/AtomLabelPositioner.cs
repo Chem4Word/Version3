@@ -69,33 +69,36 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
             bool showLabel = true;
             if (atomLabel == "C")
             {
-                if (ringCount > 0 || bondCount > 1)
+                if (!options.ShowCarbonLabels)
                 {
-                    showLabel = false;
-                }
+                    if (ringCount > 0 || bondCount > 1)
+                    {
+                        showLabel = false;
+                    }
 
-                if (bondCount == 2)
-                {
-                    Point p1 = atom.Bonds[0].OtherAtom(atom).Position;
-                    Point p2 = atom.Bonds[1].OtherAtom(atom).Position;
+                    if (bondCount == 2)
+                    {
+                        Point p1 = atom.Bonds[0].OtherAtom(atom).Position;
+                        Point p2 = atom.Bonds[1].OtherAtom(atom).Position;
 
-                    double angle1 = Vector.AngleBetween(-(atom.Position - p1), atom.Position - p2);
+                        double angle1 = Vector.AngleBetween(-(atom.Position - p1), atom.Position - p2);
 
-                    if (Math.Abs(angle1) < 8)
+                        if (Math.Abs(angle1) < 8)
+                        {
+                            showLabel = true;
+                        }
+                    }
+
+                    // Force on if atom has charge
+                    if (iAbsCharge > 0)
                     {
                         showLabel = true;
                     }
-                }
-
-                // Force on if atom has charge
-                if (iAbsCharge > 0)
-                {
-                    showLabel = true;
-                }
-                // Force on if atom has isotope value
-                if (isoValue > 0)
-                {
-                    showLabel = true;
+                    // Force on if atom has isotope value
+                    if (isoValue > 0)
+                    {
+                        showLabel = true;
+                    }
                 }
             }
 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Chem4Word.Model;
 using ChemistryModel = Chem4Word.Model.Model;
 
 namespace Chem4Word.Controls
@@ -24,7 +25,18 @@ namespace Chem4Word.Controls
 
         #region Public Properties
 
+        public bool ShowCarbonLabels
+        {
+            get { return (bool)GetValue(ShowCarbonLabelsProperty); }
+            set { SetValue(ShowCarbonLabelsProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowCarbonLabelsProperty
+            = DependencyProperty.Register("ShowCarbonLabels", typeof(bool), typeof(FlexDisplay),
+                new PropertyMetadata(default(bool)));
+
         #region Chemistry (DependencyProperty)
+
 
         public object Chemistry
         {
@@ -80,8 +92,6 @@ namespace Chem4Word.Controls
 
         #endregion Public Properties
 
-
-
         #region Private Methods
 
         private void HandleDataContextChanged()
@@ -111,7 +121,6 @@ namespace Chem4Word.Controls
                 {
                     throw new ArgumentException("Object must be of type 'Chem4Word.Model.Model'.");
                 }
-
                 chemistryModel = Chemistry as ChemistryModel;
             }
 
@@ -123,6 +132,16 @@ namespace Chem4Word.Controls
 
                     Debug.WriteLine($"Ring count == {chemistryModel.Molecules.SelectMany(m => m.Rings).Count()}");
 
+                    if (ShowCarbonLabels)
+                    {
+                        foreach (var atom in chemistryModel.AllAtoms)
+                        {
+                            if (atom.Element.Equals(Globals.PeriodicTable.C))
+                            {
+                                atom.ShowSymbol = true;
+                            }
+                        }
+                    }
                     Placeholder.DataContext = chemistryModel;
                 }
                 else
