@@ -518,7 +518,7 @@ namespace Chem4Word
             CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
         }
 
-        private void CheckForUpdates(int days)
+        private int CheckForUpdates(int days)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
@@ -603,6 +603,8 @@ namespace Chem4Word
             }
 
             Globals.Chem4WordV3.SetUpdateButtonState();
+
+            return Globals.Chem4WordV3.VersionsBehind;
         }
 
         private string GetVersionsXmlFile()
@@ -2159,7 +2161,11 @@ namespace Chem4Word
             {
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
-            AfterButtonChecks(sender as RibbonButton);
+            int behind = CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
+            if (behind == 0)
+            {
+                UserInteractions.InformUser("Your version of Chem4Word is the latest");
+            }
         }
 
         private void OnReadManualClick(object sender, RibbonControlEventArgs e)
