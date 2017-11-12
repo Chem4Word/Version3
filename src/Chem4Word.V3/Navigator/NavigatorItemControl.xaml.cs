@@ -96,7 +96,7 @@ namespace Chem4Word.Navigator
             {
                 var linkedControls = from Word.ContentControl cc in ActiveDocument.ContentControls
                                      orderby cc.Range.Start descending
-                                     where CustomXmlPartHelper.GuidFromTag(cc.Tag) == CustomXmlPartHelper.GetCmlId(ni.XMLPart)
+                                     where CustomXmlPartHelper.GuidFromTag(cc?.Tag) == CustomXmlPartHelper.GetCmlId(ni.XMLPart)
                                      select cc;
 
                 // Grab current selection point
@@ -154,7 +154,7 @@ namespace Chem4Word.Navigator
             {
                 var linkedControls = from Word.ContentControl cc in ActiveDocument.ContentControls
                                      orderby cc.Range.Start
-                                     where CustomXmlPartHelper.GuidFromTag(cc.Tag) == CustomXmlPartHelper.GetCmlId(ni.XMLPart)
+                                     where CustomXmlPartHelper.GuidFromTag(cc?.Tag) == CustomXmlPartHelper.GetCmlId(ni.XMLPart)
                                      select cc;
 
                 // Grab current selection point

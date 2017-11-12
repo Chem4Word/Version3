@@ -1422,19 +1422,19 @@ namespace Chem4Word
             {
                 Debug.WriteLine($"{module}");
 
-                if (!InUndoRedo && !string.IsNullOrEmpty(NewContentControl.Tag))
+                if (!InUndoRedo && !string.IsNullOrEmpty(NewContentControl?.Tag))
                 {
-                    Debug.WriteLine("  Looking for " + NewContentControl.Tag);
+                    Debug.WriteLine("  Looking for " + NewContentControl?.Tag);
 
                     Word.Document doc = NewContentControl.Application.ActiveDocument;
                     Word.Application app = Globals.Chem4WordV3.Application;
-                    CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(NewContentControl.Tag, app.ActiveDocument);
+                    CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(NewContentControl?.Tag, app.ActiveDocument);
                     if (cxml == null)
                     {
                         if (doc.Application.Documents.Count > 1)
                         {
                             Word.Application app1 = Globals.Chem4WordV3.Application;
-                            cxml = CustomXmlPartHelper.FindCustomXmlPart(NewContentControl.Tag, app1.ActiveDocument);
+                            cxml = CustomXmlPartHelper.FindCustomXmlPart(NewContentControl?.Tag, app1.ActiveDocument);
                             if (cxml != null)
                             {
                                 // Generate new molecule Guid and apply it
@@ -1468,9 +1468,9 @@ namespace Chem4Word
             try
             {
                 Debug.WriteLine($"{module.Replace("()", $"({contentControl.Application.ActiveDocument.Name})")}");
-                //Debug.WriteLine("CC ID: " + contentControl.ID + " Tag: " + contentControl.Tag + " Title: " + contentControl.Title);
+                //Debug.WriteLine("CC ID: " + contentControl.ID + " Tag: " + contentControl?.Tag + " Title: " + contentControl.Title);
                 //WordInterop.Document doc = contentControl.Application.ActiveApp;
-                //CustomXMLPart cxml = GetCustomXmlPart(contentControl.Tag);
+                //CustomXMLPart cxml = GetCustomXmlPart(contentControl?.Tag);
                 //if (cxml != null)
                 //{
                 //    cxml.Delete();

@@ -66,10 +66,10 @@ namespace Chem4Word.Navigator
 
                     var navItems = from ContentControl ccs in _doc.ContentControls
                                    join CustomXMLPart part in _parts
-                                     on CustomXmlPartHelper.GuidFromTag(ccs.Tag) equals CustomXmlPartHelper.GetCmlId(part)
+                                     on CustomXmlPartHelper.GuidFromTag(ccs?.Tag) equals CustomXmlPartHelper.GetCmlId(part)
                                    orderby ccs.Range.Start
                                    let chemModel = converter.Import(part.XML)
-                                   select new NavigatorItem() { CMLId = ccs.Tag, ChemicalStructure = part.XML, XMLPart = part, Name = chemModel.ConciseFormula };
+                                   select new NavigatorItem() { CMLId = ccs?.Tag, ChemicalStructure = part.XML, XMLPart = part, Name = chemModel.ConciseFormula };
 
                     foreach (NavigatorItem navigatorItem in navItems)
                     {
@@ -130,7 +130,7 @@ namespace Chem4Word.Navigator
                     // ReSharper disable once InconsistentNaming
                     var matchingCC = (from ContentControl cc in _doc.ContentControls
                                       orderby cc.Range.Start
-                                      where CustomXmlPartHelper.GuidFromTag(cc.Tag) == CustomXmlPartHelper.GetCmlId(NewPart)
+                                      where CustomXmlPartHelper.GuidFromTag(cc?.Tag) == CustomXmlPartHelper.GetCmlId(NewPart)
                                       select cc).First();
 
                     //get the ordinal position of the content control
@@ -147,7 +147,7 @@ namespace Chem4Word.Navigator
                     //insert the new navigator item at the ordinal position
                     var newNavItem = new NavigatorItem()
                     {
-                        CMLId = matchingCC.Tag,
+                        CMLId = matchingCC?.Tag,
                         ChemicalStructure = NewPart.XML,
                         XMLPart = NewPart,
                         Name = chemModel.ConciseFormula

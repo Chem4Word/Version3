@@ -111,7 +111,7 @@ namespace Chem4Word.Helpers
             {
                 if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                 {
-                    string guid = GuidFromTag(cc.Tag);
+                    string guid = GuidFromTag(cc?.Tag);
 
                     if (!string.IsNullOrEmpty(guid))
                     {
@@ -149,7 +149,7 @@ namespace Chem4Word.Helpers
                     counter++;
                     Debug.WriteLine("ContentControl: " + ccc.ID);
                     Debug.WriteLine("   Range.Start: " + ccc.Range.Start);
-                    Debug.WriteLine("           Tag: " + ccc.Tag);
+                    Debug.WriteLine("           Tag: " + ccc?.Tag);
                 }
             }
 

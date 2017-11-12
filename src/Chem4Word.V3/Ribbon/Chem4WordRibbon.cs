@@ -95,16 +95,16 @@ namespace Chem4Word
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
                         string chosenState = b.Tag.ToString();
                         string prefix = "2D";
-                        string guid = cc.Tag;
-                        if (cc.Tag.Contains(":"))
+                        string guid = cc?.Tag;
+                        if (guid.Contains(":"))
                         {
-                            prefix = cc.Tag.Split(':')[0];
-                            guid = cc.Tag.Split(':')[1];
+                            prefix = cc?.Tag.Split(':')[0];
+                            guid = cc?.Tag.Split(':')[1];
                         }
 
                         if (!prefix.Equals(chosenState))
@@ -212,13 +212,13 @@ namespace Chem4Word
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
                         string prefix = "2D";
                         if (cc.Tag.Contains(":"))
                         {
-                            prefix = cc.Tag.Split(':')[0];
+                            prefix = cc?.Tag.Split(':')[0];
                         }
 
                         // Add 2D menu Item
@@ -234,7 +234,7 @@ namespace Chem4Word
                         ShowAsMenu.Items.Add(ribbonButton);
 
                         Word.Application app1 = Globals.Chem4WordV3.Application;
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
                         if (customXmlPart != null)
                         {
                             string cml = customXmlPart.XML;
@@ -760,7 +760,7 @@ namespace Chem4Word
             // Using $"{}" to coerce null to empty string
             List<string> targets = (from Word.ContentControl ccs in doc.ContentControls
                                     orderby ccs.Range.Start
-                                    where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Equals(guidString)
+                                    where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs?.Tag}".Equals(guidString)
                                     select ccs.Tag).ToList();
             return targets;
         }
@@ -772,7 +772,7 @@ namespace Chem4Word
             // Using $"{}" to coerce null to empty string
             List<string> targets = (from Word.ContentControl ccs in doc.ContentControls
                                     orderby ccs.Range.Start
-                                    where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Contains(guidString)
+                                    where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs?.Tag}".Contains(guidString)
                                     select ccs.Tag).ToList();
             return targets;
         }
@@ -786,17 +786,17 @@ namespace Chem4Word
             // Using $"{}" to coerce null to empty string
             List<Word.ContentControl> targets = (from Word.ContentControl ccs in doc.ContentControls
                                                  orderby ccs.Range.Start
-                                                 where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Contains(guidString)
+                                                 where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs?.Tag}".Contains(guidString)
                                                  select ccs).ToList();
 
             foreach (Word.ContentControl cc in targets)
             {
                 string prefix = "";
-                string ccTag = cc.Tag;
+                string ccTag = cc?.Tag;
 
                 if (ccTag.Contains(":"))
                 {
-                    prefix = ccTag.Split(':')[0];
+                    prefix = ccTag?.Split(':')[0];
                 }
 
                 if (ccTag.Equals(guidString))
@@ -1025,11 +1025,11 @@ namespace Chem4Word
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
                         Word.Application app1 = Globals.Chem4WordV3.Application;
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
                         if (customXmlPart != null)
                         {
                             beforeCml = customXmlPart.XML;
@@ -1221,8 +1221,8 @@ namespace Chem4Word
                         }
                         else
                         {
-                            fullTag = cc.Tag;
-                            guidString = CustomXmlPartHelper.GuidFromTag(cc.Tag);
+                            fullTag = cc?.Tag;
+                            guidString = CustomXmlPartHelper.GuidFromTag(cc?.Tag);
                             if (string.IsNullOrEmpty(guidString))
                             {
                                 guidString = Guid.NewGuid().ToString("N"); // No dashes
@@ -1371,11 +1371,11 @@ namespace Chem4Word
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
                         Word.Application app1 = Globals.Chem4WordV3.Application;
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
                         if (customXmlPart != null)
                         {
                             XmlViewer viewer = new XmlViewer();
@@ -1426,11 +1426,11 @@ namespace Chem4Word
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
                         Word.Application app1 = Globals.Chem4WordV3.Application;
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
                         if (customXmlPart != null)
                         {
                             Model.Model m = new Model.Model();
@@ -1491,13 +1491,13 @@ namespace Chem4Word
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
                         Word.Application app1 = Globals.Chem4WordV3.Application;
-                        string guid = CustomXmlPartHelper.GuidFromTag(cc.Tag);
+                        string guid = CustomXmlPartHelper.GuidFromTag(cc?.Tag);
 
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
                         if (customXmlPart != null)
                         {
                             string cml = customXmlPart.XML;
