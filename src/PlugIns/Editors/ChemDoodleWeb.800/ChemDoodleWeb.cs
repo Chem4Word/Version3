@@ -248,13 +248,13 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
                 if (UserOptions.ShowHydrogens)
                 {
-                    ExecuteJavaScript("ShowImplicitHCount");
-                    chkToggleImplicitHydrogens.Checked = true;
+                    ExecuteJavaScript("ShowHydrogens", true);
+                    chkToggleShowHydrogens.Checked = true;
                 }
                 else
                 {
-                    ExecuteJavaScript("HideImplicitHCount");
-                    chkToggleImplicitHydrogens.Checked = false;
+                    ExecuteJavaScript("ShowHydrogens", false);
+                    chkToggleShowHydrogens.Checked = false;
                 }
 
                 if (UserOptions.ColouredAtoms)
@@ -266,6 +266,17 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 {
                     ExecuteJavaScript("AtomsInColour", false);
                     chkColouredAtoms.Checked = false;
+                }
+
+                if (UserOptions.ShowCarbons)
+                {
+                    ExecuteJavaScript("ShowCarbons", true);
+                    chkToggleShowCarbons.Checked = true;
+                }
+                else
+                {
+                    ExecuteJavaScript("ShowCarbons", false);
+                    chkToggleShowCarbons.Checked = false;
                 }
 
                 obj = ExecuteJavaScript("GetFormula");
@@ -363,21 +374,23 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             File.WriteAllText(optionsFile, json);
         }
 
-        private void chkToggleImplicitHydrogens_CheckedChanged(object sender, EventArgs e)
+        private void chkToggleShowHydrogens_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
                 {
-                    if (chkToggleImplicitHydrogens.Checked)
+                    if (chkToggleShowHydrogens.Checked)
                     {
-                        ExecuteJavaScript("ShowImplicitHCount");
+                        ExecuteJavaScript("ShowHydrogens", true);
                         UserOptions.ShowHydrogens = true;
                     }
                     else
                     {
-                        ExecuteJavaScript("HideImplicitHCount");
+                        ExecuteJavaScript("ShowHydrogens", false);
                         UserOptions.ShowHydrogens = false;
                     }
                     _saveSettings = true;
@@ -392,6 +405,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void btnAddExplicitHydrogens_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
@@ -408,6 +423,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void btnRemoveExplicitHydrogens_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
@@ -424,6 +441,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void nudBondLength_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
@@ -441,6 +460,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void btnFlip_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
@@ -457,6 +478,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void btnMirror_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
@@ -473,6 +496,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void chkSingleOrMany_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
+            _sw.Reset();
+            _sw.Start();
+
             try
             {
                 if (_eventsEnabled)
@@ -525,6 +553,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void chkColouredAtoms_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
@@ -547,5 +577,34 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
+
+        private void chkToggleShowCarbons_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+
+            try
+            {
+                if (_eventsEnabled)
+                {
+                    if (chkToggleShowCarbons.Checked)
+                    {
+                        UserOptions.ShowCarbons = true;
+                        ExecuteJavaScript("ShowCarbons", true);
+                    }
+                    else
+                    {
+                        UserOptions.ShowCarbons = false;
+                        ExecuteJavaScript("ShowCarbons", false);
+                    }
+                    _saveSettings = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
     }
 }

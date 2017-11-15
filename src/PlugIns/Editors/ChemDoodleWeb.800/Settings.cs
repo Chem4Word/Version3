@@ -127,6 +127,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             chkColouredAtoms.Checked = EditorOptions.ColouredAtoms;
             chkShowImplicitHydrogens.Checked = EditorOptions.ShowHydrogens;
+            chkShowCarbons.Checked = EditorOptions.ShowCarbons;
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
@@ -158,6 +159,20 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                             break;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
+        private void chkShowCarbons_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            try
+            {
+                EditorOptions.ShowCarbons = chkShowCarbons.Checked;
+                _dirty = true;
             }
             catch (Exception ex)
             {

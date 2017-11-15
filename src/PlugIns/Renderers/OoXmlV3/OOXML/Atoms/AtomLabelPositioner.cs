@@ -69,7 +69,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
             bool showLabel = true;
             if (atomLabel == "C")
             {
-                if (!options.ShowCarbonLabels)
+                if (!options.ShowCarbons)
                 {
                     if (ringCount > 0 || bondCount > 1)
                     {

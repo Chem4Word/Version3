@@ -40,7 +40,7 @@
             this.btnAddExplicitHydrogens = new System.Windows.Forms.Button();
             this.groupBoxImplicit = new System.Windows.Forms.GroupBox();
             this.chkColouredAtoms = new System.Windows.Forms.CheckBox();
-            this.chkToggleImplicitHydrogens = new System.Windows.Forms.CheckBox();
+            this.chkToggleShowHydrogens = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.nudBondLength = new System.Windows.Forms.NumericUpDown();
             this.btnFlip = new System.Windows.Forms.Button();
@@ -49,6 +49,7 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.groupBoxBondLength = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkToggleShowCarbons = new System.Windows.Forms.CheckBox();
             this.groupBoxExplicit.SuspendLayout();
             this.groupBoxImplicit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBondLength)).BeginInit();
@@ -153,11 +154,12 @@
             // groupBoxImplicit
             // 
             this.groupBoxImplicit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxImplicit.Controls.Add(this.chkToggleShowCarbons);
             this.groupBoxImplicit.Controls.Add(this.chkColouredAtoms);
-            this.groupBoxImplicit.Controls.Add(this.chkToggleImplicitHydrogens);
+            this.groupBoxImplicit.Controls.Add(this.chkToggleShowHydrogens);
             this.groupBoxImplicit.Location = new System.Drawing.Point(146, 433);
             this.groupBoxImplicit.Name = "groupBoxImplicit";
-            this.groupBoxImplicit.Size = new System.Drawing.Size(139, 98);
+            this.groupBoxImplicit.Size = new System.Drawing.Size(147, 98);
             this.groupBoxImplicit.TabIndex = 4;
             this.groupBoxImplicit.TabStop = false;
             this.groupBoxImplicit.Text = "Rendering Options";
@@ -167,7 +169,7 @@
             this.chkColouredAtoms.AutoSize = true;
             this.chkColouredAtoms.Checked = true;
             this.chkColouredAtoms.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkColouredAtoms.Location = new System.Drawing.Point(16, 62);
+            this.chkColouredAtoms.Location = new System.Drawing.Point(14, 44);
             this.chkColouredAtoms.Name = "chkColouredAtoms";
             this.chkColouredAtoms.Size = new System.Drawing.Size(118, 20);
             this.chkColouredAtoms.TabIndex = 1;
@@ -176,19 +178,19 @@
             this.chkColouredAtoms.UseVisualStyleBackColor = true;
             this.chkColouredAtoms.CheckedChanged += new System.EventHandler(this.chkColouredAtoms_CheckedChanged);
             // 
-            // chkToggleImplicitHydrogens
+            // chkToggleShowHydrogens
             // 
-            this.chkToggleImplicitHydrogens.AutoSize = true;
-            this.chkToggleImplicitHydrogens.Checked = true;
-            this.chkToggleImplicitHydrogens.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkToggleImplicitHydrogens.Location = new System.Drawing.Point(16, 27);
-            this.chkToggleImplicitHydrogens.Name = "chkToggleImplicitHydrogens";
-            this.chkToggleImplicitHydrogens.Size = new System.Drawing.Size(116, 20);
-            this.chkToggleImplicitHydrogens.TabIndex = 0;
-            this.chkToggleImplicitHydrogens.Text = "Show Implicit H";
-            this.toolTip1.SetToolTip(this.chkToggleImplicitHydrogens, "Check to show implicit Hydrogens");
-            this.chkToggleImplicitHydrogens.UseVisualStyleBackColor = true;
-            this.chkToggleImplicitHydrogens.CheckedChanged += new System.EventHandler(this.chkToggleImplicitHydrogens_CheckedChanged);
+            this.chkToggleShowHydrogens.AutoSize = true;
+            this.chkToggleShowHydrogens.Checked = true;
+            this.chkToggleShowHydrogens.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkToggleShowHydrogens.Location = new System.Drawing.Point(14, 22);
+            this.chkToggleShowHydrogens.Name = "chkToggleShowHydrogens";
+            this.chkToggleShowHydrogens.Size = new System.Drawing.Size(116, 20);
+            this.chkToggleShowHydrogens.TabIndex = 0;
+            this.chkToggleShowHydrogens.Text = "Show Implicit H";
+            this.toolTip1.SetToolTip(this.chkToggleShowHydrogens, "Check to show implicit Hydrogens");
+            this.chkToggleShowHydrogens.UseVisualStyleBackColor = true;
+            this.chkToggleShowHydrogens.CheckedChanged += new System.EventHandler(this.chkToggleShowHydrogens_CheckedChanged);
             // 
             // nudBondLength
             // 
@@ -223,7 +225,7 @@
             // 
             this.btnFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnFlip.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Flip;
-            this.btnFlip.Location = new System.Drawing.Point(405, 480);
+            this.btnFlip.Location = new System.Drawing.Point(417, 480);
             this.btnFlip.Name = "btnFlip";
             this.btnFlip.Size = new System.Drawing.Size(48, 48);
             this.btnFlip.TabIndex = 16;
@@ -235,7 +237,7 @@
             // 
             this.btnMirror.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnMirror.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Mirror;
-            this.btnMirror.Location = new System.Drawing.Point(457, 480);
+            this.btnMirror.Location = new System.Drawing.Point(469, 480);
             this.btnMirror.Name = "btnMirror";
             this.btnMirror.Size = new System.Drawing.Size(48, 48);
             this.btnMirror.TabIndex = 18;
@@ -250,7 +252,7 @@
             this.chkSingleOrMany.AutoSize = true;
             this.chkSingleOrMany.ImageIndex = 0;
             this.chkSingleOrMany.ImageList = this.imageList1;
-            this.chkSingleOrMany.Location = new System.Drawing.Point(528, 489);
+            this.chkSingleOrMany.Location = new System.Drawing.Point(540, 489);
             this.chkSingleOrMany.Name = "chkSingleOrMany";
             this.chkSingleOrMany.Size = new System.Drawing.Size(38, 38);
             this.chkSingleOrMany.TabIndex = 20;
@@ -269,7 +271,7 @@
             // 
             this.groupBoxBondLength.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBoxBondLength.Controls.Add(this.nudBondLength);
-            this.groupBoxBondLength.Location = new System.Drawing.Point(292, 434);
+            this.groupBoxBondLength.Location = new System.Drawing.Point(304, 434);
             this.groupBoxBondLength.Name = "groupBoxBondLength";
             this.groupBoxBondLength.Size = new System.Drawing.Size(98, 97);
             this.groupBoxBondLength.TabIndex = 17;
@@ -285,6 +287,20 @@
             this.checkBox1.TabIndex = 19;
             this.checkBox1.Text = "checkBox1";
             this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // chkToggleShowCarbons
+            // 
+            this.chkToggleShowCarbons.AutoSize = true;
+            this.chkToggleShowCarbons.Checked = true;
+            this.chkToggleShowCarbons.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkToggleShowCarbons.Location = new System.Drawing.Point(14, 66);
+            this.chkToggleShowCarbons.Name = "chkToggleShowCarbons";
+            this.chkToggleShowCarbons.Size = new System.Drawing.Size(128, 20);
+            this.chkToggleShowCarbons.TabIndex = 2;
+            this.chkToggleShowCarbons.Text = "Show All Carbons";
+            this.toolTip1.SetToolTip(this.chkToggleShowCarbons, "Check to show implicit Hydrogens");
+            this.chkToggleShowCarbons.UseVisualStyleBackColor = true;
+            this.chkToggleShowCarbons.CheckedChanged += new System.EventHandler(this.chkToggleShowCarbons_CheckedChanged);
             // 
             // ChemDoodleWeb
             // 
@@ -330,7 +346,7 @@
         private System.Windows.Forms.Button btnRemoveExplicitHydrogens;
         private System.Windows.Forms.Button btnAddExplicitHydrogens;
         private System.Windows.Forms.GroupBox groupBoxImplicit;
-        private System.Windows.Forms.CheckBox chkToggleImplicitHydrogens;
+        private System.Windows.Forms.CheckBox chkToggleShowHydrogens;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.NumericUpDown nudBondLength;
         private System.Windows.Forms.GroupBox groupBoxBondLength;
@@ -342,5 +358,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkColouredAtoms;
+        private System.Windows.Forms.CheckBox chkToggleShowCarbons;
     }
 }

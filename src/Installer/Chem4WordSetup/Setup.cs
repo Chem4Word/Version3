@@ -26,7 +26,8 @@ namespace Chem4WordSetup
         private const string DetectV2AddIn = @"Chemistry Add-in for Word\Chem4Word.AddIn.vsto";
         private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.AddIn.vsto";
 
-        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.4.Beta.4.msi";
+        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.6.Beta.6.msi";
+        private const string VstoInstaller = "https://www.chem4word.co.uk/files3/vstor_redist.exe";
 
         private WebClient _webClient;
         private string _downloadedFile = string.Empty;
@@ -35,6 +36,7 @@ namespace Chem4WordSetup
         private State _previousState = State.Done;
         private string _latestVersion = string.Empty;
         private int _retryCount = 0;
+        private string _domainUsed = string.Empty;
 
         public Setup()
         {
@@ -273,6 +275,18 @@ namespace Chem4WordSetup
             }
         }
 
+        private string ChangeDomain(string input)
+        {
+            string output = input;
+
+            if (!_domainUsed.Equals(PrimaryDomain))
+            {
+                output = input.Replace(PrimaryDomain, _domainUsed);
+            }
+
+            return output;
+        }
+
         private string GetVersionsXmlFile()
         {
             string contents = null;
@@ -296,7 +310,8 @@ namespace Chem4WordSetup
                     if (result.Contains(VersionsFileMarker))
                     {
                         foundOurXmlFile = true;
-                        contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                        _domainUsed = domain;
+                        contents = ChangeDomain(result);
                     }
                     else
                     {
@@ -370,7 +385,7 @@ namespace Chem4WordSetup
                     RegistryHelper.WriteAction("Downloading VSTO");
                     Information.Text = "Downloading VSTO ...";
                     VstoInstalled.Indicator = Properties.Resources.Downloading;
-                    if (DownloadFile("https://www.chem4word.co.uk/files3/vstor_redist.exe"))
+                    if (DownloadFile(ChangeDomain(VstoInstaller)))
                     {
                         _previousState = _state;
                         _state = State.WaitingForVstoDownload;
@@ -602,6 +617,18 @@ namespace Chem4WordSetup
                 Cursor.Current = Cursors.WaitCursor;
 
                 _downloadedFile = Path.Combine(Path.GetTempPath(), filename);
+
+                if (File.Exists(_downloadedFile))
+                {
+                    try
+                    {
+                        File.Delete(_downloadedFile);
+                    }
+                    catch
+                    {
+                        // Do Nothing
+                    }
+                }
 
                 _webClient = new WebClient();
                 _webClient.Headers.Add("user-agent", "Chem4Word Bootstrapper");

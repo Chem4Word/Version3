@@ -11,6 +11,9 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         [JsonProperty]
         public bool ColouredAtoms { get; set; }
 
+        [JsonProperty]
+        public bool ShowCarbons { get; set; }
+
         public Options()
         {
             RestoreDefaults();
@@ -22,6 +25,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
             clone.ColouredAtoms = ColouredAtoms;
             clone.ShowHydrogens = ShowHydrogens;
+            clone.ShowCarbons = ShowCarbons;
 
             return clone;
         }
@@ -30,6 +34,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             ShowHydrogens = true;
             ColouredAtoms = true;
+            ShowCarbons = false;
         }
     }
 }

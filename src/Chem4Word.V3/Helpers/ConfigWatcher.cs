@@ -16,6 +16,7 @@ namespace Chem4Word.Helpers
         // Config settings to watch
         private Config[] _watchedConfigs = {
             new Config { Name = "ShowHydrogens", Type = "bool" },
+            new Config { Name = "ShowCarbons", Type = "bool" },
             new Config { Name = "ColouredAtoms", Type = "bool" }};
 
         private FileSystemWatcher _watcher;
