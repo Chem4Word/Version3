@@ -24,12 +24,12 @@ namespace Chem4Word.Core.UI.Forms
                 _telemetry = telemetry;
 
                 _operation = operation;
-                _callStack = ex.StackTrace;
+                _callStack = ex.ToString();
                 _exceptionMessage = ex.Message;
                 if (ex.InnerException != null)
                 {
                     _exceptionMessage += Environment.NewLine + ex.InnerException.Message;
-                    _callStack += Environment.NewLine + ex.InnerException.StackTrace;
+                    //_callStack += Environment.NewLine + ex.InnerException.StackTrace;
                 }
             }
             catch (Exception)
