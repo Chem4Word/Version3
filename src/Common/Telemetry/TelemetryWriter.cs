@@ -110,7 +110,6 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", _helper.WordProduct);
 
             // Log Add-In Version
-            // ToDo: Add extra info to AddInVersion
             WritePrivate("StartUp", "Information", _helper.AddInVersion);
 
             _systemInfoSent = true;
