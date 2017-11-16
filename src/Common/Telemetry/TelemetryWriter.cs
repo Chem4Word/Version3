@@ -1,6 +1,7 @@
 ﻿using IChem4Word.Contracts;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 
 namespace Chem4Word.Telemetry
@@ -12,10 +13,13 @@ namespace Chem4Word.Telemetry
         private static bool _systemInfoSent = false;
 
         private SystemHelper _helper;
+        private WmiHelper _wmihelper;
+
 
         public TelemetryWriter()
         {
             _helper = new SystemHelper();
+            _wmihelper = new WmiHelper();
             Storage = new AzureTableWriter();
         }
 
@@ -45,10 +49,10 @@ namespace Chem4Word.Telemetry
             try
             {
                 string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    $@"Chem4Word.V3\Telemetry\{DateTime.Now.ToString("yyyy-MM-dd")}.log");
+                    $@"Chem4Word.V3\Telemetry\{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}.log");
                 using (StreamWriter w = File.AppendText(fileName))
                 {
-                    string logMessage = $"[{DateTime.Now.ToString("HH:mm:ss.fff")}] {operation} - {level} - {message}";
+                    string logMessage = $"[{DateTime.Now.ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture)}] {operation} - {level} - {message}";
                     w.WriteLine(logMessage);
                 }
             }
@@ -96,6 +100,12 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", $"Debug - Environment.Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             WritePrivate("StartUp", "Information", $"Debug - Environment.Is64BitProcess: {Environment.Is64BitProcess}");
 #endif
+
+            // Log Wmi Gathered Data
+            WritePrivate("StartUp", "Information", $"CPU: {_wmihelper.CpuName}");
+            WritePrivate("StartUp", "Information", $"CPU Cores: {_wmihelper.LogicalProcessors}");
+            WritePrivate("StartUp", "Information", $"CPU Speed: {_wmihelper.CpuSpeed}");
+            WritePrivate("StartUp", "Information", $"Physical Memory: {_wmihelper.PhysicalMemory}");
 
             // Log Sysytem
             WritePrivate("StartUp", "Information", _helper.SystemOs);
