@@ -77,7 +77,9 @@ namespace Chem4Word.Telemetry
                 var mgtObject = (ManagementObject)o;
                 try
                 {
-                    _cpuName = mgtObject["Name"].ToString();
+                    string temp = mgtObject["Name"].ToString();
+                    temp = temp.Replace("\t", " ").Replace("  ", " ");
+                    _cpuName = temp;
                 }
                 catch
                 {
