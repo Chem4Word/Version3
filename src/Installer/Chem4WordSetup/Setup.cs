@@ -711,8 +711,8 @@ namespace Chem4WordSetup
                 else
                 {
                     RegistryHelper.WriteAction($"Downloading of {_downloadSource} took {_sw.ElapsedMilliseconds.ToString("#,##0",CultureInfo.InvariantCulture)}ms");
-                    double seconds = (double)_sw.ElapsedMilliseconds / 1000.0;
-                    double kiloBytes = (double) fi.Length / 1024;
+                    double seconds = _sw.ElapsedMilliseconds / 1000.0;
+                    double kiloBytes = fi.Length / 1024.0;
                     double speed = kiloBytes / seconds / 1000.0;
                     RegistryHelper.WriteAction($"Download speed {speed.ToString("#,##0.000", CultureInfo.InvariantCulture)}MiB/s");
                     switch (_state)
