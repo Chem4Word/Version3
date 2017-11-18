@@ -3,19 +3,29 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
-    <Number>3.0.5 Beta 6</Number>
+    <Number>3.0.7 Beta 7</Number>
     <IsBeta>true</IsBeta>
-    <Released>01-Nov-2017</Released>
+    <Released>18-Nov-2017</Released>
     <Changes>
-      <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check</Change>
-      <Change>Prevent structures with half bonds being sent to ChemSpider</Change>
-      <Change>Handle error when TaskPane has already been closed</Change>
-      <Change>Handle error when Ribbon is null</Change>
-      <Change>Handle error when Library can't be copied</Change>
-      <Change>Make Chem4WordSetup.exe single instance</Change>
-      <Change>Allow Chem4Word-Versions.xml and updates to be deployed to multiple domains</Change>
-      <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it</Change>
-      <Change>Revised Office version detection</Change>
+      <Change>Change updater to remove passive switch as this is sometimes failing to update. Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
+      <Change>Add option to Render Carbon Atoms.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.7.Beta.7.msi</Url>
+  </Version>
+  <Version>
+    <Number>3.0.6 Beta 6</Number>
+    <IsBeta>true</IsBeta>
+    <Released>05-Nov-2017</Released>
+    <Changes>
+      <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check.</Change>
+      <Change>Prevent structures with half bonds being sent to ChemSpide.r</Change>
+      <Change>Handle error when TaskPane has already been closed.</Change>
+      <Change>Handle error when Ribbon is null.</Change>
+      <Change>Handle error when Library can't be copied.</Change>
+      <Change>Make Chem4WordSetup.exe single instance.</Change>
+      <Change>Allow Chem4Word-Versions.xml and updates to be deployed to multiple domains.</Change>
+      <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it.</Change>
+      <Change>Revised Office version detection.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.6.Beta.6.msi</Url>
   </Version>
@@ -24,7 +34,7 @@
     <IsBeta>true</IsBeta>
     <Released>18-Oct-2017</Released>
     <Changes>
-      <Change>Fix glitch with detection of Office 365 (2016) installation</Change>
+      <Change>Fix glitch with detection of Office 365 (2016) installation.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.5.Beta.5.msi</Url>
   </Version>
@@ -33,8 +43,8 @@
     <IsBeta>true</IsBeta>
     <Released>15-Oct-2017</Released>
     <Changes>
-      <Change>Prevent legacy chemistry being erased when saving document, if user chose not to upgrade</Change>
-      <Change>Prevent error if user tries to insert V3000 molfile</Change>
+      <Change>If user chooses not to upgrade, prevent legacy chemistry being erased when saving a document.</Change>
+      <Change>Handle error caused if user tries to insert a V3000 molfile.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.4.Beta.4.msi</Url>
   </Version>
@@ -43,28 +53,10 @@
     <IsBeta>true</IsBeta>
     <Released>04-Oct-2017</Released>
     <Changes>
-      <Change>Fix some null poniter exceptions caused by legacy (V2) data</Change>
-      <Change>Add telemetry to ChemDoodle Web Editor to monitor start up time</Change>
-      <Change>Fix ChEBI Search</Change>
+      <Change>Fix some null pointer exceptions, caused by legacy (V2) data.</Change>
+      <Change>Add telemetry to ChemDoodle Web Editor to monitor start up time.</Change>
+      <Change>Fix ChEBI Search.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.3.Beta.3.msi</Url>
-  </Version>
-  <Version>
-    <Number>3.0.2 Beta 2</Number>
-    <IsBeta>true</IsBeta>
-    <Released>18-Jun-2017</Released>
-    <Changes>
-      <Change>Installer testing - Do Not Use</Change>
-    </Changes>
-    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.2.Beta.2.msi</Url>
-  </Version>
-  <Version>
-    <Number>3.0.1 Beta 1</Number>
-    <IsBeta>true</IsBeta>
-    <Released>08-Jun-2017</Released>
-    <Changes>
-      <Change>Installer testing - Do Not Use</Change>
-    </Changes>
-    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.1.Beta.1.msi</Url>
   </Version>
 </ChangeLog>

@@ -34,6 +34,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         #region Properties
 
         public string Cml { get; set; }
+        public string ChebiId { get; set; }
         public string ProductAppDataPath { get; set; }
         public IChem4WordTelemetry Telemetry { get; set; }
         public System.Windows.Point TopLeft { get; set; }
@@ -151,13 +152,17 @@ namespace Chem4Word.Searcher.ChEBIPlugin
 
         private void ImportStructure()
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             using (new WaitCursor())
             {
                 CMLConverter conv = new CMLConverter();
 
                 var expModel = (Model.Model)flexDisplayControl1.Chemistry;
+                // ToDo: Scale suitably
                 expModel.Rescale(25);
                 expModel.Relabel();
+
                 using (new WaitCursor())
                 {
                     expModel.Molecules[0].ChemicalNames.Clear();
@@ -184,6 +189,22 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                     Cml = conv.Export(expModel);
                 }
             }
+        }
+
+        private string ConvertToWindows(string message)
+        {
+            char etx = (char)3;
+            string temp = message.Replace("\r\n", $"{etx}");
+            temp = temp.Replace("\n", $"{etx}");
+            temp = temp.Replace("\r", $"{etx}");
+            string[] lines = temp.Split(etx);
+            return string.Join(Environment.NewLine, lines);
+        }
+
+        private void ShowMolfile_Click(object sender, EventArgs e)
+        {
+            MolFileViewer tv = new MolFileViewer(new System.Windows.Point(TopLeft.X + Constants.TopLeftOffset, TopLeft.Y + Constants.TopLeftOffset), _lastMolfile);
+            tv.ShowDialog();
         }
 
         private void ResultsListView_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -301,9 +322,10 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                 if (!string.IsNullOrEmpty(chemStructure))
                 {
                     _lastMolfile = ConvertToWindows(chemStructure);
+
                     SdFileConverter sdConverter = new SdFileConverter();
                     _lastModel = sdConverter.Import(chemStructure);
-
+                    ChebiId = le.chebiId;
                     flexDisplayControl1.Chemistry = _lastModel;
                 }
                 else
@@ -317,21 +339,5 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         }
 
 #endregion Methods
-
-        private string ConvertToWindows(string message)
-        {
-            char etx = (char) 3;
-            string temp = message.Replace("\r\n", $"{etx}");
-            temp = temp.Replace("\n", $"{etx}");
-            temp = temp.Replace("\r", $"{etx}");
-            string[] lines = temp.Split(etx);
-            return string.Join(Environment.NewLine, lines);
-        }
-
-        private void ShowMolfile_Click(object sender, EventArgs e)
-        {
-            MolFileViewer tv = new MolFileViewer(new System.Windows.Point(TopLeft.X + Constants.TopLeftOffset, TopLeft.Y + Constants.TopLeftOffset), _lastMolfile);
-            tv.ShowDialog();
-        }
     }
 }

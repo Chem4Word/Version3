@@ -127,6 +127,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                 if (result == DialogResult.OK)
                 {
                     Properties = new Dictionary<string, string>();
+                    Telemetry.Write(module, "Information", $"Importing Id {searcher.PubChemId}");
                     Cml = searcher.Cml;
                 }
             }

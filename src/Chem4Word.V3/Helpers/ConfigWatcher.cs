@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Chem4Word.View;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Chem4Word.Helpers
 {
     public class ConfigWatcher
     {
+        // Files to watch for
         private const string _filter = "*.json";
-        private const string _attributeShowHydrogens = "ShowHydrogens";
-        private const string _attributeColouredAtoms = "ColouredAtoms";
+
+        // Config settings to watch
+        private Config[] _watchedConfigs = {
+            new Config { Name = "ShowHydrogens", Type = "bool" },
+            new Config { Name = "ShowCarbons", Type = "bool" },
+            new Config { Name = "ColouredAtoms", Type = "bool" }};
 
         private FileSystemWatcher _watcher;
         private string _watchedPath;
@@ -27,9 +28,11 @@ namespace Chem4Word.Helpers
             _watchedPath = watchedPath;
 
             _watcher = new FileSystemWatcher();
+
             _watcher.Path = _watchedPath;
-            _watcher.NotifyFilter = NotifyFilters.LastWrite;
             _watcher.Filter = _filter;
+            _watcher.NotifyFilter = NotifyFilters.LastWrite;
+
             _watcher.Changed += OnChanged;
             _watcher.EnableRaisingEvents = true;
         }
@@ -39,63 +42,84 @@ namespace Chem4Word.Helpers
             if (_handleEvents)
             {
                 _handleEvents = false;
-                JToken tokenShowHydrogens = null;
-                JToken tokenColouredAtoms = null;
+                _watcher.EnableRaisingEvents = false;
+
+                Dictionary<string, Config> sourceConfigs = new Dictionary<string, Config>();
 
                 string thisFile = e.FullPath;
+                Debug.WriteLine($"Trigger file is {thisFile}");
                 Thread.Sleep(250);
+
                 using (StreamReader sr = File.OpenText(e.FullPath))
                 {
                     using (JsonTextReader reader = new JsonTextReader(sr))
                     {
                         JObject jObject = (JObject)JToken.ReadFrom(reader);
-                        tokenShowHydrogens = jObject[_attributeShowHydrogens];
-                        tokenColouredAtoms = jObject[_attributeColouredAtoms];
+                        foreach (var config in _watchedConfigs)
+                        {
+                            JToken t = jObject[config.Name];
+                            if (t != null)
+                            {
+                                sourceConfigs.Add(config.Name, new Config { Type = config.Type, Value = t.Value<string>() });
+                            }
+                        }
                     }
                 }
 
-                if (tokenShowHydrogens != null && tokenColouredAtoms != null)
+                if (sourceConfigs.Any())
                 {
-                    bool showHydrogens = tokenShowHydrogens.Value<bool>();
-                    bool colouredAtoms = tokenColouredAtoms.Value<bool>();
-
                     string[] files = Directory.GetFiles(_watchedPath, _filter);
                     foreach (var file in files)
                     {
                         if (!file.Equals(thisFile))
                         {
-                            JToken tokenShowHydrogensOther = null;
-                            JToken tokenColouredAtomsOther = null;
                             JObject jObject = null;
 
+                            List<JToken> targetTokens = new List<JToken>();
                             using (StreamReader sr = File.OpenText(file))
                             {
                                 using (JsonTextReader reader = new JsonTextReader(sr))
                                 {
                                     jObject = (JObject)JToken.ReadFrom(reader);
-                                    tokenShowHydrogensOther = jObject[_attributeShowHydrogens];
-                                    tokenColouredAtomsOther = jObject[_attributeColouredAtoms];
+                                    foreach (var config in _watchedConfigs)
+                                    {
+                                        JToken t = jObject[config.Name];
+                                        if (t != null)
+                                        {
+                                            targetTokens.Add(t);
+                                        }
+                                    }
                                 }
                             }
 
-                            if (tokenShowHydrogensOther != null && tokenColouredAtomsOther != null)
+                            if (targetTokens.Any())
                             {
-                                bool showHydrogensOther = tokenShowHydrogensOther.Value<bool>();
-                                bool colouredAtomsOther = tokenColouredAtomsOther.Value<bool>();
-
                                 bool write = false;
-                                if (colouredAtomsOther != colouredAtoms)
+
+                                foreach (var target in targetTokens)
                                 {
-                                    jObject[_attributeColouredAtoms] = colouredAtoms;
-                                    write = true;
+                                    foreach (var kvp in sourceConfigs)
+                                    {
+                                        if (target.Path.Equals(kvp.Key))
+                                        {
+                                            if (!target.Value<string>().Equals(kvp.Value.Value))
+                                            {
+                                                Debug.WriteLine($"Changing setting {kvp.Key} to {kvp.Value.Value}");
+                                                switch (kvp.Value.Type)
+                                                {
+                                                    case "bool":
+                                                        jObject[kvp.Key] = bool.Parse(kvp.Value.Value);
+                                                        write = true;
+                                                        break;
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                if (showHydrogensOther != showHydrogens)
-                                {
-                                    jObject[_attributeShowHydrogens] = showHydrogens;
-                                    write = true;
-                                }
+
                                 if (write)
                                 {
+                                    Debug.WriteLine($"Writing file {file}");
                                     string json = JsonConvert.SerializeObject(jObject, Formatting.Indented);
                                     File.WriteAllText(file, json);
                                 }
@@ -104,8 +128,17 @@ namespace Chem4Word.Helpers
                     }
                 }
 
+                _watcher.EnableRaisingEvents = true;
                 _handleEvents = true;
             }
         }
+
+    }
+
+    public class Config
+    {
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

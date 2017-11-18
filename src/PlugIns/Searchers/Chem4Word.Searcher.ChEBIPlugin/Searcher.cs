@@ -140,6 +140,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                         if (dr == DialogResult.OK)
                         {
                             Properties = new Dictionary<string, string>();
+                            Telemetry.Write(module, "Information", $"Importing Id {searcher.ChebiId}");
                             Cml = searcher.Cml;
                         }
 

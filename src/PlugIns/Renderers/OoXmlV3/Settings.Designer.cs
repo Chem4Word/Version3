@@ -33,7 +33,8 @@ namespace Chem4Word.Renderer.OoXmlV3
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.tabControlEx = new Chem4Word.Core.UI.Controls.TabControlEx();
             this.tabRendering = new System.Windows.Forms.TabPage();
-            this.chkShowImplicitHydrogens = new System.Windows.Forms.CheckBox();
+            this.chkShowCarbons = new System.Windows.Forms.CheckBox();
+            this.chkShowHydrogens = new System.Windows.Forms.CheckBox();
             this.chkColouredAtoms = new System.Windows.Forms.CheckBox();
             this.tabDebug = new System.Windows.Forms.TabPage();
             this.chkShowAtomPositions = new System.Windows.Forms.CheckBox();
@@ -65,7 +66,8 @@ namespace Chem4Word.Renderer.OoXmlV3
             // 
             this.tabRendering.BackColor = System.Drawing.SystemColors.Control;
             this.tabRendering.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabRendering.Controls.Add(this.chkShowImplicitHydrogens);
+            this.tabRendering.Controls.Add(this.chkShowCarbons);
+            this.tabRendering.Controls.Add(this.chkShowHydrogens);
             this.tabRendering.Controls.Add(this.chkColouredAtoms);
             this.tabRendering.Location = new System.Drawing.Point(0, 20);
             this.tabRendering.Name = "tabRendering";
@@ -74,19 +76,33 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.tabRendering.TabIndex = 0;
             this.tabRendering.Text = "Rendering";
             // 
-            // chkShowImplicitHydrogens
+            // chkShowCarbons
             // 
-            this.chkShowImplicitHydrogens.AutoSize = true;
-            this.chkShowImplicitHydrogens.Checked = true;
-            this.chkShowImplicitHydrogens.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowImplicitHydrogens.Location = new System.Drawing.Point(12, 12);
-            this.chkShowImplicitHydrogens.Margin = new System.Windows.Forms.Padding(4);
-            this.chkShowImplicitHydrogens.Name = "chkShowImplicitHydrogens";
-            this.chkShowImplicitHydrogens.Size = new System.Drawing.Size(142, 17);
-            this.chkShowImplicitHydrogens.TabIndex = 7;
-            this.chkShowImplicitHydrogens.Text = "Show Implicit Hydrogens";
-            this.chkShowImplicitHydrogens.UseVisualStyleBackColor = true;
-            this.chkShowImplicitHydrogens.CheckedChanged += new System.EventHandler(this.chkShowImplicitHydrogens_CheckedChanged);
+            this.chkShowCarbons.AutoSize = true;
+            this.chkShowCarbons.Checked = true;
+            this.chkShowCarbons.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowCarbons.Location = new System.Drawing.Point(12, 82);
+            this.chkShowCarbons.Margin = new System.Windows.Forms.Padding(4);
+            this.chkShowCarbons.Name = "chkShowCarbons";
+            this.chkShowCarbons.Size = new System.Drawing.Size(165, 17);
+            this.chkShowCarbons.TabIndex = 9;
+            this.chkShowCarbons.Text = "Show All Carbon Atom Labels";
+            this.chkShowCarbons.UseVisualStyleBackColor = true;
+            this.chkShowCarbons.CheckedChanged += new System.EventHandler(this.chkShowCarbonLabels_CheckedChanged);
+            // 
+            // chkShowHydrogens
+            // 
+            this.chkShowHydrogens.AutoSize = true;
+            this.chkShowHydrogens.Checked = true;
+            this.chkShowHydrogens.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowHydrogens.Location = new System.Drawing.Point(12, 12);
+            this.chkShowHydrogens.Margin = new System.Windows.Forms.Padding(4);
+            this.chkShowHydrogens.Name = "chkShowHydrogens";
+            this.chkShowHydrogens.Size = new System.Drawing.Size(142, 17);
+            this.chkShowHydrogens.TabIndex = 7;
+            this.chkShowHydrogens.Text = "Show Implicit Hydrogens";
+            this.chkShowHydrogens.UseVisualStyleBackColor = true;
+            this.chkShowHydrogens.CheckedChanged += new System.EventHandler(this.chkShowHydrogens_CheckedChanged);
             // 
             // chkColouredAtoms
             // 
@@ -245,12 +261,13 @@ namespace Chem4Word.Renderer.OoXmlV3
         private System.Windows.Forms.TabPage tabDebug;
         private System.Windows.Forms.Button btnSetDefaults;
         private System.Windows.Forms.Button btnOk;
-        private System.Windows.Forms.CheckBox chkShowImplicitHydrogens;
+        private System.Windows.Forms.CheckBox chkShowHydrogens;
         private System.Windows.Forms.CheckBox chkColouredAtoms;
         private System.Windows.Forms.CheckBox chkClipLines;
         private System.Windows.Forms.CheckBox chkShowRingCentres;
         private System.Windows.Forms.CheckBox chkShowCharacterBox;
         private System.Windows.Forms.CheckBox chkShowMoleculeBox;
         private System.Windows.Forms.CheckBox chkShowAtomPositions;
+        private System.Windows.Forms.CheckBox chkShowCarbons;
     }
 }

@@ -4,6 +4,7 @@ using IChem4Word.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -53,7 +54,7 @@ namespace Chem4Word.WebServices
             }
 
             TimeSpan ts = DateTime.Now - started;
-            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
+            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("#,###.0", CultureInfo.InvariantCulture) + "ms");
 
             return result;
         }
@@ -154,7 +155,7 @@ namespace Chem4Word.WebServices
             }
 
             TimeSpan ts = DateTime.Now - started;
-            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
+            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("#,###.0", CultureInfo.InvariantCulture) + "ms");
 
             return result;
         }
@@ -216,7 +217,7 @@ namespace Chem4Word.WebServices
             }
 
             TimeSpan ts = DateTime.Now - started;
-            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("##,###.0") + "ms");
+            Telemetry.Write(module, "Timing", "Took " + ts.TotalMilliseconds.ToString("#,###.0", CultureInfo.InvariantCulture) + "ms");
 
             return result;
         }

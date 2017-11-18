@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -16,10 +17,11 @@ namespace Chem4WordUpdater
 
         private bool _downloadCompleted;
         private string _downloadedFile;
-        private string _downloadSource = string.Empty;
+        private string _msiOriginalFileName = string.Empty;
         private bool _userCancelledUpdate = false;
 
         private int _retryCount = 0;
+        private Stopwatch _sw = new Stopwatch();
 
         public Updater(string[] args)
         {
@@ -60,7 +62,7 @@ namespace Chem4WordUpdater
                 Thread.Sleep(1000);
 
                 RegistryHelper.WriteAction("Running Chem4Word Update");
-                int exitCode = RunProcess(_downloadedFile, "/passive");
+                int exitCode = RunProcess(_downloadedFile, "");
                 RegistryHelper.WriteAction($"Chem4Word ExitCode: {exitCode}");
 
                 if (exitCode == 0)
@@ -70,8 +72,8 @@ namespace Chem4WordUpdater
                 }
                 else
                 {
-                    MessageBox.Show($"Error {exitCode} while installing {_downloadSource}", "Chem4Word Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Information.Text = $"Error {exitCode} while installing {_downloadSource}";
+                    MessageBox.Show($"Error {exitCode} while installing {_downloadedFile}", "Chem4Word Updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Information.Text = $"Error {exitCode} while installing {_msiOriginalFileName}";
                     UpdateNow.Enabled = true;
                 }
             }
@@ -98,18 +100,21 @@ namespace Chem4WordUpdater
         private bool DownloadFile(string url)
         {
             bool started = false;
+            _sw = new Stopwatch();
+            _sw.Start();
 
             try
             {
+                progressBar1.Value = 0;
+
                 RegistryHelper.WriteAction($"Downloading {url}");
 
                 string[] parts = url.Split('/');
                 string filename = parts[parts.Length - 1];
-                _downloadSource = filename;
 
-                progressBar1.Value = 0;
-
-                _downloadedFile = Path.Combine(Path.GetTempPath(), filename);
+                _msiOriginalFileName = filename;
+                string guid = Guid.NewGuid().ToString("N");
+                _downloadedFile = Path.Combine(Path.GetTempPath(), $"{guid}-{filename}");
 
                 _webClient = new WebClient();
                 _webClient.Headers.Add("user-agent", "Chem4Word Bootstrapper");
@@ -134,18 +139,19 @@ namespace Chem4WordUpdater
         {
             RegistryHelper.WriteAction("Download complete");
             progressBar1.Value = 100;
+            _sw.Stop();
 
             if (e.Cancelled)
             {
-                RegistryHelper.WriteAction($"Downloading of {_downloadSource} was Cancelled");
-                Information.Text = $"Downloading of {_downloadSource} was Cancelled";
+                RegistryHelper.WriteAction($"Downloading of {_downloadTarget} was Cancelled");
+                Information.Text = $"Downloading of {_msiOriginalFileName} was Cancelled";
             }
             else if (e.Error != null)
             {
                 _retryCount++;
                 if (_retryCount > 3)
                 {
-                    Information.Text = $"Too many errors downloading {_downloadSource}, please check your internet connection and try again!";
+                    Information.Text = $"Too many errors downloading {_msiOriginalFileName}, please check your internet connection and try again!";
                 }
                 else
                 {
@@ -160,7 +166,7 @@ namespace Chem4WordUpdater
                     _retryCount++;
                     if (_retryCount > 3)
                     {
-                        Information.Text = $"Too many errors downloading {_downloadSource}, please check your internet connection and try again!";
+                        Information.Text = $"Too many errors downloading {_msiOriginalFileName}, please check your internet connection and try again!";
                     }
                     else
                     {
@@ -172,6 +178,11 @@ namespace Chem4WordUpdater
                     _downloadCompleted = true;
                     UpdateNow.Enabled = false;
                     Information.Text = "Your update has been downloaded.  It will be automatically installed once all Microsoft Word processes are closed.";
+                    RegistryHelper.WriteAction($"Downloading of {_downloadTarget} took {_sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
+                    double seconds = _sw.ElapsedMilliseconds / 1000.0;
+                    double kiloBytes = fi.Length / 1024.0;
+                    double speed = kiloBytes / seconds / 1000.0;
+                    RegistryHelper.WriteAction($"Download speed {speed.ToString("#,##0.000", CultureInfo.InvariantCulture)}MiB/s");
                 }
             }
         }

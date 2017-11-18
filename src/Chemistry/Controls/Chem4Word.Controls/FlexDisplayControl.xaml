@@ -7,5 +7,5 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="fdc">
-    <local:FlexDisplay x:Name="Display" Chemistry="{Binding ElementName=fdc, Path=Chemistry}" />
+    <local:FlexDisplay x:Name="Display" Chemistry="{Binding ElementName=fdc, Path=Chemistry}" ShowCarbonLabels="{Binding ElementName=fdc, Path=ShowCarbonLabels}" />
 </UserControl>

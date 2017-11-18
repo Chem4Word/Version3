@@ -11,6 +11,9 @@ namespace Chem4Word.Renderer.OoXmlV3
         [JsonProperty]
         public bool ColouredAtoms { get; set; }
 
+        [JsonProperty]
+        public bool ShowCarbons { get; set; }
+
         // Debugging
         [JsonProperty]
         public bool ClipLines { get; set; }
@@ -42,6 +45,7 @@ namespace Chem4Word.Renderer.OoXmlV3
 
             clone.ColouredAtoms = ColouredAtoms;
             clone.ShowHydrogens = ShowHydrogens;
+            clone.ShowCarbons = ShowCarbons;
 
             // Debugging Options
             clone.ClipLines = ClipLines;
@@ -64,6 +68,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             ShowMoleculeBoundingBoxes = false;
             ShowRingCentres = false;
             ShowAtomPositions = false;
+            ShowCarbons = false;
         }
     }
 }

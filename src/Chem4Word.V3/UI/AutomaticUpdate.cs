@@ -118,7 +118,9 @@ namespace Chem4Word.UI
                 string userTempPath = Path.GetTempPath();
                 if (Directory.Exists(userTempPath))
                 {
-                    string destination = Path.Combine(userTempPath, "Chem4WordUpdater.exe");
+                    // Ensure filename to be launched is unique
+                    string guid = Guid.NewGuid().ToString("N");
+                    string destination = Path.Combine(userTempPath, $"{guid}-Chem4WordUpdater.exe");
                     File.Copy(source, destination, true);
 
                     if (File.Exists(destination)
@@ -137,7 +139,7 @@ namespace Chem4Word.UI
                     }
                     else
                     {
-                        _telemetry.Write(module, "AutomaticUpdate", "Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed.");
+                        _telemetry.Write(module, "AutomaticUpdate", $"Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed.");
                         MessageBox.Show($"Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed. Please download {_downloadUrl} manually and install it.");
                     }
                 }

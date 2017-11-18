@@ -248,8 +248,8 @@ function AtomsInColour(value) {
     sketcher.repaint();
 }
 
-function HideImplicitHCount() {
-    sketcher.specs.atoms_implicitHydrogens_2D = false;
+function ShowHydrogens(value) {
+    sketcher.specs.atoms_implicitHydrogens_2D = value;
 
     // Loading twice seems to fix rendering glitch
     sketcher.loadContent(sketcher.molecules, sketcher.shapes);
@@ -259,8 +259,8 @@ function HideImplicitHCount() {
     sketcher.repaint();
 }
 
-function ShowImplicitHCount() {
-    sketcher.specs.atoms_implicitHydrogens_2D = true;
+function ShowCarbons(value) {
+    sketcher.specs.atoms_displayAllCarbonLabels_2D = value;
 
     // Loading twice seems to fix rendering glitch
     sketcher.loadContent(sketcher.molecules, sketcher.shapes);

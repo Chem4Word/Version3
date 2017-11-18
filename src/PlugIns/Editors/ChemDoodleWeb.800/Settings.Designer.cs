@@ -37,6 +37,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             this.chkColouredAtoms = new System.Windows.Forms.CheckBox();
             this.btnSetDefaults = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
+            this.chkShowCarbons = new System.Windows.Forms.CheckBox();
             this.tabControlEx.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -57,6 +58,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage1.Controls.Add(this.chkShowCarbons);
             this.tabPage1.Controls.Add(this.chkShowImplicitHydrogens);
             this.tabPage1.Controls.Add(this.chkColouredAtoms);
             this.tabPage1.Location = new System.Drawing.Point(0, 23);
@@ -118,6 +120,20 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
+            // chkShowCarbons
+            // 
+            this.chkShowCarbons.AutoSize = true;
+            this.chkShowCarbons.Checked = true;
+            this.chkShowCarbons.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowCarbons.Location = new System.Drawing.Point(16, 108);
+            this.chkShowCarbons.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
+            this.chkShowCarbons.Name = "chkShowCarbons";
+            this.chkShowCarbons.Size = new System.Drawing.Size(132, 20);
+            this.chkShowCarbons.TabIndex = 9;
+            this.chkShowCarbons.Text = "Show All Carbons";
+            this.chkShowCarbons.UseVisualStyleBackColor = true;
+            this.chkShowCarbons.CheckedChanged += new System.EventHandler(this.chkShowCarbons_CheckedChanged);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -150,5 +166,6 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.CheckBox chkShowImplicitHydrogens;
         private System.Windows.Forms.CheckBox chkColouredAtoms;
+        private System.Windows.Forms.CheckBox chkShowCarbons;
     }
 }

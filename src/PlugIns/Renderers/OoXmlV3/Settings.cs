@@ -44,12 +44,12 @@ namespace Chem4Word.Renderer.OoXmlV3
             }
         }
 
-        private void chkShowImplicitHydrogens_CheckedChanged(object sender, EventArgs e)
+        private void chkShowHydrogens_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                RendererOptions.ShowHydrogens = chkShowImplicitHydrogens.Checked;
+                RendererOptions.ShowHydrogens = chkShowHydrogens.Checked;
                 _dirty = true;
             }
             catch (Exception ex)
@@ -187,7 +187,9 @@ namespace Chem4Word.Renderer.OoXmlV3
         private void RestoreControls()
         {
             chkColouredAtoms.Checked = RendererOptions.ColouredAtoms;
-            chkShowImplicitHydrogens.Checked = RendererOptions.ShowHydrogens;
+            chkShowHydrogens.Checked = RendererOptions.ShowHydrogens;
+            chkShowCarbons.Checked = RendererOptions.ShowCarbons;
+
             chkClipLines.Checked = RendererOptions.ClipLines;
             chkShowCharacterBox.Checked = RendererOptions.ShowCharacterBoundingBoxes;
             chkShowMoleculeBox.Checked = RendererOptions.ShowMoleculeBoundingBoxes;
@@ -244,6 +246,20 @@ namespace Chem4Word.Renderer.OoXmlV3
                 new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
 
+        }
+
+        private void chkShowCarbonLabels_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            try
+            {
+                RendererOptions.ShowCarbons = chkShowCarbons.Checked;
+                _dirty = true;
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
         }
     }
 }
