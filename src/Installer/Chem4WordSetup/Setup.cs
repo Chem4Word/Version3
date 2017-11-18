@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -37,6 +38,7 @@ namespace Chem4WordSetup
         private string _latestVersion = string.Empty;
         private int _retryCount = 0;
         private string _domainUsed = string.Empty;
+        private Stopwatch _sw = new Stopwatch();
 
         public Setup()
         {
@@ -606,6 +608,8 @@ namespace Chem4WordSetup
         private bool DownloadFile(string url)
         {
             bool started = false;
+            _sw = new Stopwatch();
+            _sw.Start();
 
             try
             {
@@ -657,7 +661,8 @@ namespace Chem4WordSetup
         private void OnDownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
             Cursor.Current = Cursors.Default;
-            progressBar1.Value = 0;
+            progressBar1.Value = 100;
+            _sw.Stop();
 
             if (e.Cancelled)
             {
@@ -705,6 +710,11 @@ namespace Chem4WordSetup
                 }
                 else
                 {
+                    RegistryHelper.WriteAction($"Downloading of {_downloadSource} took {_sw.ElapsedMilliseconds.ToString("#,##0",CultureInfo.InvariantCulture)}ms");
+                    double seconds = (double)_sw.ElapsedMilliseconds / 1000.0;
+                    double kiloBytes = (double) fi.Length / 1024;
+                    double speed = kiloBytes / seconds / 1000.0;
+                    RegistryHelper.WriteAction($"Download speed {speed.ToString("#,##0.000", CultureInfo.InvariantCulture)}MiB/s");
                     switch (_state)
                     {
                         case State.WaitingForVstoDownload:

@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -20,6 +21,7 @@ namespace Chem4WordUpdater
         private bool _userCancelledUpdate = false;
 
         private int _retryCount = 0;
+        private Stopwatch _sw = new Stopwatch();
 
         public Updater(string[] args)
         {
@@ -98,6 +100,8 @@ namespace Chem4WordUpdater
         private bool DownloadFile(string url)
         {
             bool started = false;
+            _sw = new Stopwatch();
+            _sw.Start();
 
             try
             {
@@ -134,6 +138,7 @@ namespace Chem4WordUpdater
         {
             RegistryHelper.WriteAction("Download complete");
             progressBar1.Value = 100;
+            _sw.Stop();
 
             if (e.Cancelled)
             {
@@ -172,6 +177,11 @@ namespace Chem4WordUpdater
                     _downloadCompleted = true;
                     UpdateNow.Enabled = false;
                     Information.Text = "Your update has been downloaded.  It will be automatically installed once all Microsoft Word processes are closed.";
+                    RegistryHelper.WriteAction($"Downloading of {_downloadSource} took {_sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
+                    double seconds = (double)_sw.ElapsedMilliseconds / 1000.0;
+                    double kiloBytes = (double)fi.Length / 1024;
+                    double speed = kiloBytes / seconds / 1000.0;
+                    RegistryHelper.WriteAction($"Download speed {speed.ToString("#,##0.000", CultureInfo.InvariantCulture)}MiB/s");
                 }
             }
         }
