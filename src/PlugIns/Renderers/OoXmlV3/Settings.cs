@@ -33,6 +33,7 @@ namespace Chem4Word.Renderer.OoXmlV3
         private void chkClipLines_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 RendererOptions.ClipLines = chkClipLines.Checked;
@@ -61,6 +62,7 @@ namespace Chem4Word.Renderer.OoXmlV3
         private void chkColouredAtoms_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 RendererOptions.ColouredAtoms = chkColouredAtoms.Checked;
@@ -143,6 +145,7 @@ namespace Chem4Word.Renderer.OoXmlV3
         private void btnOk_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SaveChanges();
@@ -168,6 +171,7 @@ namespace Chem4Word.Renderer.OoXmlV3
         private void btnSetDefaults_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 DialogResult dr = UserInteractions.AskUserOkCancel("Restore default settings");
@@ -251,6 +255,7 @@ namespace Chem4Word.Renderer.OoXmlV3
         private void chkShowCarbonLabels_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 RendererOptions.ShowCarbons = chkShowCarbons.Checked;

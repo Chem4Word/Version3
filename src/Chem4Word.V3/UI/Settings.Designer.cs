@@ -93,7 +93,7 @@ namespace Chem4Word.UI
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(514, 389);
+            this.btnOk.Location = new System.Drawing.Point(536, 389);
             this.btnOk.Margin = new System.Windows.Forms.Padding(4);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(88, 28);
@@ -105,7 +105,7 @@ namespace Chem4Word.UI
             // btnSetDefaults
             // 
             this.btnSetDefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSetDefaults.Location = new System.Drawing.Point(420, 389);
+            this.btnSetDefaults.Location = new System.Drawing.Point(442, 389);
             this.btnSetDefaults.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetDefaults.Name = "btnSetDefaults";
             this.btnSetDefaults.Size = new System.Drawing.Size(88, 28);
@@ -341,7 +341,7 @@ namespace Chem4Word.UI
             this.tabControlEx1.Location = new System.Drawing.Point(12, 12);
             this.tabControlEx1.Name = "tabControlEx1";
             this.tabControlEx1.SelectedIndex = 0;
-            this.tabControlEx1.Size = new System.Drawing.Size(590, 370);
+            this.tabControlEx1.Size = new System.Drawing.Size(612, 370);
             this.tabControlEx1.TabIndex = 11;
             // 
             // tabPlugIns
@@ -482,7 +482,7 @@ namespace Chem4Word.UI
             this.tabLibrary.Location = new System.Drawing.Point(0, 23);
             this.tabLibrary.Name = "tabLibrary";
             this.tabLibrary.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLibrary.Size = new System.Drawing.Size(590, 347);
+            this.tabLibrary.Size = new System.Drawing.Size(612, 347);
             this.tabLibrary.TabIndex = 4;
             this.tabLibrary.Text = "Library";
             // 
@@ -490,7 +490,7 @@ namespace Chem4Word.UI
             // 
             this.ClearLibraryButton.Image = global::Chem4Word.Properties.Resources.Gallery_Delete;
             this.ClearLibraryButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ClearLibraryButton.Location = new System.Drawing.Point(25, 145);
+            this.ClearLibraryButton.Location = new System.Drawing.Point(25, 147);
             this.ClearLibraryButton.Name = "ClearLibraryButton";
             this.ClearLibraryButton.Size = new System.Drawing.Size(190, 48);
             this.ClearLibraryButton.TabIndex = 2;
@@ -502,29 +502,34 @@ namespace Chem4Word.UI
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.lblGalleryDesc);
             this.groupBox1.Controls.Add(this.importGalleryButton);
             this.groupBox1.Location = new System.Drawing.Point(15, 15);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(530, 124);
+            this.groupBox1.Size = new System.Drawing.Size(580, 123);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Import";
             // 
             // lblGalleryDesc
             // 
+            this.lblGalleryDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGalleryDesc.Location = new System.Drawing.Point(7, 23);
             this.lblGalleryDesc.Name = "lblGalleryDesc";
-            this.lblGalleryDesc.Size = new System.Drawing.Size(505, 42);
+            this.lblGalleryDesc.Size = new System.Drawing.Size(567, 51);
             this.lblGalleryDesc.TabIndex = 0;
             this.lblGalleryDesc.Text = "The Library replaces the Gallery from previous versions of Chem4Word.\r\nYou can im" +
-    "port structures from your old Gallery into the Library.  ";
+    "port structures from your old Gallery (or any other folder of cml files) into th" +
+    "e Library.  ";
             // 
             // importGalleryButton
             // 
             this.importGalleryButton.Image = global::Chem4Word.Properties.Resources.Gallery_Toggle;
             this.importGalleryButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.importGalleryButton.Location = new System.Drawing.Point(10, 68);
+            this.importGalleryButton.Location = new System.Drawing.Point(10, 67);
             this.importGalleryButton.Name = "importGalleryButton";
             this.importGalleryButton.Size = new System.Drawing.Size(190, 48);
             this.importGalleryButton.TabIndex = 0;
@@ -630,7 +635,7 @@ namespace Chem4Word.UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(616, 432);
+            this.ClientSize = new System.Drawing.Size(638, 432);
             this.Controls.Add(this.tabControlEx1);
             this.Controls.Add(this.btnSetDefaults);
             this.Controls.Add(this.btnOk);

@@ -50,6 +50,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void btnOk_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SaveChanges();
@@ -66,6 +67,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void btnSetDefaults_Click(object sender, System.EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 DialogResult dr = UserInteractions.AskUserOkCancel("Restore default settings");
@@ -85,6 +87,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void nudDisplayOrder_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SearcherOptions.DisplayOrder = (int)nudDisplayOrder.Value;
@@ -99,6 +102,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void nudResultsPerCall_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SearcherOptions.MaximumResults = (int)nudResultsPerCall.Value;
