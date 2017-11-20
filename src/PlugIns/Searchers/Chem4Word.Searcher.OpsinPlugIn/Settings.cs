@@ -170,7 +170,7 @@ namespace Chem4Word.Searcher.OpsinPlugIn
         private void nudDisplayOrder_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
+            Telemetry.Write(module, "Action", $"Triggered; New value: {nudDisplayOrder.Value}");
             try
             {
                 SearcherOptions.DisplayOrder = (int)nudDisplayOrder.Value;

@@ -87,7 +87,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void nudDisplayOrder_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
+            Telemetry.Write(module, "Action", $"Triggered; New value: {nudDisplayOrder.Value}");
             try
             {
                 SearcherOptions.DisplayOrder = (int)nudDisplayOrder.Value;
@@ -102,7 +102,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         private void nudResultsPerCall_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
+            Telemetry.Write(module, "Action", $"Triggered; New value: {nudResultsPerCall.Value}");
             try
             {
                 SearcherOptions.MaximumResults = (int)nudResultsPerCall.Value;
