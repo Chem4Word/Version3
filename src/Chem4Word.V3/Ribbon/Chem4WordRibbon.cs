@@ -1954,7 +1954,7 @@ namespace Chem4Word
                             Debug.WriteLine(taskdoc);
                             if (taskdoc.Equals(app.ActiveDocument.Name))
                             {
-                                Debug.WriteLine($"Gallery Visible: {taskPane.Visible}");
+                                //Debug.WriteLine($"Library Visible: {taskPane.Visible}");
                                 if (ShowLibrary.Checked != taskPane.Visible)
                                 {
                                     ShowLibrary.Checked = taskPane.Visible;
@@ -1963,7 +1963,7 @@ namespace Chem4Word
                                 {
                                     (taskPane.Control as LibraryHost)?.Refresh();
                                 }
-                                ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
+                                ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open";
                             }
                         }
                     }

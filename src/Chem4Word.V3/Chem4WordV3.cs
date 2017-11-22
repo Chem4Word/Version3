@@ -200,7 +200,14 @@ namespace Chem4Word
                 if (app.Documents.Count > 0)
                 {
                     EnableDocumentEvents(app.Documents[1]);
-                    SetButtonStates(ButtonState.CanInsert);
+                    if (app.Documents[1].CompatibilityMode >= (int) Word.WdCompatibilityMode.wdWord2010)
+                    {
+                        SetButtonStates(ButtonState.CanInsert);
+                    }
+                    else
+                    {
+                        SetButtonStates(ButtonState.NoDocument);
+                    }
                 }
 
                 // Read in options file
@@ -668,7 +675,7 @@ namespace Chem4Word
             wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
         }
 
-        public void SetButtonStates(ButtonState state)
+        private void SetButtonStates(ButtonState state)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
@@ -778,16 +785,24 @@ namespace Chem4Word
                     }
                 }
 
-                ChemistrySelected = sel.ContentControls.Count > 0;
-
-                if (ChemistrySelected)
+                if (doc.CompatibilityMode >= (int) Word.WdCompatibilityMode.wdWord2010)
                 {
-                    Ribbon.ActivateChemistryTab();
-                    SetButtonStates(ButtonState.CanEdit);
+                    ChemistrySelected = sel.ContentControls.Count > 0;
+
+                    if (ChemistrySelected)
+                    {
+                        Ribbon.ActivateChemistryTab();
+                        SetButtonStates(ButtonState.CanEdit);
+                    }
+                    else
+                    {
+                        SetButtonStates(ButtonState.CanInsert);
+                    }
                 }
                 else
                 {
-                    SetButtonStates(ButtonState.CanInsert);
+                    ChemistrySelected = false;
+                    SetButtonStates(ButtonState.NoDocument);
                 }
             }
             catch (Exception e)
@@ -1123,6 +1138,8 @@ namespace Chem4Word
 
                     if (doc != null)
                     {
+                        bool docxMode = doc.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010;
+
                         Debug.WriteLine($"{module.Replace("()", $"({doc.Name})")}");
 
                         // Call disable first to ensure events not registered multiple times
@@ -1180,7 +1197,6 @@ namespace Chem4Word
 
                         #endregion
 
-
                         #region Handle Library Task Panes
 
                         try
@@ -1196,11 +1212,15 @@ namespace Chem4Word
                                     {
                                         if (taskPane.Title.Equals(Constants.LibraryTaskPaneTitle))
                                         {
-                                            //Debug.WriteLine($"Found Gallery Task Pane. Visible: {taskPane.Visible}");
+                                            //Debug.WriteLine($"Found Library Task Pane. Visible: {taskPane.Visible}");
                                             if (Ribbon != null)
                                             {
+                                                if (!docxMode)
+                                                {
+                                                    Ribbon.ShowLibrary.Checked = false;
+                                                }
                                                 taskPane.Visible = Ribbon.ShowLibrary.Checked;
-                                                Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open ";
+                                                Ribbon.ShowLibrary.Label = Ribbon.ShowLibrary.Checked ? "Close" : "Open";
                                             }
                                             libraryFound = true;
                                             break;
@@ -1213,15 +1233,18 @@ namespace Chem4Word
                             {
                                 if (Ribbon != null && Ribbon.ShowLibrary.Checked)
                                 {
-                                    OfficeTools.CustomTaskPane custTaskPane =
-                                        Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
-                                            Constants.LibraryTaskPaneTitle, Globals.Chem4WordV3.Application.ActiveWindow);
-                                    // Opposite side to Navigator's default placement
-                                    custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
-                                    custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
-                                    custTaskPane.VisibleChanged += Ribbon.OnLibraryPaneVisibleChanged;
-                                    custTaskPane.Visible = true;
-                                    (custTaskPane.Control as LibraryHost)?.Refresh();
+                                    if (docxMode)
+                                    {
+                                        OfficeTools.CustomTaskPane custTaskPane =
+                                            Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
+                                                Constants.LibraryTaskPaneTitle, Globals.Chem4WordV3.Application.ActiveWindow);
+                                        // Opposite side to Navigator's default placement
+                                        custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
+                                        custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
+                                        custTaskPane.VisibleChanged += Ribbon.OnLibraryPaneVisibleChanged;
+                                        custTaskPane.Visible = true;
+                                        (custTaskPane.Control as LibraryHost)?.Refresh();
+                                    }
                                 }
                             }
                         }
@@ -1234,7 +1257,14 @@ namespace Chem4Word
 
                         EnableDocumentEvents(doc);
 
-                        SetButtonStates(ButtonState.CanInsert);
+                        if (docxMode)
+                        {
+                            SetButtonStates(ButtonState.CanInsert);
+                        }
+                        else
+                        {
+                            SetButtonStates(ButtonState.NoDocument);
+                        }
                     }
                 }
             }
