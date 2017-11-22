@@ -313,21 +313,30 @@ namespace Chem4Word.Model
         public bool AtomsAreCis(Atom atomA, Atom atomB)
         {
             //do an assert to make sure that we're not calling this routine with atoms detached from the bond atoms
-            System.Diagnostics.Debug.Assert(
-                StartAtom.Neighbours.Contains(atomA) & EndAtom.Neighbours.Contains(atomB)
+            Debug.Assert(StartAtom.Neighbours.Contains(atomA) & EndAtom.Neighbours.Contains(atomB)
                 || StartAtom.Neighbours.Contains(atomB) & EndAtom.Neighbours.Contains(atomA));
 
-            if (StartAtom.Neighbours.Contains(atomA))
+            // Note: Add null checks as this has been found to be blowing up
+            if (atomA != null && atomB != null
+                && StartAtom.Neighbours != null & EndAtom.Neighbours != null
+                && StartAtom.Neighbours.Count > 0 && EndAtom.Neighbours.Count > 0)
             {
-                //draw two lines from the end atom to atom a and start atom to atom b and see if they intersect
-                return BasicGeometry.LineSegmentsIntersect(EndAtom.Position, atomA.Position, StartAtom.Position,
-                    atomB.Position) != null;
+                if (StartAtom.Neighbours.Contains(atomA))
+                {
+                    //draw two lines from the end atom to atom a and start atom to atom b and see if they intersect
+                    return BasicGeometry.LineSegmentsIntersect(EndAtom.Position, atomA.Position,
+                                                               StartAtom.Position, atomB.Position) != null;
+                }
+                else
+                {
+                    //draw the lines the other way around
+                    return BasicGeometry.LineSegmentsIntersect(EndAtom.Position, atomB.Position,
+                                                               StartAtom.Position, atomA.Position) != null;
+                }
             }
             else
             {
-                //draw the lines the other way around
-                return BasicGeometry.LineSegmentsIntersect(EndAtom.Position, atomB.Position, StartAtom.Position,
-                    atomA.Position) != null;
+                return false;
             }
         }
 

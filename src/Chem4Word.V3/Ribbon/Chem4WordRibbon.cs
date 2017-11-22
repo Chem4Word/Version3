@@ -982,19 +982,28 @@ namespace Chem4Word
                     {
                         case 0: // Seperator or multiplier
                         case 1: // No Subscript
-                            r.InsertAfter(part.Atom);
-                            r.Font.Subscript = 0;
-                            r.Start = cc.Range.End;
+                            if (!string.IsNullOrEmpty(part.Atom))
+                            {
+                                r.InsertAfter(part.Atom);
+                                r.Font.Subscript = 0;
+                                r.Start = cc.Range.End;
+                            }
                             break;
 
                         default: // With Subscript
-                            r.InsertAfter(part.Atom);
-                            r.Font.Subscript = 0;
-                            r.Start = cc.Range.End;
+                            if (!string.IsNullOrEmpty(part.Atom))
+                            {
+                                r.InsertAfter(part.Atom);
+                                r.Font.Subscript = 0;
+                                r.Start = cc.Range.End;
+                            }
 
-                            r.InsertAfter($"{part.Count}");
-                            r.Font.Subscript = 1;
-                            r.Start = cc.Range.End;
+                            if (part.Count > 0)
+                            {
+                                r.InsertAfter($"{part.Count}");
+                                r.Font.Subscript = 1;
+                                r.Start = cc.Range.End;
+                            }
                             break;
                     }
                 }
