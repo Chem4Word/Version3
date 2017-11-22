@@ -61,6 +61,11 @@ namespace Chem4Word.Searcher.OpsinPlugIn
                     {
                         string json = File.ReadAllText(optionsFile);
                         _searcherOptions = JsonConvert.DeserializeObject<Options>(json);
+                        string temp = JsonConvert.SerializeObject(_searcherOptions, Formatting.Indented);
+                        if (!json.Equals(temp))
+                        {
+                            File.WriteAllText(optionsFile, temp);
+                        }
                     }
                     else
                     {

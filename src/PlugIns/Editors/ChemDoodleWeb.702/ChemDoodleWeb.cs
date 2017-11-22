@@ -377,12 +377,12 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkToggleShowHydrogens_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     if (chkToggleShowHydrogens.Checked)
                     {
                         ExecuteJavaScript("ShowHydrogens", true);
@@ -405,10 +405,10 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void btnAddExplicitHydrogens_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
+                Telemetry.Write(module, "Action", "Triggered");
                 if (_eventsEnabled)
                 {
                     ExecuteJavaScript("AddExplicitHydrogens");
@@ -423,12 +423,12 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void btnRemoveExplicitHydrogens_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     ExecuteJavaScript("RemoveHydrogens");
                 }
             }
@@ -441,12 +441,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void nudBondLength_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
-
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", $"Triggered; New value {nudBondLength.Value}");
                     ExecuteJavaScript("ReScale", nudBondLength.Value);
                     AverageBondLength = (double)nudBondLength.Value;
                 }
@@ -460,11 +459,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void btnFlip_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     ExecuteJavaScript("Flip");
                 }
             }
@@ -477,11 +476,12 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void btnMirror_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
+
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     ExecuteJavaScript("Mirror");
                 }
             }
@@ -494,7 +494,6 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkSingleOrMany_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
 
             _sw.Reset();
             _sw.Start();
@@ -503,6 +502,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     if (IsSingleMolecule)
                     {
                         _tempJson = (string)ExecuteJavaScript("GetJSON");
@@ -551,12 +551,12 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkColouredAtoms_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     if (chkColouredAtoms.Checked)
                     {
                         UserOptions.ColouredAtoms = true;
@@ -579,12 +579,12 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkToggleShowCarbons_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
                 if (_eventsEnabled)
                 {
+                    Telemetry.Write(module, "Action", "Triggered");
                     if (chkToggleShowCarbons.Checked)
                     {
                         UserOptions.ShowCarbons = true;

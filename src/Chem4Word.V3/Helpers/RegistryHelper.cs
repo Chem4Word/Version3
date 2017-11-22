@@ -59,7 +59,7 @@ namespace Chem4Word.Helpers
                         timestamp = timestamp.Substring(0, bracket).Trim();
                     }
 
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Setup", $"{timestamp} {message}");
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Update", $"{timestamp} {message}");
 
                     rk.DeleteValue(name);
                 }

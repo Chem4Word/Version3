@@ -54,6 +54,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkShowHydrogens_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 EditorOptions.ShowHydrogens = chkShowHydrogens.Checked;
@@ -68,6 +69,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkColouredAtoms_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 EditorOptions.ColouredAtoms = chkColouredAtoms.Checked;
@@ -82,6 +84,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void btnSetDefaults_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 DialogResult dr = UserInteractions.AskUserOkCancel("Restore default settings");
@@ -101,6 +104,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void btnOk_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SaveChanges();
@@ -169,6 +173,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
         private void chkShowCarbons_CheckedChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 EditorOptions.ShowCarbons = chkShowCarbons.Checked;

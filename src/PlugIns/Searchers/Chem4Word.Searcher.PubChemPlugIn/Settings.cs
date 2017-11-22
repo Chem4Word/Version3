@@ -54,6 +54,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
         private void btnSetDefaults_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 DialogResult dr = UserInteractions.AskUserOkCancel("Restore default settings");
@@ -73,6 +74,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
         private void btnOk_Click(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SaveChanges();
@@ -185,6 +187,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
         private void nudResultsPerCall_ValueChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
             try
             {
                 SearcherOptions.ResultsPerCall = (int)nudResultsPerCall.Value;

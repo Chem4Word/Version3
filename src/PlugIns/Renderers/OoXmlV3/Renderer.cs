@@ -48,6 +48,11 @@ namespace Chem4Word.Renderer.OoXmlV3
                     {
                         string json = File.ReadAllText(optionsFile);
                         _rendererOptions = JsonConvert.DeserializeObject<Options>(json);
+                        string temp = JsonConvert.SerializeObject(_rendererOptions, Formatting.Indented);
+                        if (!json.Equals(temp))
+                        {
+                            File.WriteAllText(optionsFile, temp);
+                        }
                     }
                     else
                     {

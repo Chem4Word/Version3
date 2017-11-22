@@ -3,12 +3,24 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.7 Beta 8</Number>
+    <IsBeta>true</IsBeta>
+    <Released>22-Nov-2017</Released>
+    <Changes>
+      <Change>Handle documents in compatability mode.</Change>
+      <Change>Handle error in setting text of 1D labels.</Change>
+      <Change>Make config files self healing, when options are added or removed.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.8.Beta.8.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.7 Beta 7</Number>
     <IsBeta>true</IsBeta>
     <Released>18-Nov-2017</Released>
     <Changes>
-      <Change>Change updater to remove passive switch as this is sometimes failing to update. Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
       <Change>Add option to Render Carbon Atoms.</Change>
+      <Change>Change updater to remove passive switch as this is failing to update.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.7.Beta.7.msi</Url>
   </Version>
