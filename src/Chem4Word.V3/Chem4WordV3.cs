@@ -211,6 +211,17 @@ namespace Chem4Word
                 {
                     string json = File.ReadAllText(optionsFile);
                     SystemOptions = JsonConvert.DeserializeObject<Options>(json);
+                    string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
+                    if (!json.Equals(temp))
+                    {
+                        File.WriteAllText(optionsFile, temp);
+                    }
+                }
+                else
+                {
+                    SystemOptions.RestoreDefaults();
+                    string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
+                    File.WriteAllText(optionsFile, temp);
                 }
 
                 if (Globals.Chem4WordV3.AddInInfo.DeploymentPath.ToLower().Contains("vso-ci"))

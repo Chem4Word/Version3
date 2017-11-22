@@ -53,6 +53,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                 {
                     string json = File.ReadAllText(optionsFile);
                     _editorOptions = JsonConvert.DeserializeObject<Options>(json);
+                    string temp = JsonConvert.SerializeObject(_editorOptions, Formatting.Indented);
+                    if (!json.Equals(temp))
+                    {
+                        File.WriteAllText(optionsFile, temp);
+                    }
                 }
                 else
                 {
