@@ -17,7 +17,7 @@
   <Version>
     <Number>3.0.8 Beta 8</Number>
     <IsBeta>true</IsBeta>
-    <Released>22-Nov-2017</Released>
+    <Released>21-Nov-2017</Released>
     <Changes>
       <Change>Handle documents in compatability mode.</Change>
       <Change>Handle error in setting text of 1D labels.</Change>
