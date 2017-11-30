@@ -12,21 +12,28 @@ namespace Chem4WordUpdater
         [STAThread]
         private static void Main(string[] args)
         {
-            bool created;
-            using (new Mutex(true, "e02309d1-6734-4b66-a31d-76439a9ee978", out created))
+            if (args.Length == 1)
             {
-                if (created)
+                bool created;
+                using (new Mutex(true, "e02309d1-6734-4b66-a31d-76439a9ee978", out created))
                 {
-                    RegistryHelper.WriteAction("Starting Updater");
+                    if (created)
+                    {
+                        RegistryHelper.WriteAction("Starting Updater");
 
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new Updater(args));
+                        Application.EnableVisualStyles();
+                        Application.SetCompatibleTextRenderingDefault(false);
+                        Application.Run(new Updater(args));
+                    }
+                    else
+                    {
+                        RegistryHelper.WriteAction("Updater is already running");
+                    }
                 }
-                else
-                {
-                    RegistryHelper.WriteAction("Updater is already running");
-                }
+            }
+            else
+            {
+                MessageBox.Show("Please use 'Check for Updates' on Chemistry Ribbon (in Word)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
     }

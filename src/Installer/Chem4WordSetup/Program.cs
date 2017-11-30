@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using Chem4Word.Shared;
 
 namespace Chem4WordSetup
 {
@@ -18,7 +17,6 @@ namespace Chem4WordSetup
             {
                 if (created)
                 {
-                    string dl = FolderHelper.GetPath(KnownFolder.Downloads);
                     RegistryHelper.WriteAction("Starting Setup");
 
                     Application.EnableVisualStyles();

@@ -276,6 +276,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="..\Shared\FolderHelper.cs">
+      <Link>Helpers\FolderHelper.cs</Link>
+    </Compile>
     <Compile Include="AssemblyReflectionManager.cs" />
     <Compile Include="Helpers\ConfigWatcher.cs" />
     <Compile Include="Helpers\ReferenceKeeper.cs" />

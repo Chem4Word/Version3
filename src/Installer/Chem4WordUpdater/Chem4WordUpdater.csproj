@@ -73,6 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\FolderHelper.cs">
+      <Link>FolderHelper.cs</Link>
+    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="RegistryHelper.cs" />
     <Compile Include="Updater.cs">

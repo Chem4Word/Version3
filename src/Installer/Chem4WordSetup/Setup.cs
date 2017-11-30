@@ -624,7 +624,13 @@ namespace Chem4WordSetup
                 progressBar1.Value = 0;
                 Cursor.Current = Cursors.WaitCursor;
 
-                _downloadedFile = Path.Combine(Path.GetTempPath(), filename);
+                string downloadPath = FolderHelper.GetPath(KnownFolder.Downloads);
+                if (!Directory.Exists(downloadPath))
+                {
+                    downloadPath = Path.GetTempPath();
+                }
+
+                _downloadedFile = Path.Combine(downloadPath, filename);
 
                 if (File.Exists(_downloadedFile))
                 {

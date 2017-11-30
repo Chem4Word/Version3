@@ -2162,8 +2162,8 @@ namespace Chem4Word
                 RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
                 if (key != null)
                 {
-                    key.DeleteValue(Constants.RegistryValueNameLastCheck);
-                    key.DeleteValue(Constants.RegistryValueNameVersionsBehind);
+                    key.DeleteValue(Constants.RegistryValueNameLastCheck, false);
+                    key.DeleteValue(Constants.RegistryValueNameVersionsBehind, false);
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Chem4Word.Shared;
+using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -114,7 +115,14 @@ namespace Chem4WordUpdater
 
                 _msiOriginalFileName = filename;
                 string guid = Guid.NewGuid().ToString("N");
-                _downloadedFile = Path.Combine(Path.GetTempPath(), $"{guid}-{filename}");
+
+                string downloadPath = FolderHelper.GetPath(KnownFolder.Downloads);
+                if (!Directory.Exists(downloadPath))
+                {
+                    downloadPath = Path.GetTempPath();
+                }
+
+                _downloadedFile = Path.Combine(downloadPath, filename);
 
                 _webClient = new WebClient();
                 _webClient.Headers.Add("user-agent", "Chem4Word Bootstrapper");
