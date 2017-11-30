@@ -75,6 +75,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\FolderHelper.cs">
+      <Link>FolderHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Shared\OfficeHelper.cs">
       <Link>OfficeHelper.cs</Link>
     </Compile>
