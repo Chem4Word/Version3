@@ -504,7 +504,7 @@ namespace Chem4WordSetup
                             progressBar1.Value = 100;
 
                             AddInInstalled.Indicator = Properties.Resources.Yes;
-                            Information.Text = "Chem4Word successfully installed";
+                            Information.Text = "Chem4Word successfully installed. Please start Microsoft Word, then select Chemistry Tab in ribbon";
                             Action.Text = "Finish";
                         }
                         else
