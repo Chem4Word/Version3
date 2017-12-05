@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Chem4Word.Helpers
 {
@@ -66,6 +68,19 @@ namespace Chem4Word.Helpers
             if (!Directory.Exists(ProgramDataPath))
             {
                 Directory.CreateDirectory(ProgramDataPath);
+            }
+
+            try
+            {
+                // Allow all users to Modify files in this folder
+                DirectorySecurity sec = Directory.GetAccessControl(ProgramDataPath);
+                SecurityIdentifier users = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
+                sec.AddAccessRule(new FileSystemAccessRule(users, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
+                Directory.SetAccessControl(ProgramDataPath, sec);
+            }
+            catch
+            {
+                // Do Nothing
             }
         }
     }

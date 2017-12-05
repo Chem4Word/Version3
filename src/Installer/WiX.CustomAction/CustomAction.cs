@@ -2,6 +2,8 @@ using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using Chem4Word.Shared;
 
 namespace WiX.CustomAction
@@ -11,6 +13,7 @@ namespace WiX.CustomAction
         private const string OfficeKey = @"Microsoft\Office";
         private const string WordAddinsKey = @"Word\Addins\Chem4Word V3";
         private const string ProductShortName = "Chem4Word V3";
+        private const string ProgrammDataFolder = "Chem4Word.V3";
         private const string ProductLongName = "Chemistry Add-In for Word (Chem4Word) V3";
         private const string ManifestFile = "Chem4Word.V3.vsto";
 
@@ -50,8 +53,10 @@ namespace WiX.CustomAction
                     if (File.Exists(manifestFileLocation))
                     {
                         session.Log("  Found Chem4Word Add-In Manifest File");
-                        OpenRegistry(session, manifestFileLocation);
+                        AlterRegistry(session, manifestFileLocation);
                     }
+
+                    ModifyFolderPermissions(session);
                 }
             }
             catch (Exception ex)
@@ -64,6 +69,27 @@ namespace WiX.CustomAction
             return ActionResult.Success;
         }
 
+        private static void ModifyFolderPermissions(Session session)
+        {
+            session.Log($"  Fixing SpecialFolder.CommonApplicationData {ProgrammDataFolder}");
+
+            try
+            {
+                string programData = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                string folderPath = Path.Combine(programData, ProgrammDataFolder);
+                DirectorySecurity sec = Directory.GetAccessControl(folderPath);
+                SecurityIdentifier users = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
+                sec.AddAccessRule(new FileSystemAccessRule(users, FileSystemRights.Modify | FileSystemRights.Synchronize, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
+                Directory.SetAccessControl(folderPath, sec);
+            }
+            catch (Exception ex)
+            {
+                session.Log(ex.Message);
+            }
+
+            session.Log($"  Fixed SpecialFolder.CommonApplicationData {ProgrammDataFolder}");
+        }
+
         [CustomAction]
         public static ActionResult RemoveChem4Word(Session session)
         {
@@ -73,7 +99,7 @@ namespace WiX.CustomAction
 
             try
             {
-                OpenRegistry(session, null);
+                AlterRegistry(session, null);
             }
             catch (Exception ex)
             {
@@ -102,9 +128,9 @@ namespace WiX.CustomAction
             return ActionResult.Success;
         }
 
-        private static void OpenRegistry(Session session, string manifestLocation)
+        private static void AlterRegistry(Session session, string manifestLocation)
         {
-            session.Log(" Begin OpenRegistry()");
+            session.Log(" Begin AlterRegistry()");
 
             try
             {
@@ -147,7 +173,7 @@ namespace WiX.CustomAction
                 session.Log($"** Exception: {ex.Message} **");
             }
 
-            session.Log(" End OpenRegistry()");
+            session.Log(" End AlterRegistry()");
         }
 
         private static void RegisterChem4WordAddIn(Session session, RegistryKey rk, string manifestLocation)
