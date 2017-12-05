@@ -8,8 +8,8 @@
     <Released>06-Dec-2017</Released>
     <Changes>
       <Change>Fix permissions issue with Library folder</Change>
-      <Change>...</Change>
-      <Change>...</Change>
+      <Change>Run downloaded files from C:\Users\{InsertNameHere}\Downloads instead of C:\Users\{InsertNameHere}\AppData\Local\Temp. Host Intrustion Protection System (HIPS) preventing execution of files from temp folders.</Change>
+      <Change>Clearer message when initial setup is completed.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.9.Beta.9.msi</Url>
