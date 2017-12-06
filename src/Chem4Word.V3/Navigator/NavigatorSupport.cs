@@ -58,6 +58,15 @@ namespace Chem4Word.Navigator
 
             if (allowedToInsert)
             {
+                if (sel.OMaths.Count > 0)
+                {
+                    allowedToInsert = false;
+                    message = "You can't insert a chemistry object inside an equation";
+                }
+            }
+
+            if (allowedToInsert)
+            {
                 if (sel.ContentControls.Count > 0)
                 {
                     cc = sel.ContentControls[1];

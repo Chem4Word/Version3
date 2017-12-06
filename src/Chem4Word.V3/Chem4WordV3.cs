@@ -690,6 +690,7 @@ namespace Chem4Word
             {
                 // Not needed, just here for completeness
                 Ribbon.ChangeOptions.Enabled = true;
+                Ribbon.HelpMenu.Enabled = true;
 
                 switch (state)
                 {
@@ -780,7 +781,7 @@ namespace Chem4Word
             {
                 Word.Document doc = sel.Application.ActiveDocument;
 
-                if (sel.StoryType == Word.WdStoryType.wdMainTextStory)
+                if (sel.StoryType == Word.WdStoryType.wdMainTextStory && sel.OMaths.Count == 0)
                 {
                     Word.WdContentControlType? contentControlType = null;
 
