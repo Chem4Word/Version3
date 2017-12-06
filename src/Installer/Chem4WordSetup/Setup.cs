@@ -17,7 +17,7 @@ namespace Chem4WordSetup
     {
         private const string VersionsFile = "files3/Chem4Word-Versions.xml";
         private const string PrimaryDomain = "https://www.chem4word.co.uk";
-        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
+        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com", };
         private const string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
 
         private const string RegistryKeyName = @"SOFTWARE\Chem4Word V3";
@@ -25,9 +25,9 @@ namespace Chem4WordSetup
         private const string RegistryVersionsBehindValueName = "Versions Behind";
 
         private const string DetectV2AddIn = @"Chemistry Add-in for Word\Chem4Word.AddIn.vsto";
-        private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.AddIn.vsto";
+        private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.V3.vsto";
 
-        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.6.Beta.6.msi";
+        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.9.Beta.9.msi";
         private const string VstoInstaller = "https://www.chem4word.co.uk/files3/vstor_redist.exe";
 
         private WebClient _webClient;
@@ -203,7 +203,7 @@ namespace Chem4WordSetup
             #region Is Chem4Word Installed
 
             isChem4WordVersion2Installed = FindOldVersion();
-            isChem4WordVersion3Installed = FindCurrentVersion();
+            //isChem4WordVersion3Installed = FindCurrentVersion();
 
             #endregion Is Chem4Word Installed
 
@@ -251,7 +251,7 @@ namespace Chem4WordSetup
                     // Default to Specific Beta
                     if (string.IsNullOrEmpty(_latestVersion))
                     {
-                        _latestVersion = DefaultMsiFile;
+                        _latestVersion = ChangeDomain(DefaultMsiFile);
                         RegistryHelper.WriteAction($"Defaulting to {_latestVersion}");
                     }
                 }
@@ -281,9 +281,12 @@ namespace Chem4WordSetup
         {
             string output = input;
 
-            if (!_domainUsed.Equals(PrimaryDomain))
+            if (!string.IsNullOrEmpty(_domainUsed))
             {
-                output = input.Replace(PrimaryDomain, _domainUsed);
+                if (!_domainUsed.Equals(PrimaryDomain))
+                {
+                    output = input.Replace(PrimaryDomain, _domainUsed);
+                }
             }
 
             return output;
@@ -501,7 +504,7 @@ namespace Chem4WordSetup
                             progressBar1.Value = 100;
 
                             AddInInstalled.Indicator = Properties.Resources.Yes;
-                            Information.Text = "Chem4Word successfully installed";
+                            Information.Text = "Chem4Word successfully installed. Please start Microsoft Word, then select Chemistry Tab in ribbon";
                             Action.Text = "Finish";
                         }
                         else
@@ -608,6 +611,7 @@ namespace Chem4WordSetup
         private bool DownloadFile(string url)
         {
             bool started = false;
+
             _sw = new Stopwatch();
             _sw.Start();
 
@@ -620,7 +624,13 @@ namespace Chem4WordSetup
                 progressBar1.Value = 0;
                 Cursor.Current = Cursors.WaitCursor;
 
-                _downloadedFile = Path.Combine(Path.GetTempPath(), filename);
+                string downloadPath = FolderHelper.GetPath(KnownFolder.Downloads);
+                if (!Directory.Exists(downloadPath))
+                {
+                    downloadPath = Path.GetTempPath();
+                }
+
+                _downloadedFile = Path.Combine(downloadPath, filename);
 
                 if (File.Exists(_downloadedFile))
                 {
@@ -660,9 +670,9 @@ namespace Chem4WordSetup
 
         private void OnDownloadComplete(object sender, AsyncCompletedEventArgs e)
         {
+            _sw.Stop();
             Cursor.Current = Cursors.Default;
             progressBar1.Value = 100;
-            _sw.Stop();
 
             if (e.Cancelled)
             {

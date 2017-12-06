@@ -153,8 +153,6 @@
     <Content Include="ChemDoodle\index.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ChemDoodle\Source\ChemDoodleWeb-uis-unpacked.js" />
-    <Content Include="ChemDoodle\Source\ChemDoodleWeb-unpacked.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chemistry\Chem4Word.Model\Chem4Word.Model.csproj">

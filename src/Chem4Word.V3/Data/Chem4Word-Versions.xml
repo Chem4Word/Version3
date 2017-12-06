@@ -3,14 +3,25 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
-    <Number>3.0.7 Beta 8</Number>
+    <Number>3.0.9 Beta 9</Number>
     <IsBeta>true</IsBeta>
-    <Released>22-Nov-2017</Released>
+    <Released>06-Dec-2017</Released>
+    <Changes>
+      <Change>Fix permissions issue with Library folder.</Change>
+      <Change>Run downloaded files from C:\Users\{InsertNameHere}\Downloads instead of C:\Users\{InsertNameHere}\AppData\Local\Temp. Host Intrustion Protection System (HIPS) preventing execution of files from temp folders.</Change>
+      <Change>Clearer message when initial setup is completed.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.9.Beta.9.msi</Url>
+  </Version>
+  <Version>
+    <Number>3.0.8 Beta 8</Number>
+    <IsBeta>true</IsBeta>
+    <Released>21-Nov-2017</Released>
     <Changes>
       <Change>Handle documents in compatability mode.</Change>
       <Change>Handle error in setting text of 1D labels.</Change>
       <Change>Make config files self healing, when options are added or removed.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.8.Beta.8.msi</Url>
   </Version>

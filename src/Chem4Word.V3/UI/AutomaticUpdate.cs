@@ -9,6 +9,7 @@
 
 using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
+using Chem4Word.Shared;
 using IChem4Word.Contracts;
 using Microsoft.Win32;
 using System;
@@ -115,39 +116,47 @@ namespace Chem4Word.UI
             try
             {
                 string source = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Chem4WordUpdater.exe");
-                string userTempPath = Path.GetTempPath();
-                if (Directory.Exists(userTempPath))
+
+                string downloadPath = FolderHelper.GetPath(KnownFolder.Downloads);
+                if (!Directory.Exists(downloadPath))
                 {
-                    // Ensure filename to be launched is unique
-                    string guid = Guid.NewGuid().ToString("N");
-                    string destination = Path.Combine(userTempPath, $"{guid}-Chem4WordUpdater.exe");
-                    File.Copy(source, destination, true);
+                    downloadPath = Path.GetTempPath();
+                }
 
-                    if (File.Exists(destination)
-                        && new FileInfo(destination).Length > 0)
-                    {
-                        _telemetry.Write(module, "AutomaticUpdate", "Starting updater, to download " + _downloadUrl);
+                // Ensure filename to be launched is unique
+                string guid = Guid.NewGuid().ToString("N");
+                string destination = Path.Combine(downloadPath, $"Chem4WordUpdater-{guid}.exe");
 
-                        ProcessStartInfo psi = new ProcessStartInfo();
-                        psi.WorkingDirectory = userTempPath;
-                        psi.Arguments = _downloadUrl;
-                        psi.FileName = destination;
-                        Process.Start(psi);
+                File.Copy(source, destination, true);
 
-                        _closedByCode = true;
-                        Close();
-                    }
-                    else
-                    {
-                        _telemetry.Write(module, "AutomaticUpdate", $"Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed.");
-                        MessageBox.Show($"Copy of 'Chem4WordUpdater.exe' to {userTempPath} failed. Please download {_downloadUrl} manually and install it.");
-                    }
+                if (File.Exists(destination)
+                    && new FileInfo(destination).Length > 0)
+                {
+                    _telemetry.Write(module, "AutomaticUpdate", "Starting updater, to download " + _downloadUrl);
+
+                    ProcessStartInfo psi = new ProcessStartInfo();
+                    psi.WorkingDirectory = downloadPath;
+                    psi.Arguments = _downloadUrl;
+                    psi.FileName = destination;
+                    Process.Start(psi);
+
+                    _closedByCode = true;
+                    Close();
                 }
                 else
                 {
-                    _telemetry.Write(module, "AutomaticUpdate", $"Folder '{userTempPath}' not found.");
-                    MessageBox.Show($"Folder '{userTempPath}' not found. Please download {_downloadUrl} manually and install it.");
+                    _telemetry.Write(module, "AutomaticUpdate", $"Copy of 'Chem4WordUpdater.exe' to {downloadPath} failed.");
+                    MessageBox.Show($"Copy of 'Chem4WordUpdater.exe' to {downloadPath} failed. Please download {_downloadUrl} manually and install it.");
                 }
+
+                //if (Directory.Exists(downloadPath))
+                //{
+                //}
+                //else
+                //{
+                //    _telemetry.Write(module, "AutomaticUpdate", $"Folder '{downloadPath}' not found.");
+                //    MessageBox.Show($"Folder '{downloadPath}' not found. Please download {_downloadUrl} manually and install it.");
+                //}
             }
             catch (Exception ex)
             {
