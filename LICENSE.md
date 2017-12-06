@@ -1,3 +1,16 @@
+Copyright (c) 2018, The .NET Foundation. The software is licensed under the (the "License");
+you may not use the software except in compliance with the License.
+
+Note: The following zip files (containing ChemDoodle Web)
+
+* src\PlugIns\Editors\ChemDoodleWeb.702\Resources\ChemDoodleWeb\ChemDoodleWeb_702.zip
+* src\PlugIns\Editors\ChemDoodleWeb.800\Resources\ChemDoodleWeb\ChemDoodleWeb_800.zip
+
+are licensed under the GPL, version 3 (http://opensource.org/licenses/GPL-3.0).
+You may not use those files except in compliance with the GPL, version 3.
+
+
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
