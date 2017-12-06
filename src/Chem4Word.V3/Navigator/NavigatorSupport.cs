@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Chem4Word.Core.UI.Forms;
+using Microsoft.Office.Core;
+using Shape = Microsoft.Office.Interop.Word.Shape;
 
 namespace Chem4Word.Navigator
 {
@@ -40,6 +42,19 @@ namespace Chem4Word.Navigator
                     contentControlType = ccd.Type;
                 }
             }
+
+            // Does not work as range inside a text box is relative
+            //bool inShape = false;
+            //foreach (Shape shape in doc.Shapes)
+            //{
+            //    if (shape.Type == MsoShapeType.msoTextBox)
+            //    {
+            //        if (shape.TextFrame.TextRange.Start <= sel.Range.Start && shape.TextFrame.TextRange.End >= sel.Range.End)
+            //        {
+            //            inShape = true;
+            //        }
+            //    }
+            //}
 
             bool inFootNote = false;
             foreach (Footnote fn in doc.Footnotes)
