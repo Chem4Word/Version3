@@ -43,47 +43,20 @@ namespace Chem4Word.Navigator
                 }
             }
 
-            // Does not work as range inside a text box is relative
-            //bool inShape = false;
-            //foreach (Shape shape in doc.Shapes)
-            //{
-            //    if (shape.Type == MsoShapeType.msoTextBox)
-            //    {
-            //        if (shape.TextFrame.TextRange.Start <= sel.Range.Start && shape.TextFrame.TextRange.End >= sel.Range.End)
-            //        {
-            //            inShape = true;
-            //        }
-            //    }
-            //}
-
-            bool inFootNote = false;
-            foreach (Footnote fn in doc.Footnotes)
+            string message = "";
+            bool allowedToInsert = (sel.StoryType == WdStoryType.wdMainTextStory);
+            if (!allowedToInsert)
             {
-                if (fn.Range.Start <= sel.Range.Start && fn.Range.End >= sel.Range.End)
-                {
-                    inFootNote = true;
-                }
+                message = $"You can't insert a chemistry object inside a {sel.StoryType}";
             }
 
-            bool inEndNote = false;
-            foreach (Endnote en in doc.Endnotes)
+            if (allowedToInsert && contentControlType != null && contentControlType != WdContentControlType.wdContentControlRichText)
             {
-                if (en.Range.Start <= sel.Range.Start && en.Range.End >= sel.Range.End)
-                {
-                    inEndNote = true;
-                }
+                allowedToInsert = false;
+                message = $"You can't insert a chemistry object inside a {DecodeContentControlType(contentControlType)} control";
             }
 
-            bool inComment = false;
-            foreach (Comment com in doc.Comments)
-            {
-                if (com.Range.Start <= sel.Range.Start && com.Range.End >= sel.Range.End)
-                {
-                    inComment = true;
-                }
-            }
-
-            if (contentControlType == null || contentControlType == WdContentControlType.wdContentControlRichText)
+            if (allowedToInsert)
             {
                 if (sel.ContentControls.Count > 0)
                 {
@@ -174,7 +147,7 @@ namespace Chem4Word.Navigator
             }
             else
             {
-                UserInteractions.WarnUser($"You can't insert a chemistry object inside a {DecodeContentControlType(contentControlType)} control");
+                UserInteractions.WarnUser(message);
             }
         }
 
