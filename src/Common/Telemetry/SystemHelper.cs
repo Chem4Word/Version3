@@ -356,8 +356,9 @@ namespace Chem4Word.Telemetry
                             }
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        Debug.WriteLine(ex.Message);
                         // Do Nothing
                     }
                     Thread.Sleep(500);

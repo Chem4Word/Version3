@@ -780,11 +780,14 @@ namespace Chem4Word
             {
                 Word.Document doc = sel.Application.ActiveDocument;
 
+                Word.WdContentControlType? contentControlType = null;
+
                 foreach (Word.ContentControl cc in doc.ContentControls)
                 {
-                    if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                    if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
                     {
-                        if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
+                        contentControlType = cc.Type;
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
                             Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
                             doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
@@ -792,18 +795,26 @@ namespace Chem4Word
                     }
                 }
 
-                if (doc.CompatibilityMode >= (int) Word.WdCompatibilityMode.wdWord2010)
+                if (contentControlType == null || contentControlType == Word.WdContentControlType.wdContentControlRichText)
                 {
-                    ChemistrySelected = sel.ContentControls.Count > 0;
-
-                    if (ChemistrySelected)
+                    if (doc.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
                     {
-                        Ribbon.ActivateChemistryTab();
-                        SetButtonStates(ButtonState.CanEdit);
+                        ChemistrySelected = sel.ContentControls.Count > 0;
+
+                        if (ChemistrySelected)
+                        {
+                            Ribbon.ActivateChemistryTab();
+                            SetButtonStates(ButtonState.CanEdit);
+                        }
+                        else
+                        {
+                            SetButtonStates(ButtonState.CanInsert);
+                        }
                     }
                     else
                     {
-                        SetButtonStates(ButtonState.CanInsert);
+                        ChemistrySelected = false;
+                        SetButtonStates(ButtonState.NoDocument);
                     }
                 }
                 else
