@@ -49,6 +49,9 @@ namespace Chem4Word
 
         public bool EventsEnabled = true;
 
+        public bool ChemistryAllowed = false;
+        public string ChemistryProhibitedReason = "";
+
         private bool ChemistrySelected = false;
         private bool _markAsChemistryHandled = false;
         private int _rightClickEvents = 0;
@@ -781,56 +784,80 @@ namespace Chem4Word
             {
                 Word.Document doc = sel.Application.ActiveDocument;
 
-                if (sel.StoryType == Word.WdStoryType.wdMainTextStory && sel.OMaths.Count == 0)
+                foreach (Word.ContentControl cc in doc.ContentControls)
                 {
-                    Word.WdContentControlType? contentControlType = null;
-
-                    foreach (Word.ContentControl cc in doc.ContentControls)
+                    if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
                     {
-                        if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
-                            contentControlType = cc.Type;
-                            if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
-                            {
-                                Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
-                                doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
-                            }
+                            Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
+                            doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
                         }
                     }
+                }
 
-                    if (contentControlType == null || contentControlType == Word.WdContentControlType.wdContentControlRichText)
-                    {
-                        if (doc.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
-                        {
-                            ChemistrySelected = sel.ContentControls.Count > 0;
+                ChemistrySelected = sel.ContentControls.Count > 0;
 
-                            if (ChemistrySelected)
-                            {
-                                Ribbon.ActivateChemistryTab();
-                                SetButtonStates(ButtonState.CanEdit);
-                            }
-                            else
-                            {
-                                SetButtonStates(ButtonState.CanInsert);
-                            }
-                        }
-                        else
-                        {
-                            ChemistrySelected = false;
-                            SetButtonStates(ButtonState.NoDocument);
-                        }
-                    }
-                    else
-                    {
-                        ChemistrySelected = false;
-                        SetButtonStates(ButtonState.NoDocument);
-                    }
+                if (ChemistrySelected)
+                {
+                    Ribbon.ActivateChemistryTab();
+                    SetButtonStates(ButtonState.CanEdit);
                 }
                 else
                 {
-                    ChemistrySelected = false;
-                    SetButtonStates(ButtonState.NoDocument);
+                    SetButtonStates(ButtonState.CanInsert);
                 }
+
+                //if (sel.StoryType == Word.WdStoryType.wdMainTextStory && sel.OMaths.Count == 0)
+                //{
+                //    Word.WdContentControlType? contentControlType = null;
+
+                //    foreach (Word.ContentControl cc in doc.ContentControls)
+                //    {
+                //        if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
+                //        {
+                //            contentControlType = cc.Type;
+                //            if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                //            {
+                //                Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
+                //                doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
+                //            }
+                //        }
+                //    }
+
+                //    if (contentControlType == null || contentControlType == Word.WdContentControlType.wdContentControlRichText)
+                //    {
+                //        if (doc.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
+                //        {
+                //            ChemistrySelected = sel.ContentControls.Count > 0;
+
+                //            if (ChemistrySelected)
+                //            {
+                //                Ribbon.ActivateChemistryTab();
+                //                SetButtonStates(ButtonState.CanEdit);
+                //            }
+                //            else
+                //            {
+                //                SetButtonStates(ButtonState.CanInsert);
+                //            }
+                //        }
+                //        else
+                //        {
+                //            ChemistrySelected = false;
+                //            SetButtonStates(ButtonState.NoDocument);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ChemistrySelected = false;
+                //        SetButtonStates(ButtonState.NoDocument);
+                //    }
+                //}
+                //else
+                //{
+                //    ChemistrySelected = false;
+                //    SetButtonStates(ButtonState.NoDocument);
+                //}
             }
             catch (Exception e)
             {
@@ -838,6 +865,7 @@ namespace Chem4Word
             }
             finally
             {
+                SetButtonStates(ButtonState.NoDocument);
                 EventsEnabled = true;
             }
         }
@@ -1414,13 +1442,137 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
-                    SelectChemistry(sel);
+                    SetChemistryAllowed();
+                    if (ChemistryAllowed)
+                    {
+                        SelectChemistry(sel);
+                    }
+                    else
+                    {
+                        SetButtonStates(ButtonState.NoDocument);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
             }
+        }
+
+        private void SetChemistryAllowed()
+        {
+            bool allowed = true;
+
+            if (Globals.Chem4WordV3.Application.Documents.Count > 0)
+            {
+                Word.Document doc = null;
+                try
+                {
+                    doc = Globals.Chem4WordV3.Application.ActiveDocument;
+                }
+                catch
+                {
+                    // This only happens when document is in protected mode
+                    allowed = false;
+                    ChemistryProhibitedReason = "document is readonly.";
+                }
+
+                if (doc != null)
+                {
+                    if (doc.CompatibilityMode < (int)Word.WdCompatibilityMode.wdWord2010)
+                    {
+                        allowed = false;
+                        ChemistryProhibitedReason = "document is in compatability mode.";
+                    }
+
+                    Word.Selection sel = Application.Selection;
+                    if (sel.OMaths.Count > 0)
+                    {
+                        ChemistryProhibitedReason = "selection is in Equation";
+                        allowed = false;
+                    }
+
+                    if (allowed)
+                    {
+                        if (sel.StoryType != Word.WdStoryType.wdMainTextStory)
+                        {
+                            ChemistryProhibitedReason = $"selection is in {sel.StoryType}";
+                            allowed = false;
+                        }
+                    }
+
+                    if (allowed)
+                    {
+                        Word.WdContentControlType? contentControlType = null;
+                        foreach (Word.ContentControl ccd in doc.ContentControls)
+                        {
+                            if (ccd.Range.Start <= sel.Range.Start && ccd.Range.End >= sel.Range.End)
+                            {
+                                contentControlType = ccd.Type;
+                            }
+                        }
+
+                        if (contentControlType != null &&
+                            contentControlType != Word.WdContentControlType.wdContentControlRichText)
+                        {
+                            allowed = false;
+                            ChemistryProhibitedReason = "selection is in " + DecodeContentControlType(contentControlType);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                allowed = false;
+                ChemistryProhibitedReason = "no document is open.";
+            }
+
+            ChemistryAllowed = allowed;
+        }
+
+        private static string DecodeContentControlType(Word.WdContentControlType? contentControlType)
+        {
+            string result = "";
+
+            switch (contentControlType)
+            {
+                case Word.WdContentControlType.wdContentControlRichText:
+                    result = "Rich Text";
+                    break;
+                case Word.WdContentControlType.wdContentControlText:
+                    result = "Text";
+                    break;
+                case Word.WdContentControlType.wdContentControlBuildingBlockGallery:
+                    result = "Picture";
+                    break;
+                case Word.WdContentControlType.wdContentControlComboBox:
+                    result = "Combo Box";
+                    break;
+                case Word.WdContentControlType.wdContentControlDropdownList:
+                    result = "Drop Down List";
+                    break;
+                case Word.WdContentControlType.wdContentControlPicture:
+                    result = "Building Block Gallery";
+                    break;
+                case Word.WdContentControlType.wdContentControlDate:
+                    result = "Date Picker";
+                    break;
+                case Word.WdContentControlType.wdContentControlGroup:
+                    result = "Group";
+                    break;
+                case Word.WdContentControlType.wdContentControlCheckBox:
+                    result = "Check Box";
+                    break;
+                case Word.WdContentControlType.wdContentControlRepeatingSection:
+                    result = "Repeating Section";
+                    break;
+
+                default:
+                    result = contentControlType.ToString();
+                    break;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -1536,13 +1688,6 @@ namespace Chem4Word
             try
             {
                 Debug.WriteLine($"{module.Replace("()", $"({contentControl.Application.ActiveDocument.Name})")}");
-                //Debug.WriteLine("CC ID: " + contentControl.ID + " Tag: " + contentControl?.Tag + " Title: " + contentControl.Title);
-                //WordInterop.Document doc = contentControl.Application.ActiveApp;
-                //CustomXMLPart cxml = GetCustomXmlPart(contentControl?.Tag);
-                //if (cxml != null)
-                //{
-                //    cxml.Delete();
-                //}
             }
             catch (Exception ex)
             {
