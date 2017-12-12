@@ -1546,6 +1546,66 @@ namespace Chem4Word
                     result = "Endnote continuation notice";
                     break;
 
+                case Word.WdStoryType.wdEndnoteContinuationSeparatorStory:
+                    result = "Endnote continuation separator";
+                    break;
+
+                case Word.WdStoryType.wdEndnoteSeparatorStory:
+                    result = "Endnote separator";
+                    break;
+
+                case Word.WdStoryType.wdEndnotesStory:
+                    result = "Endnotes";
+                    break;
+
+                case Word.WdStoryType.wdEvenPagesFooterStory:
+                    result = "Even pages footer";
+                    break;
+
+                case Word.WdStoryType.wdEvenPagesHeaderStory:
+                    result = "Even pages header";
+                    break;
+
+                case Word.WdStoryType.wdFirstPageFooterStory:
+                    result = "First page footer";
+                    break;
+
+                case Word.WdStoryType.wdFirstPageHeaderStory:
+                    result = "First page header";
+                    break;
+
+                case Word.WdStoryType.wdFootnoteContinuationNoticeStory:
+                    result = "Footnote continuation notice";
+                    break;
+
+                case Word.WdStoryType.wdFootnoteContinuationSeparatorStory:
+                    result = "Footnote continuation separator";
+                    break;
+
+                case Word.WdStoryType.wdFootnoteSeparatorStory:
+                    result = "Footnote separator";
+                    break;
+
+                case Word.WdStoryType.wdFootnotesStory:
+                    result = "Footnotes";
+                    break;
+
+                case Word.WdStoryType.wdMainTextStory:
+                    result = "Main text";
+                    break;
+
+                case Word.WdStoryType.wdPrimaryFooterStory:
+                    result = "Primary footer";
+                    break;
+
+                case Word.WdStoryType.wdPrimaryHeaderStory:
+                    result = "Primary header";
+                    break;
+
+                case Word.WdStoryType.wdTextFrameStory:
+                    result = "Text frame";
+                    break;
+
                 default:
                     result = storyType.ToString();
                     break;
