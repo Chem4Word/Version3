@@ -865,7 +865,7 @@ namespace Chem4Word
             }
             finally
             {
-                SetButtonStates(ButtonState.NoDocument);
+                //SetButtonStates(ButtonState.NoDocument);
                 EventsEnabled = true;
             }
         }
@@ -1528,6 +1528,7 @@ namespace Chem4Word
             }
 
             ChemistryAllowed = allowed;
+            Debug.WriteLine(ChemistryProhibitedReason);
         }
 
         private static string DecodeContentControlType(Word.WdContentControlType? contentControlType)

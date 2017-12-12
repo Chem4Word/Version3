@@ -33,6 +33,8 @@ namespace Chem4Word.Navigator
             Document doc = app.ActiveDocument;
             Selection sel = app.Selection;
             ContentControl cc = null;
+            bool allowed = true;
+            string reason = "";
 
             if (Globals.Chem4WordV3.ChemistryAllowed)
             {
@@ -41,91 +43,99 @@ namespace Chem4Word.Navigator
                     cc = sel.ContentControls[1];
                     if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                     {
-                        UserInteractions.WarnUser("You can't insert a chemistry object because a chemistry object is selected");
-                    }
-                    else
-                    {
-                        app.ScreenUpdating = false;
-                        Globals.Chem4WordV3.DisableDocumentEvents(doc);
-
-                        try
-                        {
-                            CMLConverter cmlConverter = new CMLConverter();
-                            Model.Model chem = cmlConverter.Import(flexDisplay.Chemistry);
-                            if (chem.MeanBondLength < 5 || chem.MeanBondLength > 100)
-                            {
-                                chem.Rescale(20);
-                            }
-
-                            if (isCopy)
-                            {
-                                // Always generate new Guid on Import
-                                chem.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
-                            }
-
-                            string guidString = chem.CustomXmlPartGuid;
-                            string bookmarkName = "C4W_" + guidString;
-
-                            Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-
-                            IChem4WordRenderer renderer =
-                                Globals.Chem4WordV3.GetRendererPlugIn(
-                                    Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
-
-                            if (renderer == null)
-                            {
-                                UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
-                            }
-                            else
-                            {
-                                // Export just incase the CustomXmlPartGuid has been changed
-                                string cml = cmlConverter.Export(chem);
-                                renderer.Properties = new Dictionary<string, string>();
-                                renderer.Properties.Add("Guid", guidString);
-                                renderer.Cml = cml;
-
-                                string tempfileName = renderer.Render();
-
-                                cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                                if (isCopy)
-                                {
-                                    doc.CustomXMLParts.Add(cml);
-                                }
-
-                                try
-                                {
-                                    // Delete the temporary file now we are finished with it
-                                    File.Delete(tempfileName);
-                                }
-                                catch
-                                {
-                                    // Not much we can do here
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-                        }
-                        finally
-                        {
-                            // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
-                            app.ScreenUpdating = true;
-                            Globals.Chem4WordV3.EnableDocumentEvents(doc);
-
-                            if (cc != null)
-                            {
-                                // Move selection point into the Content Control which was just edited or added
-                                app.Selection.SetRange(cc.Range.Start, cc.Range.End);
-                            }
-                        }
+                        reason = "a chemistry object is selected";
+                        allowed = false;
                     }
                 }
             }
             else
             {
-                UserInteractions.WarnUser($"You can't insert a chemistry object because {Globals.Chem4WordV3.ChemistryProhibitedReason}");
+                reason = Globals.Chem4WordV3.ChemistryProhibitedReason;
+                allowed = false;
+            }
+
+            if (allowed)
+            {
+                app.ScreenUpdating = false;
+                Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+                try
+                {
+                    CMLConverter cmlConverter = new CMLConverter();
+                    Model.Model chem = cmlConverter.Import(flexDisplay.Chemistry);
+                    if (chem.MeanBondLength < 5 || chem.MeanBondLength > 100)
+                    {
+                        chem.Rescale(20);
+                    }
+
+                    if (isCopy)
+                    {
+                        // Always generate new Guid on Import
+                        chem.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
+                    }
+
+                    string guidString = chem.CustomXmlPartGuid;
+                    string bookmarkName = "C4W_" + guidString;
+
+                    Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
+
+                    IChem4WordRenderer renderer =
+                        Globals.Chem4WordV3.GetRendererPlugIn(
+                            Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+
+                    if (renderer == null)
+                    {
+                        UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
+                    }
+                    else
+                    {
+                        // Export just incase the CustomXmlPartGuid has been changed
+                        string cml = cmlConverter.Export(chem);
+                        renderer.Properties = new Dictionary<string, string>();
+                        renderer.Properties.Add("Guid", guidString);
+                        renderer.Cml = cml;
+
+                        string tempfileName = renderer.Render();
+
+                        cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
+
+                        if (isCopy)
+                        {
+                            doc.CustomXMLParts.Add(cml);
+                        }
+
+                        try
+                        {
+                            // Delete the temporary file now we are finished with it
+                            File.Delete(tempfileName);
+                        }
+                        catch
+                        {
+                            // Not much we can do here
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex)
+                        .ShowDialog();
+                }
+                finally
+                {
+                    // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
+                    app.ScreenUpdating = true;
+                    Globals.Chem4WordV3.EnableDocumentEvents(doc);
+
+                    if (cc != null)
+                    {
+                        // Move selection point into the Content Control which was just edited or added
+                        app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                    }
+                }
+            }
+            else
+            {
+                UserInteractions.WarnUser($"You can't insert a chemistry object because {reason}");
             }
 
             //WdContentControlType? contentControlType = null;
