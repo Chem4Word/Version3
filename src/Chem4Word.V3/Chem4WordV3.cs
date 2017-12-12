@@ -1496,7 +1496,7 @@ namespace Chem4Word
                     {
                         if (sel.StoryType != Word.WdStoryType.wdMainTextStory)
                         {
-                            ChemistryProhibitedReason = $"selection is in {sel.StoryType}";
+                            ChemistryProhibitedReason = $"selection is in {DecodeStoryType(sel.StoryType)} Story";
                             allowed = false;
                         }
                     }
@@ -1516,7 +1516,7 @@ namespace Chem4Word
                             contentControlType != Word.WdContentControlType.wdContentControlRichText)
                         {
                             allowed = false;
-                            ChemistryProhibitedReason = "selection is in " + DecodeContentControlType(contentControlType);
+                            ChemistryProhibitedReason = $"selection is in{DecodeContentControlType(contentControlType)} Content Control";
                         }
                     }
                 }
@@ -1531,14 +1531,38 @@ namespace Chem4Word
             Debug.WriteLine(ChemistryProhibitedReason);
         }
 
+        private object DecodeStoryType(Word.WdStoryType storyType)
+        {
+            // Data from https://msdn.microsoft.com/en-us/vba/word-vba/articles/wdstorytype-enumeration-word
+            string result = "";
+
+            switch (storyType)
+            {
+                case Word.WdStoryType.wdCommentsStory:
+                    result = "Comments";
+                    break;
+
+                case Word.WdStoryType.wdEndnoteContinuationNoticeStory:
+                    result = "Endnote continuation notice";
+                    break;
+
+                default:
+                    result = storyType.ToString();
+                    break;
+            }
+
+            return result;
+        }
+
         private static string DecodeContentControlType(Word.WdContentControlType? contentControlType)
         {
+            // Date from https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.wdcontentcontroltype(v=office.14).aspx
             string result = "";
 
             switch (contentControlType)
             {
                 case Word.WdContentControlType.wdContentControlRichText:
-                    result = "Rich Text";
+                    result = "Rich-Text";
                     break;
                 case Word.WdContentControlType.wdContentControlText:
                     result = "Text";
@@ -1547,22 +1571,22 @@ namespace Chem4Word
                     result = "Picture";
                     break;
                 case Word.WdContentControlType.wdContentControlComboBox:
-                    result = "Combo Box";
+                    result = "ComboBox";
                     break;
                 case Word.WdContentControlType.wdContentControlDropdownList:
-                    result = "Drop Down List";
+                    result = "Drop-Down List";
                     break;
                 case Word.WdContentControlType.wdContentControlPicture:
                     result = "Building Block Gallery";
                     break;
                 case Word.WdContentControlType.wdContentControlDate:
-                    result = "Date Picker";
+                    result = "Date";
                     break;
                 case Word.WdContentControlType.wdContentControlGroup:
                     result = "Group";
                     break;
                 case Word.WdContentControlType.wdContentControlCheckBox:
-                    result = "Check Box";
+                    result = "CheckBox";
                     break;
                 case Word.WdContentControlType.wdContentControlRepeatingSection:
                     result = "Repeating Section";
