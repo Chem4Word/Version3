@@ -879,7 +879,8 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                if (sel.ContentControls.Count == 0)
+                SetChemistryAllowed();
+                if (ChemistryAllowed)
                 {
                     HandleRightClick(sel);
                 }
@@ -951,6 +952,7 @@ namespace Chem4Word
             for (int i = 1; i <= sel.Sentences.Count; i++)
             {
                 var sentence = sel.Sentences[i];
+                // ToDo: Need to use text = Max(sel.Start, sentance.Start) to Min(sel.End, sentance.End)
                 int start = sentence.Start;
                 string sentenceText = sentence.Text;
                 foreach (var kvp in LibraryNames)
