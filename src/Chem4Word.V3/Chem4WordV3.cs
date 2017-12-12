@@ -942,6 +942,9 @@ namespace Chem4Word
             _markAsChemistryHandled = false;
             _rightClickEvents = 0;
 
+            Debug.WriteLine(sel.Text);
+            Debug.WriteLine(sel.Sentences.Count);
+
             List<TargetWord> selectedWords = new List<TargetWord>();
 
             // Handling the selected text sentence by sentence should make us immune to return character sizing.
@@ -1677,12 +1680,20 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
-                    SelectChemistry(sel);
-                }
+                    SetChemistryAllowed();
+                    if (ChemistryAllowed)
+                    {
+                        SelectChemistry(sel);
+                    }
+                    else
+                    {
+                        SetButtonStates(ButtonState.NoDocument);
+                    }
 
-                if (ChemistrySelected)
-                {
-                    CustomRibbon.PerformEdit();
+                    if (ChemistrySelected)
+                    {
+                        CustomRibbon.PerformEdit();
+                    }
                 }
             }
             catch (Exception ex)
@@ -1825,10 +1836,15 @@ namespace Chem4Word
                     Word.Selection sel = doc.Application.Selection;
                     Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
 
-                    SelectChemistry(sel);
-                    if (ChemistrySelected)
+                    SetChemistryAllowed();
+                    if (ChemistryAllowed)
                     {
+                        SelectChemistry(sel);
                         Ribbon?.ActivateChemistryTab();
+                    }
+                    else
+                    {
+                        SetButtonStates(ButtonState.NoDocument);
                     }
                 }
             }
