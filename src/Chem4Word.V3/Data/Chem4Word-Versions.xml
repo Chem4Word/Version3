@@ -7,7 +7,7 @@
     <IsBeta>true</IsBeta>
     <Released>31-Dec-2017</Released>
     <Changes>
-      <Change>...</Change>
+      <Change>Handle old Word 2007 style Content Controls</Change>
       <Change>Improved Right Click detection of Chemistry</Change>
       <Change>Improved detection of places where chemistry is not allowed to be inserted (Microsoft Word does not allow it, not us!)</Change>
       <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
