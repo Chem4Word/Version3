@@ -807,57 +807,6 @@ namespace Chem4Word
                 {
                     SetButtonStates(ButtonState.CanInsert);
                 }
-
-                //if (sel.StoryType == Word.WdStoryType.wdMainTextStory && sel.OMaths.Count == 0)
-                //{
-                //    Word.WdContentControlType? contentControlType = null;
-
-                //    foreach (Word.ContentControl cc in doc.ContentControls)
-                //    {
-                //        if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
-                //        {
-                //            contentControlType = cc.Type;
-                //            if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
-                //            {
-                //                Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
-                //                doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
-                //            }
-                //        }
-                //    }
-
-                //    if (contentControlType == null || contentControlType == Word.WdContentControlType.wdContentControlRichText)
-                //    {
-                //        if (doc.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
-                //        {
-                //            ChemistrySelected = sel.ContentControls.Count > 0;
-
-                //            if (ChemistrySelected)
-                //            {
-                //                Ribbon.ActivateChemistryTab();
-                //                SetButtonStates(ButtonState.CanEdit);
-                //            }
-                //            else
-                //            {
-                //                SetButtonStates(ButtonState.CanInsert);
-                //            }
-                //        }
-                //        else
-                //        {
-                //            ChemistrySelected = false;
-                //            SetButtonStates(ButtonState.NoDocument);
-                //        }
-                //    }
-                //    else
-                //    {
-                //        ChemistrySelected = false;
-                //        SetButtonStates(ButtonState.NoDocument);
-                //    }
-                //}
-                //else
-                //{
-                //    ChemistrySelected = false;
-                //    SetButtonStates(ButtonState.NoDocument);
-                //}
             }
             catch (Exception e)
             {
@@ -882,7 +831,10 @@ namespace Chem4Word
                 SetChemistryAllowed();
                 if (ChemistryAllowed)
                 {
-                    HandleRightClick(sel);
+                    if (sel.Start != sel.End)
+                    {
+                        HandleRightClick(sel);
+                    }
                 }
             }
             catch (Exception ex)
