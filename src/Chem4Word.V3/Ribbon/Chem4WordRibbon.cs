@@ -925,7 +925,20 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             cc.LockContents = false;
-            cc.Range.Delete();
+            if (cc.Type == Word.WdContentControlType.wdContentControlPicture)
+            {
+                // Handle old Word 2007 style
+                Word.Range range = cc.Range;
+                cc.Delete();
+                cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, range);
+                cc.Tag = tag;
+                cc.Title = Constants.ContentControlTitle;
+                cc.Range.Delete();
+            }
+            else
+            {
+                cc.Range.Delete();
+            }
 
             cc.Range.InsertFile(tempfileName, bookmarkName);
             if (doc.Bookmarks.Exists(bookmarkName))

@@ -1473,19 +1473,36 @@ namespace Chem4Word
                     if (allowed)
                     {
                         Word.WdContentControlType? contentControlType = null;
+                        string title = "";
                         foreach (Word.ContentControl ccd in doc.ContentControls)
                         {
                             if (ccd.Range.Start <= sel.Range.Start && ccd.Range.End >= sel.Range.End)
                             {
                                 contentControlType = ccd.Type;
+                                title = ccd.Title;
                             }
                         }
 
-                        if (contentControlType != null &&
-                            contentControlType != Word.WdContentControlType.wdContentControlRichText)
+                        if (contentControlType != null)
                         {
-                            allowed = false;
-                            ChemistryProhibitedReason = $"selection is in{DecodeContentControlType(contentControlType)} Content Control";
+                            if (!string.IsNullOrEmpty(title) && title.Equals(Constants.ContentControlTitle))
+                            {
+                                // Handle old Word 2007 style
+                                if (contentControlType != Word.WdContentControlType.wdContentControlRichText
+                                    && contentControlType != Word.WdContentControlType.wdContentControlPicture)
+                                {
+                                    allowed = false;
+                                    ChemistryProhibitedReason = $"selection is in{DecodeContentControlType(contentControlType)} Content Control";
+                                }
+                            }
+                            else
+                            {
+                                if (contentControlType != Word.WdContentControlType.wdContentControlRichText)
+                                {
+                                    allowed = false;
+                                    ChemistryProhibitedReason = $"selection is in{DecodeContentControlType(contentControlType)} Content Control";
+                                }
+                            }
                         }
                     }
                 }
