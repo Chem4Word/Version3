@@ -8,8 +8,8 @@
     <Released>31-Dec-2017</Released>
     <Changes>
       <Change>...</Change>
-      <Change>...</Change>
-      <Change>...</Change>
+      <Change>Improved Right Click detection of Chemistry</Change>
+      <Change>Improved detection of places where chemistry is not allowed to be inserted (Microsoft Word does not allow it, not us!)</Change>
       <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.10.Beta.10.msi</Url>
@@ -22,7 +22,6 @@
       <Change>Fix permissions issue with Library folder.</Change>
       <Change>Run downloaded files from C:\Users\{InsertNameHere}\Downloads instead of C:\Users\{InsertNameHere}\AppData\Local\Temp. Host Intrustion Protection System (HIPS) preventing execution of files from temp folders.</Change>
       <Change>Clearer message when initial setup is completed.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.9.Beta.9.msi</Url>
   </Version>

@@ -952,9 +952,9 @@ namespace Chem4Word
             for (int i = 1; i <= sel.Sentences.Count; i++)
             {
                 var sentence = sel.Sentences[i];
-                // ToDo: Need to use text = Max(sel.Start, sentance.Start) to Min(sel.End, sentance.End)
-                int start = sentence.Start;
-                string sentenceText = sentence.Text;
+                int start = Math.Max(sentence.Start, sel.Start);
+                int end = Math.Min(sel.End, sentence.End);
+                string sentenceText = Application.ActiveDocument.Range(start, end).Text;
                 foreach (var kvp in LibraryNames)
                 {
                     int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
