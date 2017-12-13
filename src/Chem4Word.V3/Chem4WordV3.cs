@@ -1420,6 +1420,7 @@ namespace Chem4Word
         private void EvaluateChemistryAllowed()
         {
             bool allowed = true;
+            ChemistryProhibitedReason = "";
 
             if (Globals.Chem4WordV3.Application.Documents.Count > 0)
             {
@@ -1449,6 +1450,16 @@ namespace Chem4Word
                         ChemistryProhibitedReason = "selection is in Equation";
                         allowed = false;
                     }
+
+                    // Buggers up selection of chemistry ???
+                    //if (allowed)
+                    //{
+                    //    if (sel.ShapeRange.Count > 0)
+                    //    {
+                    //        ChemistryProhibitedReason = "selection contains shape(s)";
+                    //        allowed = false;
+                    //    }
+                    //}
 
                     if (allowed)
                     {
@@ -1486,7 +1497,10 @@ namespace Chem4Word
             }
 
             ChemistryAllowed = allowed;
-            Debug.WriteLine(ChemistryProhibitedReason);
+            if (!allowed)
+            {
+                Debug.WriteLine(ChemistryProhibitedReason);
+            }
         }
 
         private object DecodeStoryType(Word.WdStoryType storyType)
