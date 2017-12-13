@@ -6,7 +6,7 @@
 // ---------------------------------------------------------------------------
 
 using Chem4Word.com.chemspider.www;
-using Chem4Word.Helpers;
+using Chem4Word.Core.Helpers;
 using IChem4Word.Contracts;
 using System;
 using System.Collections.Generic;

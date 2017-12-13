@@ -5,7 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-namespace Chem4Word.Helpers
+namespace Chem4Word.Core.Helpers
 {
     public static class Constants
     {
@@ -19,8 +19,6 @@ namespace Chem4Word.Helpers
 
         public static string DefaultChemSpiderWebServiceUri = "https://www.chemspider.com/";
         public static string DefaultChemSpiderRdfServiceUri = "https://rdf.chemspider.com/";
-
-        public static string DefaultOpsinWebServiceUri = "http://opsin.ch.cam.ac.uk/";
 
         public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V7.0.2";
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
@@ -40,7 +38,9 @@ namespace Chem4Word.Helpers
         public const string Chem4WordSetupRegistryKey = @"SOFTWARE\Chem4Word V3\Setup";
         public const string Chem4WordUpdateRegistryKey = @"SOFTWARE\Chem4Word V3\Update";
 
-        public const string VersionHistoryFile = "Chem4Word-Versions.xml";
-        public const string UpdateServer = "https://www.chem4word.co.uk/files3/";
+        public const double MinimumBondLength = 5;
+        public const double StandardBondLength = 20;
+        public const double MaximumBondLength = 95;
+        public const double BondLengthTolerance = 1;
     }
 }

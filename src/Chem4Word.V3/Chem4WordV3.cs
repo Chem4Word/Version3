@@ -828,7 +828,7 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                SetChemistryAllowed();
+                EvaluateChemistryAllowed();
                 if (ChemistryAllowed)
                 {
                     if (sel.Start != sel.End)
@@ -1016,9 +1016,10 @@ namespace Chem4Word
 
                 CMLConverter cmlConverter = new CMLConverter();
                 Model.Model chem = cmlConverter.Import(xml);
-                if (chem.MeanBondLength < 5 || chem.MeanBondLength > 100)
+                if (chem.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                    || chem.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                 {
-                    chem.Rescale(20);
+                    chem.Rescale(Constants.StandardBondLength);
                 }
 
                 if (isCopy)
@@ -1399,7 +1400,7 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
-                    SetChemistryAllowed();
+                    EvaluateChemistryAllowed();
                     if (ChemistryAllowed)
                     {
                         SelectChemistry(sel);
@@ -1416,7 +1417,7 @@ namespace Chem4Word
             }
         }
 
-        private void SetChemistryAllowed()
+        private void EvaluateChemistryAllowed()
         {
             bool allowed = true;
 
@@ -1634,7 +1635,7 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
-                    SetChemistryAllowed();
+                    EvaluateChemistryAllowed();
                     if (ChemistryAllowed)
                     {
                         SelectChemistry(sel);
@@ -1790,7 +1791,7 @@ namespace Chem4Word
                     Word.Selection sel = doc.Application.Selection;
                     Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
 
-                    SetChemistryAllowed();
+                    EvaluateChemistryAllowed();
                     if (ChemistryAllowed)
                     {
                         SelectChemistry(sel);

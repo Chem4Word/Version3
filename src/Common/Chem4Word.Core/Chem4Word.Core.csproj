@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CohenSutherland.cs" />
+    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
     <Compile Include="Helpers\SafeDate.cs" />
     <Compile Include="Helpers\SafeDouble.cs" />

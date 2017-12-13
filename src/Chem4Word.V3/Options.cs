@@ -5,7 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Helpers;
+using Chem4Word.Core.Helpers;
 using Newtonsoft.Json;
 using System.Windows;
 

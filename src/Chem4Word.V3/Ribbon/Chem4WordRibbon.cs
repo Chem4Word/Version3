@@ -403,9 +403,10 @@ namespace Chem4Word
 
                     if (model != null)
                     {
-                        if (model.MeanBondLength < 5 || model.MeanBondLength > 100)
+                        if (model.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                            || model.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                         {
-                            model.ScaleToAverageBondLength(20);
+                            model.ScaleToAverageBondLength(Constants.StandardBondLength);
                         }
 
                         // Always generate new Guid on Import
@@ -1622,9 +1623,10 @@ namespace Chem4Word
 
                             if (model != null)
                             {
-                                if (model.MeanBondLength < 5 || model.MeanBondLength > 100)
+                                if (model.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                                    || model.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                                 {
-                                    model.ScaleToAverageBondLength(20);
+                                    model.ScaleToAverageBondLength(Constants.StandardBondLength);
                                 }
 
                                 // Always generate new Guid on Import

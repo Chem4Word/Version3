@@ -381,7 +381,6 @@
     </Compile>
     <Compile Include="Helpers\WaitCursor.cs" />
     <Compile Include="WebServices\Chemspider.cs" />
-    <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -7,8 +7,8 @@
 
 using Chem4Word.Controls;
 using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
-using Chem4Word.Helpers;
 using Chem4Word.Model.Converters;
 using IChem4Word.Contracts;
 using Microsoft.Office.Interop.Word;
@@ -62,9 +62,10 @@ namespace Chem4Word.Navigator
                 {
                     CMLConverter cmlConverter = new CMLConverter();
                     Model.Model chem = cmlConverter.Import(flexDisplay.Chemistry);
-                    if (chem.MeanBondLength < 5 || chem.MeanBondLength > 100)
+                    if (chem.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                        || chem.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                     {
-                        chem.Rescale(20);
+                        chem.Rescale(Constants.StandardBondLength);
                     }
 
                     if (isCopy)
