@@ -157,7 +157,7 @@ namespace Chem4Word.Telemetry
         {
             get
             {
-                return Environment.GetEnvironmentVariable("ProgramFiles(x86)") != null ? "64bit" : "32bit";
+                return Environment.Is64BitOperatingSystem ? "64bit" : "32bit";
             }
         }
 
