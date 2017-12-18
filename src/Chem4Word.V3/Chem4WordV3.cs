@@ -96,6 +96,18 @@ namespace Chem4Word
                     //
                 }
 
+                try
+                {
+                    if (width == 0)
+                    {
+                        width = Screen.PrimaryScreen.Bounds.Width;
+                    }
+                }
+                catch
+                {
+                    //
+                }
+
                 return width;
             }
         }
@@ -1451,16 +1463,6 @@ namespace Chem4Word
                         allowed = false;
                     }
 
-                    // Buggers up selection of chemistry ???
-                    //if (allowed)
-                    //{
-                    //    if (sel.ShapeRange.Count > 0)
-                    //    {
-                    //        ChemistryProhibitedReason = "selection contains shape(s)";
-                    //        allowed = false;
-                    //    }
-                    //}
-
                     if (allowed)
                     {
                         if (sel.StoryType != Word.WdStoryType.wdMainTextStory)
@@ -1492,7 +1494,8 @@ namespace Chem4Word
                                     && contentControlType != Word.WdContentControlType.wdContentControlPicture)
                                 {
                                     allowed = false;
-                                    ChemistryProhibitedReason = $"selection is in{DecodeContentControlType(contentControlType)} Content Control";
+                                    ChemistryProhibitedReason =
+                                        $"selection is in {DecodeContentControlType(contentControlType)} Content Control";
                                 }
                             }
                             else
@@ -1500,7 +1503,30 @@ namespace Chem4Word
                                 if (contentControlType != Word.WdContentControlType.wdContentControlRichText)
                                 {
                                     allowed = false;
-                                    ChemistryProhibitedReason = $"selection is in{DecodeContentControlType(contentControlType)} Content Control";
+                                    ChemistryProhibitedReason =
+                                        $"selection is in {DecodeContentControlType(contentControlType)} Content Control";
+                                }
+
+                                // Test for Shape inside CC which is not ours
+                                if (allowed)
+                                {
+                                    if (sel.ShapeRange.Count > 0)
+                                    {
+                                        ChemistryProhibitedReason = "selection contains shape(s) inside Content Control";
+                                        allowed = false;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Test for Shape in body CC
+                            if (allowed)
+                            {
+                                if (sel.ShapeRange.Count > 0)
+                                {
+                                    ChemistryProhibitedReason = "selection contains shape(s)";
+                                    allowed = false;
                                 }
                             }
                         }
