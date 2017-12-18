@@ -10,11 +10,14 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using Chem4Word.Shared;
+using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Chem4Word.Telemetry
 {
@@ -43,6 +46,8 @@ namespace Chem4Word.Telemetry
         public string IpObtainedFrom { get; set; }
 
         public string DotNetVersion { get; set; }
+
+        public string Screens { get; set; }
 
         private static int _retryCount;
 
@@ -151,6 +156,20 @@ namespace Chem4Word.Telemetry
             #endregion Get IpAddress
 
             GetDotNetVersionFromRegistry();
+
+            GetScreens();
+        }
+
+        private void GetScreens()
+        {
+            List<string> screens = new List<string>();
+
+            foreach (var screen in Screen.AllScreens)
+            {
+                screens.Add($"{screen.Bounds.Width} x {screen.Bounds.Height}");
+            }
+
+            Screens = string.Join("; ", screens);
         }
 
         private string OsBits

@@ -114,6 +114,9 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", $"CPU Speed: {_wmihelper.CpuSpeed}");
             WritePrivate("StartUp", "Information", $"Physical Memory: {_wmihelper.PhysicalMemory}");
 
+            // Log screen sizes
+            WritePrivate("StartUp", "Information", $"Screens: {_helper.Screens}");
+
             // Log Sysytem
             WritePrivate("StartUp", "Information", _helper.SystemOs);
             WritePrivate("Startup", "Information", _helper.DotNetVersion);
