@@ -7,7 +7,6 @@
 
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Model.Converters;
-
 using Chem4Word.Searcher.ChEBIPlugin.ChEBI;
 using IChem4Word.Contracts;
 using System;
@@ -166,8 +165,10 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                 CMLConverter conv = new CMLConverter();
 
                 var expModel = (Model.Model)flexDisplayControl1.Chemistry;
-                // ToDo: Scale suitably
-                expModel.Rescale(25);
+                double before = expModel.MeanBondLength;
+                expModel.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
+                double after = expModel.MeanBondLength;
+                Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                 expModel.Relabel();
 
                 using (new WaitCursor())
@@ -210,7 +211,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
 
         private void ShowMolfile_Click(object sender, EventArgs e)
         {
-            MolFileViewer tv = new MolFileViewer(new System.Windows.Point(TopLeft.X + Constants.TopLeftOffset, TopLeft.Y + Constants.TopLeftOffset), _lastMolfile);
+            MolFileViewer tv = new MolFileViewer(new System.Windows.Point(TopLeft.X + Core.Helpers.Constants.TopLeftOffset, TopLeft.Y + Core.Helpers.Constants.TopLeftOffset), _lastMolfile);
             tv.ShowDialog();
         }
 
@@ -345,6 +346,6 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             }
         }
 
-#endregion Methods
+        #endregion Methods
     }
 }

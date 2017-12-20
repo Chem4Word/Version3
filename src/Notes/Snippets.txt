@@ -74,3 +74,21 @@ static class Program
         } 
     }
 }
+
+app.config removals
+
+<!-- Commented out this Junk
+<sectionGroup name="Chem4Word">
+    <section name="plugins" type="Chem4Word.Model.Converters.ConverterSection, Chem4Word.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+</sectionGroup>
+<Chem4Word>
+    <plugins>
+        <converters>
+        <add name="CML" path="Chem4Word.Model.Converters.CMLConverter, Chem4Word.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <add name="JSON" path="Chem4Word.Model.Converters.JSONConverter, Chem4Word.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <add name="Molfile" path="Chem4Word.Model.Converters.MolfileConverter, Chem4Word.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <add name="MDL" path="Chem4Word.Model.Converters.MDLConverter, Chem4Word.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        </converters>
+    </plugins>
+</Chem4Word>
+-->

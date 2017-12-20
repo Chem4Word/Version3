@@ -5,14 +5,10 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
+using Chem4Word.Core.Helpers;
 using Microsoft.Win32;
+using System;
+using System.Reflection;
 
 namespace Chem4Word.Helpers
 {

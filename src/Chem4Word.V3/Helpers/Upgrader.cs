@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------------------
 
 using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
 using Chem4Word.Model.Converters;
 using Microsoft.Office.Core;
 using System;

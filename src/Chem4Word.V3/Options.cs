@@ -5,7 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Helpers;
+using Chem4Word.Core.Helpers;
 using Newtonsoft.Json;
 using System.Windows;
 
@@ -16,7 +16,7 @@ namespace Chem4Word
     {
         #region Web Services
 
-        [JsonProperty]
+        //[JsonProperty]
         public bool UseWebServices { get; set; }
 
         [JsonProperty]
@@ -29,17 +29,17 @@ namespace Chem4Word
 
         #region Telemetry
 
-        [JsonProperty]
+        //[JsonProperty]
         public bool TelemetryEnabled { get; set; }
 
         #endregion Telemetry
 
         #region Automatic Updates
 
-        [JsonProperty]
+        //[JsonProperty]
         public bool AutoUpdateEnabled { get; set; }
 
-        [JsonProperty]
+        //[JsonProperty]
         public int AutoUpdateFrequency { get; set; }
 
         #endregion Automatic Updates

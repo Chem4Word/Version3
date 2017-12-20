@@ -94,11 +94,6 @@ namespace Chem4Word.Model.Converters
                         }
                     }
 
-                    //if (model.MeanBondLength < 5 || model.MeanBondLength > 100)
-                    //{
-                    //    model.ScaleToAverageBondLength(20);
-                    //}
-
                     // Can't use RebuildMolecules() as it trashes the formulae and labels
                     //model.RebuildMolecules();
                     model.RefreshMolecules();
@@ -113,6 +108,7 @@ namespace Chem4Word.Model.Converters
             string result;
 
             // MDL Standard bond length is 1.54 Angstoms (Å)
+            // Already done in Ribbon Export Button code
             //model.ScaleToAverageBondLength(1.54);
 
             MemoryStream stream = new MemoryStream();

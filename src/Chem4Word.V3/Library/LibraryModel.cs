@@ -5,8 +5,8 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
-using Chem4Word.Helpers;
 using Chem4Word.Model.Converters;
 using System;
 using System.Collections.Generic;
@@ -308,7 +308,6 @@ namespace Chem4Word.Library
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-
                 Byte[] blob = System.Text.Encoding.UTF8.GetBytes(xml);
 
                 StringBuilder sb = new StringBuilder();
@@ -349,11 +348,14 @@ namespace Chem4Word.Library
 
                 if (model.AllAtoms.Count > 0)
                 {
-                    // ToDo: Decide if we want to have fixed scale of 20 for Library
-                    //if (model.MeanBondLength < 5 || model.MeanBondLength > 100)
-                    //{
-                    model.ScaleToAverageBondLength(20);
-                    //}
+                    double before = model.MeanBondLength;
+                    if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                        || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+                    {
+                        model.ScaleToAverageBondLength(Constants.StandardBondLength);
+                        double after = model.MeanBondLength;
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
+                    }
 
                     // Ensure each molecule has a Consise Formula set
                     foreach (var molecule in model.Molecules)

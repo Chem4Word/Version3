@@ -6,8 +6,8 @@
 // ---------------------------------------------------------------------------
 
 using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
-using Chem4Word.Helpers;
 using Chem4Word.Library;
 using IChem4Word.Contracts;
 using Microsoft.Office.Tools;

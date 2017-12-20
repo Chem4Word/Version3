@@ -334,6 +334,10 @@ namespace Chem4Word.Model
             }
         }
 
+        /// <summary>
+        /// Rescale to new preferred length
+        /// </summary>
+        /// <param name="newLength"></param>
         public void ScaleToAverageBondLength(double newLength)
         {
             foreach (Molecule molecule in Molecules)
@@ -342,7 +346,11 @@ namespace Chem4Word.Model
             }
         }
 
-        public void Rescale(double preferredLength)
+        /// <summary>
+        /// Rescale to new preferred length, to be used in xaml code behind, not normal cs
+        /// </summary>
+        /// <param name="preferredLength"></param>
+        public void RescaleForXaml(double preferredLength)
         {
             ScaleToAverageBondLength(preferredLength);
             RepositionAll(MinX, MinY);

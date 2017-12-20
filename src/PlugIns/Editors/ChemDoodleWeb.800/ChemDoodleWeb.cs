@@ -242,9 +242,10 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 // Send JSON to ChemDoodle
                 ExecuteJavaScript("SetJSON", _tempJson, AverageBondLength);
 
-                if (AverageBondLength < 5 || AverageBondLength > 100)
+                if (AverageBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                    || AverageBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                 {
-                    nudBondLength.Value = 20;
+                    nudBondLength.Value = (decimal)Constants.StandardBondLength;
                 }
                 else
                 {

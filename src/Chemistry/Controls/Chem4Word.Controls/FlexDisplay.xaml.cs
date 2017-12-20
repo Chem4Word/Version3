@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------------------
 
 using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
 using Chem4Word.Model.Converters;
 using System;
 using System.ComponentModel;
@@ -135,7 +136,7 @@ namespace Chem4Word.Controls
             {
                 if (chemistryModel.AllAtoms.Count > 0)
                 {
-                    chemistryModel.Rescale(40);
+                    chemistryModel.RescaleForXaml(Constants.StandardBondLength * 2);
 
                     Debug.WriteLine($"Ring count == {chemistryModel.Molecules.SelectMany(m => m.Rings).Count()}");
 

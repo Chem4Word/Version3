@@ -60,7 +60,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
         private PeriodicTable _pt = new PeriodicTable();
 
-        public OoXmlRenderer(string cml, Options options, IChem4WordTelemetry telemetry, Point topLeft)
+        public OoXmlRenderer(Model.Model model, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
@@ -72,16 +72,9 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             LoadFont();
 
-            #region Load cml string into Model
-
-            CMLConverter cc = new CMLConverter();
-            _chemistryModel = cc.Import(cml);
-            //_chemistryModel.RebuildMolecules();
-            //_chemistryModel.Relabel();
+            _chemistryModel = model;
 
             DetermineInitialExtents();
-
-            #endregion Load cml string into Model
         }
 
         private void DetermineInitialExtents()
@@ -272,8 +265,9 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             sw.Reset();
             sw.Start();
 
+            double abl = _chemistryModel.MeanBondLength;
             Debug.WriteLine("Elapsed time for GenerateRun " + swr.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture) + "ms");
-            _telemetry.Write(module, "Timing", $"Rendering {_chemistryModel.Molecules.Count} molecules with {_chemistryModel.AllAtoms.Count} atoms and {_chemistryModel.AllBonds.Count} bonds took " + swr.ElapsedMilliseconds.ToString("##,##0") + "ms");
+            _telemetry.Write(module, "Timing", $"Rendering {_chemistryModel.Molecules.Count} molecules with {_chemistryModel.AllAtoms.Count} atoms and {_chemistryModel.AllBonds.Count} bonds took {swr.ElapsedMilliseconds.ToString("##,##0")} ms; Average Bond Length: {abl.ToString("#0.00")}");
 
             ShutDownProgress(pb);
 
