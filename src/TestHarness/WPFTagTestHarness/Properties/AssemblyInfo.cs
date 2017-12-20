@@ -17,7 +17,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Chem4Word")]
 [assembly: AssemblyProduct("WPFTagTestHarness")]
-[assembly: AssemblyCopyright("© Chem4Word 2017. All rights reserved.")]
+[assembly: AssemblyCopyright("© Chem4Word 2018. All rights reserved.")]
 [assembly: AssemblyTrademark("Chem4Word")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.10.6563")]
-[assembly: AssemblyFileVersion("3.0.10.6563")]
+[assembly: AssemblyVersion("3.0.11.6575")]
+[assembly: AssemblyFileVersion("3.0.11.6575")]

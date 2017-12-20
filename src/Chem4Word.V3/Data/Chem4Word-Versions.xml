@@ -3,6 +3,18 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.11 Beta 11</Number>
+    <IsBeta>true</IsBeta>
+    <Released>01-Jan-2018</Released>
+    <Changes>
+      <Change>...</Change>
+      <Change>...</Change>
+      <Change>...</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.11.Beta.11.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.10 Beta 10</Number>
     <IsBeta>true</IsBeta>
     <Released>20-Dec-2017</Released>
@@ -10,7 +22,6 @@
       <Change>Improved detection of places where chemistry is not allowed to be inserted (Microsoft Word does not allow it, not us!)</Change>
       <Change>Handle old Word 2007 style Content Controls</Change>
       <Change>Improved Right Click detection of Chemistry</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.10.Beta.10.msi</Url>
   </Version>
