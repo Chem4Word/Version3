@@ -32,7 +32,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             string fileName = Path.Combine(Path.GetTempPath(), $"Chem4Word-V3-{guid}.docx");
 
-            if (m.MeanBondLength > Constants.BondLengthTolerance)
+            if (m.MeanBondLength > Constants.BondLengthTolerance / 2)
             {
                 string bookmarkName = "C4W_" + guid;
 
@@ -47,7 +47,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                     // This is for test
                     //AddParagraph(docbody, "Hello World", bookmarkName);
                     // This will be live
-                    AddPictureFromCml(docbody, m, bookmarkName, options, telemetry, topLeft);
+                    AddPictureFromModel(docbody, m, bookmarkName, options, telemetry, topLeft);
 
                     // Save changes to the main document part.
                     package.MainDocumentPart.Document.Save();
@@ -64,7 +64,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         /// <param name="cml"></param>
         /// <param name="bookmarkName"></param>
         /// <param name="options"></param>
-        private static void AddPictureFromCml(Body docbody, Model.Model model, string bookmarkName, Options options, IChem4WordTelemetry telemetry, Point topLeft)
+        private static void AddPictureFromModel(Body docbody, Model.Model model, string bookmarkName, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
             Paragraph paragraph1 = new Paragraph();
             if (!string.IsNullOrEmpty(bookmarkName))

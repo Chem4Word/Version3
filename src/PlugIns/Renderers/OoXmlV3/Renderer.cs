@@ -15,6 +15,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using Chem4Word.Core;
 
 namespace Chem4Word.Renderer.OoXmlV3
 {
@@ -127,6 +128,12 @@ namespace Chem4Word.Renderer.OoXmlV3
 
                 string guid = Properties["Guid"];
                 result = OoXmlFile.CreateFromCml(Cml, guid, _rendererOptions, Telemetry, TopLeft);
+                if (!File.Exists(result))
+                {
+                    Telemetry.Write(module, "Exception", "Structure could not be rendered.");
+                    Telemetry.Write(module, "Exception(Data)", Cml);
+                    UserInteractions.WarnUser("Sorry this structure could not be rendered.");
+                }
 
                 //int ii = 2;
                 //int dd = 0;
