@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IChem4Word.Contracts;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Model.Converters;
@@ -32,7 +33,9 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             string fileName = Path.Combine(Path.GetTempPath(), $"Chem4Word-V3-{guid}.docx");
 
-            if (m.MeanBondLength > Constants.BondLengthTolerance / 2)
+            bool canRender = m.MeanBondLength > Constants.BondLengthTolerance / 2 || m.AllBonds.Count == 0;
+
+            if (canRender)
             {
                 string bookmarkName = "C4W_" + guid;
 

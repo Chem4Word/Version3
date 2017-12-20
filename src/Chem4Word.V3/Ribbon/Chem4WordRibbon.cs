@@ -1373,6 +1373,14 @@ namespace Chem4Word
                                     // Not much we can do here
                                 }
                             }
+                            else
+                            {
+                                if (isNewDrawing)
+                                {
+                                    cc.Delete();
+                                    cc = null;
+                                }
+                            }
 
                             //Globals.Chem4WordV3.Diagnostics(doc, "After PerformEdit()");
                         }
