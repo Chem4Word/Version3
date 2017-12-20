@@ -1013,6 +1013,8 @@ namespace Chem4Word
 
         public static void InsertChemistry(string xml, string text, bool is2D, bool isCopy)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             Word.Application app = Globals.Chem4WordV3.Application;
 
             Word.Document doc = app.ActiveDocument;
@@ -1034,10 +1036,13 @@ namespace Chem4Word
 
                 CMLConverter cmlConverter = new CMLConverter();
                 Model.Model chem = cmlConverter.Import(xml);
-                if (chem.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                    || chem.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+                double before = chem.MeanBondLength;
+                if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                    || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                 {
-                    chem.Rescale(Constants.StandardBondLength);
+                    chem.ScaleToAverageBondLength(Constants.StandardBondLength);
+                    double after = chem.MeanBondLength;
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                 }
 
                 if (isCopy)
@@ -1072,16 +1077,19 @@ namespace Chem4Word
                         renderer.Cml = cml;
 
                         string tempfileName = renderer.Render();
-                        cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
+                        if (File.Exists(tempfileName))
+                        {
+                            cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
 
-                        try
-                        {
-                            // Delete the temporary file now we are finished with it
-                            File.Delete(tempfileName);
-                        }
-                        catch
-                        {
-                            // Not much we can do here
+                            try
+                            {
+                                // Delete the temporary file now we are finished with it
+                                File.Delete(tempfileName);
+                            }
+                            catch
+                            {
+                                // Not much we can do here
+                            }
                         }
                     }
                 }

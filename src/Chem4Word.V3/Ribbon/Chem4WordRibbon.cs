@@ -147,8 +147,10 @@ namespace Chem4Word
                                         renderer.Cml = customXmlPart.XML;
 
                                         string tempfileName = renderer.Render();
-
-                                        cc = Insert2D(doc, tempfileName, bookmarkName, guid);
+                                        if (File.Exists(tempfileName))
+                                        {
+                                            cc = Insert2D(doc, tempfileName, bookmarkName, guid);
+                                        }
                                     }
                                     else
                                     {
@@ -403,10 +405,13 @@ namespace Chem4Word
 
                     if (model != null)
                     {
-                        if (model.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                            || model.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+                        double before = model.MeanBondLength;
+                        if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                            || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                         {
                             model.ScaleToAverageBondLength(Constants.StandardBondLength);
+                            double after = model.MeanBondLength;
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                         }
 
                         // Always generate new Guid on Import
@@ -450,18 +455,21 @@ namespace Chem4Word
 
                             string tempfileName = renderer.Render();
 
-                            cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                            doc.CustomXMLParts.Add(cml);
-
-                            try
+                            if (File.Exists(tempfileName))
                             {
-                                // Delete the temporary file now we are finished with it
-                                File.Delete(tempfileName);
-                            }
-                            catch
-                            {
-                                // Not much we can do here
+                                cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
+
+                                doc.CustomXMLParts.Add(cml);
+
+                                try
+                                {
+                                    // Delete the temporary file now we are finished with it
+                                    File.Delete(tempfileName);
+                                }
+                                catch
+                                {
+                                    // Not much we can do here
+                                }
                             }
                         }
 
@@ -1339,27 +1347,31 @@ namespace Chem4Word
                             {
                                 cc.Tag = fullTag;
                             }
-                            UpdateStructures(app, doc, afterModel, guidString, tempfileName);
 
-                            #region Replace CustomXMLPart with our new cml
-
-                            if (customXmlPart != null)
+                            if (File.Exists(tempfileName))
                             {
-                                customXmlPart.Delete();
-                            }
+                                UpdateStructures(app, doc, afterModel, guidString, tempfileName);
 
-                            doc.CustomXMLParts.Add(afterCml);
+                                #region Replace CustomXMLPart with our new cml
 
-                            #endregion Replace CustomXMLPart with our new cml
+                                if (customXmlPart != null)
+                                {
+                                    customXmlPart.Delete();
+                                }
 
-                            // Delete the temporary file now we are finished with it
-                            try
-                            {
-                                File.Delete(tempfileName);
-                            }
-                            catch
-                            {
-                                // Not much we can do here
+                                doc.CustomXMLParts.Add(afterCml);
+
+                                #endregion Replace CustomXMLPart with our new cml
+
+                                // Delete the temporary file now we are finished with it
+                                try
+                                {
+                                    File.Delete(tempfileName);
+                                }
+                                catch
+                                {
+                                    // Not much we can do here
+                                }
                             }
 
                             //Globals.Chem4WordV3.Diagnostics(doc, "After PerformEdit()");
@@ -1488,8 +1500,11 @@ namespace Chem4Word
                                     case ".mol":
                                     case ".sdf":
                                         // https://www.chemaxon.com/marvin-archive/6.0.2/marvin/help/formats/mol-csmol-doc.html
+                                        double before = m.MeanBondLength;
                                         // Set bond length to 1.54 angstroms (Å)
                                         m.ScaleToAverageBondLength(1.54);
+                                        double after = m.MeanBondLength;
+                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                                         SdFileConverter converter = new SdFileConverter();
                                         File.WriteAllText(sfd.FileName, converter.Export(m));
                                         break;
@@ -1636,10 +1651,13 @@ namespace Chem4Word
 
                             if (model != null)
                             {
-                                if (model.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                                    || model.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+                                double before = model.MeanBondLength;
+                                if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                                    || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                                 {
                                     model.ScaleToAverageBondLength(Constants.StandardBondLength);
+                                    double after = model.MeanBondLength;
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                                 }
 
                                 // Always generate new Guid on Import
@@ -1682,18 +1700,21 @@ namespace Chem4Word
 
                                     string tempfileName = renderer.Render();
 
-                                    cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                                    doc.CustomXMLParts.Add(cml);
-
-                                    try
+                                    if (File.Exists(tempfileName))
                                     {
-                                        // Delete the temporary file now we are finished with it
-                                        File.Delete(tempfileName);
-                                    }
-                                    catch
-                                    {
-                                        // Not much we can do here
+                                        cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
+
+                                        doc.CustomXMLParts.Add(cml);
+
+                                        try
+                                        {
+                                            // Delete the temporary file now we are finished with it
+                                            File.Delete(tempfileName);
+                                        }
+                                        catch
+                                        {
+                                            // Not much we can do here
+                                        }
                                     }
                                 }
 
@@ -2063,30 +2084,33 @@ namespace Chem4Word
 
                                 string tempfileName = renderer.Render();
 
-                                cc.LockContents = false;
-                                cc.Range.Delete();
-                                cc.Delete();
-
-                                // Insert a new CC
-                                cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
-                                Debug.WriteLine("Inserted ContentControl " + cc.ID);
-
-                                cc.Title = Constants.ContentControlTitle;
-                                cc.Tag = fullTag;
-
-                                UpdateStructures(app, doc, model, guidString, tempfileName);
-
-                                customXmlPart.Delete();
-                                doc.CustomXMLParts.Add(afterCml);
-
-                                // Delete the temporary file now we are finished with it
-                                try
+                                if (File.Exists(tempfileName))
                                 {
-                                    File.Delete(tempfileName);
-                                }
-                                catch
-                                {
-                                    // Not much we can do here
+                                    cc.LockContents = false;
+                                    cc.Range.Delete();
+                                    cc.Delete();
+
+                                    // Insert a new CC
+                                    cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+                                    Debug.WriteLine("Inserted ContentControl " + cc.ID);
+
+                                    cc.Title = Constants.ContentControlTitle;
+                                    cc.Tag = fullTag;
+
+                                    UpdateStructures(app, doc, model, guidString, tempfileName);
+
+                                    customXmlPart.Delete();
+                                    doc.CustomXMLParts.Add(afterCml);
+
+                                    // Delete the temporary file now we are finished with it
+                                    try
+                                    {
+                                        File.Delete(tempfileName);
+                                    }
+                                    catch
+                                    {
+                                        // Not much we can do here
+                                    }
                                 }
                             }
                         }

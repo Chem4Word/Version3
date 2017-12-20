@@ -165,7 +165,10 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                 CMLConverter conv = new CMLConverter();
 
                 var expModel = (Model.Model)flexDisplayControl1.Chemistry;
-                expModel.Rescale(Core.Helpers.Constants.StandardBondLength);
+                double before = expModel.MeanBondLength;
+                expModel.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
+                double after = expModel.MeanBondLength;
+                Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                 expModel.Relabel();
 
                 using (new WaitCursor())

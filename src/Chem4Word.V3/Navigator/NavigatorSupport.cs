@@ -62,10 +62,13 @@ namespace Chem4Word.Navigator
                 {
                     CMLConverter cmlConverter = new CMLConverter();
                     Model.Model chem = cmlConverter.Import(flexDisplay.Chemistry);
-                    if (chem.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                        || chem.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+                    double before = chem.MeanBondLength;
+                    if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                        || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                     {
-                        chem.Rescale(Constants.StandardBondLength);
+                        chem.ScaleToAverageBondLength(Constants.StandardBondLength);
+                        double after = chem.MeanBondLength;
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                     }
 
                     if (isCopy)
@@ -96,22 +99,24 @@ namespace Chem4Word.Navigator
                         renderer.Cml = cml;
 
                         string tempfileName = renderer.Render();
-
-                        cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                        if (isCopy)
+                        if (File.Exists(tempfileName))
                         {
-                            doc.CustomXMLParts.Add(cml);
-                        }
+                            cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
 
-                        try
-                        {
-                            // Delete the temporary file now we are finished with it
-                            File.Delete(tempfileName);
-                        }
-                        catch
-                        {
-                            // Not much we can do here
+                            if (isCopy)
+                            {
+                                doc.CustomXMLParts.Add(cml);
+                            }
+
+                            try
+                            {
+                                // Delete the temporary file now we are finished with it
+                                File.Delete(tempfileName);
+                            }
+                            catch
+                            {
+                                // Not much we can do here
+                            }
                         }
                     }
                 }

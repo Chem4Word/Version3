@@ -348,10 +348,13 @@ namespace Chem4Word.Library
 
                 if (model.AllAtoms.Count > 0)
                 {
-                    if (model.MeanBondLength < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                        || model.MeanBondLength > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+                    double before = model.MeanBondLength;
+                    if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                        || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                     {
                         model.ScaleToAverageBondLength(Constants.StandardBondLength);
+                        double after = model.MeanBondLength;
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                     }
 
                     // Ensure each molecule has a Consise Formula set

@@ -136,7 +136,7 @@ namespace Chem4Word.Controls
             {
                 if (chemistryModel.AllAtoms.Count > 0)
                 {
-                    chemistryModel.Rescale(Constants.StandardBondLength * 2);
+                    chemistryModel.RescaleForXaml(Constants.StandardBondLength * 2);
 
                     Debug.WriteLine($"Ring count == {chemistryModel.Molecules.SelectMany(m => m.Rings).Count()}");
 

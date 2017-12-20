@@ -11,6 +11,8 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using IChem4Word.Contracts;
 using System.IO;
 using System.Windows;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Model.Converters;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML
 {
@@ -25,24 +27,31 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         /// <returns></returns>
         public static string CreateFromCml(string cml, string guid, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
+            CMLConverter cc = new CMLConverter();
+            Model.Model m = cc.Import(cml);
+
             string fileName = Path.Combine(Path.GetTempPath(), $"Chem4Word-V3-{guid}.docx");
-            string bookmarkName = "C4W_" + guid;
 
-            // Create a Wordprocessing document.
-            using (WordprocessingDocument package = WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document))
+            if (m.MeanBondLength > Constants.BondLengthTolerance)
             {
-                // Add a new main document part.
-                MainDocumentPart mdp = package.AddMainDocumentPart();
-                mdp.Document = new Document(new Body());
-                Body docbody = package.MainDocumentPart.Document.Body;
+                string bookmarkName = "C4W_" + guid;
 
-                // This is for test
-                //AddParagraph(docbody, "Hello World", bookmarkName);
-                // This will be live
-                AddPictureFromCml(docbody, cml, bookmarkName, options, telemetry, topLeft);
+                // Create a Wordprocessing document.
+                using (WordprocessingDocument package = WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document))
+                {
+                    // Add a new main document part.
+                    MainDocumentPart mdp = package.AddMainDocumentPart();
+                    mdp.Document = new Document(new Body());
+                    Body docbody = package.MainDocumentPart.Document.Body;
 
-                // Save changes to the main document part.
-                package.MainDocumentPart.Document.Save();
+                    // This is for test
+                    //AddParagraph(docbody, "Hello World", bookmarkName);
+                    // This will be live
+                    AddPictureFromCml(docbody, m, bookmarkName, options, telemetry, topLeft);
+
+                    // Save changes to the main document part.
+                    package.MainDocumentPart.Document.Save();
+                }
             }
 
             return fileName;
@@ -55,7 +64,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         /// <param name="cml"></param>
         /// <param name="bookmarkName"></param>
         /// <param name="options"></param>
-        private static void AddPictureFromCml(Body docbody, string cml, string bookmarkName, Options options, IChem4WordTelemetry telemetry, Point topLeft)
+        private static void AddPictureFromCml(Body docbody, Model.Model model, string bookmarkName, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
             Paragraph paragraph1 = new Paragraph();
             if (!string.IsNullOrEmpty(bookmarkName))
@@ -67,7 +76,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             }
 
             // This is where the work gets done ...
-            OoXmlRenderer pic = new OoXmlRenderer(cml, options, telemetry, topLeft);
+            OoXmlRenderer pic = new OoXmlRenderer(model, options, telemetry, topLeft);
             paragraph1.Append(pic.GenerateRun());
 
             if (!string.IsNullOrEmpty(bookmarkName))
