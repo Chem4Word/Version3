@@ -930,7 +930,7 @@ namespace Chem4Word
                             int end = Math.Min(sel.End, sentence.End);
                             end = Math.Min(end, last);
                             string sentenceText = doc.Range(start, end).Text;
-                            Debug.Write($"Sentences[{i}] --> {sentenceText}");
+                            Debug.WriteLine($"Sentences[{i}] --> {sentenceText}");
                             if (!string.IsNullOrEmpty(sentenceText))
                             {
                                 foreach (var kvp in LibraryNames)
@@ -1487,6 +1487,22 @@ namespace Chem4Word
                     {
                         ChemistryProhibitedReason = "selection is in Equation";
                         allowed = false;
+                    }
+
+                    if (sel.Tables.Count > 0)
+                    {
+                        try
+                        {
+                            if (sel.Cells.Count > 1)
+                            {
+                                ChemistryProhibitedReason = "selection contains a Table";
+                                allowed = false;
+                            }
+                        }
+                        catch
+                        {
+                            //
+                        }
                     }
 
                     if (allowed)
