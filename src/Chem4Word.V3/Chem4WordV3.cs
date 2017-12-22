@@ -703,6 +703,7 @@ namespace Chem4Word
 
             if (Ribbon != null)
             {
+                Debug.WriteLine(state.ToString());
                 // Not needed, just here for completeness
                 Ribbon.ChangeOptions.Enabled = true;
                 Ribbon.HelpMenu.Enabled = true;
@@ -792,7 +793,7 @@ namespace Chem4Word
 
             EventsEnabled = false;
 
-            ChemistrySelected = false;
+            bool chemistrySelected = false;
 
             try
             {
@@ -806,13 +807,13 @@ namespace Chem4Word
                         {
                             Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
                             doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
-                            ChemistrySelected = true;
+                            chemistrySelected = true;
                             break;
                         }
                     }
                 }
 
-                if (ChemistrySelected)
+                if (chemistrySelected)
                 {
                     Ribbon.ActivateChemistryTab();
                     SetButtonStates(ButtonState.CanEdit);
@@ -828,7 +829,6 @@ namespace Chem4Word
             }
             finally
             {
-                //SetButtonStates(ButtonState.NoDocument);
                 EventsEnabled = true;
             }
         }
@@ -1445,6 +1445,7 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
+                    EventsEnabled = false;
                     EvaluateChemistryAllowed();
                     if (ChemistryAllowed)
                     {
@@ -1454,6 +1455,7 @@ namespace Chem4Word
                     {
                         SetButtonStates(ButtonState.NoDocument);
                     }
+                    EventsEnabled = true;
                 }
             }
             catch (Exception ex)
@@ -1909,20 +1911,13 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
+                    EventsEnabled = false;
                     Word.Document doc = contentControl.Application.ActiveDocument;
                     Word.Selection sel = doc.Application.Selection;
                     Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
 
                     EvaluateChemistryAllowed();
-                    if (ChemistryAllowed)
-                    {
-                        SelectChemistry(sel);
-                        Ribbon?.ActivateChemistryTab();
-                    }
-                    else
-                    {
-                        SetButtonStates(ButtonState.NoDocument);
-                    }
+                    EventsEnabled = true;
                 }
             }
             catch (Exception ex)
