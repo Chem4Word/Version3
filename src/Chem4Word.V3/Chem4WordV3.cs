@@ -1495,7 +1495,7 @@ namespace Chem4Word
                         {
                             if (sel.Cells.Count > 1)
                             {
-                                ChemistryProhibitedReason = "selection contains a Table";
+                                ChemistryProhibitedReason = "selection contains more than one cell of a table";
                                 allowed = false;
                             }
                         }
