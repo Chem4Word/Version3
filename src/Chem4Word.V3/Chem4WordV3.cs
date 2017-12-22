@@ -914,27 +914,37 @@ namespace Chem4Word
 
             if (LibraryNames.Any())
             {
-                // Handling the selected text sentence by sentence should make us immune to return character sizing.
-                for (int i = 1; i <= sel.Sentences.Count; i++)
+                if (sel.Sentences.Count <= 5)
                 {
-                    var sentence = sel.Sentences[i];
-                    int start = Math.Max(sentence.Start, sel.Start);
-                    int end = Math.Min(sel.End, sentence.End);
-                    string sentenceText = Application.ActiveDocument.Range(start, end).Text;
-                    if (!string.IsNullOrEmpty(sentenceText))
+                    Word.Document doc = Application.ActiveDocument;
+                    if (doc != null)
                     {
-                        foreach (var kvp in LibraryNames)
+                        int last = doc.Range().End;
+                        // Handling the selected text sentence by sentence should make us immune to return character sizing.
+                        for (int i = 1; i <= sel.Sentences.Count; i++)
                         {
-                            int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
-                            if (idx > 0)
+                            var sentence = sel.Sentences[i];
+                            int start = Math.Max(sentence.Start, sel.Start);
+                            start = Math.Max(0, start);
+                            int end = Math.Min(sel.End, sentence.End);
+                            end = Math.Min(end, last);
+                            string sentenceText = doc.Range(start, end).Text;
+                            if (!string.IsNullOrEmpty(sentenceText))
                             {
-                                selectedWords.Add(new TargetWord
+                                foreach (var kvp in LibraryNames)
                                 {
-                                    ChemicalName = kvp.Key,
-                                    Start = start + idx,
-                                    ChemistryId = kvp.Value,
-                                    End = start + idx + kvp.Key.Length
-                                });
+                                    int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
+                                    if (idx > 0)
+                                    {
+                                        selectedWords.Add(new TargetWord
+                                        {
+                                            ChemicalName = kvp.Key,
+                                            Start = start + idx,
+                                            ChemistryId = kvp.Value,
+                                            End = start + idx + kvp.Key.Length
+                                        });
+                                    }
+                                }
                             }
                         }
                     }
