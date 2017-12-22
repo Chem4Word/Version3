@@ -1501,7 +1501,7 @@ namespace Chem4Word
                         }
                         catch
                         {
-                            //
+                            // Cells may not be initialised!
                         }
                     }
 
