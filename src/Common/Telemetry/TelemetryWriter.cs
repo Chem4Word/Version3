@@ -22,7 +22,6 @@ namespace Chem4Word.Telemetry
         private SystemHelper _helper;
         private WmiHelper _wmihelper;
 
-
         public TelemetryWriter()
         {
             _helper = new SystemHelper();

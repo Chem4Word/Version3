@@ -256,7 +256,6 @@ namespace Chem4Word.Renderer.OoXmlV3
             {
                 new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
-
         }
 
         private void chkShowCarbonLabels_CheckedChanged(object sender, EventArgs e)

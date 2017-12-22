@@ -122,7 +122,6 @@ namespace Chem4Word.Telemetry
             }
             catch (Exception ex)
             {
-
                 Debug.WriteLine($"Exception in WriteMessage: {ex.Message}");
 
                 try
@@ -138,7 +137,6 @@ namespace Chem4Word.Telemetry
                 {
                     //
                 }
-
             }
         }
     }

@@ -8,7 +8,6 @@
 using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Model;
-using Chem4Word.Model.Converters;
 using Chem4Word.Model.Enums;
 using Chem4Word.Renderer.OoXmlV3.OOXML.Atoms;
 using Chem4Word.Renderer.OoXmlV3.OOXML.Bonds;

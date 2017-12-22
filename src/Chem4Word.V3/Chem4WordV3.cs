@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------------------
 
 using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
 using Chem4Word.Library;
@@ -26,7 +27,6 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using Chem4Word.Core.Helpers;
 using Extensions = Microsoft.Office.Tools.Word.Extensions;
 using OfficeTools = Microsoft.Office.Tools;
 using Word = Microsoft.Office.Interop.Word;
@@ -69,8 +69,8 @@ namespace Chem4Word
         public Dictionary<string, int> LibraryNames;
 
         private static readonly string[] ContextMenusTargets = { "Text", "Table Text", "Spelling", "Grammar", "Grammar (2)", "Lists", "Table Lists" };
-        const string ContextMenuTag = "2829AECC-061C-4DC5-8CC0-CAEC821B9127";
-        const string ContextMenuText = "Convert to Chemistry";
+        private const string ContextMenuTag = "2829AECC-061C-4DC5-8CC0-CAEC821B9127";
+        private const string ContextMenuText = "Convert to Chemistry";
 
         public int WordWidth
         {
@@ -222,7 +222,7 @@ namespace Chem4Word
                 if (app.Documents.Count > 0)
                 {
                     EnableDocumentEvents(app.Documents[1]);
-                    if (app.Documents[1].CompatibilityMode >= (int) Word.WdCompatibilityMode.wdWord2010)
+                    if (app.Documents[1].CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
                     {
                         SetButtonStates(ButtonState.CanInsert);
                     }
@@ -898,7 +898,7 @@ namespace Chem4Word
             }
         }
 
-        #endregion
+        #endregion Events
 
         #region Methods
 
@@ -962,7 +962,7 @@ namespace Chem4Word
             }
         }
 
-        #endregion
+        #endregion Methods
 
         private void AddChemistryMenuPopup(List<TargetWord> selectedWords)
         {
@@ -1152,7 +1152,7 @@ namespace Chem4Word
             }
         }
 
-        #endregion
+        #endregion Right Click
 
         #region Document Events
 
@@ -1212,9 +1212,11 @@ namespace Chem4Word
                             case DialogResult.Yes:
                                 Upgrader.DoUpgrade(doc);
                                 break;
+
                             case DialogResult.No:
                                 Telemetry.Write(module, "Information", "User chose not to upgrade");
                                 break;
+
                             case DialogResult.Cancel:
                                 // Returns Cancel if nothing to do
                                 break;
@@ -1249,7 +1251,7 @@ namespace Chem4Word
                             // Do Nothing
                         }
 
-                        #endregion
+                        #endregion Handle Navigator Task Panes
 
                         #region Handle Library Task Panes
 
@@ -1307,7 +1309,7 @@ namespace Chem4Word
                             // Do Nothing
                         }
 
-                        #endregion
+                        #endregion Handle Library Task Panes
 
                         EnableDocumentEvents(doc);
 
@@ -1684,30 +1686,39 @@ namespace Chem4Word
                 case Word.WdContentControlType.wdContentControlRichText:
                     result = "Rich-Text";
                     break;
+
                 case Word.WdContentControlType.wdContentControlText:
                     result = "Text";
                     break;
+
                 case Word.WdContentControlType.wdContentControlBuildingBlockGallery:
                     result = "Picture";
                     break;
+
                 case Word.WdContentControlType.wdContentControlComboBox:
                     result = "ComboBox";
                     break;
+
                 case Word.WdContentControlType.wdContentControlDropdownList:
                     result = "Drop-Down List";
                     break;
+
                 case Word.WdContentControlType.wdContentControlPicture:
                     result = "Building Block Gallery";
                     break;
+
                 case Word.WdContentControlType.wdContentControlDate:
                     result = "Date";
                     break;
+
                 case Word.WdContentControlType.wdContentControlGroup:
                     result = "Group";
                     break;
+
                 case Word.WdContentControlType.wdContentControlCheckBox:
                     result = "CheckBox";
                     break;
+
                 case Word.WdContentControlType.wdContentControlRepeatingSection:
                     result = "Repeating Section";
                     break;

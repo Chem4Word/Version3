@@ -139,7 +139,6 @@ namespace Chem4Word.Helpers
                 _handleEvents = true;
             }
         }
-
     }
 
     public class Config

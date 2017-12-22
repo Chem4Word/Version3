@@ -169,7 +169,6 @@ namespace Chem4Word.Model.Geometry
             return Math.Atan2(sin, cos) * (180 / Math.PI);
         }
 
-
         #region extension methods
 
         public static Vector Perpendicular(this Vector v)

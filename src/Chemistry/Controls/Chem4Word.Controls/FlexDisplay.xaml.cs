@@ -7,6 +7,7 @@
 
 using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
+using Chem4Word.Model;
 using Chem4Word.Model.Converters;
 using System;
 using System.ComponentModel;
@@ -15,7 +16,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Chem4Word.Model;
 using ChemistryModel = Chem4Word.Model.Model;
 
 namespace Chem4Word.Controls
@@ -44,7 +44,6 @@ namespace Chem4Word.Controls
                 new PropertyMetadata(default(bool)));
 
         #region Chemistry (DependencyProperty)
-
 
         public object Chemistry
         {

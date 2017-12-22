@@ -613,6 +613,5 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
-
     }
 }

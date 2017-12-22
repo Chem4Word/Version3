@@ -84,6 +84,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                         case BondStereo.Indeterminate:
                             m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Wavy, bond.Id));
                             break;
+
                         default:
 
                             m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id));

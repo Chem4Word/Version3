@@ -43,7 +43,7 @@ namespace Chem4Word.Model.Converters
 
             if (data != null)
             {
-                string dataAsString = (string) data;
+                string dataAsString = (string)data;
                 if (!dataAsString.Contains("v3000") && !dataAsString.Contains("V3000"))
                 {
                     model = new Model();

@@ -305,7 +305,6 @@ namespace Chem4Word.Model.Converters
 
             if (data != null)
             {
-
                 XDocument modelDoc = XDocument.Parse((string)data);
                 var root = modelDoc.Root;
 
@@ -336,7 +335,6 @@ namespace Chem4Word.Model.Converters
                     }
                 }
                 newModel.Relabel(true);
-
             }
 
             return newModel;
@@ -639,21 +637,27 @@ namespace Chem4Word.Model.Converters
                     case "N":
                         newBond.Stereo = BondStereo.None;
                         break;
+
                     case "W":
                         newBond.Stereo = BondStereo.Wedge;
                         break;
+
                     case "H":
                         newBond.Stereo = BondStereo.Hatch;
                         break;
+
                     case "S":
                         newBond.Stereo = BondStereo.Indeterminate;
                         break;
+
                     case "C":
                         newBond.Stereo = BondStereo.Cis;
                         break;
+
                     case "T":
                         newBond.Stereo = BondStereo.Trans;
                         break;
+
                     default:
                         newBond.Stereo = BondStereo.None;
                         break;

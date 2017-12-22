@@ -1,9 +1,9 @@
 ﻿// Shared file (Add As Link)
 
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.IO;
-using Microsoft.Win32;
 
 namespace Chem4Word.Shared
 {
@@ -363,8 +363,7 @@ namespace Chem4Word.Shared
                     }
                     break;
 
-                #endregion Office 2019
-
+                    #endregion Office 2019
             }
 
             #region 32 / 64 bit

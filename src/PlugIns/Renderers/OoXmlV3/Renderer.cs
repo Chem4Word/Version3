@@ -5,6 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Core;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Renderer.OoXmlV3.OOXML;
 using IChem4Word.Contracts;
@@ -15,7 +16,6 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
-using Chem4Word.Core;
 
 namespace Chem4Word.Renderer.OoXmlV3
 {

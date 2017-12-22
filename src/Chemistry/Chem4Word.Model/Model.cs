@@ -247,7 +247,7 @@ namespace Chem4Word.Model
             }
 
             Molecules.Clear();
-       
+
             AddNewMols();
         }
 
@@ -361,8 +361,6 @@ namespace Chem4Word.Model
         }
 
         #endregion Layout
-
-       
 
         #region Interface implementations
 
