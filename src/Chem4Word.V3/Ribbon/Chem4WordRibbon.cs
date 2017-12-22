@@ -1309,14 +1309,11 @@ namespace Chem4Word
                         {
                             string tempfileName = null;
 
-                            if (isNewDrawing || GetUsed2D(doc, guidString).Count > 0)
-                            {
-                                renderer.Properties = new Dictionary<string, string>();
-                                renderer.Properties.Add("Guid", guidString);
-                                renderer.Cml = afterCml;
+                            renderer.Properties = new Dictionary<string, string>();
+                            renderer.Properties.Add("Guid", guidString);
+                            renderer.Cml = afterCml;
 
-                                tempfileName = renderer.Render();
-                            }
+                            tempfileName = renderer.Render();
 
                             if (!isNewDrawing)
                             {

@@ -822,6 +822,8 @@ namespace Chem4Word
                 {
                     SetButtonStates(ButtonState.CanInsert);
                 }
+
+                ChemistrySelected = chemistrySelected;
             }
             catch (Exception e)
             {
@@ -1759,16 +1761,6 @@ namespace Chem4Word
 
                 if (EventsEnabled)
                 {
-                    EvaluateChemistryAllowed();
-                    if (ChemistryAllowed)
-                    {
-                        SelectChemistry(sel);
-                    }
-                    else
-                    {
-                        SetButtonStates(ButtonState.NoDocument);
-                    }
-
                     if (ChemistrySelected)
                     {
                         CustomRibbon.PerformEdit();
