@@ -307,6 +307,11 @@
       <DependentUpon>TagBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Navigator\NavigatorSupport.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Tags\TagBox.xaml.cs">
       <DependentUpon>TagBox.xaml</DependentUpon>
     </Compile>
@@ -332,11 +337,6 @@
     </Compile>
     <Compile Include="Navigator\NavigatorViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Ribbon\Chem4WordRibbon.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -447,8 +447,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="Resources\TestFiles\Testosterone.xml" />
-    <None Include="Resources\TestFiles\TwoSingleBondMolecules.xml" />
     <EmbeddedResource Include="Library\LibraryHost.resx">
       <DependentUpon>LibraryHost.cs</DependentUpon>
     </EmbeddedResource>
