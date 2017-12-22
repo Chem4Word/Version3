@@ -1759,12 +1759,9 @@ namespace Chem4Word
                 Debug.WriteLine($"{module.Replace("()", $"({sel.Document.Name})")}");
                 Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
 
-                if (EventsEnabled)
+                if (EventsEnabled && ChemistrySelected)
                 {
-                    if (ChemistrySelected)
-                    {
-                        CustomRibbon.PerformEdit();
-                    }
+                    CustomRibbon.PerformEdit();
                 }
             }
             catch (Exception ex)

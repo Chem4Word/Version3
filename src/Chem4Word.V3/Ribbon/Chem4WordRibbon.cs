@@ -1309,6 +1309,7 @@ namespace Chem4Word
                         {
                             string tempfileName = null;
 
+                            // Always render the file.
                             renderer.Properties = new Dictionary<string, string>();
                             renderer.Properties.Add("Guid", guidString);
                             renderer.Cml = afterCml;
