@@ -610,11 +610,11 @@ namespace Chem4Word
             {
                 Debug.WriteLine(ex.Message);
                 Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.Message);
-                Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", ex.StackTrace);
+                Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.StackTrace);
                 if (ex.InnerException != null)
                 {
                     Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.InnerException.Message);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", ex.InnerException.StackTrace);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.InnerException.StackTrace);
                 }
             }
 
