@@ -792,6 +792,8 @@ namespace Chem4Word
 
             EventsEnabled = false;
 
+            ChemistrySelected = false;
+
             try
             {
                 Word.Document doc = sel.Application.ActiveDocument;
@@ -804,11 +806,11 @@ namespace Chem4Word
                         {
                             Debug.WriteLine($"  Selecting CC at {cc.Range.Start - 1} to {cc.Range.End + 1}");
                             doc.Application.Selection.SetRange(cc.Range.Start - 1, cc.Range.End + 1);
+                            ChemistrySelected = true;
+                            break;
                         }
                     }
                 }
-
-                ChemistrySelected = sel.ContentControls.Count > 0;
 
                 if (ChemistrySelected)
                 {
@@ -1557,10 +1559,17 @@ namespace Chem4Word
                                 // Test for Shape inside CC which is not ours
                                 if (allowed)
                                 {
-                                    if (sel.ShapeRange.Count > 0)
+                                    try
                                     {
-                                        ChemistryProhibitedReason = "selection contains shape(s) inside Content Control";
-                                        allowed = false;
+                                        if (sel.ShapeRange.Count > 0)
+                                        {
+                                            ChemistryProhibitedReason = "selection contains shape(s) inside Content Control";
+                                            allowed = false;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        // Shape may not evaluate
                                     }
                                 }
                             }
