@@ -929,22 +929,25 @@ namespace Chem4Word
                             start = Math.Max(0, start);
                             int end = Math.Min(sel.End, sentence.End);
                             end = Math.Min(end, last);
-                            string sentenceText = doc.Range(start, end).Text;
-                            Debug.WriteLine($"Sentences[{i}] --> {sentenceText}");
-                            if (!string.IsNullOrEmpty(sentenceText))
+                            if (start < end)
                             {
-                                foreach (var kvp in LibraryNames)
+                                string sentenceText = doc.Range(start, end).Text;
+                                Debug.WriteLine($"Sentences[{i}] --> {sentenceText}");
+                                if (!string.IsNullOrEmpty(sentenceText))
                                 {
-                                    int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
-                                    if (idx > 0)
+                                    foreach (var kvp in LibraryNames)
                                     {
-                                        selectedWords.Add(new TargetWord
+                                        int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
+                                        if (idx > 0)
                                         {
-                                            ChemicalName = kvp.Key,
-                                            Start = start + idx,
-                                            ChemistryId = kvp.Value,
-                                            End = start + idx + kvp.Key.Length
-                                        });
+                                            selectedWords.Add(new TargetWord
+                                            {
+                                                ChemicalName = kvp.Key,
+                                                Start = start + idx,
+                                                ChemistryId = kvp.Value,
+                                                End = start + idx + kvp.Key.Length
+                                            });
+                                        }
                                     }
                                 }
                             }
