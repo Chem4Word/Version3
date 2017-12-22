@@ -914,6 +914,7 @@ namespace Chem4Word
 
             if (LibraryNames.Any())
             {
+                // Limit to selections which have less than 5 sentences
                 if (sel.Sentences.Count <= 5)
                 {
                     Word.Document doc = Application.ActiveDocument;
