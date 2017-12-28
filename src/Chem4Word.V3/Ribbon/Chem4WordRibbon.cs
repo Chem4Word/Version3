@@ -610,11 +610,11 @@ namespace Chem4Word
             {
                 Debug.WriteLine(ex.Message);
                 Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.Message);
-                Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", ex.StackTrace);
+                Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.StackTrace);
                 if (ex.InnerException != null)
                 {
                     Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.InnerException.Message);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", ex.InnerException.StackTrace);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.InnerException.StackTrace);
                 }
             }
 
@@ -1309,14 +1309,12 @@ namespace Chem4Word
                         {
                             string tempfileName = null;
 
-                            if (isNewDrawing || GetUsed2D(doc, guidString).Count > 0)
-                            {
-                                renderer.Properties = new Dictionary<string, string>();
-                                renderer.Properties.Add("Guid", guidString);
-                                renderer.Cml = afterCml;
+                            // Always render the file.
+                            renderer.Properties = new Dictionary<string, string>();
+                            renderer.Properties.Add("Guid", guidString);
+                            renderer.Cml = afterCml;
 
-                                tempfileName = renderer.Render();
-                            }
+                            tempfileName = renderer.Render();
 
                             if (!isNewDrawing)
                             {

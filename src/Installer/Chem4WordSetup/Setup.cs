@@ -5,6 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Shared;
 using Microsoft.Win32;
 using System;
 using System.ComponentModel;
@@ -16,7 +17,6 @@ using System.Net.Http;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Chem4Word.Shared;
 
 namespace Chem4WordSetup
 {
@@ -216,7 +216,6 @@ namespace Chem4WordSetup
 
             if (isOperatinSystemWindows7Plus && isWordInstalled)
             {
-
                 if (isChem4WordVersion2Installed)
                 {
                     RegistryHelper.WriteAction("Old Version of Chem4Word detected");
@@ -571,7 +570,6 @@ namespace Chem4WordSetup
             return found;
         }
 
-
         private bool FindOldVersion()
         {
             bool found = false;
@@ -727,7 +725,7 @@ namespace Chem4WordSetup
                 }
                 else
                 {
-                    RegistryHelper.WriteAction($"Downloading of {_downloadSource} took {_sw.ElapsedMilliseconds.ToString("#,##0",CultureInfo.InvariantCulture)}ms");
+                    RegistryHelper.WriteAction($"Downloading of {_downloadSource} took {_sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
                     double seconds = _sw.ElapsedMilliseconds / 1000.0;
                     double kiloBytes = fi.Length / 1024.0;
                     double speed = kiloBytes / seconds / 1000.0;

@@ -175,12 +175,10 @@ namespace Chem4Word.View
         public static readonly DependencyProperty OrderValueProperty =
             DependencyProperty.Register("OrderValue", typeof(int), typeof(BondShape), new PropertyMetadata(1));
 
-        public System.Windows.Media.Geometry  GetBondGeometry(Point? startPoint, Point? endPoint)
+        public System.Windows.Media.Geometry GetBondGeometry(Point? startPoint, Point? endPoint)
         {
             //Vector startOffset = new Vector();
             //Vector endOffset = new Vector();
-
-
 
             if (startPoint != null & endPoint != null)
             {
@@ -257,8 +255,6 @@ namespace Chem4Word.View
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-
-
             if (ParentBond.OrderValue == 1.5)
             {
                 Point point1, point2, point3, point4;
@@ -275,13 +271,12 @@ namespace Chem4Word.View
 
                 Pen dashedPen = solidPen.Clone();
 
-                dashedPen.DashStyle=DashStyles.Dash;
-                
-                drawingContext.DrawLine(solidPen , point1, point2);
+                dashedPen.DashStyle = DashStyles.Dash;
+
+                drawingContext.DrawLine(solidPen, point1, point2);
                 drawingContext.DrawLine(dashedPen, point3, point4);
 
                 //drawingContext.Close();
-
             }
             else
             {

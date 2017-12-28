@@ -245,7 +245,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             double a = p2.X - p1.X;
             double b = p2.Y - p1.Y;
 
-            return Math.Sqrt(a*a + b*b);
+            return Math.Sqrt(a * a + b * b);
         }
     }
 }

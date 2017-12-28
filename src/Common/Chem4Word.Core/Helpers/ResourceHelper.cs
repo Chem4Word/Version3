@@ -8,7 +8,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 namespace Chem4Word.Core.Helpers
@@ -37,7 +36,7 @@ namespace Chem4Word.Core.Helpers
             {
                 data = assembly.GetManifestResourceStream(fullName);
             }
-            
+
             if (count != 1)
             {
                 Debug.Assert(false, "Unique match not found");

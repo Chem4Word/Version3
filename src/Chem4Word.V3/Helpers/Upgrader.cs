@@ -73,7 +73,7 @@ namespace Chem4Word.Helpers
                 catch (Exception ex)
                 {
                     Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"{ex.Message}");
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", $"{ex.StackTrace}");
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"{ex.StackTrace}");
                 }
             }
 

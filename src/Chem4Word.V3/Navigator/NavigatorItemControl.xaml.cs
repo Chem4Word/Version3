@@ -11,7 +11,6 @@ using Microsoft.Office.Interop.Word;
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 

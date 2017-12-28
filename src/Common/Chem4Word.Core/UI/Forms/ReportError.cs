@@ -73,11 +73,11 @@ namespace Chem4Word.Core.UI.Forms
 
             if (!string.IsNullOrEmpty(_exceptionMessage))
             {
-                _telemetry.Write(_operation, "Exception(Data)", _exceptionMessage);
+                _telemetry.Write(_operation, "Exception", _exceptionMessage);
             }
             if (!string.IsNullOrEmpty(_callStack))
             {
-                _telemetry.Write(_operation, "Exception(Data)", _callStack);
+                _telemetry.Write(_operation, "Exception", _callStack);
             }
             if (DialogResult == DialogResult.OK)
             {

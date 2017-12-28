@@ -5,9 +5,9 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using System;
 using Chem4Word.Model.Enums;
 using Chem4Word.Model.Geometry;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
@@ -162,7 +162,6 @@ namespace Chem4Word.View
             return sg;
         }
 
-
         /// <summary>
         /// Defines the 4 points that characterise a double bond and returns a list of them in polygon order
         /// </summary>
@@ -183,7 +182,6 @@ namespace Chem4Word.View
             Vector normal = v.Perpendicular();
             normal.Normalize();
 
-           
             Point? point3a, point4a;
 
             double distance = Globals.Offset;
@@ -203,15 +201,15 @@ namespace Chem4Word.View
                         break;
 
                     case BondDirection.Clockwise:
-                    {
-                        point1 = startPoint;
+                        {
+                            point1 = startPoint;
 
-                        point2 = endPoint;
-                        point3 = startPoint - normal * 2 * distance;
-                        point4 = point3 + v;
+                            point2 = endPoint;
+                            point3 = startPoint - normal * 2 * distance;
+                            point4 = point3 + v;
 
-                        break;
-                    }
+                            break;
+                        }
 
                     case BondDirection.Anticlockwise:
                         point1 = startPoint;
@@ -237,18 +235,17 @@ namespace Chem4Word.View
 
                 var bondvector = endPoint - startPoint;
                 var centreVector = ringCentroid - startPoint;
-                var bondPlacement = (BondDirection)Math.Sign(Vector.CrossProduct(centreVector.Value, bondvector ));
+                var bondPlacement = (BondDirection)Math.Sign(Vector.CrossProduct(centreVector.Value, bondvector));
                 if (bondPlacement == BondDirection.Clockwise)
                 {
                     point3 = startPoint - normal * 2 * distance;
                     point4 = point3 + v;
                 }
-                    else
+                else
                 {
                     point3 = startPoint + normal * 2 * distance;
                     point4 = point3 + v;
                 }
-
 
                 point3a = BasicGeometry.LineSegmentsIntersect(startPoint, ringCentroid.Value, point3, point4);
 
@@ -263,12 +260,11 @@ namespace Chem4Word.View
             }
             //capture  the enclosing polygon for hit testing later
 
-            enclosingPoly = new List<Point>() {point1, point2, point4, point3};
+            enclosingPoly = new List<Point>() { point1, point2, point4, point3 };
 
             //shorten the supporting bond if it's a ring bond
             if (ringCentroid != null)
             {
-                
             }
             return enclosingPoly;
         }
@@ -290,14 +286,13 @@ namespace Chem4Word.View
 
             double distance = Globals.Offset;
 
-
             point1 = startPoint + normal * distance;
             point2 = point1 + v;
 
             point3 = startPoint - normal * distance;
             point4 = point3 + v;
 
-            enclosingPoly = new List<Point>() {point1, point2, point4,point3};
+            enclosingPoly = new List<Point>() { point1, point2, point4, point3 };
 
             StreamGeometry sg = new StreamGeometry();
             using (StreamGeometryContext sgc = sg.Open())
@@ -310,7 +305,6 @@ namespace Chem4Word.View
             }
             sg.Freeze();
             return sg;
-
         }
 
         public static Geometry SingleBondGeometry(Point startPoint, Point endPoint)
@@ -336,7 +330,7 @@ namespace Chem4Word.View
             return figures;
         }
 
-        public static Geometry WavyBondGeometry(Point  startPoint, Point endPoint)
+        public static Geometry WavyBondGeometry(Point startPoint, Point endPoint)
         {
             StreamGeometry sg = new StreamGeometry();
             using (StreamGeometryContext sgc = sg.Open())
@@ -396,7 +390,7 @@ namespace Chem4Word.View
 
                 sgc.BeginFigure(startPoint, false, false);
                 sgc.PolyLineTo(allpoints, true, true);
-                
+
                 sgc.Close();
             }
             return sg;

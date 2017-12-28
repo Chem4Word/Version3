@@ -7,7 +7,6 @@
 
 using Chem4Word.Core.Helpers;
 using Microsoft.Office.Core;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;

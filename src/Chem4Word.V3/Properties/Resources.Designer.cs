@@ -496,20 +496,6 @@ namespace Chem4Word.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;cml:cml convention=&quot;conventions:molecular&quot; xmlns:cml=&quot;http://www.xml-cml.org/schema&quot; xmlns:conventions=&quot;http://www.xml-cml.org/convention/&quot; xmlns:cmlDict=&quot;http://www.xml-cml.org/dictionary/cml/&quot; xmlns:nameDict=&quot;http://www.xml-cml.org/dictionary/cml/name/&quot;&gt;
-        ///  &lt;cml:molecule id=&quot;m0&quot;&gt;
-        ///    &lt;cml:atomArray&gt;
-        ///      &lt;cml:atom id=&quot;a0&quot; elementType=&quot;C&quot; x2=&quot;224.047094455266&quot; y2=&quot;185.976299165086&quot; /&gt;
-        ///      &lt;cml:atom id=&quot;a1&quot; elementType=&quot;C&quot; x2=&quot;207.240279628879&quot; y2=&quot;176.272595454701&quot; [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string Testosterone_cml {
-            get {
-                return ResourceManager.GetString("Testosterone_cml", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Trash {
@@ -526,20 +512,6 @@ namespace Chem4Word.Properties {
             get {
                 object obj = ResourceManager.GetObject("TrashRed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;cml:cml convention=&quot;conventions:molecular&quot; xmlns:cml=&quot;http://www.xml-cml.org/schema&quot; xmlns:conventions=&quot;http://www.xml-cml.org/convention/&quot; xmlns:cmlDict=&quot;http://www.xml-cml.org/dictionary/cml/&quot; xmlns:nameDict=&quot;http://www.xml-cml.org/dictionary/cml/name/&quot;&gt;
-        ///  &lt;cml:molecule id=&quot;m0&quot; xmlns:cml=&quot;http://www.xml-cml.org/schema&quot;&gt;
-        ///    &lt;cml:atomArray&gt;
-        ///      &lt;cml:atom id=&quot;a0&quot; elementType=&quot;C&quot; x2=&quot;297&quot; y2=&quot;141&quot; /&gt;
-        ///      &lt;cml:atom id=&quot;a1&quot; elementType=&quot;C&quot; x2=&quot;314.320508075689&quot; y2=&quot;1 [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string TwoSingleBondMolecules_cml {
-            get {
-                return ResourceManager.GetString("TwoSingleBondMolecules_cml", resourceCulture);
             }
         }
         

@@ -119,7 +119,7 @@
         <ListBox
             Grid.Row="2"
             x:Name="GalleryList"
-            Grid.IsSharedSizeScope="True" 
+            Grid.IsSharedSizeScope="True"
             ItemsSource="{Binding Mode=OneWay, Path=ChemistryItems}"
             HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>

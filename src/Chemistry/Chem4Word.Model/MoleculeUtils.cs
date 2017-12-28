@@ -6,12 +6,8 @@
 // ---------------------------------------------------------------------------
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Windows.Controls.Primitives;
-
 
 namespace Chem4Word.Model
 {
@@ -29,8 +25,7 @@ namespace Chem4Word.Model
         {
             public Atom RootAtom { get; set; }
 
-
-            public static bool operator < (CipData a, CipData b)
+            public static bool operator <(CipData a, CipData b)
             {
                 if ((a.CurrentAtom.Element as Element).AtomicNumber < (b.CurrentAtom.Element as Element).AtomicNumber)
                 {
@@ -47,7 +42,6 @@ namespace Chem4Word.Model
                         return true;
                     }
                     return false;
-
                 }
                 return false;
             }
@@ -69,12 +63,11 @@ namespace Chem4Word.Model
                         return true;
                     }
                     return false;
-
                 }
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Allows for interrogation of an atom's environment in bands
         /// </summary>
@@ -105,6 +98,7 @@ namespace Chem4Word.Model
                     _nextQueue = _queueB;
                 }
             }
+
             public void Enqueue(CipData data)
             {
                 _nextQueue.Enqueue(data);
@@ -121,7 +115,6 @@ namespace Chem4Word.Model
 
             public void NextBand()
             {
-
                 SwapQueues();
 
                 _nextQueue.Clear();
@@ -137,7 +130,7 @@ namespace Chem4Word.Model
             //keep track of atoms we've already visited so far:  this helps us to locate cycles
             HashSet<Atom> visitedAtoms = new HashSet<Atom>();
 
-            //we scan outward from the root atom in concentric bands.  
+            //we scan outward from the root atom in concentric bands.
             //at the end of each band we check for distinctness
 
             //add the children of the start atoms to the first band,
@@ -153,7 +146,7 @@ namespace Chem4Word.Model
                     };
 
                     //create a singleton list for each atom
-                    List<CipData> newAtomList = new List<CipData> {data};
+                    List<CipData> newAtomList = new List<CipData> { data };
                     //set the p of each atom to zero
                     rootPriority[atom] = 0;
 
@@ -165,19 +158,17 @@ namespace Chem4Word.Model
 
             if (queueManager.Count != 4)
             {
-                throw  new ArgumentException("Number of neigbouring atoms does not equal 4.");
+                throw new ArgumentException("Number of neigbouring atoms does not equal 4.");
             }
-
-            
 
             //while we have no distinct set of CIP priorities - and there are plenty more atoms
             while (queueManager.Any)
             {
-                Dictionary<Atom, List<CipData>> currentBandData = new Dictionary<Atom,List<CipData>>();
+                Dictionary<Atom, List<CipData>> currentBandData = new Dictionary<Atom, List<CipData>>();
                 //retrieve the current atom band
                 while (queueManager.Any)
                 {
-                    var parentAtomdata = queueManager.Dequeue();                  
+                    var parentAtomdata = queueManager.Dequeue();
                     //add the child atoms to the next atom band
                     foreach (Atom childAtom in parentAtomdata.CurrentAtom.NeighboursExcept(parentAtomdata.Source))
                     {
@@ -195,10 +186,10 @@ namespace Chem4Word.Model
                             });
                             //if we've a multiple bond, add n-1 ghost atoms
                             for (double i = 2.0;
-                                i <= (parentAtomdata.Source.BondBetween(childAtom).OrderValue??1.0);
+                                i <= (parentAtomdata.Source.BondBetween(childAtom).OrderValue ?? 1.0);
                                 i++)
                             {
-                                AddDummyAtom(childAtom, queueManager,parentAtomdata);
+                                AddDummyAtom(childAtom, queueManager, parentAtomdata);
                             }
                         }
                         else
@@ -211,11 +202,10 @@ namespace Chem4Word.Model
                         {
                             currentBandData[parentAtomdata.RootAtom] = new List<CipData>();
                         }
-                        currentBandData[parentAtomdata.RootAtom].Add(parentAtomdata);                       
-
+                        currentBandData[parentAtomdata.RootAtom].Add(parentAtomdata);
                     }
-                   //we've now run out of atoms from this band
-                   //so rank them
+                    //we've now run out of atoms from this band
+                    //so rank them
                     Dictionary<Atom, int> nextPriorities = RankPriorities(currentBandData);
                     //now add them to the cumulative priorities
 
@@ -232,9 +222,8 @@ namespace Chem4Word.Model
                         priorities = rootPriority;
                         return true;
                     }
-
                     else
-                        //multiply all the cumulative priorities by four
+                    //multiply all the cumulative priorities by four
                     {
                         foreach (Atom root in rootPriority.Keys)
                         {
@@ -250,6 +239,7 @@ namespace Chem4Word.Model
             priorities = null;
             return false;
         }
+
         /// <summary>
         /// adds a dummy atom to the current queue manager which duplicates the atom in question
         /// </summary>
@@ -273,11 +263,9 @@ namespace Chem4Word.Model
             });
         }
 
-
-
         ///
-        /// 
-        /// 
+        ///
+        ///
         private Dictionary<Atom, int> RankPriorities(Dictionary<Atom, List<CipData>> unrankedAtoms)
         {
             Dictionary<Atom, int> retval = new Dictionary<Atom, int>();
@@ -292,16 +280,14 @@ namespace Chem4Word.Model
                 unrankedAtoms[unrankedAtom.Key] = sortedX;
             }
 
-           
-
             //now sort the dictionary
 
-            int rank = unrankedAtoms.Count-1;
+            int rank = unrankedAtoms.Count - 1;
             int lastrank = -1;
             var lastAtomList = new List<CipData>();
-            foreach (var rootList in unrankedAtoms.OrderByDescending(ua=>ua.Value))
+            foreach (var rootList in unrankedAtoms.OrderByDescending(ua => ua.Value))
             {
-                if (rootList.Value==lastAtomList)
+                if (rootList.Value == lastAtomList)
                 {
                     retval[rootList.Key] = lastrank;
                 }
@@ -318,14 +304,13 @@ namespace Chem4Word.Model
             return retval;
         }
 
-
         public class CipListComparer : Comparer<List<CipData>>
         {
             public override int Compare(List<CipData> x, List<CipData> y)
             {
                 int maxSharedLength = Math.Min(x.Count, y.Count);
                 int i = 0;
-                while (i<maxSharedLength && x[i] == y[i])
+                while (i < maxSharedLength && x[i] == y[i])
                 {
                     i++;
                 }
@@ -340,16 +325,11 @@ namespace Chem4Word.Model
                     else if (x.Count == y.Count) //both lists are identical
                     {
                         return 0;
-
                     }
                     else
                     {
                         return 1;
-
                     }
-
-
-
                 }
                 else
                 {
@@ -358,18 +338,11 @@ namespace Chem4Word.Model
                     {
                         return -1;
                     }
-                   
                     else
                     {
                         return 1;
-
                     }
-
-
                 }
-
-
-
             }
         }
 

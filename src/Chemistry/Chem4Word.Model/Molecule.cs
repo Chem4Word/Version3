@@ -157,7 +157,7 @@ namespace Chem4Word.Model
         /// Rebuilds the molecule without trashing it totally
         /// </summary>
         /// <param name="seed">start Atom for refresh operation</param>
-        private void Refresh(Atom seed=null)
+        private void Refresh(Atom seed = null)
         {
             //keep a list of the atoms to refer to later when rebuilding
             List<Atom> checklist = new List<Atom>();
@@ -178,16 +178,16 @@ namespace Chem4Word.Model
             Bonds.RemoveAll();
             AllBonds.RemoveAll();
             Rings.RemoveAll();
-            
-            //if we've been provided with a seed atom, use that 
+
+            //if we've been provided with a seed atom, use that
             //else use the first atom in the checklist
 
-            if(seed==null)
+            if (seed == null)
             {
                 seed = checklist[0];
             }
             //now traverse the tree as far as it will go
-            
+
             DepthFirstTraversal(seed,
                 operation: atom =>
                     {
@@ -197,7 +197,7 @@ namespace Chem4Word.Model
                         {
                             Bonds.Add(b);
                         }
-                        if(checklist.Contains(atom))
+                        if (checklist.Contains(atom))
                         {
                             checklist.Remove(atom);
                         }
@@ -345,10 +345,6 @@ namespace Chem4Word.Model
             workingSet.Remove(toPrune);
         }
 
-        
-       
-        
-
         /// <summary>
         /// Removes side chain atoms from the working set
         /// DOES NOT MODIFY the original molecule!
@@ -362,21 +358,20 @@ namespace Chem4Word.Model
 
             while (hasPruned)
             {
+                //clone the working set atoms first because otherwise LINQ will object
 
-              //clone the working set atoms first because otherwise LINQ will object
-
-                Atom[] atomList = (from kvp in  projection
-                                  where kvp.Value < 2
-                                  select kvp.Key).ToArray();
+                Atom[] atomList = (from kvp in projection
+                                   where kvp.Value < 2
+                                   select kvp.Key).ToArray();
                 hasPruned = atomList.Length > 0;
 
                 foreach (Atom a in atomList)
-                {  
-                        PruneAtom(a, projection);
-                
+                {
+                    PruneAtom(a, projection);
                 }
             }
         }
+
         #endregion Graph Stuff
 
         #region Ring stuff
@@ -530,11 +525,12 @@ namespace Chem4Word.Model
             sw.Stop();
             Debug.WriteLine($"Elapsed {sw.ElapsedMilliseconds}");
 #endif
-
         }
 
         private List<Ring> _sortedRings = null;
-        public List<Ring> SortedRings {
+
+        public List<Ring> SortedRings
+        {
             get
             {
                 if (_sortedRings == null)
@@ -825,7 +821,6 @@ namespace Chem4Word.Model
         {
             get
             {
-
                 return new Point(0, 0);
             }
         }
@@ -860,8 +855,6 @@ namespace Chem4Word.Model
         {
             get { return Bonds.Average(b => b.BondVector.Length); }
         }
-
-   
 
         public void ScaleToAverageBondLength(double newLength, Model model)
         {
