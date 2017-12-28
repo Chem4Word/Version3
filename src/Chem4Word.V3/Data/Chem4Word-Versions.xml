@@ -7,7 +7,8 @@
     <IsBeta>true</IsBeta>
     <Released>01-Jan-2018</Released>
     <Changes>
-      <Change>...</Change>
+      <Change>Fix Value out of range error during right click processing</Change>
+      <Change>Fix get_ShapeRange error during selection processing</Change>
       <Change>Restrict Right Click chemistry detection to selections where there are up to 5 sentences, for performance reasons.</Change>
       <Change>Prohibit chemistry when more than one cell of a table is selected.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
