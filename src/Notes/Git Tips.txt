@@ -4,6 +4,7 @@ Get it from https://git-scm.com/download/win
 Remove phantom local copies of remote branches
 
 git fetch --prune
+git pull
 
 Get local copies and remote in sync
 
@@ -20,5 +21,20 @@ More command line and visual studio hints at
 https://www.visualstudio.com/en-us/docs/git/command-prompt
 
 https://help.github.com/articles/dealing-with-line-endings/
-force crlf
+Force <CR><LF>
+--------------
 git config core.autocrlf true
+
+Using Beyond Compare 4 as differencing tool
+-------------------------------------------
+git config --global diff.tool bc3
+git config --global difftool.bc3.path "C:/Program Files/Beyond Compare 4/bcomp.exe"
+
+git config --global merge.tool bc3
+git config --global mergetool.bc3.path "C:/Program Files/Beyond Compare 4/bcomp.exe"
+
+git difftool -d --tool bc3 branch-1 branch-2
+
+Auto Prune
+----------
+git config fetch.prune true
