@@ -3,6 +3,19 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.12 Beta 12</Number>
+    <IsBeta>true</IsBeta>
+    <Released>31-Jan-2018</Released>
+    <Changes>
+      <Change>...</Change>
+      <Change>...</Change>
+      <Change>...</Change>
+      <Change>...</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.11.Beta.11.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.11 Beta 11</Number>
     <IsBeta>true</IsBeta>
     <Released>28-Dec-2017</Released>
@@ -11,7 +24,6 @@
       <Change>Fix get_ShapeRange error during selection processing.</Change>
       <Change>Restrict Right Click chemistry detection to selections where there are up to 5 sentences, for performance reasons.</Change>
       <Change>Prohibit chemistry when more than one cell of a table is selected.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.11.Beta.11.msi</Url>
   </Version>
