@@ -27,15 +27,19 @@ Force <CR><LF>
 --------------
 git config core.autocrlf true
 
-Using Beyond Compare 4 as differencing tool
--------------------------------------------
+Using Beyond Compare 4 as differencing tool - Setup
+---------------------------------------------------
 git config --global diff.tool bc3
 git config --global difftool.bc3.path "C:/Program Files/Beyond Compare 4/bcomp.exe"
 
 git config --global merge.tool bc3
 git config --global mergetool.bc3.path "C:/Program Files/Beyond Compare 4/bcomp.exe"
 
-git difftool -d --tool bc3 branch-1 branch-2
+Use
+---
+git difftool -d --tool bc3 branch-one branch-two
+git difftool -d --tool bc3 master beta-11-bug-fixes
+git difftool -d --tool bc3 beta-11-bug-fixes functional-groups
 
 Auto Prune
 ----------

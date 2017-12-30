@@ -1138,7 +1138,7 @@ namespace Chem4Word
                     {
                         foreach (var name in mol.ChemicalNames)
                         {
-                            if (name.Name.ToLower().Equals(text))
+                            if (name.Name.ToLower().Equals(text.ToLower()))
                             {
                                 tag = $"{name.Id}:{guidString}";
                                 found = true;
