@@ -8,6 +8,8 @@
     <Released>31-Jan-2018</Released>
     <Changes>
       <Change>...</Change>
+      <Change>...</Change>
+      <Change>...</Change>
       <Change>Ensure Library db is closed and disposed ASAP.</Change>
       <Change>Fix wrong 1D tag inserted by convert to chemistry.</Change>
       <Change>Allow Chemistry to be inserted from library when blank document opened.</Change>
