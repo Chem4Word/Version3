@@ -38,7 +38,6 @@ namespace Chem4Word
     {
         // Internal variables for class
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
 
         public static CustomRibbon Ribbon;
@@ -279,7 +278,7 @@ namespace Chem4Word
                 // Deliberate crash to test Error Reporting
                 //int ii = 2;
                 //int dd = 0;
-                //int bang = ii/dd;
+                //int bang = ii / dd;
             }
             catch (Exception ex)
             {
@@ -856,6 +855,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -899,6 +900,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1182,6 +1185,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1342,6 +1347,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1356,6 +1363,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1396,6 +1405,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1435,6 +1446,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1470,10 +1483,17 @@ namespace Chem4Word
                     }
                     EventsEnabled = true;
                 }
+
+                // Deliberate crash to test Error Reporting
+                //int ii = 2;
+                //int dd = 0;
+                //int bang = ii / dd;
             }
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1789,6 +1809,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1804,10 +1826,17 @@ namespace Chem4Word
             try
             {
                 Debug.WriteLine($"{module.Replace("()", $"({doc.Name})")}");
+
+                // Deliberate crash to test Error Reporting
+                //int ii = 2;
+                //int dd = 0;
+                //int bang = ii / dd;
             }
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1859,6 +1888,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1878,6 +1909,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1893,18 +1926,20 @@ namespace Chem4Word
             try
             {
                 Debug.WriteLine($"{module.Replace("()", $"({contentControl.Application.ActiveDocument.Name})")}");
-                if (EventsEnabled)
-                {
-                    ////Debug.WriteLine("CC ID: " + contentControl.ID + " Tag: " + contentControl.Tag + " Title: " + contentControl.Title);
-                    //Word.Document doc = contentControl.Application.ActiveApp;
-                    //Word.Selection sel = doc.Application.Selection;
-                    //Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
-                    //SelectChemistry(sel);
-                }
+                //if (EventsEnabled)
+                //{
+                //    //Debug.WriteLine("CC ID: " + contentControl.ID + " Tag: " + contentControl.Tag + " Title: " + contentControl.Title);
+                //    Word.Document doc = contentControl.Application.ActiveApp;
+                //    Word.Selection sel = doc.Application.Selection;
+                //    Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
+                //    SelectChemistry(sel);
+                //}
             }
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
@@ -1934,6 +1969,8 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             }
         }
 
