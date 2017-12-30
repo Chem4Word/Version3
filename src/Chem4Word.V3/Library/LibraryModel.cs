@@ -51,6 +51,9 @@ namespace Chem4Word.Library
                 }
             }
 
+            names.Close();
+            names.Dispose();
+
             return allNames;
         }
 
@@ -256,7 +259,9 @@ namespace Chem4Word.Library
 
                     tr.Commit();
                 }
+
                 conn.Close();
+                conn.Dispose();
             }
             catch (Exception ex)
             {
@@ -293,7 +298,10 @@ namespace Chem4Word.Library
                     lastID = (Int64)cmd.ExecuteScalar();
                     tr.Commit();
                 }
+
                 conn.Close();
+                conn.Dispose();
+
                 return lastID;
             }
             catch (Exception ex)
@@ -327,7 +335,9 @@ namespace Chem4Word.Library
                     command.ExecuteNonQuery();
                     tr.Commit();
                 }
+
                 conn.Close();
+                conn.Dispose();
             }
             catch (Exception ex)
             {
@@ -443,7 +453,10 @@ namespace Chem4Word.Library
                     lastID = (Int64)cmd.ExecuteScalar();
                     tr.Commit();
                 }
+
                 conn.Close();
+                conn.Dispose();
+
                 return lastID;
             }
             catch (Exception ex)
@@ -494,6 +507,9 @@ namespace Chem4Word.Library
                     command3.ExecuteNonQuery();
                     tr.Commit();
                 }
+
+                conn.Close();
+                conn.Dispose();
             }
             catch (Exception ex)
             {

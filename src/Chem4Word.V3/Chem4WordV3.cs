@@ -883,6 +883,9 @@ namespace Chem4Word
                         break;
                     }
 
+                    chemistry.Close();
+                    chemistry.Dispose();
+
                     if (cml == null)
                     {
                         UserInteractions.WarnUser($"No match for '{tw.ChemicalName}' was found in your library");
