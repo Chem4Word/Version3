@@ -1613,12 +1613,9 @@ namespace Chem4Word
 
                                 custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
                                 custTaskPane.VisibleChanged += OnNavigatorPaneVisibleChanged;
-                                custTaskPane.Visible = true;
                             }
-                            else
-                            {
-                                custTaskPane.Visible = true;
-                            }
+                            custTaskPane.Visible = true;
+                            Globals.Chem4WordV3.EvaluateChemistryAllowed();
                         }
                         else
                         {
@@ -1724,13 +1721,10 @@ namespace Chem4Word
 
                                     custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
                                     custTaskPane.VisibleChanged += OnLibraryPaneVisibleChanged;
-                                    custTaskPane.Visible = true;
                                     (custTaskPane.Control as LibraryHost)?.Refresh();
                                 }
-                                else
-                                {
-                                    custTaskPane.Visible = true;
-                                }
+                                custTaskPane.Visible = true;
+                                Globals.Chem4WordV3.EvaluateChemistryAllowed();
                             }
                             else
                             {

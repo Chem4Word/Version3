@@ -1497,7 +1497,7 @@ namespace Chem4Word
             }
         }
 
-        private void EvaluateChemistryAllowed()
+        public void EvaluateChemistryAllowed()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
