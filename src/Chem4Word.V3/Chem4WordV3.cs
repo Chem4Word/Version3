@@ -1621,10 +1621,17 @@ namespace Chem4Word
                                 // Test for Shape in body CC
                                 if (allowed)
                                 {
-                                    if (sel.ShapeRange.Count > 0)
+                                    try
                                     {
-                                        ChemistryProhibitedReason = "selection contains shape(s)";
-                                        allowed = false;
+                                        if (sel.ShapeRange.Count > 0)
+                                        {
+                                            ChemistryProhibitedReason = "selection contains shape(s)";
+                                            allowed = false;
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        // Shape may not evaluate
                                     }
                                 }
                             }
