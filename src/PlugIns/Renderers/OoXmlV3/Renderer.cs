@@ -135,6 +135,7 @@ namespace Chem4Word.Renderer.OoXmlV3
                     UserInteractions.WarnUser("Sorry this structure could not be rendered.");
                 }
 
+                // Deliberate crash to test Error Reporting
                 //int ii = 2;
                 //int dd = 0;
                 //int bang = ii / dd;

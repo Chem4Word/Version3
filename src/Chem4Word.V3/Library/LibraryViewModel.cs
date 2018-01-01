@@ -387,6 +387,9 @@ namespace Chem4Word.Library
                     tag.Text = (string)allTags["UserTag"];
                     UserTagItems.Add(tag);
                 }
+
+                allTags.Close();
+                allTags.Dispose();
             }
             catch (Exception ex)
             {
@@ -409,6 +412,9 @@ namespace Chem4Word.Library
                     tag.Text = (string)allTags["UserTag"];
                     results.Add(tag);
                 }
+
+                allTags.Close();
+                allTags.Dispose();
             }
             catch (Exception ex)
             {
@@ -433,6 +439,9 @@ namespace Chem4Word.Library
                     tag.tagID = (long)allTags["TagID"];
                     ChemistryByTagItems.Add(tag);
                 }
+
+                allTags.Close();
+                allTags.Dispose();
             }
             catch (Exception ex)
             {
@@ -464,6 +473,9 @@ namespace Chem4Word.Library
                     LoadOtherNames(mol);
                     mol.Initializing = false;
                 }
+
+                chemistry.Close();
+                chemistry.Dispose();
 
                 _initializing = false;
             }

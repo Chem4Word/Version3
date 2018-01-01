@@ -284,6 +284,7 @@
     <Compile Include="Helpers\ReferenceKeeper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\TargetWord.cs" />
+    <Compile Include="Helpers\UpdateHelper.cs" />
     <Compile Include="Library\LibraryValidation.cs" />
     <Compile Include="Library\NameValidationRule.cs" />
     <Compile Include="Library\TagEditor.cs" />
