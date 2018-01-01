@@ -85,7 +85,19 @@ namespace Chem4Word.Telemetry
                 try
                 {
                     string temp = mgtObject["Name"].ToString();
-                    temp = temp.Replace("\t", " ").Replace("  ", " ");
+                    // Replace tab with space
+                    temp = temp.Replace("\t", " ");
+                    // Replace upto 15 double spaces with single space
+                    int i = 0;
+                    while (temp.IndexOf("..") != -1)
+                    {
+                        temp = temp.Replace("  ", " ");
+                        i++;
+                        if (i > 15)
+                        {
+                            break;
+                        }
+                    }
                     _cpuName = temp;
                 }
                 catch
