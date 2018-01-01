@@ -1618,7 +1618,7 @@ namespace Chem4Word
                             }
                             else
                             {
-                                // Test for Shape in body
+                                // Test for Shape in document body
                                 if (allowed)
                                 {
                                     try
