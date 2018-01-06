@@ -354,7 +354,7 @@ namespace Chem4Word.UI
             this.tabPlugIns.Location = new System.Drawing.Point(0, 23);
             this.tabPlugIns.Name = "tabPlugIns";
             this.tabPlugIns.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPlugIns.Size = new System.Drawing.Size(590, 347);
+            this.tabPlugIns.Size = new System.Drawing.Size(612, 347);
             this.tabPlugIns.TabIndex = 0;
             this.tabPlugIns.Text = "Plug Ins";
             // 
@@ -407,7 +407,7 @@ namespace Chem4Word.UI
             this.tabWebServices.Location = new System.Drawing.Point(0, 23);
             this.tabWebServices.Name = "tabWebServices";
             this.tabWebServices.Padding = new System.Windows.Forms.Padding(3);
-            this.tabWebServices.Size = new System.Drawing.Size(590, 347);
+            this.tabWebServices.Size = new System.Drawing.Size(612, 347);
             this.tabWebServices.TabIndex = 1;
             this.tabWebServices.Text = "Web Services";
             // 
@@ -431,7 +431,7 @@ namespace Chem4Word.UI
             this.tabTelemetry.Controls.Add(this.chkTelemetryEnabled);
             this.tabTelemetry.Location = new System.Drawing.Point(0, 23);
             this.tabTelemetry.Name = "tabTelemetry";
-            this.tabTelemetry.Size = new System.Drawing.Size(590, 347);
+            this.tabTelemetry.Size = new System.Drawing.Size(612, 347);
             this.tabTelemetry.TabIndex = 2;
             this.tabTelemetry.Text = "Telemetry";
             // 
@@ -457,7 +457,7 @@ namespace Chem4Word.UI
             this.tabUpdates.Controls.Add(this.chkAutomaticUpdates);
             this.tabUpdates.Location = new System.Drawing.Point(0, 23);
             this.tabUpdates.Name = "tabUpdates";
-            this.tabUpdates.Size = new System.Drawing.Size(590, 347);
+            this.tabUpdates.Size = new System.Drawing.Size(612, 347);
             this.tabUpdates.TabIndex = 3;
             this.tabUpdates.Text = "Updates";
             // 
@@ -490,7 +490,7 @@ namespace Chem4Word.UI
             // 
             this.ClearLibraryButton.Image = global::Chem4Word.Properties.Resources.Gallery_Delete;
             this.ClearLibraryButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ClearLibraryButton.Location = new System.Drawing.Point(25, 147);
+            this.ClearLibraryButton.Location = new System.Drawing.Point(25, 153);
             this.ClearLibraryButton.Name = "ClearLibraryButton";
             this.ClearLibraryButton.Size = new System.Drawing.Size(190, 48);
             this.ClearLibraryButton.TabIndex = 2;
@@ -508,7 +508,7 @@ namespace Chem4Word.UI
             this.groupBox1.Controls.Add(this.importGalleryButton);
             this.groupBox1.Location = new System.Drawing.Point(15, 15);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(580, 123);
+            this.groupBox1.Size = new System.Drawing.Size(580, 132);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Import";
@@ -529,7 +529,7 @@ namespace Chem4Word.UI
             // 
             this.importGalleryButton.Image = global::Chem4Word.Properties.Resources.Gallery_Toggle;
             this.importGalleryButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.importGalleryButton.Location = new System.Drawing.Point(10, 67);
+            this.importGalleryButton.Location = new System.Drawing.Point(10, 73);
             this.importGalleryButton.Name = "importGalleryButton";
             this.importGalleryButton.Size = new System.Drawing.Size(190, 48);
             this.importGalleryButton.TabIndex = 0;
@@ -553,7 +553,7 @@ namespace Chem4Word.UI
             this.tabMaintenance.Location = new System.Drawing.Point(0, 23);
             this.tabMaintenance.Name = "tabMaintenance";
             this.tabMaintenance.Padding = new System.Windows.Forms.Padding(3);
-            this.tabMaintenance.Size = new System.Drawing.Size(590, 347);
+            this.tabMaintenance.Size = new System.Drawing.Size(612, 347);
             this.tabMaintenance.TabIndex = 5;
             this.tabMaintenance.Text = "Maintenance";
             // 
