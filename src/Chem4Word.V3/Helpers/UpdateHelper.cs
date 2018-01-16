@@ -115,6 +115,14 @@ namespace Chem4Word.Helpers
             return Globals.Chem4WordV3.VersionsBehind;
         }
 
+        public static void ReadThisVersion(Assembly assembly)
+        {
+            if (Globals.Chem4WordV3.ThisVersion == null)
+            {
+                Globals.Chem4WordV3.ThisVersion = XDocument.Parse(ResourceHelper.GetStringResource(assembly, "Data.This-Version.xml"));
+            }
+        }
+
         public static bool FetchUpdateInfo()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -126,7 +134,8 @@ namespace Chem4Word.Helpers
             Globals.Chem4WordV3.VersionsBehind = 0;
 
             var assembly = Assembly.GetExecutingAssembly();
-            Globals.Chem4WordV3.ThisVersion = XDocument.Parse(ResourceHelper.GetStringResource(assembly, "Data.This-Version.xml"));
+
+            ReadThisVersion(assembly);
             if (Globals.Chem4WordV3.ThisVersion != null)
             {
                 string currentVersionNumber = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;

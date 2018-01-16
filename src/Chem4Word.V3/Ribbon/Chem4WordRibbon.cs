@@ -1936,8 +1936,19 @@ namespace Chem4Word
 
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                UpdateHelper.ReadThisVersion(assembly);
+                if (Globals.Chem4WordV3.ThisVersion != null)
+                {
+                    string[] parts = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value.Split(' ');
+                    string temp = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;
+                    int idx = temp.IndexOf(" ");
+                    fa.VersionString = $"Chem4Word V3 {temp.Substring(idx+1)} [{fvi.FileVersion}]";
+                }
+                else
+                {
+                    fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
+                }
 
-                fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
                 fa.ShowDialog();
             }
             catch (Exception ex)

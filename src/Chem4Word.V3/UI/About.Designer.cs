@@ -64,9 +64,9 @@
             this.labelTitle.BackColor = System.Drawing.Color.Transparent;
             this.labelTitle.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTitle.ForeColor = System.Drawing.Color.Blue;
-            this.labelTitle.Location = new System.Drawing.Point(7, 9);
+            this.labelTitle.Location = new System.Drawing.Point(12, 9);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(494, 39);
+            this.labelTitle.Size = new System.Drawing.Size(489, 39);
             this.labelTitle.TabIndex = 1;
             this.labelTitle.Text = "Chemistry Add-In for Microsoft Word";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -74,13 +74,14 @@
             // labelVersion
             // 
             this.labelVersion.BackColor = System.Drawing.Color.Transparent;
-            this.labelVersion.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelVersion.Location = new System.Drawing.Point(39, 48);
+            this.labelVersion.Font = new System.Drawing.Font("Tahoma", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelVersion.ForeColor = System.Drawing.Color.Blue;
+            this.labelVersion.Location = new System.Drawing.Point(12, 48);
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(404, 39);
+            this.labelVersion.Size = new System.Drawing.Size(488, 39);
             this.labelVersion.TabIndex = 2;
             this.labelVersion.Text = "Version ...";
-            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelBody1
             // 
