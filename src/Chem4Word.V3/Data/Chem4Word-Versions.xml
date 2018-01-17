@@ -3,6 +3,17 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.14 Release 1</Number>
+    <IsBeta>false</IsBeta>
+    <Released>17-Jan-2018</Released>
+    <Changes>
+      <Change>Ensure structure to be rendered has at least one atom.</Change>
+      <Change>Sign Chem4Word Updater</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.14.Release.1.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.12 Beta 12</Number>
     <IsBeta>true</IsBeta>
     <Released>01-Jan-2018</Released>
@@ -12,7 +23,6 @@
       <Change>Allow Chemistry to be inserted from library when blank document opened.</Change>
       <Change>Handle empty json from ChemDoodle Web.</Change>
       <Change>Add Check for Updates after RightClick and Selection Change errors.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases if you encounter any dificulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.12.Beta.12.msi</Url>
   </Version>

@@ -1469,8 +1469,18 @@ namespace Chem4Word
 
             try
             {
-                Debug.WriteLine($"{module.Replace("()", $"({sel.Document.Name})")}");
-                Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
+                try
+                {
+                    if (sel != null)
+                    {
+                        Debug.WriteLine($"{module.Replace("()", $"({sel.Document.Name})")}");
+                        Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
+                    }
+                }
+                catch
+                {
+                    //
+                }
 
                 if (EventsEnabled)
                 {

@@ -15,7 +15,6 @@ namespace Chem4Word.Model.Converters
 {
     /// <summary>
     /// Converts a Model from and to JSON
-    /// Only handles one molecule right now!
     /// </summary>
     public class JSONConverter : IConverter
     {

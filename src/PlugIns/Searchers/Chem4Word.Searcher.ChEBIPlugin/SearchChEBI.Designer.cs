@@ -39,9 +39,9 @@
             this.NameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ScoreHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ShowMolfile = new System.Windows.Forms.Button();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.flexDisplayControl1 = new Chem4Word.Controls.FlexDisplayControl();
-            this.ShowMolfile = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -161,6 +161,18 @@
             this.panel1.Size = new System.Drawing.Size(528, 459);
             this.panel1.TabIndex = 0;
             // 
+            // ShowMolfile
+            // 
+            this.ShowMolfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShowMolfile.Location = new System.Drawing.Point(822, 533);
+            this.ShowMolfile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ShowMolfile.Name = "ShowMolfile";
+            this.ShowMolfile.Size = new System.Drawing.Size(87, 29);
+            this.ShowMolfile.TabIndex = 14;
+            this.ShowMolfile.Text = "MolFile";
+            this.ShowMolfile.UseVisualStyleBackColor = true;
+            this.ShowMolfile.Click += new System.EventHandler(this.ShowMolfile_Click);
+            // 
             // elementHost1
             // 
             this.elementHost1.BackColor = System.Drawing.Color.White;
@@ -173,18 +185,6 @@
             this.elementHost1.TabIndex = 1;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.flexDisplayControl1;
-            // 
-            // ShowMolfile
-            // 
-            this.ShowMolfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ShowMolfile.Location = new System.Drawing.Point(822, 533);
-            this.ShowMolfile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ShowMolfile.Name = "ShowMolfile";
-            this.ShowMolfile.Size = new System.Drawing.Size(87, 29);
-            this.ShowMolfile.TabIndex = 14;
-            this.ShowMolfile.Text = "MolFile";
-            this.ShowMolfile.UseVisualStyleBackColor = true;
-            this.ShowMolfile.Click += new System.EventHandler(this.ShowMolfile_Click);
             // 
             // SearchChEBI
             // 
@@ -201,7 +201,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "SearchChEBI";
-            this.Text = "SearchChEBI";
+            this.Text = "Search ChEBI public database";
             this.Load += new System.EventHandler(this.SearchChEBI_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);

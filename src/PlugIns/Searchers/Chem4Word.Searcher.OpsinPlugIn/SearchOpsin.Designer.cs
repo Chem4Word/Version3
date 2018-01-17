@@ -110,7 +110,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "SearchOpsin";
-            this.Text = "SearchOpsin";
+            this.Text = "Search Opsin public database";
             this.Load += new System.EventHandler(this.SearchOpsin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
