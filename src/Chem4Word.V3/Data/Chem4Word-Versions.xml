@@ -7,7 +7,7 @@
     <IsBeta>false</IsBeta>
     <Released>17-Jan-2018</Released>
     <Changes>
-      <Change>Ensure structure to be rendered has at least one atom</Change>
+      <Change>Ensure structure to be rendered has at least one atom.</Change>
       <Change>Sign Chem4Word Updater</Change>
       <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
     </Changes>
