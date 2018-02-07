@@ -78,6 +78,22 @@ namespace Chem4Word.Model
             }
         }
 
+        public List<string> AllWarnings
+        {
+            get
+            {
+                return Molecules.SelectMany(m => m.Warnings).ToList();
+            }
+        }
+
+        public List<string> AllErrors
+        {
+            get
+            {
+                return Molecules.SelectMany(m => m.Errors).ToList();
+            }
+        }
+
         /// <summary>
         /// Rolls up all those objects exposed to the view model so they can be displayed
         /// This is only Atoms and Bonds for now
@@ -102,7 +118,7 @@ namespace Chem4Word.Model
 
         public List<Ring> Rings
         {
-            get { return this.Molecules.SelectMany(m => m.Rings).ToList(); }
+            get { return Molecules.SelectMany(m => m.Rings).ToList(); }
         }
 
         /// <summary>
@@ -110,7 +126,7 @@ namespace Chem4Word.Model
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Molecules_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Molecules_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -385,7 +401,7 @@ namespace Chem4Word.Model
             Debug.WriteLine($"Model.Bonds.Count: {AllBonds.Count}");
             Debug.WriteLine($"Model.Rings.Count: {Rings.Count}");
 
-            foreach (var molecule in this.Molecules)
+            foreach (var molecule in Molecules)
             {
                 Debug.WriteLine($" Molecule.Id: {molecule.Id}");
                 Debug.WriteLine($" Molecule.Atoms.Count: {molecule.Atoms.Count}");

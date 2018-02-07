@@ -89,7 +89,7 @@ namespace Chem4Word.Telemetry
                     temp = temp.Replace("\t", " ");
                     // Replace upto 15 double spaces with single space
                     int i = 0;
-                    while (temp.IndexOf("..") != -1)
+                    while (temp.IndexOf("  ") != -1)
                     {
                         temp = temp.Replace("  ", " ");
                         i++;

@@ -132,7 +132,7 @@ namespace Chem4Word
             this.ShowLibrary.Name = "ShowLibrary";
             this.ShowLibrary.ScreenTip = "Import a structure from the Library";
             this.ShowLibrary.ShowImage = true;
-            this.ShowLibrary.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnLibraryClick);
+            this.ShowLibrary.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnShowLibraryClick);
             // 
             // SaveToLibrary
             // 
@@ -142,7 +142,7 @@ namespace Chem4Word
             this.SaveToLibrary.Name = "SaveToLibrary";
             this.SaveToLibrary.ScreenTip = "Add the selected structure to the Library";
             this.SaveToLibrary.ShowImage = true;
-            this.SaveToLibrary.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnGallerySaveClick);
+            this.SaveToLibrary.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnSaveToLibraryClick);
             // 
             // GroupStructure
             // 
@@ -276,7 +276,7 @@ namespace Chem4Word
             this.YouTube.Label = "YouTube Videos";
             this.YouTube.Name = "YouTube";
             this.YouTube.ShowImage = true;
-            this.YouTube.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnYouTube_Click);
+            this.YouTube.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnYouTubeClick);
             // 
             // CheckNow
             // 

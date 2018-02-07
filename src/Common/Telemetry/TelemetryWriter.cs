@@ -118,7 +118,7 @@ namespace Chem4Word.Telemetry
 
             // Log Sysytem
             WritePrivate("StartUp", "Information", _helper.SystemOs);
-            WritePrivate("Startup", "Information", _helper.DotNetVersion);
+            WritePrivate("StartUp", "Information", _helper.DotNetVersion);
 
             // Log IP Address
             WritePrivate("StartUp", "Information", _helper.IpAddress);

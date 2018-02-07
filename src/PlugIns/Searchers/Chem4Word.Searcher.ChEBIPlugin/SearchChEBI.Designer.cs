@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchChEBI));
             this.SearchFor = new System.Windows.Forms.TextBox();
             this.SearchButton = new System.Windows.Forms.Button();
-            this.LabelInfo = new System.Windows.Forms.Label();
             this.ImportButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.ResultsListView = new System.Windows.Forms.ListView();
@@ -39,9 +38,10 @@
             this.NameHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ScoreHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.ShowMolfile = new System.Windows.Forms.Button();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
             this.flexDisplayControl1 = new Chem4Word.Controls.FlexDisplayControl();
+            this.ShowMolfile = new System.Windows.Forms.Button();
+            this.ErrorsAndWarnings = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -71,21 +71,11 @@
             this.SearchButton.UseVisualStyleBackColor = true;
             this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
             // 
-            // LabelInfo
-            // 
-            this.LabelInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.LabelInfo.AutoSize = true;
-            this.LabelInfo.Location = new System.Drawing.Point(14, 539);
-            this.LabelInfo.Name = "LabelInfo";
-            this.LabelInfo.Size = new System.Drawing.Size(20, 16);
-            this.LabelInfo.TabIndex = 11;
-            this.LabelInfo.Text = "...";
-            // 
             // ImportButton
             // 
             this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ImportButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.ImportButton.Location = new System.Drawing.Point(916, 533);
+            this.ImportButton.Location = new System.Drawing.Point(916, 564);
             this.ImportButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ImportButton.Name = "ImportButton";
             this.ImportButton.Size = new System.Drawing.Size(87, 29);
@@ -112,7 +102,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.panel1);
-            this.splitContainer1.Size = new System.Drawing.Size(989, 461);
+            this.splitContainer1.Size = new System.Drawing.Size(989, 452);
             this.splitContainer1.SplitterDistance = 454;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 13;
@@ -130,7 +120,7 @@
             this.ResultsListView.Location = new System.Drawing.Point(0, 0);
             this.ResultsListView.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ResultsListView.Name = "ResultsListView";
-            this.ResultsListView.Size = new System.Drawing.Size(452, 459);
+            this.ResultsListView.Size = new System.Drawing.Size(452, 450);
             this.ResultsListView.TabIndex = 0;
             this.ResultsListView.UseCompatibleStateImageBehavior = false;
             this.ResultsListView.View = System.Windows.Forms.View.Details;
@@ -158,20 +148,8 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(528, 459);
+            this.panel1.Size = new System.Drawing.Size(528, 450);
             this.panel1.TabIndex = 0;
-            // 
-            // ShowMolfile
-            // 
-            this.ShowMolfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ShowMolfile.Location = new System.Drawing.Point(822, 533);
-            this.ShowMolfile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.ShowMolfile.Name = "ShowMolfile";
-            this.ShowMolfile.Size = new System.Drawing.Size(87, 29);
-            this.ShowMolfile.TabIndex = 14;
-            this.ShowMolfile.Text = "MolFile";
-            this.ShowMolfile.UseVisualStyleBackColor = true;
-            this.ShowMolfile.Click += new System.EventHandler(this.ShowMolfile_Click);
             // 
             // elementHost1
             // 
@@ -181,20 +159,45 @@
             this.elementHost1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.elementHost1.Name = "elementHost1";
             this.elementHost1.Padding = new System.Windows.Forms.Padding(12);
-            this.elementHost1.Size = new System.Drawing.Size(526, 457);
+            this.elementHost1.Size = new System.Drawing.Size(526, 448);
             this.elementHost1.TabIndex = 1;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.flexDisplayControl1;
+            // 
+            // ShowMolfile
+            // 
+            this.ShowMolfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShowMolfile.Location = new System.Drawing.Point(914, 527);
+            this.ShowMolfile.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ShowMolfile.Name = "ShowMolfile";
+            this.ShowMolfile.Size = new System.Drawing.Size(87, 29);
+            this.ShowMolfile.TabIndex = 14;
+            this.ShowMolfile.Text = "MolFile";
+            this.ShowMolfile.UseVisualStyleBackColor = true;
+            this.ShowMolfile.Click += new System.EventHandler(this.ShowMolfile_Click);
+            // 
+            // ErrorsAndWarnings
+            // 
+            this.ErrorsAndWarnings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ErrorsAndWarnings.Location = new System.Drawing.Point(14, 513);
+            this.ErrorsAndWarnings.Multiline = true;
+            this.ErrorsAndWarnings.Name = "ErrorsAndWarnings";
+            this.ErrorsAndWarnings.ReadOnly = true;
+            this.ErrorsAndWarnings.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.ErrorsAndWarnings.Size = new System.Drawing.Size(889, 81);
+            this.ErrorsAndWarnings.TabIndex = 15;
+            this.ErrorsAndWarnings.WordWrap = false;
             // 
             // SearchChEBI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1020, 580);
+            this.ClientSize = new System.Drawing.Size(1020, 606);
+            this.Controls.Add(this.ErrorsAndWarnings);
             this.Controls.Add(this.ShowMolfile);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.ImportButton);
-            this.Controls.Add(this.LabelInfo);
             this.Controls.Add(this.SearchFor);
             this.Controls.Add(this.SearchButton);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -217,7 +220,6 @@
 
         private System.Windows.Forms.TextBox SearchFor;
         private System.Windows.Forms.Button SearchButton;
-        private System.Windows.Forms.Label LabelInfo;
         private System.Windows.Forms.Button ImportButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView ResultsListView;
@@ -228,5 +230,6 @@
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         private Controls.FlexDisplayControl flexDisplayControl1;
         private System.Windows.Forms.Button ShowMolfile;
+        private System.Windows.Forms.TextBox ErrorsAndWarnings;
     }
 }

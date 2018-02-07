@@ -368,21 +368,58 @@ namespace Chem4Word.Model.Converters
 
             foreach (XElement atomElement in atomElements)
             {
-                var newAtom = CreateAtom(atomElement);
-                newAtoms[newAtom.Id] = newAtom; //store the reference to help us build bonds
-                m.Atoms.Add(newAtom);
+                List<string> messages = new List<string>();
+                var newAtom = CreateAtom(atomElement, out messages);
+                if (messages.Count > 0)
+                {
+                    m.Errors.AddRange(messages);
+                }
+
+                if (newAtom != null)
+                {
+                    newAtoms[newAtom.Id] = newAtom; //store the reference to help us build bonds
+                    m.Atoms.Add(newAtom);
+                }
             }
 
             foreach (XElement bondElement in bondElements)
             {
-                var newBond = CreateBond(bondElement);
+                string message = "";
+                var newBond = CreateBond(bondElement, out message);
+                if (!string.IsNullOrEmpty(message))
+                {
+                    m.Errors.Add(message);
+                }
 
                 string[] atomRefs = bondElement.Attribute("atomRefs2")?.Value.Split(' ');
                 if (atomRefs?.Length == 2)
                 {
-                    newBond.StartAtom = newAtoms[atomRefs[0]];
-                    newBond.EndAtom = newAtoms[atomRefs[1]];
-                    m.Bonds.Add(newBond);
+                    Atom startAtom = null;
+                    if (newAtoms.ContainsKey(atomRefs[0]))
+                    {
+                        startAtom = newAtoms[atomRefs[0]];
+                    }
+                    else
+                    {
+                        m.Errors.Add($"Can't find atom '{atomRefs[0]}' of {bondElement}");
+                    }
+
+                    Atom endAtom = null;
+                    if (newAtoms.ContainsKey(atomRefs[1]))
+                    {
+                        endAtom = newAtoms[atomRefs[1]];
+                    }
+                    else
+                    {
+                        m.Errors.Add($"Can't find atom '{atomRefs[1]}' of {bondElement}");
+                    }
+
+                    if (startAtom != null && endAtom != null)
+                    {
+                        newBond.StartAtom = startAtom;
+                        newBond.EndAtom = endAtom;
+                        m.Bonds.Add(newBond);
+                    }
                 }
             }
 
@@ -490,18 +527,39 @@ namespace Chem4Word.Model.Converters
         /// Creates an atom from its CML
         /// </summary>
         /// <param name="cmlElement"></param>
-        public Atom CreateAtom(XElement cmlElement)
+        public Atom CreateAtom(XElement cmlElement, out List<string> messages)
         {
+            Atom atom = null;
+
+            messages = new List<string>();
+            string message = "";
+
             string atomLabel = cmlElement.Attribute("id")?.Value;
-            Atom newAtom = new Atom
+            ElementBase e = GetChemicalElement(cmlElement, out message);
+            if (!string.IsNullOrEmpty(message))
             {
-                Id = atomLabel,
-                Position = GetPosn(cmlElement),
-                Element = GetChemicalElement(cmlElement),
-                FormalCharge = GetFormalCharge(cmlElement),
-                IsotopeNumber = GetIsotopeNumber(cmlElement)
-            };
-            return newAtom;
+                messages.Add(message);
+            }
+
+            if (e != null)
+            {
+                Point p = GetPosn(cmlElement, out message);
+                if (!string.IsNullOrEmpty(message))
+                {
+                    messages.Add(message);
+                }
+
+                atom = new Atom
+                {
+                    Id = atomLabel,
+                    Position = p,
+                    Element = e,
+                    FormalCharge = GetFormalCharge(cmlElement),
+                    IsotopeNumber = GetIsotopeNumber(cmlElement)
+                };
+            }
+
+            return atom;
         }
 
         private int? GetFormalCharge(XElement cmlElement)
@@ -537,26 +595,37 @@ namespace Chem4Word.Model.Converters
         /// </summary>
         /// <param name="cmlElement">XElement containing CML</param>
         /// <returns></returns>
-        private ElementBase GetChemicalElement(XElement cmlElement)
+        private ElementBase GetChemicalElement(XElement cmlElement, out string message)
         {
-            string symbol = cmlElement.Attribute("elementType").Value;
-
-            //try to return a chemical element from the Periodic Table
-            if (Globals.PeriodicTable.HasElement(symbol))
+            message = "";
+            XAttribute xa = cmlElement.Attribute("elementType");
+            if (xa != null)
             {
-                return Globals.PeriodicTable.Elements[symbol];
+                string symbol = xa.Value;
+
+                //try to return a chemical element from the Periodic Table
+                if (Globals.PeriodicTable.HasElement(symbol))
+                {
+                    return Globals.PeriodicTable.Elements[symbol];
+                }
+
+                //if that fails, see if it's a functional group
+                // ReSharper disable once InconsistentNaming
+                FunctionalGroup newFG;
+                if (FunctionalGroups.TryParse(symbol, out newFG))
+                {
+                    return newFG;
+                }
+
+                //if we got here then it went very wrong
+                message = $"Unrecognised element '{symbol}' in {cmlElement}";
+            }
+            else
+            {
+                message = $"cml attribute 'elementType' missing from {cmlElement}";
             }
 
-            //if that fails, see if it's a functional group
-            // ReSharper disable once InconsistentNaming
-            FunctionalGroup newFG;
-            if (FunctionalGroups.TryParse(symbol, out newFG))
-            {
-                return newFG;
-            }
-
-            //if we got here then it went very wrong
-            throw new ArgumentOutOfRangeException($"Unrecognised element '{symbol}'.");
+            return null;
         }
 
         /// <summary>
@@ -564,8 +633,9 @@ namespace Chem4Word.Model.Converters
         /// </summary>
         /// <param name="cmlElement">XElement representing the cmlElement CML</param>
         /// <returns>Point containing the cmlElement coordinates</returns>
-        private static Point GetPosn(XElement cmlElement)
+        private static Point GetPosn(XElement cmlElement, out string message)
         {
+            message = "";
             string symbol = cmlElement.Attribute("elementType")?.Value;
             string id = cmlElement.Attribute("id")?.Value;
 
@@ -593,7 +663,7 @@ namespace Chem4Word.Model.Converters
 
             if (!found)
             {
-                throw new ArgumentOutOfRangeException($"No atom co-ordinates found for '{symbol}' with id of '{id}'.");
+                message = $"No atom co-ordinates found for atom '{symbol}' with id of '{id}'.";
             }
             return result;
         }
@@ -603,8 +673,9 @@ namespace Chem4Word.Model.Converters
         /// </summary>
         /// <param name="cmlElement"></param>
         /// <returns></returns>
-        public Bond CreateBond(XElement cmlElement)
+        public Bond CreateBond(XElement cmlElement, out string message)
         {
+            message = "";
             Bond newBond = new Bond();
             BondDirection? dir = null;
 

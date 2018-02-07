@@ -36,7 +36,7 @@ namespace Chem4Word.Model.Converters
 
                 while (!reader.EndOfStream)
                 {
-                    string line = reader.ReadLine();
+                    string line = SdFileConverter.GetNextLine(reader); //reader.ReadLine();;
 
                     if (!string.IsNullOrEmpty(line))
                     {

@@ -32,6 +32,11 @@ namespace Chem4Word.Navigator
             Selection sel = app.Selection;
             ContentControl cc = null;
 
+            if (Globals.Chem4WordV3.SystemOptions == null)
+            {
+                Globals.Chem4WordV3.LoadOptions();
+            }
+
             bool allowed = true;
             string reason = "";
 

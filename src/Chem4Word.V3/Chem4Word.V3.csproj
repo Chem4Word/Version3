@@ -356,6 +356,12 @@
     <Compile Include="UI\EditLabels.Designer.cs">
       <DependentUpon>EditLabels.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ImportErrors.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ImportErrors.Designer.cs">
+      <DependentUpon>ImportErrors.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\UpdateFailure.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -470,6 +476,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\EditLabels.resx">
       <DependentUpon>EditLabels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ImportErrors.resx">
+      <DependentUpon>ImportErrors.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>

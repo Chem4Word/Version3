@@ -325,13 +325,26 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                 }
 
                 obj = ExecuteJavaScript("GetJSON");
-                string mol = obj.ToString();
-                if (!string.IsNullOrEmpty(mol))
+                if (obj != null)
                 {
-                    JToken molJson = JObject.Parse(obj.ToString());
-                    After_JSON = molJson.ToString();
+                    string mol = obj.ToString();
+                    if (!string.IsNullOrEmpty(mol))
+                    {
+                        JToken molJson = JObject.Parse(obj.ToString());
+                        After_JSON = molJson.ToString();
 
-                    DialogResult = DialogResult.OK;
+                        DialogResult = DialogResult.OK;
+                        Hide();
+                    }
+                    else
+                    {
+                        DialogResult = DialogResult.Cancel;
+                        Hide();
+                    }
+                }
+                else
+                {
+                    DialogResult = DialogResult.Cancel;
                     Hide();
                 }
             }

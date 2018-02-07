@@ -10,6 +10,7 @@ using Chem4Word.Core.UI.Forms;
 using Chem4Word.Model.Converters;
 using IChem4Word.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -242,8 +243,8 @@ namespace Chem4Word.Searcher.PubChemPlugIn
 
                             if (count > 0)
                             {
-                                // Set label on form
-                                LabelInfo.Text = $"Displaying {firstResult + 1} to {lastResult} of {resultsCount} results";
+                                // Set form title
+                                Text = $"Search PubChem - Showing {firstResult + 1} to {lastResult} [of {resultsCount}]";
                                 Refresh();
 
                                 var sb = new StringBuilder();
@@ -260,8 +261,8 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                             }
                             else
                             {
-                                // Set label on form
-                                LabelInfo.Text = "Sorry, no results were found.";
+                                // Set error box
+                                ErrorsAndWarnings.Text = "Sorry, no results were found.";
                             }
                         }
                     }
@@ -274,7 +275,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                 }
                 catch (Exception ex)
                 {
-                    LabelInfo.Text = "The operation has timed out".Equals(ex.Message)
+                    ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
                                         ? "Please try again later - the service has timed out"
                                         : ex.Message;
                 }
@@ -342,7 +343,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             }
             catch (Exception ex)
             {
-                LabelInfo.Text = "The operation has timed out".Equals(ex.Message)
+                ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
                                     ? "Please try again later - the service has timed out"
                                     : ex.Message;
             }
@@ -350,6 +351,8 @@ namespace Chem4Word.Searcher.PubChemPlugIn
 
         private string FetchStructure()
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             string result = lastSelected;
             ImportButton.Enabled = false;
 
@@ -386,10 +389,31 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                                 lastMolfile = new StreamReader(resStream).ReadToEnd();
                                 SdFileConverter sdFileConverter = new SdFileConverter();
                                 Model.Model model = sdFileConverter.Import(lastMolfile);
-                                CMLConverter cmlConverter = new CMLConverter();
-                                Cml = cmlConverter.Export(model);
-                                this.flexDisplayControl1.Chemistry = Cml;
-                                ImportButton.Enabled = true;
+                                this.flexDisplayControl1.Chemistry = model;
+                                if (model.AllWarnings.Count > 0 || model.AllErrors.Count > 0)
+                                {
+                                    Telemetry.Write(module, "Exception(Data)", lastMolfile);
+                                    List<string> lines = new List<string>();
+                                    if (model.AllErrors.Count > 0)
+                                    {
+                                        Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, model.AllErrors));
+                                        lines.Add("Errors(s)");
+                                        lines.AddRange(model.AllErrors);
+                                    }
+                                    if (model.AllWarnings.Count > 0)
+                                    {
+                                        Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, model.AllWarnings));
+                                        lines.Add("Warnings(s)");
+                                        lines.AddRange(model.AllWarnings);
+                                    }
+                                    ErrorsAndWarnings.Text = string.Join(Environment.NewLine, lines);
+                                }
+                                else
+                                {
+                                    CMLConverter cmlConverter = new CMLConverter();
+                                    Cml = cmlConverter.Export(model);
+                                    ImportButton.Enabled = true;
+                                }
                             }
                             result = pubchemId;
                         }
@@ -405,7 +429,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                     }
                     catch (Exception ex)
                     {
-                        LabelInfo.Text = "The operation has timed out".Equals(ex.Message)
+                        ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
                                             ? "Please try again later - the service has timed out"
                                             : ex.Message;
                     }

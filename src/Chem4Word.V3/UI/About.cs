@@ -134,7 +134,7 @@ namespace Chem4Word.UI
 
             try
             {
-                Process.Start("https://dotnetfoundation.org/chemistry-add-in-for-word");
+                Process.Start("https://dotnetfoundation.org/projects");
             }
             catch (Exception ex)
             {

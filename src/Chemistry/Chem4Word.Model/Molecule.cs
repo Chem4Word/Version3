@@ -63,6 +63,9 @@ namespace Chem4Word.Model
 
         public string ConciseFormula { get; set; }
 
+        public List<string> Warnings { get; set; }
+        public List<string> Errors { get; set; }
+
         #endregion Fields
 
         #region Constructors
@@ -82,6 +85,9 @@ namespace Chem4Word.Model
             Atoms.CollectionChanged += Atoms_CollectionChanged;
             Bonds.CollectionChanged += BondsOnCollectionChanged;
             Rings.CollectionChanged += RingsOnCollectionChanged;
+
+            Warnings = new List<string>();
+            Errors = new List<string>();
         }
 
         /// <summary>
