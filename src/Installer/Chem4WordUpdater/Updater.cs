@@ -37,9 +37,8 @@ namespace Chem4WordUpdater
             InitializeComponent();
             if (args.Length > 0)
             {
-                _downloadTarget = args[0];
                 bool ok = true;
-                string[] pp = _downloadTarget.ToLower().Split(new char[] { '/', '.', '-' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] pp = args[0].ToLower().Split(new char[] { '/', '.', '-' }, StringSplitOptions.RemoveEmptyEntries);
 
                 // Check 1 ensure that website is the source
                 if (!(pp[0].Equals("https:") || pp[0].Equals("http:")))
@@ -67,6 +66,7 @@ namespace Chem4WordUpdater
                 if (ok)
                 {
                     RegistryHelper.WriteAction("Update Started");
+                    _downloadTarget = args[0];
                     if (DownloadFile(_downloadTarget))
                     {
                         StartTimer();
@@ -74,8 +74,8 @@ namespace Chem4WordUpdater
                 }
                 else
                 {
-                    RegistryHelper.WriteAction($"Declined to download {_downloadTarget}");
-                    Information.Text = $"Error Staring download of Chem4Word Update; {Information.Text}";
+                    RegistryHelper.WriteAction($"Declined to download {args[0]}");
+                    Information.Text = $"Error staring download of Chem4Word update";
                 }
             }
             else
@@ -89,7 +89,14 @@ namespace Chem4WordUpdater
             RegistryHelper.WriteAction("Update was cancelled by User");
             timer1.Enabled = false;
             _userCancelledUpdate = true;
-            _webClient.CancelAsync();
+            try
+            {
+                _webClient.CancelAsync();
+            }
+            catch
+            {
+                // Do Nothing
+            }
             Close();
         }
 
