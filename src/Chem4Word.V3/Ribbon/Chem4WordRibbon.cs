@@ -339,6 +339,11 @@ namespace Chem4Word
             {
                 Settings optionsForm = new Settings();
 
+                if (Globals.Chem4WordV3.SystemOptions == null)
+                {
+                    Globals.Chem4WordV3.SystemOptions = new Options();
+                    Globals.Chem4WordV3.SystemOptions.RestoreDefaults();
+                }
                 Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
 
                 optionsForm.SystemOptions = tempOptions;

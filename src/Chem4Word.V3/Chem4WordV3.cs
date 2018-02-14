@@ -314,6 +314,7 @@ namespace Chem4Word
                 }
                 else
                 {
+                    SystemOptions = new Options();
                     SystemOptions.RestoreDefaults();
                     string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
                     // Check again before writing just in case two versions of word started at the same time
