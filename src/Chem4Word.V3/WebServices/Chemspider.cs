@@ -49,15 +49,15 @@ namespace Chem4Word.WebServices
             catch (WebException wex)
             {
                 Telemetry.Write(module, "Exception", wex.Message);
-                if (wex.Status != WebExceptionStatus.Timeout)
-                {
-                    Telemetry.Write(module, "Exception(Data)", molfile);
-                }
+                //if (wex.Status != WebExceptionStatus.Timeout)
+                //{
+                //    Telemetry.Write(module, "Exception(Data)", molfile);
+                //}
             }
             catch (Exception ex)
             {
                 Telemetry.Write(module, "Exception", ex.Message);
-                Telemetry.Write(module, "Exception(Data)", molfile);
+                //Telemetry.Write(module, "Exception(Data)", molfile);
             }
 
             TimeSpan ts = DateTime.Now - started;

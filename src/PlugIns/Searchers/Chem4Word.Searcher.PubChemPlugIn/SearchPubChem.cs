@@ -396,13 +396,13 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                                     List<string> lines = new List<string>();
                                     if (model.AllErrors.Count > 0)
                                     {
-                                        Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, model.AllErrors));
+                                        Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, model.AllErrors));
                                         lines.Add("Errors(s)");
                                         lines.AddRange(model.AllErrors);
                                     }
                                     if (model.AllWarnings.Count > 0)
                                     {
-                                        Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, model.AllWarnings));
+                                        Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, model.AllWarnings));
                                         lines.Add("Warnings(s)");
                                         lines.AddRange(model.AllWarnings);
                                     }

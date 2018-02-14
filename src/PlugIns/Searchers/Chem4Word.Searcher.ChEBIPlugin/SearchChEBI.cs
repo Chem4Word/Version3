@@ -348,13 +348,13 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                         List<string> lines = new List<string>();
                         if (_lastModel.AllErrors.Count > 0)
                         {
-                            Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, _lastModel.AllErrors));
+                            Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, _lastModel.AllErrors));
                             lines.Add("Errors(s)");
                             lines.AddRange(_lastModel.AllErrors);
                         }
                         if (_lastModel.AllWarnings.Count > 0)
                         {
-                            Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, _lastModel.AllWarnings));
+                            Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, _lastModel.AllWarnings));
                             lines.Add("Warnings(s)");
                             lines.AddRange(_lastModel.AllWarnings);
                         }

@@ -11,13 +11,18 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using IChem4Word.Contracts;
+using System;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML
 {
     public static class OoXmlFile
     {
+        private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+
         /// <summary>
         /// Create an OpenXml Word Document from the CML
         /// </summary>
@@ -27,8 +32,22 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         /// <returns></returns>
         public static string CreateFromCml(string cml, string guid, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             CMLConverter cc = new CMLConverter();
             Model.Model m = cc.Import(cml);
+            if (m.AllErrors.Count > 0 || m.AllWarnings.Count > 0)
+            {
+                if (m.AllErrors.Count > 0)
+                {
+                    telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, m.AllErrors));
+                }
+
+                if (m.AllWarnings.Count > 0)
+                {
+                    telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, m.AllWarnings));
+                }
+            }
 
             string fileName = Path.Combine(Path.GetTempPath(), $"Chem4Word-V3-{guid}.docx");
 

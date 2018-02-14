@@ -82,9 +82,10 @@
     <PreBuildEvent>if "$(ConfigurationName)" == "Vso-Ci" (
 rem
 ) else (
-if EXIST "$(SolutionDir)$(SolutionName)\Add-In\$(OutDir)PlugIns" (
-del "$(SolutionDir)$(SolutionName)\Add-In\$(OutDir)PlugIns\*.dll" /q
-del "$(SolutionDir)$(SolutionName)\Add-In\$(OutDir)PlugIns\*.pdb" /q
+if EXIST "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns" (
+del "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns\*.dll" /q
+del "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns\*.pdb" /q
+del "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns\*.config" /q
 ))</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

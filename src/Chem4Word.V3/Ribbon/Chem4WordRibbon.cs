@@ -19,20 +19,14 @@ using Chem4Word.WebServices;
 using IChem4Word.Contracts;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Ribbon;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
@@ -415,14 +409,14 @@ namespace Chem4Word
                             dr = DialogResult.OK;
                             if (model.AllErrors.Count > 0 || model.AllWarnings.Count > 0)
                             {
-                                Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", mol);
+                                //Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", mol);
                                 if (model.AllErrors.Count > 0)
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, model.AllErrors));
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, model.AllErrors));
                                 }
                                 if (model.AllWarnings.Count > 0)
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, model.AllWarnings));
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, model.AllWarnings));
                                 }
 
                                 ImportErrors f = new ImportErrors();
@@ -513,7 +507,7 @@ namespace Chem4Word
                             else
                             {
                                 Exception x = new Exception("Could not import file");
-                                Globals.Chem4WordV3.Telemetry.Write(module, "InvalidFile", mol);
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", mol);
                                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, x).ShowDialog();
                             }
                         }
@@ -2026,7 +2020,7 @@ namespace Chem4Word
                     string[] parts = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value.Split(' ');
                     string temp = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;
                     int idx = temp.IndexOf(" ");
-                    fa.VersionString = $"Chem4Word V3 {temp.Substring(idx+1)} [{fvi.FileVersion}]";
+                    fa.VersionString = $"Chem4Word V3 {temp.Substring(idx + 1)} [{fvi.FileVersion}]";
                 }
                 else
                 {
