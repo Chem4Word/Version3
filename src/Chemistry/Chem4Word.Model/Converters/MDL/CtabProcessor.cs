@@ -86,35 +86,39 @@ namespace Chem4Word.Model.Converters
             Counts result = new Counts();
 
             // Title
-            string title = reader.ReadLine();
+            string title = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
             if (!string.IsNullOrEmpty(title))
             {
                 if (title.StartsWith("$MDL"))
                 {
-                    throw new Exception("RGFiles currently not supported");
+                    _molecule.Errors.Add("RGFiles are currently not supported");
+                    throw new Exception("RGFiles are currently not supported");
                 }
                 if (title.StartsWith("$RXN"))
                 {
-                    throw new Exception("RXNFiles currently not supported");
+                    _molecule.Errors.Add("RXNFiles are currently not supported");
+                    throw new Exception("RXNFiles are currently not supported");
                 }
                 if (title.StartsWith("$RDFILE"))
                 {
-                    throw new Exception("RDFiles currently not supported");
+                    _molecule.Errors.Add("RDFiles are currently not supported");
+                    throw new Exception("RDFiles are currently not supported");
                 }
                 if (title.StartsWith("<XDfile>"))
                 {
-                    throw new Exception("XDFiles currently not supported");
+                    _molecule.Errors.Add("XDFiles are currently not supported");
+                    throw new Exception("XDFiles are currently not supported");
                 }
             }
 
             // Header
-            string header = reader.ReadLine();
+            string header = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
 
             // Comment
-            string comment = reader.ReadLine();
+            string comment = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
 
             // Counts
-            string counts = reader.ReadLine();
+            string counts = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
 
             try
             {
@@ -137,7 +141,7 @@ namespace Chem4Word.Model.Converters
 
             while (!reader.EndOfStream)
             {
-                string line = reader.ReadLine();
+                string line = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
                 if (!string.IsNullOrEmpty(line))
                 {
                     if (line.StartsWith(MDLConstants.M_CHG)
@@ -163,7 +167,7 @@ namespace Chem4Word.Model.Converters
             int idx = 0;
             while (!reader.EndOfStream && idx < atoms)
             {
-                string line = reader.ReadLine();
+                string line = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
                 if (!string.IsNullOrEmpty(line))
                 {
                     // create atom
@@ -186,7 +190,9 @@ namespace Chem4Word.Model.Converters
                     }
                     else
                     {
-                        throw new Exception(elType + " is not a valid element atomicSymbol");
+                        //throw new Exception(elType + " is not a valid element atomicSymbol");
+                        _molecule.Errors.Add($"{elType} at Line {SdFileConverter.LineNumber} is not a valid Element");
+                        _molecule.Errors.Add($"{line}");
                     }
 
                     // isotope
@@ -244,7 +250,7 @@ namespace Chem4Word.Model.Converters
             int idx = 0;
             while (!reader.EndOfStream && idx < bonds)
             {
-                string line = reader.ReadLine();
+                string line = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
                 if (!string.IsNullOrEmpty(line))
                 {
                     // create bond
@@ -254,7 +260,9 @@ namespace Chem4Word.Model.Converters
 
                     if (atom1 == null)
                     {
-                        throw new Exception("Cannot resolve atomNumber :" + atomNumber1 + ": in " + line);
+                        //throw new Exception("Cannot resolve atomNumber :" + atomNumber1 + ": in " + line);
+                        _molecule.Warnings.Add($"Cannot resolve atomNumber {atomNumber1} at line {SdFileConverter.LineNumber}");
+                        _molecule.Warnings.Add($"{line}");
                     }
 
                     int atomNumber2 = ParseInteger(line, 3, 3);
@@ -262,7 +270,9 @@ namespace Chem4Word.Model.Converters
 
                     if (atom2 == null)
                     {
-                        throw new Exception("Cannot resolve atomNumber :" + atomNumber2 + ": in " + line);
+                        //throw new Exception("Cannot resolve atomNumber :" + atomNumber2 + ": in " + line);
+                        _molecule.Warnings.Add($"Cannot resolve atomNumber {atomNumber2} at line {SdFileConverter.LineNumber}");
+                        _molecule.Warnings.Add($"{line}");
                     }
                     idx++;
 
@@ -272,7 +282,16 @@ namespace Chem4Word.Model.Converters
                     String order = GetSubString(line, 6, 3);
                     if (!string.IsNullOrEmpty(order))
                     {
-                        thisBond.Order = BondOrder(ParseInteger(order));
+                        int bondOrder = ParseInteger(order);
+                        if (bondOrder <= 4)
+                        {
+                            thisBond.Order = BondOrder(bondOrder);
+                        }
+                        else
+                        {
+                            thisBond.Order = BondOrder(bondOrder);
+                            _molecule.Warnings.Add($"Unsupported Bond Type of {order} at Line {SdFileConverter.LineNumber}");
+                        }
                     }
 
                     // stereo
@@ -490,7 +509,7 @@ namespace Chem4Word.Model.Converters
                     break;
 
                 case Bond.OrderAromatic:
-                    result = 0;
+                    result = 4;
                     break;
 
                 case Bond.OrderDouble:

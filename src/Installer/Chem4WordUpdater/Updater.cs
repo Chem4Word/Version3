@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
@@ -36,16 +37,50 @@ namespace Chem4WordUpdater
             InitializeComponent();
             if (args.Length > 0)
             {
-                RegistryHelper.WriteAction("Update Started");
-                _downloadTarget = args[0];
-                if (DownloadFile(_downloadTarget))
+                bool ok = true;
+                string[] pp = args[0].ToLower().Split(new char[] { '/', '.', '-' }, StringSplitOptions.RemoveEmptyEntries);
+
+                // Check 1 ensure that website is the source
+                if (!(pp[0].Equals("https:") || pp[0].Equals("http:")))
                 {
-                    StartTimer();
+                    ok = false;
+                }
+
+                if (ok)
+                {
+                    // Check 2 ensure that chem4word occours twice
+                    var x = pp.Where(p => p.Contains("chem4word")).Count();
+                    if (x != 2)
+                    {
+                        ok = false;
+                    }
+
+                    // Check 3 ensure that file is exe or msi
+                    if (!(pp.Last().Equals("msi") || pp.Last().Equals("exe")))
+                    {
+                        ok = false;
+                    }
+
+                }
+
+                if (ok)
+                {
+                    RegistryHelper.WriteAction("Update Started");
+                    _downloadTarget = args[0];
+                    if (DownloadFile(_downloadTarget))
+                    {
+                        StartTimer();
+                    }
                 }
                 else
                 {
-                    Information.Text = $"Error Staring download of Chem4Word Update; {Information.Text}";
+                    RegistryHelper.WriteAction($"Declined to download {args[0]}");
+                    Information.Text = $"Error staring download of Chem4Word update";
                 }
+            }
+            else
+            {
+                RegistryHelper.WriteAction("arg[0] is missing");
             }
         }
 
@@ -54,7 +89,14 @@ namespace Chem4WordUpdater
             RegistryHelper.WriteAction("Update was cancelled by User");
             timer1.Enabled = false;
             _userCancelledUpdate = true;
-            _webClient.CancelAsync();
+            try
+            {
+                _webClient.CancelAsync();
+            }
+            catch
+            {
+                // Do Nothing
+            }
             Close();
         }
 

@@ -131,7 +131,7 @@ namespace Chem4Word.Renderer.OoXmlV3
                 if (!File.Exists(result))
                 {
                     Telemetry.Write(module, "Exception", "Structure could not be rendered.");
-                    Telemetry.Write(module, "Exception(Data)", Cml);
+                    //Telemetry.Write(module, "Exception(Data)", Cml);
                     UserInteractions.WarnUser("Sorry this structure could not be rendered.");
                 }
 

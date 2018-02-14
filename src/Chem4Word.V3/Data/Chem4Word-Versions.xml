@@ -3,13 +3,29 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.15 Release 2</Number>
+    <IsBeta>false</IsBeta>
+    <Released>14-Feb-2018</Released>
+    <Changes>
+      <Change>Change .Net Foundation url</Change>
+      <Change>Implement Lazy Loading of Options and LibraryNames, should help when two instances of Word strated at the same time.</Change>
+      <Change>Show any import Errors and/or Warnings on Import and in searcher forms.</Change>
+      <Change>Add telemetry to Copy/Paste operation.</Change>
+      <Change>Add detection of COMExceptions in language independant manner.</Change>
+      <Change>Added field for email address on Error Report form.</Change>
+      <Change>Now handles MDL MOLfile bond types of 4 to 8.</Change>
+      <Change>Return DialogResult.Cancel (to abort edit), after failed fetch of structure from ChemDoodle Web editor.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.15.Release.2.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.14 Release 1</Number>
     <IsBeta>false</IsBeta>
     <Released>17-Jan-2018</Released>
     <Changes>
       <Change>Ensure structure to be rendered has at least one atom.</Change>
       <Change>Sign Chem4Word Updater</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.14.Release.1.msi</Url>
   </Version>

@@ -25,6 +25,7 @@ https://www.visualstudio.com/en-us/docs/git/command-prompt
 https://help.github.com/articles/dealing-with-line-endings/
 Force <CR><LF>
 --------------
+git config --global core.autocrlf true
 git config core.autocrlf true
 
 Using Beyond Compare 4 as differencing tool - Setup
@@ -44,3 +45,9 @@ git difftool -d --tool bc3 beta-11-bug-fixes functional-groups
 Auto Prune
 ----------
 git config fetch.prune true
+git config --global fetch.prune true
+
+Clear out files not in source control
+-------------------------------------
+git clean -dfx
+strace git clean -dfx

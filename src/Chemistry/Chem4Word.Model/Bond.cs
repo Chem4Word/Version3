@@ -209,7 +209,11 @@ namespace Chem4Word.Model
             {
                 return OrderTriple;
             }
-            return "";
+            if (val == 4)
+            {
+                return OrderAromatic;
+            }
+            return OrderZero;
         }
 
         public double? OrderValue

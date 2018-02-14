@@ -1,5 +1,5 @@
 # Set the default behavior, in case people don't have core.autocrlf set.
-* text eol=crlf
+* text=auto
 
 # Declare files that will always have CRLF line endings on checkout.
 *.sln text eol=crlf
@@ -13,6 +13,7 @@
 *.json text eol=crlf
 *.html text eol=crlf
 *.config text eol=crlf
+*.Config text eol=crlf
 *.settings text eol=crlf
 *.resx text eol=crlf
 *.wsdl text eol=crlf
@@ -20,10 +21,13 @@
 *.wxs text eol=crlf
 *.ps1 text eol=crlf
 *.cmd text eol=crlf
+*.msc text eol=crlf
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary
+*.bmp binary
 *.jpg binary
+*.gif binary
 *.pdf binary
 *.docx binary
 *.xlsx binary
@@ -33,4 +37,6 @@
 *.dll binary
 *.rtf binary
 *.pfx binary
+*.cer binary
+*.pvk binary
 Library.db binary

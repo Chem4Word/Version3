@@ -41,7 +41,7 @@
             this.PreviousButton = new System.Windows.Forms.Button();
             this.NextButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.LabelInfo = new System.Windows.Forms.Label();
+            this.ErrorsAndWarnings = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -54,7 +54,7 @@
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
             this.elementHost1.Name = "elementHost1";
-            this.elementHost1.Size = new System.Drawing.Size(390, 425);
+            this.elementHost1.Size = new System.Drawing.Size(390, 428);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.Child = this.flexDisplayControl1;
@@ -93,7 +93,7 @@
             this.Results.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.Results.Location = new System.Drawing.Point(0, 0);
             this.Results.Name = "Results";
-            this.Results.Size = new System.Drawing.Size(467, 425);
+            this.Results.Size = new System.Drawing.Size(467, 428);
             this.Results.TabIndex = 3;
             this.Results.UseCompatibleStateImageBehavior = false;
             this.Results.View = System.Windows.Forms.View.Details;
@@ -118,7 +118,7 @@
             // ImportButton
             // 
             this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImportButton.Location = new System.Drawing.Point(790, 477);
+            this.ImportButton.Location = new System.Drawing.Point(790, 525);
             this.ImportButton.Name = "ImportButton";
             this.ImportButton.Size = new System.Drawing.Size(87, 29);
             this.ImportButton.TabIndex = 4;
@@ -131,9 +131,9 @@
             this.PreviousButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.PreviousButton.Image = global::Chem4Word.Searcher.PubChemPlugIn.Properties.Resources.ArrowLeft;
             this.PreviousButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.PreviousButton.Location = new System.Drawing.Point(12, 477);
+            this.PreviousButton.Location = new System.Drawing.Point(12, 525);
             this.PreviousButton.Name = "PreviousButton";
-            this.PreviousButton.Size = new System.Drawing.Size(87, 29);
+            this.PreviousButton.Size = new System.Drawing.Size(75, 29);
             this.PreviousButton.TabIndex = 5;
             this.PreviousButton.Text = "Prev";
             this.PreviousButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -145,9 +145,9 @@
             this.NextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.NextButton.Image = global::Chem4Word.Searcher.PubChemPlugIn.Properties.Resources.ArrowRight;
             this.NextButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.NextButton.Location = new System.Drawing.Point(115, 477);
+            this.NextButton.Location = new System.Drawing.Point(13, 490);
             this.NextButton.Name = "NextButton";
-            this.NextButton.Size = new System.Drawing.Size(87, 29);
+            this.NextButton.Size = new System.Drawing.Size(74, 29);
             this.NextButton.TabIndex = 6;
             this.NextButton.Text = "Next";
             this.NextButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -173,26 +173,29 @@
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.Control;
             this.splitContainer1.Panel2.Controls.Add(this.elementHost1);
-            this.splitContainer1.Size = new System.Drawing.Size(865, 427);
+            this.splitContainer1.Size = new System.Drawing.Size(865, 430);
             this.splitContainer1.SplitterDistance = 469;
             this.splitContainer1.TabIndex = 7;
             // 
-            // LabelInfo
+            // ErrorsAndWarnings
             // 
-            this.LabelInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.LabelInfo.AutoSize = true;
-            this.LabelInfo.Location = new System.Drawing.Point(221, 483);
-            this.LabelInfo.Name = "LabelInfo";
-            this.LabelInfo.Size = new System.Drawing.Size(20, 16);
-            this.LabelInfo.TabIndex = 8;
-            this.LabelInfo.Text = "...";
+            this.ErrorsAndWarnings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ErrorsAndWarnings.Location = new System.Drawing.Point(93, 490);
+            this.ErrorsAndWarnings.Multiline = true;
+            this.ErrorsAndWarnings.Name = "ErrorsAndWarnings";
+            this.ErrorsAndWarnings.ReadOnly = true;
+            this.ErrorsAndWarnings.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.ErrorsAndWarnings.Size = new System.Drawing.Size(690, 64);
+            this.ErrorsAndWarnings.TabIndex = 8;
+            this.ErrorsAndWarnings.WordWrap = false;
             // 
             // SearchPubChem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(889, 518);
-            this.Controls.Add(this.LabelInfo);
+            this.ClientSize = new System.Drawing.Size(889, 566);
+            this.Controls.Add(this.ErrorsAndWarnings);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.NextButton);
             this.Controls.Add(this.PreviousButton);
@@ -228,6 +231,6 @@
         private System.Windows.Forms.Button PreviousButton;
         private System.Windows.Forms.Button NextButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Label LabelInfo;
+        private System.Windows.Forms.TextBox ErrorsAndWarnings;
     }
 }

@@ -41,3 +41,22 @@ Office 2016
 	Click-To-Run
 		Windows 32-bit: C:\Program Files\Microsoft Office 16\ClientX86\Root\Office16\
 		Windows 64-bit: C:\Program Files (x86)\Microsoft Office 16\ClientX64\Root\Office16\
+
+Pre-Build Events
+Chem4Word.Contracts.csproj
+if "$(ConfigurationName)" == "Vso-Ci" (
+rem
+) else (
+if EXIST "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns" (
+del "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns\*.dll" /q
+del "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns\*.pdb" /q
+del "$(SolutionDir)\Chem4Word.V3\$(OutDir)\PlugIns\*.config" /q
+))
+
+Post Build Events
+All Plug-Ins
+if "$(ConfigurationName)" == "Vso-Ci" (
+rem
+) else (
+xcopy "$(TargetDir)$(TargetName).*" "$(SolutionDir)\Chem4Word.V3\$(OutDir)PlugIns\" /C /f /r /y /i
+)

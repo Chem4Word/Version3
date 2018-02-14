@@ -93,7 +93,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     break;
 
                 case Bond.OrderPartial12:
-                    //case "A":
+                case Bond.OrderAromatic:
                     BondLine a = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id);
                     m_BondLines.Add(a);
                     BondLine a1 = a.GetParallel(-BondOffset());

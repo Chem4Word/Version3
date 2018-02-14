@@ -284,6 +284,9 @@ namespace Chem4Word.Helpers
                                 }
                                 else
                                 {
+                                    // Default to overall concise formula
+                                    cci.Type = "c0";
+
                                     #region Find new style 1D code
 
                                     foreach (var molecule in target.Model.Molecules)

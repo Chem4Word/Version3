@@ -37,6 +37,14 @@ namespace Chem4Word.Model.Converters
             _propertyTypes = JsonConvert.DeserializeObject<List<PropertyType>>(resource);
         }
 
+        public static int LineNumber;
+
+        public static string GetNextLine(StreamReader sr)
+        {
+            LineNumber++;
+            return sr.ReadLine();
+        }
+
         public Model Import(object data)
         {
             Model model = null;
@@ -47,6 +55,7 @@ namespace Chem4Word.Model.Converters
                 if (!dataAsString.Contains("v3000") && !dataAsString.Contains("V3000"))
                 {
                     model = new Model();
+                    LineNumber = 0;
                     // Convert incoming string to a stream
                     MemoryStream stream = new MemoryStream();
                     StreamWriter writer = new StreamWriter(stream);

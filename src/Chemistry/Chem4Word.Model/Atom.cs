@@ -211,25 +211,32 @@ namespace Chem4Word.Model
         {
             get
             {
-                if (Element is FunctionalGroup)
+                if (Element != null)
                 {
-                    return ((FunctionalGroup)Element).Symbol;
-                }
-                else
-                {
-                    if (Element.Symbol == "C")
+                    if (Element is FunctionalGroup)
                     {
-                        if (ShowSymbol | Degree <= 1)
-                        {
-                            return "C";
-                        }
-
-                        return "";
+                        return ((FunctionalGroup)Element).Symbol;
                     }
                     else
                     {
-                        return Element.Symbol;
+                        if (Element.Symbol == "C")
+                        {
+                            if (ShowSymbol | Degree <= 1)
+                            {
+                                return "C";
+                            }
+
+                            return "";
+                        }
+                        else
+                        {
+                            return Element.Symbol;
+                        }
                     }
+                }
+                else
+                {
+                    return "";
                 }
             }
         }
