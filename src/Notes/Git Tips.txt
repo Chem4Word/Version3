@@ -45,3 +45,9 @@ git difftool -d --tool bc3 beta-11-bug-fixes functional-groups
 Auto Prune
 ----------
 git config fetch.prune true
+git config --global fetch.prune true
+
+Clear out files not in source control
+-------------------------------------
+git clean -dfx
+strace git clean -dfx
