@@ -85,8 +85,11 @@ namespace Chem4Word.Navigator
                     string guidString = chem.CustomXmlPartGuid;
                     string bookmarkName = "C4W_" + guidString;
 
+                    if (Globals.Chem4WordV3.SystemOptions == null)
+                    {
+                        Globals.Chem4WordV3.LoadOptions();
+                    }
                     Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-
                     IChem4WordRenderer renderer =
                         Globals.Chem4WordV3.GetRendererPlugIn(
                             Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);

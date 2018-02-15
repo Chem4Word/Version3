@@ -39,6 +39,10 @@ namespace Chem4Word.WebServices
                 //Log.Debug("Calling ChemSpider WebService");
                 Telemetry.Write(module, "Verbose", "Calling WebService");
                 InChI i = new InChI();
+                if (Globals.Chem4WordV3.SystemOptions == null)
+                {
+                    Globals.Chem4WordV3.LoadOptions();
+                }
                 i.Url = Globals.Chem4WordV3.SystemOptions.ChemSpiderWebServiceUri + "InChI.asmx";
                 i.UserAgent = "Chem4Word";
                 i.Timeout = 5000;
@@ -80,6 +84,10 @@ namespace Chem4Word.WebServices
                 {
                     //Log.Debug("Getting Chemspider RDF Page");
                     Telemetry.Write(module, "Verbose", "Calling WebService");
+                    if (Globals.Chem4WordV3.SystemOptions == null)
+                    {
+                        Globals.Chem4WordV3.LoadOptions();
+                    }
                     string url = Globals.Chem4WordV3.SystemOptions.ChemSpiderRdfServiceUri + inchiKey;
                     HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                     request.Timeout = 5000;
@@ -179,6 +187,10 @@ namespace Chem4Word.WebServices
                 {
                     //Log.Debug("Getting Chemspider RDF Page");
                     Telemetry.Write(module, "Verbose", "Calling WebService");
+                    if (Globals.Chem4WordV3.SystemOptions == null)
+                    {
+                        Globals.Chem4WordV3.LoadOptions();
+                    }
                     string url = Globals.Chem4WordV3.SystemOptions.ChemSpiderRdfServiceUri + inchiKey;
                     HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                     request.Timeout = 5000;
