@@ -3,12 +3,27 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.17 Release 4</Number>
+    <IsBeta>false</IsBeta>
+    <Released>28-Feb-2018</Released>
+    <Changes>
+      <Change></Change>
+      <Change></Change>
+      <Change></Change>
+      <Change></Change>
+      <Change>Add support for legacy symbols for Elements 113 to 118.</Change>
+      <Change>Trap errors during close of document.</Change>
+      <Change>Fix Lazy Loading of Library Database.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.17.Release.4.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.16 Release 3</Number>
     <IsBeta>false</IsBeta>
     <Released>15-Feb-2018</Released>
     <Changes>
       <Change>Emergency Fix for Lazy Loading bug.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.16.Release.3.msi</Url>
   </Version>
