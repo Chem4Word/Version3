@@ -20,8 +20,8 @@ R15,Residue,0,FALSE,#808080,0,0,0,0,,,,,,,
 R16,Residue,0,FALSE,#808080,0,0,0,0,,,,,,,
 X,Halogen,0,FALSE,#808080,0,0,0,0,,,,,,,
 D,Deuterium,1,FALSE,#808080,0,0,0,2,,,,,,,
-T,Tritium,1,FALSE,#808080,0,0,1,3,,,,,,,
 H,Hydrogen,1,FALSE,#808080,0.31,1.2,1,1.00794,1,1|2|3,1,1,0,0,non_metal
+T,Tritium,1,FALSE,#808080,0,0,1,3,,,,,,,
 He,Helium,2,FALSE,#D9FFFF,0.28,1.4,0,4.002602,0,3|4,18,1,0,17,noble_gas
 Li,Lithium,3,FALSE,#CC80FF,1.28,1.82,1,6.941,1,,1,2,1,0,alkali_metal
 Be,Beryllium,4,FALSE,#C2FF00,0.96,0,2,9.012182,2,,2,2,1,1,alkaline_earth_metal
@@ -134,8 +134,14 @@ Ds,Darmstadtium,110,FALSE,#000000,0,0,0,-268,,,10,,6,9,transition_metal
 Rg,Roentgenium,111,FALSE,#000000,0,0,0,-269,,,,,6,10,transition_metal
 Cn,Copernicium,112,FALSE,#000000,0,0,0,0,,,,,6,11,transition_metal
 Nh,Nihonium,113,FALSE,#000000,0,0,0,0,,,,,6,12,other
+Uut,Ununtrium,113,FALSE,#000000,0,0,0,0,,,,,6,12,other
 Fl,Flerovium,114,FALSE,#000000,0,0,0,0,,,,,6,13,other
+Uuq,Ununquadium,114,FALSE,#000000,0,0,0,0,,,,,6,13,other
 Mc,Moscovium,115,FALSE,#000000,0,0,0,0,,,,,6,14,other
+Uup,Ununpentium,115,FALSE,#000000,0,0,0,0,,,,,6,14,other
 Lv,Livermorium,116,FALSE,#000000,0,0,0,0,,,,,6,15,other
+Uuh,Ununhexium,116,FALSE,#000000,0,0,0,0,,,,,6,15,other
 Ts,Tennessine,117,FALSE,#000000,0,0,0,0,,,,,6,16,other
+Uus,Ununseptium,117,FALSE,#000000,0,0,0,0,,,,,6,16,other
 Og,Oganesson,118,FALSE,#000000,0,0,0,0,,,,,6,17,other
+Uuo,Ununoctium,118,FALSE,#000000,0,0,0,0,,,,,6,17,other
