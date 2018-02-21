@@ -961,6 +961,7 @@ namespace Chem4Word
                 {
                     LoadOptions();
                 }
+
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
                 UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
@@ -1275,6 +1276,7 @@ namespace Chem4Word
                 {
                     LoadOptions();
                 }
+
                 new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
                 UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
@@ -1467,13 +1469,13 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }
@@ -1519,13 +1521,13 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }
@@ -1559,25 +1561,39 @@ namespace Chem4Word
 
                 foreach (OfficeTools.CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                 {
-                    if (app.ActiveWindow == taskPane.Window)
+                    try
                     {
-                        custTaskPane = taskPane;
+                        if (app.ActiveWindow == taskPane.Window)
+                        {
+                            custTaskPane = taskPane;
+                        }
+                    }
+                    catch
+                    {
+                        // Nothing much we can do here!
                     }
                 }
                 if (custTaskPane != null)
                 {
-                    Globals.Chem4WordV3.CustomTaskPanes.Remove(custTaskPane);
+                    try
+                    {
+                        Globals.Chem4WordV3.CustomTaskPanes.Remove(custTaskPane);
+                    }
+                    catch
+                    {
+                        // Nothing much we can do here!
+                    }
                 }
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }
@@ -2101,13 +2117,13 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }
@@ -2132,13 +2148,13 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }
@@ -2171,13 +2187,13 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }
@@ -2212,13 +2228,13 @@ namespace Chem4Word
             }
             catch (Exception ex)
             {
-                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
-                UpdateHelper.ClearSettings();
                 if (SystemOptions == null)
                 {
                     LoadOptions();
                 }
 
+                new ReportError(Telemetry, WordTopLeft, module, ex).ShowDialog();
+                UpdateHelper.ClearSettings();
                 UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
             }
         }

@@ -2091,6 +2091,7 @@ namespace Chem4Word
             {
                 Globals.Chem4WordV3.LoadOptions();
             }
+
             int behind = UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             if (behind == 0)
             {
