@@ -1602,12 +1602,6 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-
-            if (Globals.Chem4WordV3.LibraryNames == null)
-            {
-                Globals.Chem4WordV3.LoadLibrary();
-            }
-
             BeforeButtonChecks(sender as RibbonButton);
 
             try
@@ -1633,11 +1627,12 @@ namespace Chem4Word
                         {
                             string cml = customXmlPart.XML;
                             m = new CMLConverter().Import(cml);
-                            LibraryModel.ImportCml(cml);
                             if (Globals.Chem4WordV3.LibraryNames == null)
                             {
                                 Globals.Chem4WordV3.LoadLibrary();
                             }
+                            LibraryModel.ImportCml(cml);
+
                         }
 
                         CustomTaskPane custTaskPane = null;
