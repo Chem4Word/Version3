@@ -446,13 +446,17 @@ namespace Chem4Word.UI
             }
         }
 
-        private void OnGalleryImportClick(object sender, EventArgs e)
+        private void OnLibraryImportClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
             try
             {
+                if (Globals.Chem4WordV3.LibraryNames == null)
+                {
+                    Globals.Chem4WordV3.LoadLibrary();
+                }
                 int fileCount = 0;
                 StringBuilder sb;
 
@@ -565,6 +569,11 @@ namespace Chem4Word.UI
 
             try
             {
+                if (Globals.Chem4WordV3.LibraryNames == null)
+                {
+                    Globals.Chem4WordV3.LoadLibrary();
+                }
+
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine("This will delete all the structures from the Library");
                 sb.AppendLine("It will not delete any tags.");

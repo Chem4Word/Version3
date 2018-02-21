@@ -537,7 +537,7 @@ namespace Chem4Word.UI
             this.importGalleryButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.importGalleryButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.importGalleryButton.UseVisualStyleBackColor = true;
-            this.importGalleryButton.Click += new System.EventHandler(this.OnGalleryImportClick);
+            this.importGalleryButton.Click += new System.EventHandler(this.OnLibraryImportClick);
             // 
             // tabMaintenance
             // 
