@@ -55,6 +55,61 @@ namespace Chem4Word.Helpers
             return result;
         }
 
+        private static string DecodeContentControlType(Word.WdContentControlType? contentControlType)
+        {
+            // Date from https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.wdcontentcontroltype(v=office.14).aspx
+            string result = "";
+
+            switch (contentControlType)
+            {
+                case Word.WdContentControlType.wdContentControlRichText:
+                    result = "Rich-Text";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlText:
+                    result = "Text";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlBuildingBlockGallery:
+                    result = "Picture";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlComboBox:
+                    result = "ComboBox";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlDropdownList:
+                    result = "Drop-Down List";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlPicture:
+                    result = "Building Block Gallery";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlDate:
+                    result = "Date";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlGroup:
+                    result = "Group";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlCheckBox:
+                    result = "CheckBox";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlRepeatingSection:
+                    result = "Repeating Section";
+                    break;
+
+                default:
+                    result = contentControlType.ToString();
+                    break;
+            }
+
+            return result;
+        }
+
         public static int LegacyChemistryCount(Word.Document doc)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -63,6 +118,8 @@ namespace Chem4Word.Helpers
 
             foreach (Word.ContentControl cc in doc.ContentControls)
             {
+                Word.WdContentControlType? contentControlType = cc.Type;
+                Debug.WriteLine($"{cc.ID} {cc.Range.Start} {DecodeContentControlType(contentControlType)} {cc.Tag}");
                 try
                 {
                     if (cc.Title != null && cc.Title.Equals(Constants.LegacyContentControlTitle))
