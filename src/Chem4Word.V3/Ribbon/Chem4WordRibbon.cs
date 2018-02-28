@@ -1632,7 +1632,7 @@ namespace Chem4Word
                                 Globals.Chem4WordV3.LoadLibrary();
                             }
                             LibraryModel.ImportCml(cml);
-
+                            Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
                         }
 
                         CustomTaskPane custTaskPane = null;
