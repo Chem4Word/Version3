@@ -13,6 +13,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -143,6 +145,20 @@ namespace Chem4Word.Helpers
 
             int sel = doc.Application.Selection.Range.Start;
             Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+            try
+            {
+                string extension = doc.FullName.Split('.').Last();
+                string guid = Guid.NewGuid().ToString("N");
+                string yyyymmdd = DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
+                string destination = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath, $"Chem4Word-{yyyymmdd}-{guid}.{extension}");
+                File.Copy(doc.FullName, destination);
+            }
+            catch (Exception ex)
+            {
+                //
+                Debug.WriteLine(ex.Message);
+            }
 
             List<UpgradeTarget> targets = CollectData(doc);
             int upgradedCCs = 0;
