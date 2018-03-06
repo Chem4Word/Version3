@@ -213,7 +213,65 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 #endregion Determine NESW
 
-                #region Step 4 - Add Implicit H if required
+                #region Step 4 - Add Charge if required
+
+                if (iCharge != 0)
+                {
+                    TtfCharacter hydrogenCharacter = m_TtfCharacterSet['H'];
+
+                    char sign = '.';
+                    TtfCharacter chargeSignCharacter = null;
+                    if (iCharge >= 1)
+                    {
+                        sign = '+';
+                        chargeSignCharacter = m_TtfCharacterSet['+'];
+                    }
+                    else if (iCharge <= 1)
+                    {
+                        sign = '-';
+                        chargeSignCharacter = m_TtfCharacterSet['-'];
+                    }
+
+                    if (iAbsCharge > 1)
+                    {
+                        string digits = iAbsCharge.ToString();
+                        // Insert digits
+                        foreach (char chr in digits)
+                        {
+                            TtfCharacter chargeValueCharacter = m_TtfCharacterSet[chr];
+                            thisCharacterPosition = GetCharacterPosition(chargeCursorPosition, chargeValueCharacter);
+
+                            // Raise the superscript Character
+                            thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(chargeValueCharacter.Height * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
+
+                            AtomLabelCharacter alcc = new AtomLabelCharacter(thisCharacterPosition, chargeValueCharacter, atomColour, chr, atom.Id);
+                            alcc.IsSubScript = true;
+                            m_AtomLabelCharacters.Add(alcc);
+
+                            // Move to next Character position
+                            chargeCursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(chargeValueCharacter.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
+                            cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(chargeValueCharacter.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
+                        }
+                    }
+
+                    // Insert sign at raised position
+                    thisCharacterPosition = GetCharacterPosition(chargeCursorPosition, chargeSignCharacter);
+                    thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(hydrogenCharacter.Height * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
+                    thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(chargeSignCharacter.Height / 2 * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
+
+                    AtomLabelCharacter alcs = new AtomLabelCharacter(thisCharacterPosition, chargeSignCharacter, atomColour, sign, atom.Id);
+                    alcs.IsSubScript = true;
+                    m_AtomLabelCharacters.Add(alcs);
+
+                    if (iAbsCharge != 0)
+                    {
+                        cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(chargeSignCharacter.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
+                    }
+                }
+
+                #endregion Step 4 - Add Charge if required
+
+                #region Step 5 - Add Implicit H if required
 
                 if (options.ShowHydrogens && implicitHCount > 0)
                 {
@@ -265,7 +323,14 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                                 }
                                 else
                                 {
-                                    cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(-(hydrogenCharacter.IncrementX * 2.5)), 0);
+                                    if (iAbsCharge == 0)
+                                    {
+                                        cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(-(hydrogenCharacter.IncrementX * 2.5)), 0);
+                                    }
+                                    else
+                                    {
+                                        cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(-((hydrogenCharacter.IncrementX * 2 + implicitValueCharacter.IncrementX * 1.5))), 0);
+                                    }
                                 }
                                 break;
                         }
@@ -313,59 +378,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                     #endregion Add number
                 }
 
-                #endregion Step 4 - Add Implicit H if required
-
-                #region Step 5 - Add Charge if required
-
-                if (iCharge != 0)
-                {
-                    TtfCharacter hydrogenCharacter = m_TtfCharacterSet['H'];
-
-                    char sign = '.';
-                    TtfCharacter chargeSignCharacter = null;
-                    if (iCharge >= 1)
-                    {
-                        sign = '+';
-                        chargeSignCharacter = m_TtfCharacterSet['+'];
-                    }
-                    else if (iCharge <= 1)
-                    {
-                        sign = '-';
-                        chargeSignCharacter = m_TtfCharacterSet['-'];
-                    }
-
-                    if (iAbsCharge > 1)
-                    {
-                        string digits = iAbsCharge.ToString();
-                        // Insert digits
-                        foreach (char chr in digits)
-                        {
-                            TtfCharacter chargeValueCharacter = m_TtfCharacterSet[chr];
-                            thisCharacterPosition = GetCharacterPosition(chargeCursorPosition, chargeValueCharacter);
-
-                            // Raise the superscript Character
-                            thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(chargeValueCharacter.Height * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
-
-                            AtomLabelCharacter alcc = new AtomLabelCharacter(thisCharacterPosition, chargeValueCharacter, atomColour, chr, atom.Id);
-                            alcc.IsSubScript = true;
-                            m_AtomLabelCharacters.Add(alcc);
-
-                            // Move to next Character position
-                            chargeCursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(chargeValueCharacter.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
-                        }
-                    }
-
-                    // Insert sign at raised position
-                    thisCharacterPosition = GetCharacterPosition(chargeCursorPosition, chargeSignCharacter);
-                    thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(hydrogenCharacter.Height * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
-                    thisCharacterPosition.Offset(0, -OoXmlHelper.ScaleCsTtfToCml(chargeSignCharacter.Height / 2 * OoXmlHelper.CS_SUPERSCRIPT_RAISE_FACTOR));
-
-                    AtomLabelCharacter alcs = new AtomLabelCharacter(thisCharacterPosition, chargeSignCharacter, atomColour, sign, atom.Id);
-                    alcs.IsSubScript = true;
-                    m_AtomLabelCharacters.Add(alcs);
-                }
-
-                #endregion Step 5 - Add Charge if required
+                #endregion Step 5 - Add Implicit H if required
 
                 #region Step 6 Add IsoTope Number if required
 
