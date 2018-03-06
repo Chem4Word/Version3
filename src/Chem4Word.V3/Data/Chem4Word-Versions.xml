@@ -5,12 +5,11 @@
   <Version>
     <Number>3.0.17 Release 4</Number>
     <IsBeta>false</IsBeta>
-    <Released>28-Feb-2018</Released>
+    <Released>06-Mar-2018</Released>
     <Changes>
-      <Change></Change>
-      <Change></Change>
-      <Change></Change>
-      <Change></Change>
+      <Change>Add button (under Help) to show why 'chemistry' ribbon buttons are all disabled.</Change>
+      <Change>Backup of document before conversion of legacy Content Controls.</Change>
+      <Change>Better positioning of charges when implicit hydrogens present.</Change>
       <Change>Add support for legacy symbols for Elements 113 to 118.</Change>
       <Change>Trap errors during close of document.</Change>
       <Change>Fix Lazy Loading of Library Database.</Change>

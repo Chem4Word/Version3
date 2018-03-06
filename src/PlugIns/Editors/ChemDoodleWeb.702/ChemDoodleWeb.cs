@@ -407,7 +407,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", "Triggered");
+                    //Telemetry.Write(module, "Action", "Triggered");
                     if (chkToggleShowHydrogens.Checked)
                     {
                         ExecuteJavaScript("ShowHydrogens", true);
@@ -433,7 +433,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
 
             try
             {
-                Telemetry.Write(module, "Action", "Triggered");
+                //Telemetry.Write(module, "Action", "Triggered");
                 if (_eventsEnabled)
                 {
                     ExecuteJavaScript("AddExplicitHydrogens");
@@ -453,7 +453,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", "Triggered");
+                    //Telemetry.Write(module, "Action", "Triggered");
                     ExecuteJavaScript("RemoveHydrogens");
                 }
             }
@@ -470,7 +470,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", $"Triggered; New value {nudBondLength.Value}");
+                    //Telemetry.Write(module, "Action", $"Triggered; New value {nudBondLength.Value}");
                     ExecuteJavaScript("ReScale", nudBondLength.Value);
                     AverageBondLength = (double)nudBondLength.Value;
                 }
@@ -488,7 +488,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", "Triggered");
+                    //Telemetry.Write(module, "Action", "Triggered");
                     ExecuteJavaScript("Flip");
                 }
             }
@@ -506,7 +506,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", "Triggered");
+                    //Telemetry.Write(module, "Action", "Triggered");
                     ExecuteJavaScript("Mirror");
                 }
             }
@@ -581,7 +581,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", "Triggered");
+                    //Telemetry.Write(module, "Action", "Triggered");
                     if (chkColouredAtoms.Checked)
                     {
                         UserOptions.ColouredAtoms = true;
@@ -609,7 +609,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             {
                 if (_eventsEnabled)
                 {
-                    Telemetry.Write(module, "Action", "Triggered");
+                    //Telemetry.Write(module, "Action", "Triggered");
                     if (chkToggleShowCarbons.Checked)
                     {
                         UserOptions.ShowCarbons = true;

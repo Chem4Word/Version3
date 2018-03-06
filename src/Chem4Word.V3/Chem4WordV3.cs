@@ -1718,9 +1718,19 @@ namespace Chem4Word
 
                         if (allowed)
                         {
-                            if (sel.StoryType != Word.WdStoryType.wdMainTextStory)
+                            try
                             {
-                                ChemistryProhibitedReason = $"selection is in a '{DecodeStoryType(sel.StoryType)}' Story.";
+                                Word.WdStoryType story = sel.StoryType;
+                                if (story != Word.WdStoryType.wdMainTextStory)
+                                {
+                                    ChemistryProhibitedReason = $"selection is in a '{DecodeStoryType(story)}' story.";
+                                    allowed = false;
+                                }
+                            }
+                            catch
+                            {
+                                // ComException 0x80004005
+                                ChemistryProhibitedReason = $"can't determine which part of the story the selection point is.";
                                 allowed = false;
                             }
                         }
@@ -1818,7 +1828,7 @@ namespace Chem4Word
                         break;
                     case "0x800A11FD":
                         ChemistryAllowed = false;
-                        ChemistryProhibitedReason = "formatting changes are not permitted in the current selection.";
+                        ChemistryProhibitedReason = "changes are not permitted in the current selection.";
                         break;
                     case "0x800A1759":
                         ChemistryAllowed = false;
