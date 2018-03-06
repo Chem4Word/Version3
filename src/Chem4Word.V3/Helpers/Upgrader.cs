@@ -150,13 +150,13 @@ namespace Chem4Word.Helpers
             {
                 string extension = doc.FullName.Split('.').Last();
                 string guid = Guid.NewGuid().ToString("N");
-                string yyyymmdd = DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
-                string destination = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath, $"Chem4Word-{yyyymmdd}-{guid}.{extension}");
+                string timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
+                string destination = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath, "Backups", $"Chem4Word-{timestamp}-{guid}.{extension}");
                 File.Copy(doc.FullName, destination);
             }
             catch (Exception ex)
             {
-                //
+                // Nothing much we can do here :-(
                 Debug.WriteLine(ex.Message);
             }
 
