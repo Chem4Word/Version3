@@ -2146,5 +2146,23 @@ namespace Chem4Word
             }
             AfterButtonChecks(sender as RibbonButton);
         }
+
+        private void ButtonsDisabled_Click(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            BeforeButtonChecks(sender as RibbonButton);
+            try
+            {
+                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                UserInteractions.InformUser($"Chem4Word buttons are disabled because {Globals.Chem4WordV3.ChemistryProhibitedReason}");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
     }
 }

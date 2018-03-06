@@ -105,7 +105,7 @@
     <IsBeta>true</IsBeta>
     <Released>21-Nov-2017</Released>
     <Changes>
-      <Change>Handle documents in compatability mode.</Change>
+      <Change>Handle documents in compatibility mode.</Change>
       <Change>Handle error in setting text of 1D labels.</Change>
       <Change>Make config files self healing, when options are added or removed.</Change>
     </Changes>

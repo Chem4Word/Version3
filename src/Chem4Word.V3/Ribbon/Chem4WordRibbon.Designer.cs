@@ -55,6 +55,7 @@ namespace Chem4Word
             this.ChangeOptions = this.Factory.CreateRibbonButton();
             this.HelpMenu = this.Factory.CreateRibbonMenu();
             this.ShowAbout = this.Factory.CreateRibbonButton();
+            this.ButtonsDisabled = this.Factory.CreateRibbonButton();
             this.ReadManual = this.Factory.CreateRibbonButton();
             this.YouTube = this.Factory.CreateRibbonButton();
             this.CheckNow = this.Factory.CreateRibbonButton();
@@ -244,10 +245,11 @@ namespace Chem4Word
             this.HelpMenu.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.HelpMenu.Image = global::Chem4Word.Properties.Resources.Help;
             this.HelpMenu.Items.Add(this.ShowAbout);
+            this.HelpMenu.Items.Add(this.ShowHome);
+            this.HelpMenu.Items.Add(this.CheckNow);
             this.HelpMenu.Items.Add(this.ReadManual);
             this.HelpMenu.Items.Add(this.YouTube);
-            this.HelpMenu.Items.Add(this.CheckNow);
-            this.HelpMenu.Items.Add(this.ShowHome);
+            this.HelpMenu.Items.Add(this.ButtonsDisabled);
             this.HelpMenu.Label = "Help";
             this.HelpMenu.Name = "HelpMenu";
             this.HelpMenu.ScreenTip = "Get Chem4Word Help";
@@ -260,6 +262,14 @@ namespace Chem4Word
             this.ShowAbout.Name = "ShowAbout";
             this.ShowAbout.ShowImage = true;
             this.ShowAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.OnShowAboutClick);
+            // 
+            // ButtonsDisabled
+            // 
+            this.ButtonsDisabled.Image = global::Chem4Word.Properties.Resources.Locked;
+            this.ButtonsDisabled.Label = "Buttons Disabled ...";
+            this.ButtonsDisabled.Name = "ButtonsDisabled";
+            this.ButtonsDisabled.ShowImage = true;
+            this.ButtonsDisabled.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ButtonsDisabled_Click);
             // 
             // ReadManual
             // 
@@ -350,6 +360,7 @@ namespace Chem4Word
         internal Microsoft.Office.Tools.Ribbon.RibbonButton CheckNow;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton ReadManual;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton YouTube;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton ButtonsDisabled;
     }
 
     partial class ThisRibbonCollection
