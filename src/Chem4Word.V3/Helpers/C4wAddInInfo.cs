@@ -63,6 +63,10 @@ namespace Chem4Word.Helpers
             {
                 Directory.CreateDirectory(ProductAppDataPath);
             }
+            if (!Directory.Exists($@"{ProductAppDataPath}\Backups"))
+            {
+                Directory.CreateDirectory($@"{ProductAppDataPath}\Backups");
+            }
             if (!Directory.Exists($@"{ProductAppDataPath}\Telemetry"))
             {
                 Directory.CreateDirectory($@"{ProductAppDataPath}\Telemetry");

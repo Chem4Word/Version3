@@ -981,10 +981,12 @@ namespace Chem4Word
                             {
                                 Dictionary<string, string> synonyms = new Dictionary<string, string>();
 
-                                List<Bond> nullBonds = mol.Bonds.Where(b => b.OrderValue.Value < 1).ToList();
-                                if (nullBonds.Any())
+                                // ChemSpider InChiKey (1.03) generator does not support 0 bonds or Elements > 104
+                                List<Bond> nullBonds = mol.Bonds.Where(b => b.OrderValue != null && b.OrderValue.Value < 1).ToList();
+                                int max = mol.Atoms.Max(x => ((Element)x.Element).AtomicNumber);
+                                if (nullBonds.Any() || max >= 104)
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Not sending structure to ChemSpider as it has bonds with order of less than one");
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to ChemSpider; Null Bonds: {nullBonds?.Count} Max Atomic Number: {max}");
                                     synonyms.Add(Constants.ChemspiderInchiKeyName, "Not Requested");
                                 }
                                 else
@@ -1600,12 +1602,6 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-
-            if (Globals.Chem4WordV3.LibraryNames == null)
-            {
-                Globals.Chem4WordV3.LoadLibrary();
-            }
-
             BeforeButtonChecks(sender as RibbonButton);
 
             try
@@ -1631,6 +1627,10 @@ namespace Chem4Word
                         {
                             string cml = customXmlPart.XML;
                             m = new CMLConverter().Import(cml);
+                            if (Globals.Chem4WordV3.LibraryNames == null)
+                            {
+                                Globals.Chem4WordV3.LoadLibrary();
+                            }
                             LibraryModel.ImportCml(cml);
                             Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
                         }
@@ -2091,6 +2091,7 @@ namespace Chem4Word
             {
                 Globals.Chem4WordV3.LoadOptions();
             }
+
             int behind = UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
             if (behind == 0)
             {
@@ -2138,6 +2139,24 @@ namespace Chem4Word
             try
             {
                 Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
+        }
+
+        private void ButtonsDisabled_Click(object sender, RibbonControlEventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
+
+            BeforeButtonChecks(sender as RibbonButton);
+            try
+            {
+                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                UserInteractions.InformUser($"Chem4Word buttons are disabled because {Globals.Chem4WordV3.ChemistryProhibitedReason}");
             }
             catch (Exception ex)
             {

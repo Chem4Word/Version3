@@ -28,33 +28,44 @@ namespace Chem4Word.Library
             get
             {
                 string path = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProgramDataPath, Constants.LibraryFileName);
-                var conn = new SQLiteConnection($"Data Source={path};");
+                // Source https://www.connectionstrings.com/sqlite/
+                var conn = new SQLiteConnection($"Data Source={path};Synchronous=Full");
                 return conn.OpenAndReturn();
             }
         }
 
         public static Dictionary<string, int> GetLibraryNames()
         {
-            Dictionary<string, int> allNames = new Dictionary<string, int>();
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            SQLiteDataReader names = LibraryModel.GetAllNames();
-            while (names.Read())
+            try
             {
-                string name = names["Name"] as string;
-                if (!string.IsNullOrEmpty(name) && name.Length > 3)
+                Dictionary<string, int> allNames = new Dictionary<string, int>();
+
+                SQLiteDataReader names = LibraryModel.GetAllNames();
+                while (names.Read())
                 {
-                    int id = int.Parse(names["ChemistryId"].ToString());
-                    if (!allNames.ContainsKey(name))
+                    string name = names["Name"] as string;
+                    if (!string.IsNullOrEmpty(name) && name.Length > 3)
                     {
-                        allNames.Add(name, id);
+                        int id = int.Parse(names["ChemistryId"].ToString());
+                        if (!allNames.ContainsKey(name))
+                        {
+                            allNames.Add(name, id);
+                        }
                     }
                 }
+
+                names.Close();
+                names.Dispose();
+
+                return allNames;
             }
-
-            names.Close();
-            names.Dispose();
-
-            return allNames;
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                return null;
+            }
         }
 
         public static SQLiteDataReader GetAllChemistryWithTags()

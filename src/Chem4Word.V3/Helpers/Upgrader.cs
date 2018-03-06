@@ -13,6 +13,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -55,6 +57,61 @@ namespace Chem4Word.Helpers
             return result;
         }
 
+        private static string DecodeContentControlType(Word.WdContentControlType? contentControlType)
+        {
+            // Date from https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.wdcontentcontroltype(v=office.14).aspx
+            string result = "";
+
+            switch (contentControlType)
+            {
+                case Word.WdContentControlType.wdContentControlRichText:
+                    result = "Rich-Text";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlText:
+                    result = "Text";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlBuildingBlockGallery:
+                    result = "Picture";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlComboBox:
+                    result = "ComboBox";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlDropdownList:
+                    result = "Drop-Down List";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlPicture:
+                    result = "Building Block Gallery";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlDate:
+                    result = "Date";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlGroup:
+                    result = "Group";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlCheckBox:
+                    result = "CheckBox";
+                    break;
+
+                case Word.WdContentControlType.wdContentControlRepeatingSection:
+                    result = "Repeating Section";
+                    break;
+
+                default:
+                    result = contentControlType.ToString();
+                    break;
+            }
+
+            return result;
+        }
+
         public static int LegacyChemistryCount(Word.Document doc)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -63,6 +120,8 @@ namespace Chem4Word.Helpers
 
             foreach (Word.ContentControl cc in doc.ContentControls)
             {
+                Word.WdContentControlType? contentControlType = cc.Type;
+                Debug.WriteLine($"{cc.ID} {cc.Range.Start} {DecodeContentControlType(contentControlType)} {cc.Tag}");
                 try
                 {
                     if (cc.Title != null && cc.Title.Equals(Constants.LegacyContentControlTitle))
@@ -86,6 +145,20 @@ namespace Chem4Word.Helpers
 
             int sel = doc.Application.Selection.Range.Start;
             Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+            try
+            {
+                string extension = doc.FullName.Split('.').Last();
+                string guid = Guid.NewGuid().ToString("N");
+                string timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
+                string destination = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath, "Backups", $"Chem4Word-{timestamp}-{guid}.{extension}");
+                File.Copy(doc.FullName, destination);
+            }
+            catch (Exception ex)
+            {
+                // Nothing much we can do here :-(
+                Debug.WriteLine(ex.Message);
+            }
 
             List<UpgradeTarget> targets = CollectData(doc);
             int upgradedCCs = 0;

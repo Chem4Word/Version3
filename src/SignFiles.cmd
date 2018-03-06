@@ -1,6 +1,6 @@
 @echo off
 
-set release=Chem4Word-Setup.3.0.16.Release.3.msi
+set release=Chem4Word-Setup.3.0.17.Release.4.msi
 set working=C:\Temp
 
 copy Tools\DigiCertUtil.exe %working%

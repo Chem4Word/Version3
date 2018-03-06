@@ -167,7 +167,7 @@ namespace Chem4Word.Properties {
         ///      &lt;cml:atom id=&quot;a0&quot; elementType=&quot;C&quot; x2=&quot;329.5&quot; y2=&quot;182.5&quot; /&gt;
         ///    &lt;/cml:atomArray&gt;
         ///    &lt;cml:bondArray&gt;&lt;/cml:bondArray&gt;
-        ///    &lt;cml:formula concise=&quot;C 1 H 4&quot;&gt;&lt;/cml:formula&gt; [rest of string was truncated]&quot;;.
+        ///    &lt;cml:formula concise=&quot;C 1 H 4&quot;&gt;&lt;/cml:fo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EmptyStructure_cml {
             get {
@@ -361,6 +361,16 @@ namespace Chem4Word.Properties {
         internal static System.Drawing.Bitmap LabelValid {
             get {
                 object obj = ResourceManager.GetObject("LabelValid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Locked {
+            get {
+                object obj = ResourceManager.GetObject("Locked", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

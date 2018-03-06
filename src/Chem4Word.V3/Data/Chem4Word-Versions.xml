@@ -3,12 +3,26 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.17 Release 4</Number>
+    <IsBeta>false</IsBeta>
+    <Released>06-Mar-2018</Released>
+    <Changes>
+      <Change>Add button (under Help) to show why 'chemistry' ribbon buttons are all disabled.</Change>
+      <Change>Backup of document before conversion of legacy Content Controls.</Change>
+      <Change>Better positioning of charges when implicit hydrogens present.</Change>
+      <Change>Add support for legacy symbols for Elements 113 to 118.</Change>
+      <Change>Trap errors during close of document.</Change>
+      <Change>Fix Lazy Loading of Library Database.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.17.Release.4.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.16 Release 3</Number>
     <IsBeta>false</IsBeta>
     <Released>15-Feb-2018</Released>
     <Changes>
       <Change>Emergency Fix for Lazy Loading bug.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.16.Release.3.msi</Url>
   </Version>
@@ -90,7 +104,7 @@
     <IsBeta>true</IsBeta>
     <Released>21-Nov-2017</Released>
     <Changes>
-      <Change>Handle documents in compatability mode.</Change>
+      <Change>Handle documents in compatibility mode.</Change>
       <Change>Handle error in setting text of 1D labels.</Change>
       <Change>Make config files self healing, when options are added or removed.</Change>
     </Changes>
