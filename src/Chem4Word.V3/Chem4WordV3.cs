@@ -1693,6 +1693,19 @@ namespace Chem4Word
                             ChemistryProhibitedReason = "document is in compatibility mode.";
                         }
 
+                        try
+                        {
+                            if (doc.CoAuthoring.Conflicts.Count > 0)
+                            {
+                                allowed = false;
+                                ChemistryProhibitedReason = "document has conflicts which require resolving.";
+                            }
+                        }
+                        catch
+                        {
+                            // CoAuthoring or Conflicts may not be initialised!
+                        }
+
                         Word.Selection sel = Application.Selection;
                         if (sel.OMaths.Count > 0)
                         {
