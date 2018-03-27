@@ -77,8 +77,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiX.CustomAction", "Install
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{3699F2D4-9F6F-4983-8006-33687EC7E2DB}"
 	ProjectSection(SolutionItems) = preProject
+		DeepClean.ps1 = DeepClean.ps1
 		Tools\Install-Dev-Certificate.ps1 = Tools\Install-Dev-Certificate.ps1
 		SetAssemblyVersion.ps1 = SetAssemblyVersion.ps1
+		SignFiles.cmd = SignFiles.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{1B81DF60-6A34-4B5B-86F3-24ED42587450}"
