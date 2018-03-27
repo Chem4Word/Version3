@@ -38,13 +38,22 @@ namespace Chem4Word.Navigator
 
             try
             {
-                if (ActiveDocument?.ActiveWindow?.Selection != null)
+                if (Globals.Chem4WordV3.EventsEnabled)
                 {
-                    NavigatorSupport.InsertChemistry(false, ActiveDocument.Application, FlexDisplay);
+                    Globals.Chem4WordV3.EventsEnabled = false;
+                    if (Globals.Chem4WordV3.Application.Documents.Count > 0)
+                    {
+                        if (ActiveDocument?.ActiveWindow?.Selection != null)
+                        {
+                            NavigatorSupport.InsertChemistry(false, ActiveDocument.Application, FlexDisplay);
+                        }
+                    }
+                    Globals.Chem4WordV3.EventsEnabled = true;
                 }
             }
             catch (Exception ex)
             {
+                Globals.Chem4WordV3.EventsEnabled = true;
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
@@ -56,13 +65,22 @@ namespace Chem4Word.Navigator
 
             try
             {
-                if (ActiveDocument?.ActiveWindow?.Selection != null)
+                if (Globals.Chem4WordV3.EventsEnabled)
                 {
-                    NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                    Globals.Chem4WordV3.EventsEnabled = false;
+                    if (Globals.Chem4WordV3.Application.Documents.Count > 0)
+                    {
+                        if (ActiveDocument?.ActiveWindow?.Selection != null)
+                        {
+                            NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                        }
+                    }
+                    Globals.Chem4WordV3.EventsEnabled = true;
                 }
             }
             catch (Exception ex)
             {
+                Globals.Chem4WordV3.EventsEnabled = true;
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }

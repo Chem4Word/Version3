@@ -54,14 +54,23 @@ namespace Chem4Word.Library
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
             try
             {
-                ActiveDocument = Globals.Chem4WordV3.Application.ActiveDocument;
-                if (ActiveDocument?.ActiveWindow?.Selection != null)
+                if (Globals.Chem4WordV3.EventsEnabled)
                 {
-                    Navigator.NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                    Globals.Chem4WordV3.EventsEnabled = false;
+                    if (Globals.Chem4WordV3.Application.Documents.Count > 0)
+                    {
+                        ActiveDocument = Globals.Chem4WordV3.Application.ActiveDocument;
+                        if (ActiveDocument?.ActiveWindow?.Selection != null)
+                        {
+                            Navigator.NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                        }
+                    }
+                    Globals.Chem4WordV3.EventsEnabled = true;
                 }
             }
             catch (Exception ex)
             {
+                Globals.Chem4WordV3.EventsEnabled = true;
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
