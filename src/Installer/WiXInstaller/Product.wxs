@@ -259,11 +259,6 @@
       <Component Id="System.Data.SQLite.Linq">
         <File Id="System.Data.SQLite.Linq.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.Linq.dll" />
       </Component>
-      <!-- WPF ToolKit -->
-      <Component Id="DotNetProjects.Input.Toolkit">
-        <File Id="DotNetProjects.Input.Toolkit.dll" Source="$(var.Chem4Word.V3.TargetDir)DotNetProjects.Input.Toolkit.dll" />
-        <File Id="DotNetProjects.Input.Toolkit.pdb" Source="$(var.Chem4Word.V3.TargetDir)DotNetProjects.Input.Toolkit.pdb" />
-      </Component>
       <Component Id="System.Spatial">
         <File Id="System.Spatial.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Spatial.dll" />
         <File Id="System.Spatial.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Spatial.xml" />
