@@ -13,7 +13,7 @@
       <Change>Add support for legacy symbols for Elements 113 to 118.</Change>
       <Change>Trap errors during close of document.</Change>
       <Change>Fix Lazy Loading of Library Database.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://github.com/Chem4Word/Version3/releases/latest if you encounter any difficulties updating.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.17.Release.4.msi</Url>
   </Version>
