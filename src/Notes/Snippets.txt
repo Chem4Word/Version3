@@ -92,3 +92,11 @@ app.config removals
     </plugins>
 </Chem4Word>
 -->
+
+// Disable double Click
+if (Globals.Chem4WordV3.EventsEnabled)
+{
+    Globals.Chem4WordV3.EventsEnabled = false;
+
+    Globals.Chem4WordV3.EventsEnabled = true;
+}

@@ -80,127 +80,134 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-
-            Word.Application app = Globals.Chem4WordV3.Application;
-            Word.Document doc = app.ActiveDocument;
-            Word.ContentControl cc = null;
-
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                RibbonButton b = sender as RibbonButton;
-                Debug.WriteLine($"User chose {b.Tag}");
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                Word.Selection sel = app.Selection;
+                BeforeButtonChecks(sender as RibbonButton);
 
-                CustomXMLPart customXmlPart = null;
+                Word.Application app = Globals.Chem4WordV3.Application;
+                Word.Document doc = app.ActiveDocument;
+                Word.ContentControl cc = null;
 
-                if (sel.ContentControls.Count > 0)
+                try
                 {
-                    cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
-                    if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                    RibbonButton b = sender as RibbonButton;
+                    Debug.WriteLine($"User chose {b.Tag}");
+
+                    Word.Selection sel = app.Selection;
+
+                    CustomXMLPart customXmlPart = null;
+
+                    if (sel.ContentControls.Count > 0)
                     {
-                        string chosenState = b.Tag.ToString();
-                        string prefix = "2D";
-                        string guid = cc?.Tag;
-                        if (guid.Contains(":"))
+                        cc = sel.ContentControls[1];
+                        //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
-                            prefix = cc?.Tag.Split(':')[0];
-                            guid = cc?.Tag.Split(':')[1];
-                        }
-
-                        if (!prefix.Equals(chosenState))
-                        {
-                            // Stop Screen Updating and Disable Document Event Handlers
-                            app.ScreenUpdating = false;
-                            Globals.Chem4WordV3.DisableDocumentEvents(doc);
-
-                            // Erase old CC
-                            cc.LockContents = false;
-                            cc.Range.Delete();
-                            cc.Delete();
-
-                            customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(guid, app.ActiveDocument);
-                            if (customXmlPart != null)
+                            string chosenState = b.Tag.ToString();
+                            string prefix = "2D";
+                            string guid = cc?.Tag;
+                            if (guid.Contains(":"))
                             {
-                                CMLConverter conv = new CMLConverter();
-                                Model.Model model = conv.Import(customXmlPart.XML);
+                                prefix = cc?.Tag.Split(':')[0];
+                                guid = cc?.Tag.Split(':')[1];
+                            }
 
-                                if (chosenState.Equals("2D"))
+                            if (!prefix.Equals(chosenState))
+                            {
+                                // Stop Screen Updating and Disable Document Event Handlers
+                                app.ScreenUpdating = false;
+                                Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+                                // Erase old CC
+                                cc.LockContents = false;
+                                cc.Range.Delete();
+                                cc.Delete();
+
+                                customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(guid, app.ActiveDocument);
+                                if (customXmlPart != null)
                                 {
-                                    string bookmarkName = "C4W_" + guid;
-                                    if (Globals.Chem4WordV3.SystemOptions == null)
-                                    {
-                                        Globals.Chem4WordV3.LoadOptions();
-                                    }
-                                    Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-                                    IChem4WordRenderer renderer =
-                                        Globals.Chem4WordV3.GetRendererPlugIn(
-                                            Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+                                    CMLConverter conv = new CMLConverter();
+                                    Model.Model model = conv.Import(customXmlPart.XML);
 
-                                    if (renderer != null)
+                                    if (chosenState.Equals("2D"))
                                     {
-                                        renderer.Properties = new Dictionary<string, string>();
-                                        renderer.Properties.Add("Guid", guid);
-                                        renderer.Cml = customXmlPart.XML;
-
-                                        string tempfileName = renderer.Render();
-                                        if (File.Exists(tempfileName))
+                                        string bookmarkName = "C4W_" + guid;
+                                        if (Globals.Chem4WordV3.SystemOptions == null)
                                         {
-                                            cc = Insert2D(doc, tempfileName, bookmarkName, guid);
+                                            Globals.Chem4WordV3.LoadOptions();
+                                        }
+                                        Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
+                                        IChem4WordRenderer renderer =
+                                            Globals.Chem4WordV3.GetRendererPlugIn(
+                                                Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+
+                                        if (renderer != null)
+                                        {
+                                            renderer.Properties = new Dictionary<string, string>();
+                                            renderer.Properties.Add("Guid", guid);
+                                            renderer.Cml = customXmlPart.XML;
+
+                                            string tempfileName = renderer.Render();
+                                            if (File.Exists(tempfileName))
+                                            {
+                                                cc = Insert2D(doc, tempfileName, bookmarkName, guid);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            cc = null;
                                         }
                                     }
                                     else
                                     {
-                                        cc = null;
-                                    }
-                                }
-                                else
-                                {
-                                    bool isFormula = false;
-                                    string text;
-                                    if (chosenState.Equals("c0"))
-                                    {
-                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Render structure as Overall ConciseFormula");
-                                        text = model.ConciseFormula;
-                                        isFormula = true;
-                                    }
-                                    else
-                                    {
-                                        string source;
-                                        text = GetInlineText(model, chosenState, ref isFormula, out source);
-                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Render structure as {source}");
-                                    }
+                                        bool isFormula = false;
+                                        string text;
+                                        if (chosenState.Equals("c0"))
+                                        {
+                                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Render structure as Overall ConciseFormula");
+                                            text = model.ConciseFormula;
+                                            isFormula = true;
+                                        }
+                                        else
+                                        {
+                                            string source;
+                                            text = GetInlineText(model, chosenState, ref isFormula, out source);
+                                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Render structure as {source}");
+                                        }
 
-                                    cc = Insert1D(app, doc, text, isFormula, chosenState + ":" + guid);
+                                        cc = Insert1D(app, doc, text, isFormula, chosenState + ":" + guid);
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        // Get out of here
-                        return;
+                        else
+                        {
+                            // Get out of here
+                            return;
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            finally
-            {
-                // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
-                app.ScreenUpdating = true;
-                Globals.Chem4WordV3.EnableDocumentEvents(doc);
-
-                if (cc != null)
+                catch (Exception ex)
                 {
-                    app.Selection.SetRange(cc.Range.End, cc.Range.End);
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
                 }
+                finally
+                {
+                    // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
+                    app.ScreenUpdating = true;
+                    Globals.Chem4WordV3.EnableDocumentEvents(doc);
+
+                    if (cc != null)
+                    {
+                        app.Selection.SetRange(cc.Range.End, cc.Range.End);
+                    }
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void AddDynamicMenuItems()
@@ -327,9 +334,16 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            PerformEdit();
-            AfterButtonChecks(sender as RibbonButton);
+            if (Globals.Chem4WordV3.EventsEnabled)
+            {
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                PerformEdit();
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
+            }
         }
 
         private void OnOptionsClick(object sender, RibbonControlEventArgs e)
@@ -337,31 +351,38 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Settings optionsForm = new Settings();
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                if (Globals.Chem4WordV3.SystemOptions == null)
+                BeforeButtonChecks(sender as RibbonButton);
+                try
                 {
-                    Globals.Chem4WordV3.LoadOptions();
+                    Settings optionsForm = new Settings();
+
+                    if (Globals.Chem4WordV3.SystemOptions == null)
+                    {
+                        Globals.Chem4WordV3.LoadOptions();
+                    }
+                    Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
+
+                    optionsForm.SystemOptions = tempOptions;
+                    optionsForm.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+
+                    DialogResult dr = optionsForm.ShowDialog();
+                    if (dr == DialogResult.OK)
+                    {
+                        Globals.Chem4WordV3.SystemOptions = tempOptions.Clone();
+                    }
                 }
-                Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
-
-                optionsForm.SystemOptions = tempOptions;
-                optionsForm.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-
-                DialogResult dr = optionsForm.ShowDialog();
-                if (dr == DialogResult.OK)
+                catch (Exception ex)
                 {
-                    Globals.Chem4WordV3.SystemOptions = tempOptions.Clone();
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
                 }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         public static void InsertFile()
@@ -1243,39 +1264,46 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Word.Application app = Globals.Chem4WordV3.Application;
-                Word.Selection sel = app.Selection;
-                Word.ContentControl cc = null;
-                CustomXMLPart customXmlPart = null;
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                if (sel.ContentControls.Count > 0)
+                BeforeButtonChecks(sender as RibbonButton);
+
+                try
                 {
-                    cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
-                    if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                    Word.Application app = Globals.Chem4WordV3.Application;
+                    Word.Selection sel = app.Selection;
+                    Word.ContentControl cc = null;
+                    CustomXMLPart customXmlPart = null;
+
+                    if (sel.ContentControls.Count > 0)
                     {
-                        Word.Application app1 = Globals.Chem4WordV3.Application;
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
-                        if (customXmlPart != null)
+                        cc = sel.ContentControls[1];
+                        //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
-                            XmlViewer viewer = new XmlViewer();
-                            viewer.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-                            viewer.XmlString = customXmlPart.XML;
-                            viewer.ShowDialog();
+                            Word.Application app1 = Globals.Chem4WordV3.Application;
+                            customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
+                            if (customXmlPart != null)
+                            {
+                                XmlViewer viewer = new XmlViewer();
+                                viewer.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+                                viewer.XmlString = customXmlPart.XML;
+                                viewer.ShowDialog();
+                            }
+                            app.Selection.SetRange(cc.Range.Start, cc.Range.End);
                         }
-                        app.Selection.SetRange(cc.Range.Start, cc.Range.End);
                     }
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnImportClick(object sender, RibbonControlEventArgs e)
@@ -1283,9 +1311,16 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            InsertFile();
-            AfterButtonChecks(sender as RibbonButton);
+            if (Globals.Chem4WordV3.EventsEnabled)
+            {
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                InsertFile();
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
+            }
         }
 
         private void OnExportClick(object sender, RibbonControlEventArgs e)
@@ -1293,9 +1328,16 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            ExportFile();
-            AfterButtonChecks(sender as RibbonButton);
+            if (Globals.Chem4WordV3.EventsEnabled)
+            {
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                ExportFile();
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
+            }
         }
 
         private void ExportFile()
@@ -1369,57 +1411,64 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Word.Application app = Globals.Chem4WordV3.Application;
-                Word.Document doc = app.ActiveDocument;
-                Word.Selection sel = app.Selection;
-                Word.ContentControl cc = null;
-                CustomXMLPart customXmlPart = null;
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                if (sel.ContentControls.Count > 0)
+                BeforeButtonChecks(sender as RibbonButton);
+
+                try
                 {
-                    cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
-                    if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                    Word.Application app = Globals.Chem4WordV3.Application;
+                    Word.Document doc = app.ActiveDocument;
+                    Word.Selection sel = app.Selection;
+                    Word.ContentControl cc = null;
+                    CustomXMLPart customXmlPart = null;
+
+                    if (sel.ContentControls.Count > 0)
                     {
-                        Word.Application app1 = Globals.Chem4WordV3.Application;
-                        string guid = CustomXmlPartHelper.GuidFromTag(cc?.Tag);
-
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
-                        if (customXmlPart != null)
+                        cc = sel.ContentControls[1];
+                        //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
-                            string cml = customXmlPart.XML;
+                            Word.Application app1 = Globals.Chem4WordV3.Application;
+                            string guid = CustomXmlPartHelper.GuidFromTag(cc?.Tag);
 
-                            EditLabels f = new EditLabels();
-                            f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-                            f.Cml = cml;
-                            f.Used1D = GetUsed1D(doc, guid);
-                            f.Message = "";
-
-                            DialogResult dr = f.ShowDialog();
-                            if (dr == DialogResult.OK)
+                            customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc?.Tag, app1.ActiveDocument);
+                            if (customXmlPart != null)
                             {
-                                customXmlPart.Delete();
-                                doc.CustomXMLParts.Add(f.Cml);
+                                string cml = customXmlPart.XML;
 
-                                CMLConverter conv = new CMLConverter();
-                                Model.Model model = conv.Import(f.Cml);
-                                UpdateStructures(app, doc, model, guid, "");
+                                EditLabels f = new EditLabels();
+                                f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+                                f.Cml = cml;
+                                f.Used1D = GetUsed1D(doc, guid);
+                                f.Message = "";
 
-                                app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                DialogResult dr = f.ShowDialog();
+                                if (dr == DialogResult.OK)
+                                {
+                                    customXmlPart.Delete();
+                                    doc.CustomXMLParts.Add(f.Cml);
+
+                                    CMLConverter conv = new CMLConverter();
+                                    Model.Model model = conv.Import(f.Cml);
+                                    UpdateStructures(app, doc, model, guid, "");
+
+                                    app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnViewAsItemsLoading(object sender, RibbonControlEventArgs e)
@@ -1477,124 +1526,132 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                RibbonButton clicked = sender as RibbonButton;
-                if (clicked != null)
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                try
                 {
-                    IChem4WordSearcher searcher = Globals.Chem4WordV3.GetSearcherPlugIn(clicked.Tag);
-                    if (searcher != null)
+                    RibbonButton clicked = sender as RibbonButton;
+                    if (clicked != null)
                     {
-                        DialogResult dr = searcher.Search();
-                        if (dr == DialogResult.OK)
+                        IChem4WordSearcher searcher = Globals.Chem4WordV3.GetSearcherPlugIn(clicked.Tag);
+                        if (searcher != null)
                         {
-                            Word.Application app = Globals.Chem4WordV3.Application;
-                            Word.Document doc = app.ActiveDocument;
-                            Word.Selection sel = app.Selection;
-                            Word.ContentControl cc = null;
-
-                            Model.Model model = null;
-                            CMLConverter cmlConverter = new CMLConverter();
-                            model = cmlConverter.Import(searcher.Cml);
-
-                            if (model != null)
+                            DialogResult dr = searcher.Search();
+                            if (dr == DialogResult.OK)
                             {
-                                double before = model.MeanBondLength;
-                                if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                                    || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
-                                {
-                                    model.ScaleToAverageBondLength(Constants.StandardBondLength);
-                                    double after = model.MeanBondLength;
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
-                                }
+                                Word.Application app = Globals.Chem4WordV3.Application;
+                                Word.Document doc = app.ActiveDocument;
+                                Word.Selection sel = app.Selection;
+                                Word.ContentControl cc = null;
 
-                                // Always generate new Guid on Import
-                                model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
+                                Model.Model model = null;
+                                CMLConverter cmlConverter = new CMLConverter();
+                                model = cmlConverter.Import(searcher.Cml);
 
-                                // Ensure each molecule has a Consise Furmula set
-                                foreach (var molecule in model.Molecules)
+                                if (model != null)
                                 {
-                                    if (string.IsNullOrEmpty(molecule.ConciseFormula))
+                                    double before = model.MeanBondLength;
+                                    if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                                        || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                                     {
-                                        molecule.ConciseFormula = molecule.CalculatedFormula();
+                                        model.ScaleToAverageBondLength(Constants.StandardBondLength);
+                                        double after = model.MeanBondLength;
+                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
                                     }
-                                }
 
-                                string cml = cmlConverter.Export(model);
+                                    // Always generate new Guid on Import
+                                    model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
 
-                                #region Insert OoXml Drawing into document
+                                    // Ensure each molecule has a Consise Furmula set
+                                    foreach (var molecule in model.Molecules)
+                                    {
+                                        if (string.IsNullOrEmpty(molecule.ConciseFormula))
+                                        {
+                                            molecule.ConciseFormula = molecule.CalculatedFormula();
+                                        }
+                                    }
 
-                                app.ScreenUpdating = false;
-                                Globals.Chem4WordV3.DisableDocumentEvents(doc);
+                                    string cml = cmlConverter.Export(model);
 
-                                string guidString = model.CustomXmlPartGuid;
-                                string bookmarkName = "C4W_" + guidString;
+                                    #region Insert OoXml Drawing into document
 
-                                if (Globals.Chem4WordV3.SystemOptions == null)
-                                {
-                                    Globals.Chem4WordV3.LoadOptions();
-                                }
-                                Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-                                IChem4WordRenderer renderer =
-                                    Globals.Chem4WordV3.GetRendererPlugIn(
-                                        Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+                                    app.ScreenUpdating = false;
+                                    Globals.Chem4WordV3.DisableDocumentEvents(doc);
 
-                                if (renderer == null)
-                                {
-                                    UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
+                                    string guidString = model.CustomXmlPartGuid;
+                                    string bookmarkName = "C4W_" + guidString;
+
+                                    if (Globals.Chem4WordV3.SystemOptions == null)
+                                    {
+                                        Globals.Chem4WordV3.LoadOptions();
+                                    }
+                                    Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
+                                    IChem4WordRenderer renderer =
+                                        Globals.Chem4WordV3.GetRendererPlugIn(
+                                            Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+
+                                    if (renderer == null)
+                                    {
+                                        UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
+                                    }
+                                    else
+                                    {
+                                        renderer.Properties = new Dictionary<string, string>();
+                                        renderer.Properties.Add("Guid", guidString);
+                                        renderer.Cml = cml;
+
+                                        string tempfileName = renderer.Render();
+
+                                        if (File.Exists(tempfileName))
+                                        {
+                                            cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
+
+                                            doc.CustomXMLParts.Add(cml);
+
+                                            try
+                                            {
+                                                // Delete the temporary file now we are finished with it
+                                                File.Delete(tempfileName);
+                                            }
+                                            catch
+                                            {
+                                                // Not much we can do here
+                                            }
+                                        }
+                                    }
+
+                                    #endregion Insert OoXml Drawing into document
                                 }
                                 else
                                 {
-                                    renderer.Properties = new Dictionary<string, string>();
-                                    renderer.Properties.Add("Guid", guidString);
-                                    renderer.Cml = cml;
-
-                                    string tempfileName = renderer.Render();
-
-                                    if (File.Exists(tempfileName))
-                                    {
-                                        cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                                        doc.CustomXMLParts.Add(cml);
-
-                                        try
-                                        {
-                                            // Delete the temporary file now we are finished with it
-                                            File.Delete(tempfileName);
-                                        }
-                                        catch
-                                        {
-                                            // Not much we can do here
-                                        }
-                                    }
+                                    Exception x = new Exception("Could not import search result, Model is null");
+                                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft,
+                                        module, x).ShowDialog();
                                 }
 
-                                #endregion Insert OoXml Drawing into document
-                            }
-                            else
-                            {
-                                Exception x = new Exception("Could not import search result, Model is null");
-                                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft,
-                                    module, x).ShowDialog();
-                            }
+                                app.ScreenUpdating = true;
+                                Globals.Chem4WordV3.EnableDocumentEvents(doc);
 
-                            app.ScreenUpdating = true;
-                            Globals.Chem4WordV3.EnableDocumentEvents(doc);
-
-                            if (cc != null)
-                            {
-                                // Move selection point into the Content Control which was just inserted
-                                app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                if (cc != null)
+                                {
+                                    // Move selection point into the Content Control which was just inserted
+                                    app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
+
         }
 
         private void OnSaveToLibraryClick(object sender, RibbonControlEventArgs e)
@@ -1602,63 +1659,70 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-            BeforeButtonChecks(sender as RibbonButton);
 
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Word.Application app = Globals.Chem4WordV3.Application;
-                Word.Document doc = app.ActiveDocument;
-                Word.Selection sel = app.Selection;
-                Word.ContentControl cc = null;
-                CustomXMLPart customXmlPart = null;
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                if (sel.ContentControls.Count > 0)
+                BeforeButtonChecks(sender as RibbonButton);
+
+                try
                 {
-                    Model.Model m = null;
+                    Word.Application app = Globals.Chem4WordV3.Application;
+                    Word.Document doc = app.ActiveDocument;
+                    Word.Selection sel = app.Selection;
+                    Word.ContentControl cc = null;
+                    CustomXMLPart customXmlPart = null;
 
-                    cc = sel.ContentControls[1];
-                    //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
-                    if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                    if (sel.ContentControls.Count > 0)
                     {
-                        Word.Application app1 = Globals.Chem4WordV3.Application;
+                        Model.Model m = null;
 
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
-                        if (customXmlPart != null)
+                        cc = sel.ContentControls[1];
+                        //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc.Tag + " Title: " + cc.Title);
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
-                            string cml = customXmlPart.XML;
-                            m = new CMLConverter().Import(cml);
-                            if (Globals.Chem4WordV3.LibraryNames == null)
+                            Word.Application app1 = Globals.Chem4WordV3.Application;
+
+                            customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                            if (customXmlPart != null)
                             {
-                                Globals.Chem4WordV3.LoadLibrary();
+                                string cml = customXmlPart.XML;
+                                m = new CMLConverter().Import(cml);
+                                if (Globals.Chem4WordV3.LibraryNames == null)
+                                {
+                                    Globals.Chem4WordV3.LoadLibrary();
+                                }
+                                LibraryModel.ImportCml(cml);
+                                Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
                             }
-                            LibraryModel.ImportCml(cml);
-                            Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
-                        }
 
-                        CustomTaskPane custTaskPane = null;
-                        foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
-                        {
-                            if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.LibraryTaskPaneTitle)
+                            CustomTaskPane custTaskPane = null;
+                            foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                             {
-                                custTaskPane = taskPane;
+                                if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.LibraryTaskPaneTitle)
+                                {
+                                    custTaskPane = taskPane;
+                                }
                             }
-                        }
 
-                        if (custTaskPane != null)
-                        {
-                            (custTaskPane.Control as LibraryHost)?.Refresh();
-                        }
+                            if (custTaskPane != null)
+                            {
+                                (custTaskPane.Control as LibraryHost)?.Refresh();
+                            }
 
-                        UserInteractions.InformUser($"Structure '{m?.ConciseFormula}' added into Library");
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure '{m?.ConciseFormula}' added into Library");
+                            UserInteractions.InformUser($"Structure '{m?.ConciseFormula}' added into Library");
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure '{m?.ConciseFormula}' added into Library");
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnNavigatorClick(object sender, RibbonControlEventArgs e)
@@ -1666,65 +1730,73 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                //see https://msdn.microsoft.com/en-us/library/bb608620(v=vs.100).aspx
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                Debug.WriteLine($"OnNavigatorClick() {ShowNavigator.Checked}");
-
-                Word.Application app = Globals.Chem4WordV3.Application;
-
-                if (Globals.Chem4WordV3.EventsEnabled)
+                BeforeButtonChecks(sender as RibbonButton);
+                try
                 {
-                    app.System.Cursor = Word.WdCursorType.wdCursorWait;
+                    //see https://msdn.microsoft.com/en-us/library/bb608620(v=vs.100).aspx
 
-                    if (app.Documents.Count > 0)
+                    Debug.WriteLine($"OnNavigatorClick() {ShowNavigator.Checked}");
+
+                    Word.Application app = Globals.Chem4WordV3.Application;
+
+                    if (Globals.Chem4WordV3.EventsEnabled)
                     {
-                        CustomTaskPane custTaskPane = null;
-                        foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
-                        {
-                            if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.NavigatorTaskPaneTitle)
-                            {
-                                custTaskPane = taskPane;
-                            }
-                        }
+                        app.System.Cursor = Word.WdCursorType.wdCursorWait;
 
-                        if (ShowNavigator.Checked)
+                        if (app.Documents.Count > 0)
                         {
-                            if (custTaskPane == null)
+                            CustomTaskPane custTaskPane = null;
+                            foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                             {
-                                custTaskPane =
-                                    Globals.Chem4WordV3.CustomTaskPanes.Add(new NavigatorHost(app, app.ActiveDocument),
-                                        Constants.NavigatorTaskPaneTitle, app.ActiveWindow);
-
-                                custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
-                                custTaskPane.VisibleChanged += OnNavigatorPaneVisibleChanged;
+                                if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.NavigatorTaskPaneTitle)
+                                {
+                                    custTaskPane = taskPane;
+                                }
                             }
-                            custTaskPane.Visible = true;
-                            Globals.Chem4WordV3.EvaluateChemistryAllowed();
+
+                            if (ShowNavigator.Checked)
+                            {
+                                if (custTaskPane == null)
+                                {
+                                    custTaskPane =
+                                        Globals.Chem4WordV3.CustomTaskPanes.Add(new NavigatorHost(app, app.ActiveDocument),
+                                            Constants.NavigatorTaskPaneTitle, app.ActiveWindow);
+
+                                    custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
+                                    custTaskPane.VisibleChanged += OnNavigatorPaneVisibleChanged;
+                                }
+                                custTaskPane.Visible = true;
+                                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                            }
+                            else
+                            {
+                                if (custTaskPane != null)
+                                {
+                                    custTaskPane.Visible = false;
+                                }
+                            }
                         }
                         else
                         {
-                            if (custTaskPane != null)
-                            {
-                                custTaskPane.Visible = false;
-                            }
+                            ShowNavigator.Checked = false;
                         }
-                    }
-                    else
-                    {
-                        ShowNavigator.Checked = false;
-                    }
 
-                    app.System.Cursor = Word.WdCursorType.wdCursorNormal;
+                        app.System.Cursor = Word.WdCursorType.wdCursorNormal;
+                    }
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnNavigatorPaneVisibleChanged(object sender, EventArgs eventArgs)
@@ -1771,74 +1843,81 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            if (Globals.Chem4WordV3.LibraryNames == null)
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Globals.Chem4WordV3.LoadLibrary();
-            }
-            try
-            {
-                // See https://msdn.microsoft.com/en-us/library/bb608590.aspx
-                Word.Application app = Globals.Chem4WordV3.Application;
-                using (new UI.WaitCursor())
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                if (Globals.Chem4WordV3.LibraryNames == null)
                 {
-                    if (Globals.Chem4WordV3.EventsEnabled)
+                    Globals.Chem4WordV3.LoadLibrary();
+                }
+                try
+                {
+                    // See https://msdn.microsoft.com/en-us/library/bb608590.aspx
+                    Word.Application app = Globals.Chem4WordV3.Application;
+                    using (new UI.WaitCursor())
                     {
-                        //app.System.Cursor = Word.WdCursorType.wdCursorWait;
-
-                        if (app.Documents.Count > 0)
+                        if (Globals.Chem4WordV3.EventsEnabled)
                         {
-                            CustomTaskPane custTaskPane = null;
-                            foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
+                            //app.System.Cursor = Word.WdCursorType.wdCursorWait;
+
+                            if (app.Documents.Count > 0)
                             {
-                                if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.LibraryTaskPaneTitle)
+                                CustomTaskPane custTaskPane = null;
+                                foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                                 {
-                                    custTaskPane = taskPane;
+                                    if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.LibraryTaskPaneTitle)
+                                    {
+                                        custTaskPane = taskPane;
+                                    }
                                 }
-                            }
 
-                            Globals.Chem4WordV3.LibraryState = ShowLibrary.Checked;
-                            ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
+                                Globals.Chem4WordV3.LibraryState = ShowLibrary.Checked;
+                                ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
 
-                            if (ShowLibrary.Checked)
-                            {
-                                if (custTaskPane == null)
+                                if (ShowLibrary.Checked)
                                 {
-                                    custTaskPane =
-                                        Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
-                                            Constants.LibraryTaskPaneTitle, app.ActiveWindow);
+                                    if (custTaskPane == null)
+                                    {
+                                        custTaskPane =
+                                            Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
+                                                Constants.LibraryTaskPaneTitle, app.ActiveWindow);
 
-                                    // Opposite side to Navigator's default placement
-                                    custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
+                                        // Opposite side to Navigator's default placement
+                                        custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
 
-                                    custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
-                                    custTaskPane.VisibleChanged += OnLibraryPaneVisibleChanged;
-                                    (custTaskPane.Control as LibraryHost)?.Refresh();
+                                        custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
+                                        custTaskPane.VisibleChanged += OnLibraryPaneVisibleChanged;
+                                        (custTaskPane.Control as LibraryHost)?.Refresh();
+                                    }
+                                    custTaskPane.Visible = true;
+                                    Globals.Chem4WordV3.EvaluateChemistryAllowed();
                                 }
-                                custTaskPane.Visible = true;
-                                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                                else
+                                {
+                                    if (custTaskPane != null)
+                                    {
+                                        custTaskPane.Visible = false;
+                                    }
+                                }
                             }
                             else
                             {
-                                if (custTaskPane != null)
-                                {
-                                    custTaskPane.Visible = false;
-                                }
+                                ShowLibrary.Checked = false;
                             }
                         }
-                        else
-                        {
-                            ShowLibrary.Checked = false;
-                        }
+                        //app.System.Cursor = Word.WdCursorType.wdCursorNormal;
                     }
-                    //app.System.Cursor = Word.WdCursorType.wdCursorNormal;
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         public void OnLibraryPaneVisibleChanged(object sender, EventArgs eventArgs)
@@ -1889,115 +1968,122 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-
-            Word.Application app = Globals.Chem4WordV3.Application;
-            Word.Document doc = app.ActiveDocument;
-            Word.ContentControl cc = null;
-
-            // Stop Screen Updating and Disable Document Event Handlers
-            app.ScreenUpdating = false;
-            Globals.Chem4WordV3.DisableDocumentEvents(doc);
-
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                CustomXMLPart customXmlPart = null;
-                Word.Selection sel = app.Selection;
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                if (sel.ContentControls.Count > 0)
+                BeforeButtonChecks(sender as RibbonButton);
+
+                Word.Application app = Globals.Chem4WordV3.Application;
+                Word.Document doc = app.ActiveDocument;
+                Word.ContentControl cc = null;
+
+                // Stop Screen Updating and Disable Document Event Handlers
+                app.ScreenUpdating = false;
+                Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+                try
                 {
-                    cc = sel.ContentControls[1];
-                    if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
+                    CustomXMLPart customXmlPart = null;
+                    Word.Selection sel = app.Selection;
+
+                    if (sel.ContentControls.Count > 0)
                     {
-                        string fullTag = cc.Tag;
-                        string guidString = CustomXmlPartHelper.GuidFromTag(cc.Tag);
-
-                        Word.Application app1 = Globals.Chem4WordV3.Application;
-                        customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
-                        if (customXmlPart != null)
+                        cc = sel.ContentControls[1];
+                        if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
-                            string beforeCml = customXmlPart.XML;
-                            CMLConverter cmlConverter = new CMLConverter();
-                            Model.Model model = cmlConverter.Import(beforeCml);
+                            string fullTag = cc.Tag;
+                            string guidString = CustomXmlPartHelper.GuidFromTag(cc.Tag);
 
-                            Packer packer = new Packer();
-                            packer.Model = model;
-
-                            packer.Pack(model.MeanBondLength * 2);
-
-                            string afterCml = cmlConverter.Export(model);
-
-                            if (Globals.Chem4WordV3.SystemOptions == null)
+                            Word.Application app1 = Globals.Chem4WordV3.Application;
+                            customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(cc.Tag, app1.ActiveDocument);
+                            if (customXmlPart != null)
                             {
-                                Globals.Chem4WordV3.LoadOptions();
-                            }
-                            IChem4WordRenderer renderer =
-                                Globals.Chem4WordV3.GetRendererPlugIn(
-                                    Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+                                string beforeCml = customXmlPart.XML;
+                                CMLConverter cmlConverter = new CMLConverter();
+                                Model.Model model = cmlConverter.Import(beforeCml);
 
-                            if (renderer == null)
-                            {
-                                UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
-                            }
-                            else
-                            {
-                                renderer.Properties = new Dictionary<string, string>();
-                                renderer.Properties.Add("Guid", guidString);
-                                renderer.Cml = afterCml;
+                                Packer packer = new Packer();
+                                packer.Model = model;
 
-                                string tempfileName = renderer.Render();
+                                packer.Pack(model.MeanBondLength * 2);
 
-                                if (File.Exists(tempfileName))
+                                string afterCml = cmlConverter.Export(model);
+
+                                if (Globals.Chem4WordV3.SystemOptions == null)
                                 {
-                                    cc.LockContents = false;
-                                    cc.Range.Delete();
-                                    cc.Delete();
+                                    Globals.Chem4WordV3.LoadOptions();
+                                }
+                                IChem4WordRenderer renderer =
+                                    Globals.Chem4WordV3.GetRendererPlugIn(
+                                        Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
 
-                                    // Insert a new CC
-                                    cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
-                                    Debug.WriteLine("Inserted ContentControl " + cc.ID);
+                                if (renderer == null)
+                                {
+                                    UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
+                                }
+                                else
+                                {
+                                    renderer.Properties = new Dictionary<string, string>();
+                                    renderer.Properties.Add("Guid", guidString);
+                                    renderer.Cml = afterCml;
 
-                                    cc.Title = Constants.ContentControlTitle;
-                                    cc.Tag = fullTag;
+                                    string tempfileName = renderer.Render();
 
-                                    UpdateStructures(app, doc, model, guidString, tempfileName);
-
-                                    customXmlPart.Delete();
-                                    doc.CustomXMLParts.Add(afterCml);
-
-                                    // Delete the temporary file now we are finished with it
-                                    try
+                                    if (File.Exists(tempfileName))
                                     {
-                                        File.Delete(tempfileName);
-                                    }
-                                    catch
-                                    {
-                                        // Not much we can do here
+                                        cc.LockContents = false;
+                                        cc.Range.Delete();
+                                        cc.Delete();
+
+                                        // Insert a new CC
+                                        cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+                                        Debug.WriteLine("Inserted ContentControl " + cc.ID);
+
+                                        cc.Title = Constants.ContentControlTitle;
+                                        cc.Tag = fullTag;
+
+                                        UpdateStructures(app, doc, model, guidString, tempfileName);
+
+                                        customXmlPart.Delete();
+                                        doc.CustomXMLParts.Add(afterCml);
+
+                                        // Delete the temporary file now we are finished with it
+                                        try
+                                        {
+                                            File.Delete(tempfileName);
+                                        }
+                                        catch
+                                        {
+                                            // Not much we can do here
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            finally
-            {
-                // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
-                app.ScreenUpdating = true;
-                Globals.Chem4WordV3.EnableDocumentEvents(doc);
-
-                if (cc != null)
+                catch (Exception ex)
                 {
-                    // Move selection point into the Content Control which was just edited or added
-                    app.Selection.SetRange(cc.Range.Start, cc.Range.End);
-                    //Globals.Chem4WordV3.SelectChemistry(app.Selection);
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
                 }
+                finally
+                {
+                    // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
+                    app.ScreenUpdating = true;
+                    Globals.Chem4WordV3.EnableDocumentEvents(doc);
+
+                    if (cc != null)
+                    {
+                        // Move selection point into the Content Control which was just edited or added
+                        app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                        //Globals.Chem4WordV3.SelectChemistry(app.Selection);
+                    }
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnUpdateClick(object sender, RibbonControlEventArgs e)
@@ -2005,22 +2091,29 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
+            if (Globals.Chem4WordV3.EventsEnabled)
+            {
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-            try
-            {
-                if (Globals.Chem4WordV3.ThisVersion == null || Globals.Chem4WordV3.AllVersions == null)
+                BeforeButtonChecks(sender as RibbonButton);
+
+                try
                 {
-                    using (new UI.WaitCursor())
+                    if (Globals.Chem4WordV3.ThisVersion == null || Globals.Chem4WordV3.AllVersions == null)
                     {
-                        UpdateHelper.FetchUpdateInfo();
+                        using (new UI.WaitCursor())
+                        {
+                            UpdateHelper.FetchUpdateInfo();
+                        }
                     }
+                    UpdateHelper.ShowUpdateForm();
                 }
-                UpdateHelper.ShowUpdateForm();
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
         }
 
@@ -2029,35 +2122,42 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                About fa = new About();
-                fa.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                UpdateHelper.ReadThisVersion(assembly);
-                if (Globals.Chem4WordV3.ThisVersion != null)
-                {
-                    string[] parts = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value.Split(' ');
-                    string temp = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;
-                    int idx = temp.IndexOf(" ");
-                    fa.VersionString = $"Chem4Word V3 {temp.Substring(idx + 1)} [{fvi.FileVersion}]";
-                }
-                else
-                {
-                    fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
-                }
+                BeforeButtonChecks(sender as RibbonButton);
 
-                fa.ShowDialog();
+                try
+                {
+                    About fa = new About();
+                    fa.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+
+                    Assembly assembly = Assembly.GetExecutingAssembly();
+                    FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                    UpdateHelper.ReadThisVersion(assembly);
+                    if (Globals.Chem4WordV3.ThisVersion != null)
+                    {
+                        string[] parts = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value.Split(' ');
+                        string temp = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;
+                        int idx = temp.IndexOf(" ");
+                        fa.VersionString = $"Chem4Word V3 {temp.Substring(idx + 1)} [{fvi.FileVersion}]";
+                    }
+                    else
+                    {
+                        fa.VersionString = $"Chem4Word Version {fvi.FileVersion}";
+                    }
+
+                    fa.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnShowHomeClick(object sender, RibbonControlEventArgs e)
@@ -2065,17 +2165,24 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
+            if (Globals.Chem4WordV3.EventsEnabled)
+            {
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-            try
-            {
-                Process.Start("https://www.chem4word.co.uk");
+                BeforeButtonChecks(sender as RibbonButton);
+
+                try
+                {
+                    Process.Start("https://www.chem4word.co.uk");
+                }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnCheckForUpdatesClick(object sender, RibbonControlEventArgs e)
@@ -2083,19 +2190,26 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-
-            UpdateHelper.ClearSettings();
-
-            if (Globals.Chem4WordV3.SystemOptions == null)
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Globals.Chem4WordV3.LoadOptions();
-            }
+                Globals.Chem4WordV3.EventsEnabled = false;
 
-            int behind = UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
-            if (behind == 0)
-            {
-                UserInteractions.InformUser("Your version of Chem4Word is the latest");
+                BeforeButtonChecks(sender as RibbonButton);
+
+                UpdateHelper.ClearSettings();
+
+                if (Globals.Chem4WordV3.SystemOptions == null)
+                {
+                    Globals.Chem4WordV3.LoadOptions();
+                }
+
+                int behind = UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
+                if (behind == 0)
+                {
+                    UserInteractions.InformUser("Your version of Chem4Word is the latest");
+                }
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
         }
 
@@ -2104,30 +2218,37 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                string userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Manual", "Chem4Word-Version3-User-Manual.docx");
-                if (File.Exists(userManual))
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                try
                 {
-                    Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
-                    Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
-                }
-                else
-                {
-                    userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, @"..\..\..\..\doc", "Chem4Word-Version3-User-Manual.docx");
+                    string userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Manual", "Chem4Word-Version3-User-Manual.docx");
                     if (File.Exists(userManual))
                     {
                         Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
                         Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
                     }
+                    else
+                    {
+                        userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, @"..\..\..\..\doc", "Chem4Word-Version3-User-Manual.docx");
+                        if (File.Exists(userManual))
+                        {
+                            Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
+                            Globals.Chem4WordV3.Application.Documents.Open(userManual, ReadOnly: true);
+                        }
+                    }
                 }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnYouTubeClick(object sender, RibbonControlEventArgs e)
@@ -2135,16 +2256,23 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            BeforeButtonChecks(sender as RibbonButton);
-            try
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
-                Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
+                Globals.Chem4WordV3.EventsEnabled = false;
+
+                BeforeButtonChecks(sender as RibbonButton);
+                try
+                {
+                    Process.Start("https://www.youtube.com/channel/UCKX2kG9kZ3zoX0nCen5lfpQ");
+                }
+                catch (Exception ex)
+                {
+                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                }
+                AfterButtonChecks(sender as RibbonButton);
+
+                Globals.Chem4WordV3.EventsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void ButtonsDisabled_Click(object sender, RibbonControlEventArgs e)
