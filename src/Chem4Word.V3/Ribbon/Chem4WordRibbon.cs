@@ -1730,73 +1730,66 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            if (Globals.Chem4WordV3.EventsEnabled)
+            BeforeButtonChecks(sender as RibbonButton);
+            try
             {
-                Globals.Chem4WordV3.EventsEnabled = false;
+                //see https://msdn.microsoft.com/en-us/library/bb608620(v=vs.100).aspx
 
-                BeforeButtonChecks(sender as RibbonButton);
-                try
+                Debug.WriteLine($"OnNavigatorClick() {ShowNavigator.Checked}");
+
+                Word.Application app = Globals.Chem4WordV3.Application;
+
+                if (Globals.Chem4WordV3.EventsEnabled)
                 {
-                    //see https://msdn.microsoft.com/en-us/library/bb608620(v=vs.100).aspx
+                    app.System.Cursor = Word.WdCursorType.wdCursorWait;
 
-                    Debug.WriteLine($"OnNavigatorClick() {ShowNavigator.Checked}");
-
-                    Word.Application app = Globals.Chem4WordV3.Application;
-
-                    if (Globals.Chem4WordV3.EventsEnabled)
+                    if (app.Documents.Count > 0)
                     {
-                        app.System.Cursor = Word.WdCursorType.wdCursorWait;
-
-                        if (app.Documents.Count > 0)
+                        CustomTaskPane custTaskPane = null;
+                        foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                         {
-                            CustomTaskPane custTaskPane = null;
-                            foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
+                            if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.NavigatorTaskPaneTitle)
                             {
-                                if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.NavigatorTaskPaneTitle)
-                                {
-                                    custTaskPane = taskPane;
-                                }
+                                custTaskPane = taskPane;
                             }
+                        }
 
-                            if (ShowNavigator.Checked)
+                        if (ShowNavigator.Checked)
+                        {
+                            if (custTaskPane == null)
                             {
-                                if (custTaskPane == null)
-                                {
-                                    custTaskPane =
-                                        Globals.Chem4WordV3.CustomTaskPanes.Add(new NavigatorHost(app, app.ActiveDocument),
-                                            Constants.NavigatorTaskPaneTitle, app.ActiveWindow);
+                                custTaskPane =
+                                    Globals.Chem4WordV3.CustomTaskPanes.Add(new NavigatorHost(app, app.ActiveDocument),
+                                        Constants.NavigatorTaskPaneTitle, app.ActiveWindow);
 
-                                    custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
-                                    custTaskPane.VisibleChanged += OnNavigatorPaneVisibleChanged;
-                                }
-                                custTaskPane.Visible = true;
-                                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                                custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
+                                custTaskPane.VisibleChanged += OnNavigatorPaneVisibleChanged;
                             }
-                            else
-                            {
-                                if (custTaskPane != null)
-                                {
-                                    custTaskPane.Visible = false;
-                                }
-                            }
+                            custTaskPane.Visible = true;
+                            Globals.Chem4WordV3.EvaluateChemistryAllowed();
                         }
                         else
                         {
-                            ShowNavigator.Checked = false;
+                            if (custTaskPane != null)
+                            {
+                                custTaskPane.Visible = false;
+                            }
                         }
-
-                        app.System.Cursor = Word.WdCursorType.wdCursorNormal;
                     }
-                }
-                catch (Exception ex)
-                {
-                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-                }
+                    else
+                    {
+                        ShowNavigator.Checked = false;
+                    }
 
-                AfterButtonChecks(sender as RibbonButton);
-
-                Globals.Chem4WordV3.EventsEnabled = true;
+                    app.System.Cursor = Word.WdCursorType.wdCursorNormal;
+                }
             }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+
+            AfterButtonChecks(sender as RibbonButton);
         }
 
         private void OnNavigatorPaneVisibleChanged(object sender, EventArgs eventArgs)
@@ -1843,81 +1836,74 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            if (Globals.Chem4WordV3.EventsEnabled)
+            BeforeButtonChecks(sender as RibbonButton);
+            if (Globals.Chem4WordV3.LibraryNames == null)
             {
-                Globals.Chem4WordV3.EventsEnabled = false;
-
-                BeforeButtonChecks(sender as RibbonButton);
-                if (Globals.Chem4WordV3.LibraryNames == null)
+                Globals.Chem4WordV3.LoadLibrary();
+            }
+            try
+            {
+                // See https://msdn.microsoft.com/en-us/library/bb608590.aspx
+                Word.Application app = Globals.Chem4WordV3.Application;
+                using (new UI.WaitCursor())
                 {
-                    Globals.Chem4WordV3.LoadLibrary();
-                }
-                try
-                {
-                    // See https://msdn.microsoft.com/en-us/library/bb608590.aspx
-                    Word.Application app = Globals.Chem4WordV3.Application;
-                    using (new UI.WaitCursor())
+                    if (Globals.Chem4WordV3.EventsEnabled)
                     {
-                        if (Globals.Chem4WordV3.EventsEnabled)
+                        //app.System.Cursor = Word.WdCursorType.wdCursorWait;
+
+                        if (app.Documents.Count > 0)
                         {
-                            //app.System.Cursor = Word.WdCursorType.wdCursorWait;
-
-                            if (app.Documents.Count > 0)
+                            CustomTaskPane custTaskPane = null;
+                            foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                             {
-                                CustomTaskPane custTaskPane = null;
-                                foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
+                                if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.LibraryTaskPaneTitle)
                                 {
-                                    if (app.ActiveWindow == taskPane.Window && taskPane.Title == Constants.LibraryTaskPaneTitle)
-                                    {
-                                        custTaskPane = taskPane;
-                                    }
+                                    custTaskPane = taskPane;
                                 }
+                            }
 
-                                Globals.Chem4WordV3.LibraryState = ShowLibrary.Checked;
-                                ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
+                            Globals.Chem4WordV3.LibraryState = ShowLibrary.Checked;
+                            ShowLibrary.Label = ShowLibrary.Checked ? "Close" : "Open ";
 
-                                if (ShowLibrary.Checked)
+                            if (ShowLibrary.Checked)
+                            {
+                                if (custTaskPane == null)
                                 {
-                                    if (custTaskPane == null)
-                                    {
-                                        custTaskPane =
-                                            Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
-                                                Constants.LibraryTaskPaneTitle, app.ActiveWindow);
+                                    custTaskPane =
+                                        Globals.Chem4WordV3.CustomTaskPanes.Add(new LibraryHost(),
+                                            Constants.LibraryTaskPaneTitle, app.ActiveWindow);
 
-                                        // Opposite side to Navigator's default placement
-                                        custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
+                                    // Opposite side to Navigator's default placement
+                                    custTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionLeft;
 
-                                        custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
-                                        custTaskPane.VisibleChanged += OnLibraryPaneVisibleChanged;
-                                        (custTaskPane.Control as LibraryHost)?.Refresh();
-                                    }
-                                    custTaskPane.Visible = true;
-                                    Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                                    custTaskPane.Width = Globals.Chem4WordV3.WordWidth / 4;
+                                    custTaskPane.VisibleChanged += OnLibraryPaneVisibleChanged;
+                                    (custTaskPane.Control as LibraryHost)?.Refresh();
                                 }
-                                else
-                                {
-                                    if (custTaskPane != null)
-                                    {
-                                        custTaskPane.Visible = false;
-                                    }
-                                }
+                                custTaskPane.Visible = true;
+                                Globals.Chem4WordV3.EvaluateChemistryAllowed();
                             }
                             else
                             {
-                                ShowLibrary.Checked = false;
+                                if (custTaskPane != null)
+                                {
+                                    custTaskPane.Visible = false;
+                                }
                             }
                         }
-                        //app.System.Cursor = Word.WdCursorType.wdCursorNormal;
+                        else
+                        {
+                            ShowLibrary.Checked = false;
+                        }
                     }
+                    //app.System.Cursor = Word.WdCursorType.wdCursorNormal;
                 }
-                catch (Exception ex)
-                {
-                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-                }
-                AfterButtonChecks(sender as RibbonButton);
-
-                Globals.Chem4WordV3.EventsEnabled = true;
             }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+            }
+            AfterButtonChecks(sender as RibbonButton);
         }
 
         public void OnLibraryPaneVisibleChanged(object sender, EventArgs eventArgs)
