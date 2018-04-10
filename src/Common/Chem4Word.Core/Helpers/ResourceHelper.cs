@@ -29,7 +29,7 @@ namespace Chem4Word.Core.Helpers
                     count++;
                     fullName = s;
                 }
-                Debug.WriteLine(s);
+                //Debug.WriteLine(s);
             }
 
             if (!string.IsNullOrEmpty(fullName))
@@ -39,7 +39,8 @@ namespace Chem4Word.Core.Helpers
 
             if (count != 1)
             {
-                Debug.Assert(false, "Unique match not found");
+                Debug.WriteLine("Unique match not found");
+                Debugger.Break();
             }
 
             return data;
