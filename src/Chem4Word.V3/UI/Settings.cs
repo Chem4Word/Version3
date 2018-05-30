@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Forms;
+using Chem4Word.Telemetry;
 using static Chem4Word.Core.UserInteractions;
 
 namespace Chem4Word.UI
@@ -134,7 +135,6 @@ namespace Chem4Word.UI
                 LoadSettings();
 
                 // Remove Tabs for Professional Features
-                tabControlEx1.TabPages.Remove(tabTelemetry);
                 tabControlEx1.TabPages.Remove(tabUpdates);
                 chkUseWebServices.Visible = false;
                 lblProWebServices.Visible = false;

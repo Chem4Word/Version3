@@ -22,8 +22,11 @@ namespace Chem4Word.Telemetry
         private SystemHelper _helper;
         private WmiHelper _wmihelper;
 
-        public TelemetryWriter()
+        private bool _permissionGranted;
+
+        public TelemetryWriter(bool permissionGranted)
         {
+            _permissionGranted = permissionGranted;
             _helper = new SystemHelper();
             _wmihelper = new WmiHelper();
             Storage = new AzureTableWriter();
@@ -67,15 +70,18 @@ namespace Chem4Word.Telemetry
                 //
             }
 
-            if (!_systemInfoSent)
+            if (_permissionGranted)
             {
-                if (!_helper.IpAddress.Contains("0.0.0.0"))
+                if (!_systemInfoSent)
                 {
-                    WriteStartUpInfo();
+                    if (!_helper.IpAddress.Contains("0.0.0.0"))
+                    {
+                        WriteStartUpInfo();
+                    }
                 }
-            }
 
-            WritePrivate(operation, level, message);
+                WritePrivate(operation, level, message);
+            }
         }
 
         private void WriteStartUpInfo()

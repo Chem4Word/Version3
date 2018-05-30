@@ -29,7 +29,7 @@ namespace Chem4Word
 
         #region Telemetry
 
-        //[JsonProperty]
+        [JsonProperty]
         public bool TelemetryEnabled { get; set; }
 
         #endregion Telemetry

@@ -60,7 +60,7 @@ namespace Chem4Word
 
         public C4wAddInInfo AddInInfo = new C4wAddInInfo();
         public Options SystemOptions = null;
-        public TelemetryWriter Telemetry = new TelemetryWriter();
+        public TelemetryWriter Telemetry = new TelemetryWriter(false);
 
         public List<IChem4WordEditor> Editors;
         public List<IChem4WordRenderer> Renderers;
@@ -296,6 +296,9 @@ namespace Chem4Word
 
             try
             {
+                // Initiallize Telemetry with send permission
+                Telemetry = new TelemetryWriter(false);
+
                 // Read in options file
                 string padPath = Globals.Chem4WordV3.AddInInfo.ProductAppDataPath;
                 string fileName = $"{Globals.Chem4WordV3.AddInInfo.ProductName}.json";
@@ -324,6 +327,9 @@ namespace Chem4Word
                         File.WriteAllText(optionsFile, temp);
                     }
                 }
+
+                // Re-Initiallize Telemetry with granted permissions
+                Telemetry = new TelemetryWriter(SystemOptions.TelemetryEnabled);
             }
             catch (Exception ex)
             {
@@ -1693,17 +1699,19 @@ namespace Chem4Word
                             ChemistryProhibitedReason = "document is in compatibility mode.";
                         }
 
+
                         try
                         {
-                            if (doc.CoAuthoring.Conflicts.Count > 0)
+                            //if (doc.CoAuthoring.Conflicts.Count > 0) // <-- This clears current selection ???
+                            if (doc.CoAuthoring.Locks.Count > 0)
                             {
                                 allowed = false;
-                                ChemistryProhibitedReason = "document has conflicts which require resolving.";
+                                ChemistryProhibitedReason = "document is in co-authoring mode.";
                             }
                         }
                         catch
                         {
-                            // CoAuthoring or Conflicts may not be initialised!
+                            // CoAuthoring or Conflicts/Locks may not be initialised!
                         }
 
                         Word.Selection sel = Application.Selection;

@@ -60,8 +60,8 @@ namespace Chem4Word.UI
             this.EditorGroup = new System.Windows.Forms.GroupBox();
             this.tabWebServices = new System.Windows.Forms.TabPage();
             this.lblProWebServices = new System.Windows.Forms.Label();
-            this.tabTelemetry = new System.Windows.Forms.TabPage();
-            this.lblProTelemetry = new System.Windows.Forms.Label();
+            this.tabPrivacy = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabUpdates = new System.Windows.Forms.TabPage();
             this.lblProUpdates = new System.Windows.Forms.Label();
             this.tabLibrary = new System.Windows.Forms.TabPage();
@@ -83,7 +83,7 @@ namespace Chem4Word.UI
             this.RendererGroup.SuspendLayout();
             this.EditorGroup.SuspendLayout();
             this.tabWebServices.SuspendLayout();
-            this.tabTelemetry.SuspendLayout();
+            this.tabPrivacy.SuspendLayout();
             this.tabUpdates.SuspendLayout();
             this.tabLibrary.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -274,14 +274,14 @@ namespace Chem4Word.UI
             this.chkTelemetryEnabled.AutoSize = true;
             this.chkTelemetryEnabled.Checked = true;
             this.chkTelemetryEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTelemetryEnabled.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkTelemetryEnabled.ForeColor = System.Drawing.Color.Red;
+            this.chkTelemetryEnabled.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkTelemetryEnabled.ForeColor = System.Drawing.SystemColors.ControlText;
             this.chkTelemetryEnabled.Location = new System.Drawing.Point(15, 16);
             this.chkTelemetryEnabled.Margin = new System.Windows.Forms.Padding(4);
             this.chkTelemetryEnabled.Name = "chkTelemetryEnabled";
-            this.chkTelemetryEnabled.Size = new System.Drawing.Size(158, 20);
+            this.chkTelemetryEnabled.Size = new System.Drawing.Size(134, 20);
             this.chkTelemetryEnabled.TabIndex = 2;
-            this.chkTelemetryEnabled.Text = "Telemetry Enabled *";
+            this.chkTelemetryEnabled.Text = "Telemetry Enabled";
             this.chkTelemetryEnabled.UseVisualStyleBackColor = true;
             this.chkTelemetryEnabled.CheckedChanged += new System.EventHandler(this.chkTelemetryEnabled_CheckedChanged);
             // 
@@ -334,7 +334,7 @@ namespace Chem4Word.UI
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlEx1.Controls.Add(this.tabPlugIns);
             this.tabControlEx1.Controls.Add(this.tabWebServices);
-            this.tabControlEx1.Controls.Add(this.tabTelemetry);
+            this.tabControlEx1.Controls.Add(this.tabPrivacy);
             this.tabControlEx1.Controls.Add(this.tabUpdates);
             this.tabControlEx1.Controls.Add(this.tabLibrary);
             this.tabControlEx1.Controls.Add(this.tabMaintenance);
@@ -423,29 +423,25 @@ namespace Chem4Word.UI
             this.lblProWebServices.TabIndex = 27;
             this.lblProWebServices.Text = "* Professional Version Only";
             // 
-            // tabTelemetry
+            // tabPrivacy
             // 
-            this.tabTelemetry.BackColor = System.Drawing.SystemColors.Control;
-            this.tabTelemetry.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabTelemetry.Controls.Add(this.lblProTelemetry);
-            this.tabTelemetry.Controls.Add(this.chkTelemetryEnabled);
-            this.tabTelemetry.Location = new System.Drawing.Point(0, 23);
-            this.tabTelemetry.Name = "tabTelemetry";
-            this.tabTelemetry.Size = new System.Drawing.Size(612, 347);
-            this.tabTelemetry.TabIndex = 2;
-            this.tabTelemetry.Text = "Telemetry";
+            this.tabPrivacy.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPrivacy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPrivacy.Controls.Add(this.label5);
+            this.tabPrivacy.Controls.Add(this.chkTelemetryEnabled);
+            this.tabPrivacy.Location = new System.Drawing.Point(0, 23);
+            this.tabPrivacy.Name = "tabPrivacy";
+            this.tabPrivacy.Size = new System.Drawing.Size(612, 347);
+            this.tabPrivacy.TabIndex = 2;
+            this.tabPrivacy.Text = "Privacy";
             // 
-            // lblProTelemetry
+            // label5
             // 
-            this.lblProTelemetry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblProTelemetry.AutoSize = true;
-            this.lblProTelemetry.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProTelemetry.ForeColor = System.Drawing.Color.Red;
-            this.lblProTelemetry.Location = new System.Drawing.Point(15, 316);
-            this.lblProTelemetry.Name = "lblProTelemetry";
-            this.lblProTelemetry.Size = new System.Drawing.Size(231, 19);
-            this.lblProTelemetry.TabIndex = 3;
-            this.lblProTelemetry.Text = "* Professional Version Only";
+            this.label5.Location = new System.Drawing.Point(34, 40);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(558, 75);
+            this.label5.TabIndex = 3;
+            this.label5.Text = resources.GetString("label5.Text");
             // 
             // tabUpdates
             // 
@@ -657,8 +653,8 @@ namespace Chem4Word.UI
             this.EditorGroup.ResumeLayout(false);
             this.tabWebServices.ResumeLayout(false);
             this.tabWebServices.PerformLayout();
-            this.tabTelemetry.ResumeLayout(false);
-            this.tabTelemetry.PerformLayout();
+            this.tabPrivacy.ResumeLayout(false);
+            this.tabPrivacy.PerformLayout();
             this.tabUpdates.ResumeLayout(false);
             this.tabUpdates.PerformLayout();
             this.tabLibrary.ResumeLayout(false);
@@ -694,10 +690,9 @@ namespace Chem4Word.UI
         private TabControlEx tabControlEx1;
         private System.Windows.Forms.TabPage tabPlugIns;
         private System.Windows.Forms.TabPage tabWebServices;
-        private System.Windows.Forms.TabPage tabTelemetry;
+        private System.Windows.Forms.TabPage tabPrivacy;
         private System.Windows.Forms.TabPage tabUpdates;
         private System.Windows.Forms.Label lblProWebServices;
-        private System.Windows.Forms.Label lblProTelemetry;
         private System.Windows.Forms.Label lblProUpdates;
         private System.Windows.Forms.TabPage tabLibrary;
         private System.Windows.Forms.Button importGalleryButton;
@@ -715,5 +710,6 @@ namespace Chem4Word.UI
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label5;
     }
 }
