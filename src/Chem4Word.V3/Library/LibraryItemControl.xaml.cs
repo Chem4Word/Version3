@@ -92,8 +92,9 @@ namespace Chem4Word.Library
             {
                 if (AskUserYesNo("Do you want to delete this structure from the Library?") == DialogResult.Yes)
                 {
-                    LibraryModel.DeleteChemistry(((LibraryViewModel.Chemistry)this.DataContext).ID);
-                    Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
+                    var lib = new Database.Library();
+                    lib.DeleteChemistry(((LibraryViewModel.Chemistry)this.DataContext).ID);
+                    Globals.Chem4WordV3.LoadNamesFromLibrary();
                     ParentControl.MainGrid.DataContext = new LibraryViewModel();
                 }
             }

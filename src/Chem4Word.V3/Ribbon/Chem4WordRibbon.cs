@@ -1709,10 +1709,14 @@ namespace Chem4Word
                                 m = new CMLConverter().Import(cml);
                                 if (Globals.Chem4WordV3.LibraryNames == null)
                                 {
-                                    Globals.Chem4WordV3.LoadLibrary();
+                                    Globals.Chem4WordV3.LoadNamesFromLibrary();
                                 }
-                                LibraryModel.ImportCml(cml);
-                                Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
+
+                                var lib = new Database.Library();
+                                lib.ImportCml(cml);
+
+                                // Re- Read the Library Names
+                                Globals.Chem4WordV3.LoadNamesFromLibrary();
                             }
 
                             CustomTaskPane custTaskPane = null;
@@ -1861,7 +1865,7 @@ namespace Chem4Word
             BeforeButtonChecks(sender as RibbonButton);
             if (Globals.Chem4WordV3.LibraryNames == null)
             {
-                Globals.Chem4WordV3.LoadLibrary();
+                Globals.Chem4WordV3.LoadNamesFromLibrary();
             }
             try
             {

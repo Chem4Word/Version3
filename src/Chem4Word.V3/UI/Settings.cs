@@ -455,7 +455,7 @@ namespace Chem4Word.UI
             {
                 if (Globals.Chem4WordV3.LibraryNames == null)
                 {
-                    Globals.Chem4WordV3.LoadLibrary();
+                    Globals.Chem4WordV3.LoadNamesFromLibrary();
                 }
                 int fileCount = 0;
                 StringBuilder sb;
@@ -529,7 +529,8 @@ namespace Chem4Word.UI
                                     pb.Increment(1);
 
                                     var cml = File.ReadAllText(cmlFile);
-                                    if (LibraryModel.ImportCml(cml))
+                                    var lib = new Database.Library();
+                                    if (lib.ImportCml(cml))
                                     {
                                         fileCount++;
                                     }
@@ -542,7 +543,7 @@ namespace Chem4Word.UI
                                 FileInfo fi = new FileInfo(doneFile);
                                 fi.Attributes = FileAttributes.Hidden;
 
-                                Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
+                                Globals.Chem4WordV3.LoadNamesFromLibrary();
 
                                 InformUser($"Successfully imported {fileCount} structures from '{selectedFolder}'.");
                             }
@@ -571,7 +572,7 @@ namespace Chem4Word.UI
             {
                 if (Globals.Chem4WordV3.LibraryNames == null)
                 {
-                    Globals.Chem4WordV3.LoadLibrary();
+                    Globals.Chem4WordV3.LoadNamesFromLibrary();
                 }
 
                 StringBuilder sb = new StringBuilder();
@@ -583,8 +584,9 @@ namespace Chem4Word.UI
                 DialogResult dr = AskUserYesNo(sb.ToString(), MessageBoxDefaultButton.Button2);
                 if (dr == DialogResult.Yes)
                 {
-                    LibraryModel.DeleteAllChemistry();
-                    Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
+                    var lib = new Database.Library();
+                    lib.DeleteAllChemistry();
+                    Globals.Chem4WordV3.LoadNamesFromLibrary();
 
                     var app = Globals.Chem4WordV3.Application;
                     foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
