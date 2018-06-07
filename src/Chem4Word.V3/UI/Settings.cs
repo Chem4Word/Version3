@@ -135,7 +135,7 @@ namespace Chem4Word.UI
                 LoadSettings();
 
                 // Remove Tabs for Professional Features
-                tabControlEx1.TabPages.Remove(tabUpdates);
+                OptionsTabs.TabPages.Remove(tabUpdates);
                 chkUseWebServices.Visible = false;
                 lblProWebServices.Visible = false;
 

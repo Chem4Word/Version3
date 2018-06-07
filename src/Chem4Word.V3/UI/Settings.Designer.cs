@@ -53,7 +53,7 @@ namespace Chem4Word.UI
             this.cboUpdateFrequency = new System.Windows.Forms.ComboBox();
             this.chkAutomaticUpdates = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.tabControlEx1 = new Chem4Word.Core.UI.Controls.TabControlEx();
+            this.OptionsTabs = new Chem4Word.Core.UI.Controls.TabControlEx();
             this.tabPlugIns = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RendererGroup = new System.Windows.Forms.GroupBox();
@@ -77,7 +77,7 @@ namespace Chem4Word.UI
             this.OpenPlugInFolder = new System.Windows.Forms.Button();
             this.OpenLibraryFolder = new System.Windows.Forms.Button();
             this.OpenSettingsFolder = new System.Windows.Forms.Button();
-            this.tabControlEx1.SuspendLayout();
+            this.OptionsTabs.SuspendLayout();
             this.tabPlugIns.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.RendererGroup.SuspendLayout();
@@ -327,22 +327,22 @@ namespace Chem4Word.UI
             this.label11.TabIndex = 12;
             this.label11.Text = "Update check frequency";
             // 
-            // tabControlEx1
+            // OptionsTabs
             // 
-            this.tabControlEx1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.OptionsTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlEx1.Controls.Add(this.tabPlugIns);
-            this.tabControlEx1.Controls.Add(this.tabWebServices);
-            this.tabControlEx1.Controls.Add(this.tabPrivacy);
-            this.tabControlEx1.Controls.Add(this.tabUpdates);
-            this.tabControlEx1.Controls.Add(this.tabLibrary);
-            this.tabControlEx1.Controls.Add(this.tabMaintenance);
-            this.tabControlEx1.Location = new System.Drawing.Point(12, 12);
-            this.tabControlEx1.Name = "tabControlEx1";
-            this.tabControlEx1.SelectedIndex = 0;
-            this.tabControlEx1.Size = new System.Drawing.Size(612, 370);
-            this.tabControlEx1.TabIndex = 11;
+            this.OptionsTabs.Controls.Add(this.tabPlugIns);
+            this.OptionsTabs.Controls.Add(this.tabWebServices);
+            this.OptionsTabs.Controls.Add(this.tabPrivacy);
+            this.OptionsTabs.Controls.Add(this.tabUpdates);
+            this.OptionsTabs.Controls.Add(this.tabLibrary);
+            this.OptionsTabs.Controls.Add(this.tabMaintenance);
+            this.OptionsTabs.Location = new System.Drawing.Point(12, 12);
+            this.OptionsTabs.Name = "OptionsTabs";
+            this.OptionsTabs.SelectedIndex = 0;
+            this.OptionsTabs.Size = new System.Drawing.Size(612, 370);
+            this.OptionsTabs.TabIndex = 11;
             // 
             // tabPlugIns
             // 
@@ -632,7 +632,7 @@ namespace Chem4Word.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(638, 432);
-            this.Controls.Add(this.tabControlEx1);
+            this.Controls.Add(this.OptionsTabs);
             this.Controls.Add(this.btnSetDefaults);
             this.Controls.Add(this.btnOk);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -646,7 +646,7 @@ namespace Chem4Word.UI
             this.Text = "User Options";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormOptions_FormClosing);
             this.Load += new System.EventHandler(this.FormOptions_Load);
-            this.tabControlEx1.ResumeLayout(false);
+            this.OptionsTabs.ResumeLayout(false);
             this.tabPlugIns.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.RendererGroup.ResumeLayout(false);
@@ -687,7 +687,7 @@ namespace Chem4Word.UI
         private System.Windows.Forms.Label lblSearcherDescription;
         private System.Windows.Forms.Button btnSearcherSettings;
         private System.Windows.Forms.ComboBox cboSearchers;
-        private TabControlEx tabControlEx1;
+        private TabControlEx OptionsTabs;
         private System.Windows.Forms.TabPage tabPlugIns;
         private System.Windows.Forms.TabPage tabWebServices;
         private System.Windows.Forms.TabPage tabPrivacy;

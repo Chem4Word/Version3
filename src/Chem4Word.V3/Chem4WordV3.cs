@@ -299,7 +299,7 @@ namespace Chem4Word
             try
             {
                 // Initiallize Telemetry with send permission
-                Telemetry = new TelemetryWriter(false);
+                Telemetry = new TelemetryWriter(true);
 
                 // Read in options file
                 string padPath = Globals.Chem4WordV3.AddInInfo.ProductAppDataPath;
