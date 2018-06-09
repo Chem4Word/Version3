@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -260,6 +261,9 @@ namespace Chem4Word.Library
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
                 ChemistryItems = new ObservableCollection<Chemistry>();
                 ChemistryItems.CollectionChanged += ChemistryItems_CollectionChanged;
 
@@ -273,6 +277,9 @@ namespace Chem4Word.Library
                 AssignUserTags();
 
                 GalleryItems = new ObservableCollection<LibraryItem>();
+
+                sw.Stop();
+                Debug.WriteLine($"LibraryViewModel() took {sw.ElapsedMilliseconds}ms");
             }
             catch (Exception ex)
             {
