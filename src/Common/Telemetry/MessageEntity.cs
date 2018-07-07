@@ -20,7 +20,7 @@ namespace Chem4Word.Telemetry
             // First Part of RowKey is to enable "default" sort of time descending
             // Second Part of RowKey is to guarantee uniqueness
             //string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + " " + Guid.NewGuid().ToString("N");
-            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + "." + _order++;
+            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + "." + _order++ + "." + Guid.NewGuid().ToString("N");
             RowKey = rowKey;
         }
 
