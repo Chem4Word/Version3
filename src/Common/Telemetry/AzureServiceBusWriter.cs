@@ -109,6 +109,7 @@ namespace Chem4Word.Telemetry
 #if DEBUG
                 bm.Properties["IsDebug"] = "True";
 #endif
+                Debug.WriteLine($"Sending {message.Message}");
                 _client.Send(bm);
             }
             catch (Exception ex)
