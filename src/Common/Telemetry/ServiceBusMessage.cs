@@ -4,12 +4,15 @@ namespace Chem4Word.Telemetry
 {
     public class ServiceBusMessage
     {
+        private static long _order;
+
         public ServiceBusMessage()
         {
             PartitionKey = "Chem4Word";
             // First Part of RowKey is to enable "default" sort of time descending
             // Second Part of RowKey is to guarantee uniqueness
-            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + " " + Guid.NewGuid().ToString("N");
+            //string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + " " + Guid.NewGuid().ToString("N");
+            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + "." + _order++;
             RowKey = rowKey;
         }
 
