@@ -5,6 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Chem4Word.Telemetry
@@ -13,6 +14,9 @@ namespace Chem4Word.Telemetry
     {
         public MessageEntity()
         {
+            PartitionKey = "Chem4Word";
+            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks);
+            RowKey = rowKey;
         }
 
         public string MachineId { get; set; }

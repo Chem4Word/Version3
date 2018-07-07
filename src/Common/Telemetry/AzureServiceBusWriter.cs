@@ -5,50 +5,33 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Threading;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Chem4Word.Telemetry
 {
-    public class AzureTableWriter
+    public class AzureServiceBusWriter
     {
-        private static readonly string AccountName = "c4wtelemetry";
-        private static readonly string AccountKey = "60KaUHLXdj9sh4x3h1qgBRS3BMM2UbAAoeMChrp9xMBPutpB27feYMbUfcsqZb1PTu0rkJhruhkUD1ytuWjUoQ==";
-        private CloudTable _cloudTable = null;
+        // Make sure this is a Send Only Access key
+        string ServiceBus = "Endpoint=sb://c4w-telemetry.servicebus.windows.net/;SharedAccessKeyName=TelemetrySender;SharedAccessKey=J8tkibrh5CHc2vZJgn1gbynZRmMLUf0mz/WZtmcjH6Q=";
+        string QueueName = "telemetry";
+        private static QueueClient _client;
 
         private readonly object _queueLock = new object();
-        private Queue<MessageEntity> _buffer1 = new Queue<MessageEntity>();
+        private Queue<ServiceBusMessage> _buffer1 = new Queue<ServiceBusMessage>();
         private bool _running = false;
 
-        public AzureTableWriter()
-        {
-            try
-            {
-                CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(new StorageCredentials(AccountName, AccountKey), true);
-                CloudTableClient cloudTableClient = cloudStorageAccount.CreateCloudTableClient();
-                string tableName = "LoggingV3";
-#if DEBUG
-                tableName = "LoggingV3Debug";
-#endif
-                _cloudTable = cloudTableClient.GetTableReference(tableName);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
-
-        public void QueueMessage(MessageEntity messageEntity)
+        public void QueueMessage(ServiceBusMessage message)
         {
             lock (_queueLock)
             {
-                _buffer1.Enqueue(messageEntity);
+                _buffer1.Enqueue(message);
                 Monitor.PulseAll(_queueLock);
             }
 
@@ -69,7 +52,7 @@ namespace Chem4Word.Telemetry
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            Queue<MessageEntity> buffer2 = new Queue<MessageEntity>();
+            Queue<ServiceBusMessage> buffer2 = new Queue<ServiceBusMessage>();
 
             while (_running)
             {
@@ -87,6 +70,14 @@ namespace Chem4Word.Telemetry
                 // Send messages from 2nd stage buffer to Azure
                 while (buffer2.Count > 0)
                 {
+                    ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Https;
+
+                    ServicePointManager.DefaultConnectionLimit = 100;
+                    ServicePointManager.UseNagleAlgorithm = false;
+                    ServicePointManager.Expect100Continue = false;
+
+                    _client = QueueClient.CreateFromConnectionString(ServiceBus, QueueName);
+
                     WriteMessage(buffer2.Dequeue());
                 }
 
@@ -104,15 +95,21 @@ namespace Chem4Word.Telemetry
             }
         }
 
-        private void WriteMessage(MessageEntity messageEntity)
+        private void WriteMessage(ServiceBusMessage message)
         {
             try
             {
-                if (_cloudTable != null)
-                {
-                    TableOperation insertOrMergeOperation = TableOperation.InsertOrMerge(messageEntity);
-                    _cloudTable.Execute(insertOrMergeOperation);
-                }
+                BrokeredMessage bm = new BrokeredMessage(message.Message);
+                bm.Properties["PartitionKey"] = message.PartitionKey;
+                bm.Properties["RowKey"] = message.RowKey;
+                bm.Properties["Chem4WordVersion"] = message.AssemblyVersionNumber;
+                bm.Properties["MachineId"] = message.MachineId;
+                bm.Properties["Operation"] = message.Operation;
+                bm.Properties["Level"] = message.Level;
+#if DEBUG
+                bm.Properties["IsDebug"] = "True";
+#endif
+                _client.Send(bm);
             }
             catch (Exception ex)
             {

@@ -16,20 +16,29 @@ namespace Chem4Word.Telemetry
     public class TelemetryWriter : IChem4WordTelemetry
     {
         private static int Counter;
-        private static AzureTableWriter Storage;
-        private static bool _systemInfoSent = false;
+        //private static AzureTableWriter AzureTableWriter;
+        private static AzureServiceBusWriter AzureServiceBusWriter;
+        private static bool _systemInfoSent;
 
-        private SystemHelper _helper;
-        private WmiHelper _wmihelper;
+        private static SystemHelper _helper;
+        private static WmiHelper _wmihelper;
 
         private bool _permissionGranted;
 
         public TelemetryWriter(bool permissionGranted)
         {
             _permissionGranted = permissionGranted;
-            _helper = new SystemHelper();
-            _wmihelper = new WmiHelper();
-            Storage = new AzureTableWriter();
+            if (_helper == null)
+            {
+                _helper = new SystemHelper();
+            }
+
+            if (_wmihelper == null)
+            {
+                _wmihelper = new WmiHelper();
+            }
+            //AzureTableWriter = new AzureTableWriter();
+            AzureServiceBusWriter = new AzureServiceBusWriter();
         }
 
         public void Write(string operation, string level, string message)
@@ -142,12 +151,20 @@ namespace Chem4Word.Telemetry
 
         private void WritePrivate(string operation, string level, string message)
         {
-            MessageEntity me = new MessageEntity();
-            me.MachineId = _helper.MachineId;
-            me.Operation = operation;
-            me.Level = level;
-            me.Message = message;
-            Storage.QueueMessage(me);
+            //MessageEntity me = new MessageEntity();
+            //me.MachineId = _helper.MachineId;
+            //me.Operation = operation;
+            //me.Level = level;
+            //me.Message = message;
+            //AzureTableWriter.QueueMessage(me);
+
+            ServiceBusMessage sbm = new ServiceBusMessage();
+            sbm.MachineId = _helper.MachineId;
+            sbm.Operation = operation;
+            sbm.Level = level;
+            sbm.Message = message;
+            sbm.AssemblyVersionNumber = _helper.AssemblyVersionNumber;
+            AzureServiceBusWriter.QueueMessage(sbm);
         }
     }
 }

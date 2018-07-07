@@ -38,6 +38,8 @@ namespace Chem4Word.Telemetry
 
         public string AddInVersion { get; set; }
 
+        public string AssemblyVersionNumber { get; set; }
+
         public string AddInLocation { get; set; }
 
         public string IpAddress { get; set; }
@@ -142,6 +144,8 @@ namespace Chem4Word.Telemetry
             AddInLocation = Path.GetDirectoryName(uriCodeBase.LocalPath);
 
             Version productVersion = assembly.GetName().Version;
+            AssemblyVersionNumber = productVersion.ToString();
+
             AddInVersion = "Chem4Word V" + productVersion;
 
             #endregion Get Product Version and Location using reflection

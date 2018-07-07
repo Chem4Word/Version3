@@ -5,12 +5,12 @@
   <Version>
     <Number>3.0.18 Release 5</Number>
     <IsBeta>false</IsBeta>
-    <Released>31-Mar-2018</Released>
+    <Released>07-Jul-2018</Released>
     <Changes>
       <Change>.</Change>
       <Change>.</Change>
       <Change>.</Change>
-      <Change>.</Change>
+      <Change>Change to sending Telemetry via Azure ServiceBus</Change>
       <Change>Protect against accidental double clicking on Library and Navigator Buttons.</Change>
       <Change>Add detection of conflict resolution mode.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
