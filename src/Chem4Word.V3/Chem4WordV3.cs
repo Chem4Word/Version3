@@ -60,7 +60,7 @@ namespace Chem4Word
 
         public C4wAddInInfo AddInInfo = new C4wAddInInfo();
         public Options SystemOptions = null;
-        public TelemetryWriter Telemetry = new TelemetryWriter(false);
+        public TelemetryWriter Telemetry = new TelemetryWriter(true);
 
         public List<IChem4WordEditor> Editors;
         public List<IChem4WordRenderer> Renderers;
@@ -204,6 +204,8 @@ namespace Chem4Word
 
             try
             {
+                UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
+
                 Word.Application app = Globals.Chem4WordV3.Application;
 
                 // Hook in Global Application level events
@@ -330,8 +332,11 @@ namespace Chem4Word
                     }
                 }
 
+                string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
+                bool isBeta = betaValue != null && bool.Parse(betaValue);
+
                 // Re-Initiallize Telemetry with granted permissions
-                Telemetry = new TelemetryWriter(SystemOptions.TelemetryEnabled);
+                Telemetry = new TelemetryWriter(isBeta || SystemOptions.TelemetryEnabled);
             }
             catch (Exception ex)
             {

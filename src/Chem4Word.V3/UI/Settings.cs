@@ -207,7 +207,13 @@ namespace Chem4Word.UI
             txtChemSpiderRdfUri.Text = SystemOptions.ChemSpiderRdfServiceUri;
             txtChemSpiderWsUri.Text = SystemOptions.ChemSpiderWebServiceUri;
 
-            chkTelemetryEnabled.Checked = SystemOptions.TelemetryEnabled;
+            string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
+            bool isBeta = betaValue != null && bool.Parse(betaValue);
+
+            chkTelemetryEnabled.Checked = isBeta || SystemOptions.TelemetryEnabled;
+            chkTelemetryEnabled.Enabled = !isBeta;
+            TelemetryAlwaysOn.Visible = isBeta;
+
             cboUpdateFrequency.Items.Clear();
             cboUpdateFrequency.Items.Add("Daily");
             cboUpdateFrequency.Items.Add("Weekly");

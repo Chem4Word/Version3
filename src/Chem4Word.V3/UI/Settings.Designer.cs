@@ -77,6 +77,7 @@ namespace Chem4Word.UI
             this.OpenPlugInFolder = new System.Windows.Forms.Button();
             this.OpenLibraryFolder = new System.Windows.Forms.Button();
             this.OpenSettingsFolder = new System.Windows.Forms.Button();
+            this.TelemetryAlwaysOn = new System.Windows.Forms.Label();
             this.OptionsTabs.SuspendLayout();
             this.tabPlugIns.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -427,6 +428,7 @@ namespace Chem4Word.UI
             // 
             this.tabPrivacy.BackColor = System.Drawing.SystemColors.Control;
             this.tabPrivacy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPrivacy.Controls.Add(this.TelemetryAlwaysOn);
             this.tabPrivacy.Controls.Add(this.label5);
             this.tabPrivacy.Controls.Add(this.chkTelemetryEnabled);
             this.tabPrivacy.Location = new System.Drawing.Point(0, 23);
@@ -439,7 +441,7 @@ namespace Chem4Word.UI
             // 
             this.label5.Location = new System.Drawing.Point(34, 40);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(558, 75);
+            this.label5.Size = new System.Drawing.Size(558, 77);
             this.label5.TabIndex = 3;
             this.label5.Text = resources.GetString("label5.Text");
             // 
@@ -627,6 +629,15 @@ namespace Chem4Word.UI
             this.OpenSettingsFolder.UseVisualStyleBackColor = true;
             this.OpenSettingsFolder.Click += new System.EventHandler(this.OnOpenSettingsFolderClick);
             // 
+            // TelemetryAlwaysOn
+            // 
+            this.TelemetryAlwaysOn.AutoSize = true;
+            this.TelemetryAlwaysOn.Location = new System.Drawing.Point(34, 117);
+            this.TelemetryAlwaysOn.Name = "TelemetryAlwaysOn";
+            this.TelemetryAlwaysOn.Size = new System.Drawing.Size(272, 16);
+            this.TelemetryAlwaysOn.TabIndex = 4;
+            this.TelemetryAlwaysOn.Text = "NB: Telemetry is always on for Beta Releases.";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -711,5 +722,6 @@ namespace Chem4Word.UI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label TelemetryAlwaysOn;
     }
 }
