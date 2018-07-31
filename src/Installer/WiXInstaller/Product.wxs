@@ -259,39 +259,15 @@
       <Component Id="System.Data.SQLite.Linq">
         <File Id="System.Data.SQLite.Linq.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.Linq.dll" />
       </Component>
-      <Component Id="System.Spatial">
-        <File Id="System.Spatial.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Spatial.dll" />
-        <File Id="System.Spatial.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Spatial.xml" />
-      </Component>
       <Component Id="System.Windows.Interactivity">
         <File Id="System.Windows.Interactivity.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Windows.Interactivity.dll" />
         <File Id="System.Windows.Interactivity.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Windows.Interactivity.xml" />
       </Component>
       <!-- Azure -->
-      <Component Id="Microsoft.Azure.KeyVault.Core">
-        <File Id="Microsoft.Azure.KeyVault.Core.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Azure.KeyVault.Core.dll" />
-      </Component>
-      <Component Id="Microsoft.Data.Edm">
-        <File Id="Microsoft.Data.Edm.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Edm.dll" />
-        <File Id="Microsoft.Data.Edm.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Edm.xml" />
-      </Component>
-      <Component Id="Microsoft.Data.OData">
-        <File Id="Microsoft.Data.OData.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.OData.dll" />
-        <File Id="Microsoft.Data.OData.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.OData.xml" />
-      </Component>
-      <Component Id="Microsoft.Data.Services.Client">
-        <File Id="Microsoft.Data.Services.Client.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Services.Client.dll" />
-        <!--<File Id="Microsoft.Data.Services.Client.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Data.Services.Client.xml" />-->
-      </Component>
       <Component Id="Microsoft.ServiceBus">
         <File Id="Microsoft.ServiceBus.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.ServiceBus.dll" />
         <!--<File Id="Microsoft.ServiceBus.pdb" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.ServiceBus.pdb" />-->
         <File Id="Microsoft.ServiceBus.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.ServiceBus.xml" />
-      </Component>
-      <Component Id="Microsoft.WindowsAzure.Storage">
-        <File Id="Microsoft.WindowsAzure.Storage.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.WindowsAzure.Storage.dll" />
-        <File Id="Microsoft.WindowsAzure.Storage.pdb" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.WindowsAzure.Storage.pdb" />
-        <File Id="Microsoft.WindowsAzure.Storage.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.WindowsAzure.Storage.xml" />
       </Component>
       <!-- Microsoft Office Tools -->
       <Component Id="Microsoft.Office.Tools.Common.v4.0.Utilities">
