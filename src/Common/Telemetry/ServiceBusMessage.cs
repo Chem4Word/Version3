@@ -6,13 +6,13 @@ namespace Chem4Word.Telemetry
     {
         private static long _order;
 
-        public ServiceBusMessage()
+        public ServiceBusMessage(long utcOffset)
         {
             PartitionKey = "Chem4Word";
             // First Part of RowKey is to enable "default" sort of time descending
             // Second Part of RowKey is to guarantee uniqueness
-            //string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + " " + Guid.NewGuid().ToString("N");
-            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks) + "." + _order++ + "." + Guid.NewGuid().ToString("N");
+            long systemTicks = DateTime.UtcNow.Ticks - utcOffset;
+            string rowKey = string.Format("{0:D19}", DateTime.MaxValue.Ticks - systemTicks) + "." + _order++ + "." + Guid.NewGuid().ToString("N");
             RowKey = rowKey;
         }
 

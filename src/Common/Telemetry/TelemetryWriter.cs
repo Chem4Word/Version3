@@ -16,7 +16,6 @@ namespace Chem4Word.Telemetry
     public class TelemetryWriter : IChem4WordTelemetry
     {
         private static int Counter;
-        //private static AzureTableWriter AzureTableWriter;
         private static AzureServiceBusWriter AzureServiceBusWriter;
         private static bool _systemInfoSent;
 
@@ -37,7 +36,6 @@ namespace Chem4Word.Telemetry
             {
                 _wmihelper = new WmiHelper();
             }
-            //AzureTableWriter = new AzureTableWriter();
             AzureServiceBusWriter = new AzureServiceBusWriter();
         }
 
@@ -120,6 +118,8 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", $"Debug - AddIn Location: {_helper.AddInLocation}");
             WritePrivate("StartUp", "Information", $"Debug - Environment.Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}");
             WritePrivate("StartUp", "Information", $"Debug - Environment.Is64BitProcess: {Environment.Is64BitProcess}");
+
+            WritePrivate("StartUp", "Information", _helper.GitStatus);
 #endif
 
             // Log Wmi Gathered Data
@@ -131,9 +131,27 @@ namespace Chem4Word.Telemetry
             // Log screen sizes
             WritePrivate("StartUp", "Information", $"Screens: {_helper.Screens}");
 
-            // Log Sysytem
+            // Log System
             WritePrivate("StartUp", "Information", _helper.SystemOs);
             WritePrivate("StartUp", "Information", _helper.DotNetVersion);
+
+            // Log UtcOffset
+            if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromHours(1).Ticks)
+            {
+                var systemDate = DateTime.UtcNow;
+                WritePrivate("StartUp", "Information", $"Systen UTC Time {systemDate.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
+                WritePrivate("StartUp", "Information", $"UTC Offset {_helper.UtcOffset}");
+                if (_helper.UtcOffset > 0)
+                {
+                    TimeSpan delta = TimeSpan.FromTicks(_helper.UtcOffset);
+                    WritePrivate("StartUp", "Information", $"System time is {delta} ahead of Server time");
+                }
+                if (_helper.UtcOffset < 0)
+                {
+                    TimeSpan delta = TimeSpan.FromTicks(0 - _helper.UtcOffset);
+                    WritePrivate("StartUp", "Information", $"System time is {delta} behind Server time");
+                }
+            }
 
             // Log IP Address
             WritePrivate("StartUp", "Information", _helper.IpAddress);
@@ -151,14 +169,7 @@ namespace Chem4Word.Telemetry
 
         private void WritePrivate(string operation, string level, string message)
         {
-            //MessageEntity me = new MessageEntity();
-            //me.MachineId = _helper.MachineId;
-            //me.Operation = operation;
-            //me.Level = level;
-            //me.Message = message;
-            //AzureTableWriter.QueueMessage(me);
-
-            ServiceBusMessage sbm = new ServiceBusMessage();
+            ServiceBusMessage sbm = new ServiceBusMessage(_helper.UtcOffset);
             sbm.MachineId = _helper.MachineId;
             sbm.Operation = operation;
             sbm.Level = level;

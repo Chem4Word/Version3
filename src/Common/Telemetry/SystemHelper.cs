@@ -50,6 +50,10 @@ namespace Chem4Word.Telemetry
 
         public string Screens { get; set; }
 
+        public string GitStatus { get; set; }
+
+        public long UtcOffset { get; set; }
+
         private static int _retryCount;
 
         public SystemHelper()
@@ -161,6 +165,48 @@ namespace Chem4Word.Telemetry
             GetDotNetVersionFromRegistry();
 
             GetScreens();
+
+#if DEBUG
+            GetGitStatus();
+#endif
+        }
+
+        private void GetGitStatus()
+        {
+            var result = new List<string>();
+            result.Add("Git Branch");
+            // git rev-parse --abbrev-ref HEAD == Current Branch
+            result.AddRange(RunCommand("git.exe", "rev-parse --abbrev-ref HEAD", AddInLocation));
+
+            result.Add("Changed Files");
+            // git status --porcelain == Get List of changed files
+            result.AddRange(RunCommand("git.exe", "status --porcelain", AddInLocation));
+            GitStatus = string.Join(Environment.NewLine, result.ToArray());
+        }
+
+        private List<string> RunCommand(string exeName, string args, string folder)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo(exeName);
+
+            startInfo.UseShellExecute = false;
+            startInfo.WorkingDirectory = folder;
+            startInfo.RedirectStandardInput = true;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.Arguments = args;
+
+            Process process = new Process();
+            process.StartInfo = startInfo;
+            process.Start();
+
+            //return process.StandardOutput.ReadLine();
+
+            var results = new List<string>();
+            while (!process.StandardOutput.EndOfStream)
+            {
+                results.Add(process.StandardOutput.ReadLine());
+            }
+
+            return results;
         }
 
         private void GetScreens()
@@ -194,10 +240,22 @@ namespace Chem4Word.Telemetry
                 {
                     int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
 
+                    // .Net 4.7.2
+                    if (releaseKey >= 461814)
+                    {
+                        DotNetVersion = $".NET 4.7.2 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 461808)
+                    {
+                        DotNetVersion = $".NET 4.7.2 (W10 1803) [{releaseKey}]";
+                        return;
+                    }
+
                     // .Net 4.7.1
                     if (releaseKey >= 461310)
                     {
-                        DotNetVersion = $".NET 4.7 [{releaseKey}]";
+                        DotNetVersion = $".NET 4.7.1 [{releaseKey}]";
                         return;
                     }
                     if (releaseKey >= 461308)
@@ -326,6 +384,32 @@ namespace Chem4Word.Telemetry
                             request.UserAgent = "Chem4Word Add-In";
                             request.Timeout = 2000; // 2 seconds
                             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                            try
+                            {
+                                // Get Server Date header i.e. "Wed, 11 Jul 2018 19:52:46 GMT"
+                                var serverTime = response.Headers["date"];
+                                var serverUtcTime = DateTime.ParseExact(serverTime, "ddd, dd MMM yyyy HH:mm:ss GMT",
+                                    CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AdjustToUniversal);
+                                var systemDate = DateTime.UtcNow;
+                                UtcOffset = systemDate.Ticks - serverUtcTime.Ticks;
+                                if (UtcOffset > 0)
+                                {
+                                    TimeSpan delta = TimeSpan.FromTicks(UtcOffset);
+                                    Debug.WriteLine($"System time is {delta} ahead of Server time");
+                                }
+                                if (UtcOffset < 0)
+                                {
+                                    TimeSpan delta = TimeSpan.FromTicks(0 - UtcOffset);
+                                    Debug.WriteLine($"System time is {delta} behind Server time");
+                                }
+                                Debug.WriteLine($"UTC Offset {UtcOffset}");
+                                Debug.WriteLine($"{systemDate.ToString("yyyy-MM-dd HH:mm:ss.fff")} {serverUtcTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
+                                Debug.WriteLine($"{systemDate.Ticks} {serverUtcTime.Ticks} {systemDate.Ticks - UtcOffset}");
+                            }
+                            catch
+                            {
+                                // Do Nothing
+                            }
                             if (HttpStatusCode.OK.Equals(response.StatusCode))
                             {
                                 using (var reader = new StreamReader(response.GetResponseStream()))
