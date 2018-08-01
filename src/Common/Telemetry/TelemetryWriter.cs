@@ -136,7 +136,7 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", _helper.DotNetVersion);
 
             // Log UtcOffset
-            if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromHours(1).Ticks)
+            if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromMinutes(15).Ticks)
             {
                 var systemDate = DateTime.UtcNow;
                 WritePrivate("StartUp", "Information", $"Systen UTC Time {systemDate.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
