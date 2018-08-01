@@ -169,22 +169,6 @@
       <HintPath>..\packages\Unofficial.Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.2.0.4\lib\net45\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.8.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData">
-      <HintPath>..\packages\Microsoft.Data.OData.5.8.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Services.Client.5.8.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -198,11 +182,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Reference Assemblies\Microsoft\VSTO40\v4.0.Framework\Microsoft.Office.Tools.Word.v4.0.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=8.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAzure.Storage.8.1.3\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.ServiceBus.4.1.11\lib\net45\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -222,26 +206,24 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.105.1\lib\net451\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net451\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.105.1\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.108.0\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.105.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.105.1\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Spatial, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.8.2\lib\net40\System.Spatial.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -280,6 +262,7 @@
       <Link>Helpers\FolderHelper.cs</Link>
     </Compile>
     <Compile Include="AssemblyReflectionManager.cs" />
+    <Compile Include="Database\Library.cs" />
     <Compile Include="Helpers\ConfigWatcher.cs" />
     <Compile Include="Helpers\ReferenceKeeper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
@@ -415,7 +398,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <None Include="Data\Chem4Word-Versions.xml" />
+    <None Include="Data\Chem4Word-Versions.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Data\index.html" />
     <EmbeddedResource Include="Data\This-Version.xml" />
     <Content Include="Library\14-tag.png" />
@@ -690,11 +675,11 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.105.1\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.105.1\build\net451\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.1\build\net451\System.Data.SQLite.Core.targets')" />
 </Project>

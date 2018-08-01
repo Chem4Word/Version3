@@ -5,7 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Chem4Word.Helpers
 {
@@ -14,6 +14,6 @@ namespace Chem4Word.Helpers
     /// </summary>
     public class ReferenceKeeper
     {
-        public CloudTable Table { get; set; }
+        public QueueClient Client { get; set; }
     }
 }

@@ -389,6 +389,11 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                                 lastMolfile = new StreamReader(resStream).ReadToEnd();
                                 SdFileConverter sdFileConverter = new SdFileConverter();
                                 Model.Model model = sdFileConverter.Import(lastMolfile);
+                                if (model.MeanBondLength < Core.Helpers.Constants.MinimumBondLength - Core.Helpers.Constants.BondLengthTolerance
+                                    || model.MeanBondLength > Core.Helpers.Constants.MaximumBondLength + Core.Helpers.Constants.BondLengthTolerance)
+                                {
+                                    model.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
+                                }
                                 this.flexDisplayControl1.Chemistry = model;
                                 if (model.AllWarnings.Count > 0 || model.AllErrors.Count > 0)
                                 {

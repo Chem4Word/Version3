@@ -23,6 +23,12 @@ namespace Chem4Word.Core.Helpers
         public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V7.0.2";
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
+        // Task 336
+        // CML constants
+        public static string CmlNameSpaceCode = "cml";
+
+        public static string CmlElementMolecule = "molecule";
+
         public const string ChemspiderIdName = "chemspider:Id";
         public const string ChemspiderInchiKeyName = "chemspider:Inchikey";
         public const string ChemSpiderSynonymName = "chemspider:Synonym";
@@ -32,7 +38,9 @@ namespace Chem4Word.Core.Helpers
         public const string Chem4WordUserFormula = "chem4word:Formula";
         public const string Chem4WordUserSynonym = "chem4word:Synonym";
 
+        // Registry Locations
         public const string Chem4WordRegistryKey = @"SOFTWARE\Chem4Word V3";
+
         public const string RegistryValueNameLastCheck = "Last Update Check";
         public const string RegistryValueNameVersionsBehind = "Versions Behind";
         public const string Chem4WordSetupRegistryKey = @"SOFTWARE\Chem4Word V3\Setup";

@@ -7,17 +7,17 @@
 
 using Chem4Word.Controls.Annotations;
 using Chem4Word.Core.UI.Forms;
+using Chem4Word.Database;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -119,7 +119,8 @@ namespace Chem4Word.Library
                 string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
                 try
                 {
-                    LibraryModel.UpdateChemistry(ID, Name, XML, Formula);
+                    var lib = new Database.Library();
+                    lib.UpdateChemistry(ID, Name, XML, Formula);
                     Dirty = false;
                 }
                 catch (Exception ex)
@@ -260,6 +261,9 @@ namespace Chem4Word.Library
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
                 ChemistryItems = new ObservableCollection<Chemistry>();
                 ChemistryItems.CollectionChanged += ChemistryItems_CollectionChanged;
 
@@ -273,6 +277,9 @@ namespace Chem4Word.Library
                 AssignUserTags();
 
                 GalleryItems = new ObservableCollection<LibraryItem>();
+
+                sw.Stop();
+                Debug.WriteLine($"LibraryViewModel() took {sw.ElapsedMilliseconds}ms");
             }
             catch (Exception ex)
             {
@@ -341,9 +348,10 @@ namespace Chem4Word.Library
             {
                 if (!_initializing)
                 {
+                    var lib = new Database.Library();
                     foreach (Chemistry chemistry in eOldItems)
                     {
-                        LibraryModel.DeleteChemistry(chemistry.ID);
+                        lib.DeleteChemistry(chemistry.ID);
                     }
                 }
             }
@@ -360,9 +368,10 @@ namespace Chem4Word.Library
             {
                 if (!_initializing)
                 {
+                    var lib = new Database.Library();
                     foreach (Chemistry chemistry in eNewItems)
                     {
-                        chemistry.ID = LibraryModel.AddChemistry(chemistry.XML, chemistry.Name, chemistry.Formula);
+                        chemistry.ID = lib.AddChemistry(chemistry.XML, chemistry.Name, chemistry.Formula);
                     }
                 }
             }
@@ -378,18 +387,16 @@ namespace Chem4Word.Library
             try
             {
                 UserTagItems.Clear();
-                SQLiteDataReader allTags = LibraryModel.GetAllUserTags();
 
-                while (allTags.Read())
+                var lib = new Database.Library();
+                List<UserTagDTO> allTags = lib.GetAllUserTags();
+                foreach (var obj in allTags)
                 {
                     var tag = new UserTag();
-                    tag.ID = (long)allTags["ID"];
-                    tag.Text = (string)allTags["UserTag"];
+                    tag.ID = obj.Id;
+                    tag.Text = obj.Text;
                     UserTagItems.Add(tag);
                 }
-
-                allTags.Close();
-                allTags.Dispose();
             }
             catch (Exception ex)
             {
@@ -403,18 +410,16 @@ namespace Chem4Word.Library
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                SQLiteDataReader allTags = LibraryModel.GetAllUserTags(ChemistryID);
+                var lib = new Database.Library();
+                List<UserTagDTO> allTags = lib.GetAllUserTags(ChemistryID);
 
-                while (allTags.Read())
+                foreach (var dto in allTags)
                 {
                     var tag = new UserTag();
-                    tag.ID = (long)allTags["ID"];
-                    tag.Text = (string)allTags["UserTag"];
+                    tag.ID = dto.Id;
+                    tag.Text = dto.Text;
                     results.Add(tag);
                 }
-
-                allTags.Close();
-                allTags.Dispose();
             }
             catch (Exception ex)
             {
@@ -429,19 +434,19 @@ namespace Chem4Word.Library
             try
             {
                 ChemistryByTagItems.Clear();
-                SQLiteDataReader allTags = LibraryModel.GetChemistryByTags();
+                var lib = new Database.Library();
 
-                while (allTags.Read())
+                List<ChemistryTagDTO> dto = lib.GetChemistryByTags();
+                foreach (var obj in dto)
                 {
                     var tag = new ChemistryByTag();
-                    tag.ID = (long)allTags["ID"];
-                    tag.GalleryID = (long)allTags["GalleryID"];
-                    tag.tagID = (long)allTags["TagID"];
+
+                    tag.ID = obj.Id;
+                    tag.GalleryID = obj.GalleryId;
+                    tag.tagID = obj.TagId;
+
                     ChemistryByTagItems.Add(tag);
                 }
-
-                allTags.Close();
-                allTags.Dispose();
             }
             catch (Exception ex)
             {
@@ -456,26 +461,23 @@ namespace Chem4Word.Library
             {
                 _initializing = true;
                 ChemistryItems.Clear();
-                SQLiteDataReader chemistry = LibraryModel.GetAllChemistry(filter);
-
-                while (chemistry.Read())
+                var lib = new Database.Library();
+                List<ChemistryDTO> dto = lib.GetAllChemistry(filter);
+                foreach (var chemistry in dto)
                 {
                     var mol = new Chemistry();
-
                     mol.Initializing = true;
 
-                    mol.ID = (long)chemistry["ID"];
-                    var byteArray = (Byte[])chemistry["Chemistry"];
-                    mol.XML = Encoding.UTF8.GetString(byteArray);
-                    mol.Name = chemistry["name"] as string;
-                    mol.Formula = chemistry["formula"] as string;
+                    mol.ID = chemistry.Id;
+                    mol.XML = chemistry.Cml;
+                    mol.Name = chemistry.Name;
+                    mol.Formula = chemistry.Formula;
+
                     ChemistryItems.Add(mol);
                     LoadOtherNames(mol);
+
                     mol.Initializing = false;
                 }
-
-                chemistry.Close();
-                chemistry.Dispose();
 
                 _initializing = false;
             }
@@ -490,14 +492,13 @@ namespace Chem4Word.Library
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                XName nameNodeName = Chem4Word.Model.Converters.CML.cml + "name";
+                XName nameNodeName = Model.Converters.CML.cml + "name";
 
                 var names = (from namenode in mol.cmlDoc.Descendants(nameNodeName)
                              where namenode.Name == nameNodeName
                              select namenode.Value).Distinct();
 
                 foreach (string name in names)
-
                 {
                     mol.HasOtherNames = true;
                     mol.OtherNames.Add(name);

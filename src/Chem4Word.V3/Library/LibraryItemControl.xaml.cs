@@ -54,14 +54,23 @@ namespace Chem4Word.Library
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
             try
             {
-                ActiveDocument = Globals.Chem4WordV3.Application.ActiveDocument;
-                if (ActiveDocument?.ActiveWindow?.Selection != null)
+                if (Globals.Chem4WordV3.EventsEnabled)
                 {
-                    Navigator.NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                    Globals.Chem4WordV3.EventsEnabled = false;
+                    if (Globals.Chem4WordV3.Application.Documents.Count > 0)
+                    {
+                        ActiveDocument = Globals.Chem4WordV3.Application.ActiveDocument;
+                        if (ActiveDocument?.ActiveWindow?.Selection != null)
+                        {
+                            Navigator.NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                        }
+                    }
+                    Globals.Chem4WordV3.EventsEnabled = true;
                 }
             }
             catch (Exception ex)
             {
+                Globals.Chem4WordV3.EventsEnabled = true;
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
             }
         }
@@ -83,8 +92,9 @@ namespace Chem4Word.Library
             {
                 if (AskUserYesNo("Do you want to delete this structure from the Library?") == DialogResult.Yes)
                 {
-                    LibraryModel.DeleteChemistry(((LibraryViewModel.Chemistry)this.DataContext).ID);
-                    Globals.Chem4WordV3.LibraryNames = LibraryModel.GetLibraryNames();
+                    var lib = new Database.Library();
+                    lib.DeleteChemistry(((LibraryViewModel.Chemistry)this.DataContext).ID);
+                    Globals.Chem4WordV3.LoadNamesFromLibrary();
                     ParentControl.MainGrid.DataContext = new LibraryViewModel();
                 }
             }

@@ -29,6 +29,8 @@ namespace Chem4Word.Model.Converters
 
         #region Model->CML
 
+        public bool Compressed { get; set; }
+
         public string Export(Chem4Word.Model.Model model)
         {
             XDocument xd = new XDocument();
@@ -89,28 +91,20 @@ namespace Chem4Word.Model.Converters
             }
             xd.Add(root);
 
-            return xd.ToString();
+            string cml = string.Empty;
+            if (Compressed)
+            {
+                cml = xd.ToString(SaveOptions.DisableFormatting);
+            }
+            else
+            {
+                cml = xd.ToString();
+            }
+
+            return cml;
         }
 
         public bool CanExport => true;
-
-        private static List<XElement> GetNames(XElement mol)
-        {
-            var names1 = from n1 in mol.Descendants("name")
-                         select n1;
-            var names2 = from n2 in mol.Descendants(CML.cml + "name")
-                         select n2;
-            return names1.Union(names2).ToList();
-        }
-
-        private static List<XElement> GetFormulas(XElement mol)
-        {
-            var formulae1 = from f1 in mol.Descendants("formula")
-                            select f1;
-            var formulae2 = from f2 in mol.Descendants(CML.cml + "formula")
-                            select f2;
-            return formulae1.Union(formulae2).ToList();
-        }
 
         public XElement GetXElement(string concise, string molId)
         {
@@ -197,7 +191,7 @@ namespace Chem4Word.Model.Converters
             {
                 if (bond.Stereo == BondStereo.Cis || bond.Stereo == BondStereo.Trans)
                 {
-                    Debugger.Break();
+                    //Debugger.Break();
                     // ToDo: Fix 1st and last atomRefs
                     result = new XElement(CML.cml + "bondStereo",
                                 new XAttribute("atomRefs4", $"{bond.StartAtom.Id} {bond.StartAtom.Id} {bond.EndAtom.Id} {bond.EndAtom.Id}"),
@@ -276,14 +270,28 @@ namespace Chem4Word.Model.Converters
                 molElement.Add(GetXElement(chemicalName));
             }
 
-            foreach (Atom atom in mol.Atoms)
+            // Task 336
+            if (mol.Atoms.Count > 0)
             {
-                molElement.Add(GetXElement(atom));
+                // Add atomArray element, then add these to it
+                XElement aaElement = new XElement(CML.cml + "atomArray");
+                foreach (Atom atom in mol.Atoms)
+                {
+                    aaElement.Add(GetXElement(atom));
+                }
+                molElement.Add(aaElement);
             }
 
-            foreach (Bond bond in mol.Bonds)
+            // Task 336
+            if (mol.Bonds.Count > 0)
             {
-                molElement.Add(GetXElement(bond));
+                XElement baElement = new XElement(CML.cml + "bondArray");
+                // Add bondArray element, then add these to it
+                foreach (Bond bond in mol.Bonds)
+                {
+                    baElement.Add(GetXElement(bond));
+                }
+                molElement.Add(baElement);
             }
             return molElement;
         }
@@ -322,17 +330,13 @@ namespace Chem4Word.Model.Converters
                     newModel.Molecules.Add(CreateMolecule(meElement));
                 }
 
-                // Can't use RebuildMolecules() as it trashes the formulae and labels
-                //newModel.RebuildMolecules();
+                // Can't use newModel.RebuildMolecules() as it trashes the formulae and labels
                 newModel.RefreshMolecules();
                 foreach (Molecule molecule in newModel.Molecules)
                 {
                     molecule.RebuildRings();
-                    // Ensure ConciseFormula has been calculated
-                    if (string.IsNullOrEmpty(molecule.ConciseFormula))
-                    {
-                        molecule.ConciseFormula = molecule.CalculatedFormula();
-                    }
+                    // Force ConciseFormula to be calculated
+                    molecule.ConciseFormula = molecule.CalculatedFormula();
                 }
                 newModel.Relabel(true);
             }
@@ -355,8 +359,8 @@ namespace Chem4Word.Model.Converters
 
             var atomElements = CML.GetAtoms(cmlElement);
             var bondElements = CML.GetBonds(cmlElement);
-            var nameElements = GetNames(cmlElement);
-            var formulaElements = GetFormulas(cmlElement);
+            var nameElements = CML.GetNames(cmlElement);
+            var formulaElements = CML.GetFormulas(cmlElement);
 
             Dictionary<string, Atom> newAtoms = new Dictionary<string, Atom>();
 
@@ -364,6 +368,9 @@ namespace Chem4Word.Model.Converters
             {
                 var newMol = CreateMolecule(childElement);
                 m.Molecules.Add(newMol);
+                Debug.WriteLine(m.Molecules.Count);
+                Debug.WriteLine(m.AllAtoms.Count);
+                Debug.WriteLine(m.AllBonds.Count);
             }
 
             foreach (XElement atomElement in atomElements)

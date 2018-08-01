@@ -26,7 +26,14 @@ namespace Chem4Word.Telemetry
             {
                 if (_cpuName == null)
                 {
-                    GatherCpuData();
+                    try
+                    {
+                        GatherCpuData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
                 }
                 return _cpuName;
             }
@@ -40,7 +47,14 @@ namespace Chem4Word.Telemetry
             {
                 if (_cpuSpeed == null)
                 {
-                    GatherCpuData();
+                    try
+                    {
+                        GatherCpuData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
                 }
                 return _cpuSpeed;
             }
@@ -54,7 +68,14 @@ namespace Chem4Word.Telemetry
             {
                 if (_logicalProcessors == null)
                 {
-                    GatherCpuData();
+                    try
+                    {
+                        GatherCpuData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
                 }
                 return _logicalProcessors;
             }
@@ -68,7 +89,14 @@ namespace Chem4Word.Telemetry
             {
                 if (_physicalMemory == null)
                 {
-                    GatherMemoryData();
+                    try
+                    {
+                        GatherMemoryData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
                 }
                 return _physicalMemory;
             }
