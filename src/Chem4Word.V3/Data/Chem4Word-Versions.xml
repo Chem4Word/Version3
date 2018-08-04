@@ -3,6 +3,20 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.19 Release 6</Number>
+    <IsBeta>false</IsBeta>
+    <Released>31-Aug-2018</Released>
+    <Changes>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.19.Release.6.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.18 Release 5</Number>
     <IsBeta>false</IsBeta>
     <Released>01-Aug-2018</Released>
@@ -13,7 +27,6 @@
       <Change>Update SQLite to latest version.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
-    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.18.Release.5.msi</Url>
   </Version>
   <Version>
     <Number>3.0.17 Release 4</Number>
