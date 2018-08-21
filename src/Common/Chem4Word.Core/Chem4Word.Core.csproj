@@ -110,6 +110,7 @@
     <Compile Include="UI\Forms\MolFileViewer.Designer.cs">
       <DependentUpon>MolFileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\Wpf\WpfEventArgs.cs" />
     <Compile Include="UserInteractions.cs" />
   </ItemGroup>
   <ItemGroup>

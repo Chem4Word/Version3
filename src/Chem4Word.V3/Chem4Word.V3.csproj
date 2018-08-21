@@ -345,6 +345,7 @@
     <Compile Include="UI\ImportErrors.Designer.cs">
       <DependentUpon>ImportErrors.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\PlugInComboItem.cs" />
     <Compile Include="UI\UpdateFailure.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -370,6 +371,15 @@
       <DependentUpon>UcMoleculeLabelEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WaitCursor.cs" />
+    <Compile Include="UI\WPF\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WPF\SettingsHost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WPF\SettingsHost.Designer.cs">
+      <DependentUpon>SettingsHost.cs</DependentUpon>
+    </Compile>
     <Compile Include="WebServices\Chemspider.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -480,6 +490,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControls\UcMoleculeLabelEditor.resx">
       <DependentUpon>UcMoleculeLabelEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WPF\SettingsHost.resx">
+      <DependentUpon>SettingsHost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\XmlViewer.resx">
       <DependentUpon>XmlViewer.cs</DependentUpon>
@@ -616,6 +629,10 @@
     <Page Include="Navigator\NavigatorViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\WPF\SettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <PropertyGroup>

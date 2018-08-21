@@ -88,7 +88,7 @@ namespace Chem4Word.WebServices
                     {
                         Globals.Chem4WordV3.LoadOptions();
                     }
-                    string url = Globals.Chem4WordV3.SystemOptions.ChemSpiderRdfServiceUri + inchiKey;
+                    string url = Globals.Chem4WordV3.SystemOptions.ResolverServiceUri + inchiKey;
                     HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                     request.Timeout = 5000;
                     request.UserAgent = "Chem4Word";
@@ -191,7 +191,7 @@ namespace Chem4Word.WebServices
                     {
                         Globals.Chem4WordV3.LoadOptions();
                     }
-                    string url = Globals.Chem4WordV3.SystemOptions.ChemSpiderRdfServiceUri + inchiKey;
+                    string url = Globals.Chem4WordV3.SystemOptions.ResolverServiceUri + inchiKey;
                     HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                     request.Timeout = 5000;
                     request.UserAgent = "Chem4Word";

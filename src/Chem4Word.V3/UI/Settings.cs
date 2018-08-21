@@ -74,7 +74,7 @@ namespace Chem4Word.UI
 
         private void SaveChanges()
         {
-            SystemOptions.ChemSpiderRdfServiceUri = EnsureTrailingSlash(SystemOptions.ChemSpiderRdfServiceUri);
+            SystemOptions.ResolverServiceUri = EnsureTrailingSlash(SystemOptions.ResolverServiceUri);
             SystemOptions.ChemSpiderWebServiceUri = EnsureTrailingSlash(SystemOptions.ChemSpiderWebServiceUri);
 
             string json = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
@@ -204,7 +204,7 @@ namespace Chem4Word.UI
             }
 
             chkUseWebServices.Checked = SystemOptions.UseWebServices;
-            txtChemSpiderRdfUri.Text = SystemOptions.ChemSpiderRdfServiceUri;
+            txtChemSpiderRdfUri.Text = SystemOptions.ResolverServiceUri;
             txtChemSpiderWsUri.Text = SystemOptions.ChemSpiderWebServiceUri;
 
             string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
@@ -390,7 +390,7 @@ namespace Chem4Word.UI
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                SystemOptions.ChemSpiderRdfServiceUri = txtChemSpiderRdfUri.Text;
+                SystemOptions.ResolverServiceUri = txtChemSpiderRdfUri.Text;
                 _dirty = true;
             }
             catch (Exception ex)
@@ -654,17 +654,6 @@ namespace Chem4Word.UI
             {
                 new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
             }
-        }
-    }
-
-    public class PlugInComboItem
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }
