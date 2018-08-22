@@ -21,6 +21,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Model.Converters.MDL;
 
 namespace Chem4Word.Searcher.PubChemPlugIn
 {

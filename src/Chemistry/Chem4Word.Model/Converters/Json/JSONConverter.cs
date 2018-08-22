@@ -5,13 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Enums;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Chem4Word.Model.Enums;
+using Newtonsoft.Json;
 
-namespace Chem4Word.Model.Converters
+namespace Chem4Word.Model.Converters.Json
 {
     /// <summary>
     /// Converts a Model from and to JSON

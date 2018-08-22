@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Chem4Word.Model.Converters
+namespace Chem4Word.Model.Converters.CML
 {
     /// <summary>
     /// Loads up the CML into XDocument and XElement objects

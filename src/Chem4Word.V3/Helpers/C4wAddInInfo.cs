@@ -17,6 +17,8 @@ namespace Chem4Word.Helpers
     {
         //private readonly string _localAppDataPath;
 
+        public string AssemblyVersionNumber { get; }
+
         /// <summary>
         /// Name of product reflected from assembly i.e. "Chem4Word.V3"
         /// </summary>
@@ -47,6 +49,10 @@ namespace Chem4Word.Helpers
             // Get the assembly information
             Assembly assemblyInfo = Assembly.GetExecutingAssembly();
             ProductName = assemblyInfo.FullName.Split(',')[0];
+
+            // Get the assembly Version
+            Version productVersion = assemblyInfo.GetName().Version;
+            AssemblyVersionNumber = productVersion.ToString();
 
             // Location is where the assembly is run from (in dl3 cache)
             //string assemblyLocation = assemblyInfo.Location;

@@ -380,6 +380,8 @@
     <Compile Include="UI\WPF\SettingsHost.Designer.cs">
       <DependentUpon>SettingsHost.cs</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\ChemicalProperties.cs" />
+    <Compile Include="WebServices\ChemicalServices.cs" />
     <Compile Include="WebServices\Chemspider.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -408,6 +410,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\ChemicalServicesResult.cs" />
     <None Include="Data\Chem4Word-Versions.xml">
       <SubType>Designer</SubType>
     </None>
@@ -428,12 +431,12 @@
     <Content Include="Resources\Button Images\Manual.png" />
     <Content Include="Resources\Button Images\Navigation-32.png" />
     <Content Include="Resources\Button Images\Office-2016\Edit-Labels.png" />
-    <Content Include="Resources\Button Images\Office-2016\File-Open.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\File-Open.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Save.png" />
-    <Content Include="Resources\Button Images\Office-2016\Gallery-Delete.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\Gallery-Delete.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Find.png" />
-    <Content Include="Resources\Button Images\Office-2016\Gallery-Save.png" />
-    <Content Include="Resources\Button Images\Office-2016\Gallery-Toggle.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\Gallery-Save.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\Gallery-Toggle.png" />
     <Content Include="Resources\Button Images\Office-2016\Navigator-Toggle.png" />
     <Content Include="Resources\Button Images\Office-2016\Seperate-Molecules.png" />
     <Content Include="Resources\Button Images\Office-2016\WebSearch.png" />
@@ -542,7 +545,7 @@
     <Content Include="Resources\Button Images\Label.png" />
     <Content Include="Resources\Button Images\LabelAdd.png" />
     <Content Include="Resources\Button Images\Options.png" />
-    <Content Include="Resources\Button Images\Preferences.png" />
+    <EmbeddedResource Include="Resources\Button Images\Preferences.png" />
     <Content Include="Resources\Button Images\Search.png" />
     <Content Include="Resources\Button Images\Show.png" />
     <Content Include="Resources\Button Images\SmallTick.png" />

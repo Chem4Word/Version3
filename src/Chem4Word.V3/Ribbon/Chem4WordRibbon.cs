@@ -27,7 +27,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Chem4Word.Model.Converters.MDL;
 using Chem4Word.Telemetry;
+using Chem4Word.UI.WPF;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
@@ -38,7 +40,7 @@ namespace Chem4Word
     public partial class CustomRibbon
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         private static object _missing = Type.Missing;
 
@@ -365,21 +367,32 @@ namespace Chem4Word
                 BeforeButtonChecks(sender as RibbonButton);
                 try
                 {
-                    Settings optionsForm = new Settings();
+                    //Settings optionsForm = new Settings();
 
-                    if (Globals.Chem4WordV3.SystemOptions == null)
-                    {
-                        Globals.Chem4WordV3.LoadOptions();
-                    }
-                    Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
+                    //if (Globals.Chem4WordV3.SystemOptions == null)
+                    //{
+                    //    Globals.Chem4WordV3.LoadOptions();
+                    //}
+                    //Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
 
-                    optionsForm.SystemOptions = tempOptions;
-                    optionsForm.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+                    //optionsForm.SystemOptions = tempOptions;
+                    //optionsForm.TopLeft = Globals.Chem4WordV3.WordTopLeft;
 
-                    DialogResult dr = optionsForm.ShowDialog();
+                    //DialogResult dr = optionsForm.ShowDialog();
+                    //if (dr == DialogResult.OK)
+                    //{
+                    //    Globals.Chem4WordV3.SystemOptions = tempOptions.Clone();
+                    //    Globals.Chem4WordV3.Telemetry = new TelemetryWriter(Globals.Chem4WordV3.SystemOptions.TelemetryEnabled);
+                    //}
+
+                    SettingsHost f = new SettingsHost(true);
+                    f.SystemOptions = Globals.Chem4WordV3.SystemOptions.Clone();
+                    f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+                    f.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
+                    DialogResult dr = f.ShowDialog();
                     if (dr == DialogResult.OK)
                     {
-                        Globals.Chem4WordV3.SystemOptions = tempOptions.Clone();
+                        Globals.Chem4WordV3.SystemOptions = f.SystemOptions.Clone();
                         Globals.Chem4WordV3.Telemetry = new TelemetryWriter(Globals.Chem4WordV3.SystemOptions.TelemetryEnabled);
                     }
                 }
@@ -1010,19 +1023,20 @@ namespace Chem4Word
                             {
                                 Dictionary<string, string> synonyms = new Dictionary<string, string>();
 
-                                // ChemSpider InChiKey (1.03) generator does not support 0 bonds or Elements > 104
-                                List<Bond> nullBonds = mol.Bonds.Where(b => b.OrderValue != null && b.OrderValue.Value < 1).ToList();
-                                int max = mol.Atoms.Max(x => ((Element)x.Element).AtomicNumber);
-                                if (nullBonds.Any() || max >= 104)
+                                // ChemSpider InChiKey (1.05) generator does not support Mdl Bond Types < 0 or > 4 or Elements < 1 or > 118
+                                List<Bond> invalidBonds = mol.Bonds.Where(b => b.OrderValue != null && (CtabProcessor.MdlBondType(b.Order) < 1 || CtabProcessor.MdlBondType(b.Order) > 4)).ToList();
+                                int maxAtomicNumber = mol.Atoms.Max(x => ((Element)x.Element).AtomicNumber);
+                                int minAtomicNumber = mol.Atoms.Min(x => ((Element)x.Element).AtomicNumber);
+                                if (invalidBonds.Any() || minAtomicNumber < 1 || maxAtomicNumber > 118)
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to ChemSpider; Null Bonds: {nullBonds?.Count} Max Atomic Number: {max}");
-                                    synonyms.Add(Constants.ChemspiderInchiKeyName, "Not Requested");
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to ChemSpider; Invalid Bonds: {invalidBonds?.Count} Min Atomic Number: {minAtomicNumber} Max Atomic Number: {maxAtomicNumber}");
+                                    synonyms.Add(Constants.Chem4WordInchiKeyName, "Not Requested");
                                 }
                                 else
                                 {
                                     pb.Show();
                                     pb.Increment(1);
-                                    pb.Message = $"Fetching InChiKey from ChemSpider for molecule {mol.Id}";
+                                    pb.Message = $"Fetching InChiKey from Chem4Word Web Service for molecule {mol.Id}";
 
                                     Model.Model temp = new Model.Model();
                                     temp.Molecules.Add(mol);
@@ -1030,20 +1044,28 @@ namespace Chem4Word
                                     string afterMolFile = molConverter.Export(temp);
                                     mol.ConciseFormula = mol.CalculatedFormula();
 
-                                    Chemspider cs = new Chemspider(Globals.Chem4WordV3.Telemetry);
-                                    string inchiKey = cs.GetInchiKey(afterMolFile);
+                                    ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
+                                    var csr = cs.GetChemicalServicesResult(afterMolFile);
 
-                                    pb.Increment(1);
-                                    pb.Message = $"Fetching Synonyms from ChemSpider for molecule {mol.Id}";
-
-                                    synonyms = cs.GetSynonyms(inchiKey);
-                                    if (string.IsNullOrEmpty(inchiKey))
+                                    if (csr.Properties.Any())
                                     {
-                                        synonyms.Add(Constants.ChemspiderInchiKeyName, "Unknown");
-                                    }
-                                    else
-                                    {
-                                        synonyms.Add(Constants.ChemspiderInchiKeyName, inchiKey);
+                                        var first = csr.Properties[0];
+                                        if (!string.IsNullOrEmpty(first.InchiKey))
+                                        {
+                                            synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
+                                        }
+                                        if (!string.IsNullOrEmpty(first.Formula))
+                                        {
+                                            synonyms.Add(Constants.CactusResolverFormulaName, first.Formula);
+                                        }
+                                        if (!string.IsNullOrEmpty(first.Name))
+                                        {
+                                            synonyms.Add(Constants.CactusResolverIupacName, first.Name);
+                                        }
+                                        if (!string.IsNullOrEmpty(first.Smiles))
+                                        {
+                                            synonyms.Add(Constants.CactusResolverSmilesName, first.Smiles);
+                                        }
                                     }
                                 }
 
@@ -1054,6 +1076,8 @@ namespace Chem4Word
                                     {
                                         case Constants.ChemspiderFormulaName:
                                         case Constants.ChemSpiderSmilesName:
+                                        case Constants.CactusResolverFormulaName:
+                                        case Constants.CactusResolverSmilesName:
                                             updated = false;
                                             foreach (var formula in mol.Formulas)
                                             {
@@ -1074,8 +1098,10 @@ namespace Chem4Word
                                             break;
 
                                         case Constants.ChemspiderIdName:
+                                        case Constants.Chem4WordInchiKeyName:
                                         case Constants.ChemSpiderSynonymName:
                                         case Constants.ChemspiderInchiKeyName:
+                                        case Constants.CactusResolverIupacName:
                                             updated = false;
                                             foreach (var name in mol.ChemicalNames)
                                             {

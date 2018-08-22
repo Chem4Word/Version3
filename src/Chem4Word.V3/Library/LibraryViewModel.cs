@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using Chem4Word.Model.Converters.CML;
 
 namespace Chem4Word.Library
 {
@@ -492,7 +493,7 @@ namespace Chem4Word.Library
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                XName nameNodeName = Model.Converters.CML.cml + "name";
+                XName nameNodeName = CML.cml + "name";
 
                 var names = (from namenode in mol.cmlDoc.Descendants(nameNodeName)
                              where namenode.Name == nameNodeName

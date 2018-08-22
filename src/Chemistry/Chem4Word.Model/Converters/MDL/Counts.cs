@@ -5,7 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-namespace Chem4Word.Model.Converters
+namespace Chem4Word.Model.Converters.MDL
 {
     public class Counts
     {

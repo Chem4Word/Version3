@@ -28,6 +28,7 @@ namespace Chem4Word.WebServices
             Telemetry = telemetry;
         }
 
+        [Obsolete]
         public string GetInchiKey(string molfile)
         {
             string module = "GetInchiKey()";
@@ -43,7 +44,7 @@ namespace Chem4Word.WebServices
                 {
                     Globals.Chem4WordV3.LoadOptions();
                 }
-                i.Url = Globals.Chem4WordV3.SystemOptions.ChemSpiderWebServiceUri + "InChI.asmx";
+                i.Url = Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri + "InChI.asmx";
                 i.UserAgent = "Chem4Word";
                 i.Timeout = 5000;
                 result = i.MolToInChIKey(molfile);
@@ -70,6 +71,7 @@ namespace Chem4Word.WebServices
             return result;
         }
 
+        [Obsolete]
         public Dictionary<string, string> GetSynonyms(string inchiKey)
         {
             string module = "GetSynonyms()";
@@ -88,7 +90,9 @@ namespace Chem4Word.WebServices
                     {
                         Globals.Chem4WordV3.LoadOptions();
                     }
-                    string url = Globals.Chem4WordV3.SystemOptions.ResolverServiceUri + inchiKey;
+
+                    Debugger.Break();
+                    string url = ""; //Globals.Chem4WordV3.SystemOptions.ResolverServiceUri + inchiKey;
                     HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                     request.Timeout = 5000;
                     request.UserAgent = "Chem4Word";
@@ -175,7 +179,8 @@ namespace Chem4Word.WebServices
             return result;
         }
 
-        public string GetSynonym(string inchiKey)
+        [Obsolete]
+        private string GetSynonym(string inchiKey)
         {
             string module = "GetSynonym()";
             string result = null;
@@ -191,7 +196,9 @@ namespace Chem4Word.WebServices
                     {
                         Globals.Chem4WordV3.LoadOptions();
                     }
-                    string url = Globals.Chem4WordV3.SystemOptions.ResolverServiceUri + inchiKey;
+
+                    Debugger.Break();
+                    string url = ""; //Globals.Chem4WordV3.SystemOptions.ResolverServiceUri + inchiKey;
                     HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                     request.Timeout = 5000;
                     request.UserAgent = "Chem4Word";

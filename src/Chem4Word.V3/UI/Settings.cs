@@ -74,8 +74,7 @@ namespace Chem4Word.UI
 
         private void SaveChanges()
         {
-            SystemOptions.ResolverServiceUri = EnsureTrailingSlash(SystemOptions.ResolverServiceUri);
-            SystemOptions.ChemSpiderWebServiceUri = EnsureTrailingSlash(SystemOptions.ChemSpiderWebServiceUri);
+            SystemOptions.Chem4WordWebServiceUri = EnsureTrailingSlash(SystemOptions.Chem4WordWebServiceUri);
 
             string json = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
 
@@ -204,8 +203,7 @@ namespace Chem4Word.UI
             }
 
             chkUseWebServices.Checked = SystemOptions.UseWebServices;
-            txtChemSpiderRdfUri.Text = SystemOptions.ResolverServiceUri;
-            txtChemSpiderWsUri.Text = SystemOptions.ChemSpiderWebServiceUri;
+            txtChemSpiderWsUri.Text = SystemOptions.Chem4WordWebServiceUri;
 
             string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
             bool isBeta = betaValue != null && bool.Parse(betaValue);
@@ -376,7 +374,7 @@ namespace Chem4Word.UI
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                SystemOptions.ChemSpiderWebServiceUri = txtChemSpiderWsUri.Text;
+                SystemOptions.Chem4WordWebServiceUri = txtChemSpiderWsUri.Text;
                 _dirty = true;
             }
             catch (Exception ex)
@@ -385,19 +383,6 @@ namespace Chem4Word.UI
             }
         }
 
-        private void txtChemSpiderRdfUri_TextChanged(object sender, EventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            try
-            {
-                SystemOptions.ResolverServiceUri = txtChemSpiderRdfUri.Text;
-                _dirty = true;
-            }
-            catch (Exception ex)
-            {
-                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
-            }
-        }
 
         private void chkTelemetryEnabled_CheckedChanged(object sender, EventArgs e)
         {

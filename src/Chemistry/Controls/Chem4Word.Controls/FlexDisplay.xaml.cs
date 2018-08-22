@@ -16,6 +16,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Chem4Word.Model.Converters.MDL;
 using ChemistryModel = Chem4Word.Model.Model;
 
 namespace Chem4Word.Controls

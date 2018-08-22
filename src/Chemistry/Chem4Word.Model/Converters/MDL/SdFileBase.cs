@@ -7,7 +7,7 @@
 
 using System.IO;
 
-namespace Chem4Word.Model.Converters
+namespace Chem4Word.Model.Converters.MDL
 {
     public class SdFileBase
     {

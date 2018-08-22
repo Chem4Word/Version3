@@ -232,7 +232,6 @@ namespace Chem4Word.UI
             this.txtChemSpiderRdfUri.Size = new System.Drawing.Size(290, 23);
             this.txtChemSpiderRdfUri.TabIndex = 25;
             this.txtChemSpiderRdfUri.Text = "https://rdf.chemspider.com/";
-            this.txtChemSpiderRdfUri.TextChanged += new System.EventHandler(this.txtChemSpiderRdfUri_TextChanged);
             // 
             // label2
             // 

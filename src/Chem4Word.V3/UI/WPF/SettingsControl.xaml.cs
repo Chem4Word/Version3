@@ -247,27 +247,17 @@ namespace Chem4Word.UI.WPF
 
         #region Tab 2 Events
 
-        private void ChemSpiderWebServiceUri_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void Chem4WordWebServiceUri_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             if (!_loading)
             {
                 Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-                SystemOptions.ChemSpiderWebServiceUri = ChemSpiderWebServiceUri.Text;
+                SystemOptions.Chem4WordWebServiceUri = Chem4WordWebServiceUri.Text;
                 Dirty = true;
             }
         }
 
-        private void ResolverServiceUri_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            if (!_loading)
-            {
-                Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-                SystemOptions.ResolverServiceUri = ResolverServiceUri.Text;
-                Dirty = true;
-            }
-        }
 
         #endregion Tab 2 Events
 
@@ -292,8 +282,6 @@ namespace Chem4Word.UI.WPF
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-
-            Debugger.Break();
 
             try
             {
@@ -420,8 +408,6 @@ namespace Chem4Word.UI.WPF
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            Debugger.Break();
-
             try
             {
                 if (Globals.Chem4WordV3.LibraryNames == null)
@@ -471,7 +457,14 @@ namespace Chem4Word.UI.WPF
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            Debugger.Break();
+            try
+            {
+                Process.Start(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath);
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
+            }
         }
 
         private void LibraryFolder_OnClick(object sender, RoutedEventArgs e)
@@ -479,7 +472,14 @@ namespace Chem4Word.UI.WPF
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            Debugger.Break();
+            try
+            {
+                Process.Start(Globals.Chem4WordV3.AddInInfo.ProgramDataPath);
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
+            }
         }
 
         private void PlugInsFolder_OnClick(object sender, RoutedEventArgs e)
@@ -487,7 +487,14 @@ namespace Chem4Word.UI.WPF
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            Debugger.Break();
+            try
+            {
+                Process.Start(Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "PlugIns"));
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
+            }
         }
 
         #endregion Tab 5 Events
@@ -561,8 +568,7 @@ namespace Chem4Word.UI.WPF
 
             #region Tab 2
 
-            ChemSpiderWebServiceUri.Text = SystemOptions.ChemSpiderWebServiceUri;
-            ResolverServiceUri.Text = SystemOptions.ResolverServiceUri;
+            Chem4WordWebServiceUri.Text = SystemOptions.Chem4WordWebServiceUri;
 
             #endregion Tab 2
 
