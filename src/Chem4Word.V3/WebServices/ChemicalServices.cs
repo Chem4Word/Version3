@@ -1,12 +1,11 @@
-﻿using System;
+﻿using IChem4Word.Contracts;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Windows.Forms;
-using IChem4Word.Contracts;
-using Newtonsoft.Json;
 
 namespace Chem4Word.WebServices
 {
@@ -51,14 +50,27 @@ namespace Chem4Word.WebServices
             {
                 var responseContent = response.Content;
                 var jsonContent = responseContent.ReadAsStringAsync().Result;
-                data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
-                if (data.Messages.Any())
+
+                try
                 {
-                    Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                    data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
                 }
-                if (data.Errors.Any())
+                catch (Exception e)
                 {
-                    Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                    Telemetry.Write(module, "Exception", e.Message);
+                    Telemetry.Write(module, "Exception(Data)", jsonContent);
+                }
+
+                if (data != null)
+                {
+                    if (data.Messages.Any())
+                    {
+                        Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                    }
+                    if (data.Errors.Any())
+                    {
+                        Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                    }
                 }
             }
 

@@ -382,7 +382,6 @@
     </Compile>
     <Compile Include="WebServices\ChemicalProperties.cs" />
     <Compile Include="WebServices\ChemicalServices.cs" />
-    <Compile Include="WebServices\Chemspider.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -392,12 +391,6 @@
     </Compile>
     <Compile Include="UI\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\XmlViewer.cs">
       <SubType>Form</SubType>
@@ -478,9 +471,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ImportErrors.resx">
       <DependentUpon>ImportErrors.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UpdateFailure.resx">
       <DependentUpon>UpdateFailure.cs</DependentUpon>
