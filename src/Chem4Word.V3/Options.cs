@@ -22,9 +22,6 @@ namespace Chem4Word
         [JsonProperty]
         public string Chem4WordWebServiceUri { get; set; }
 
-        //[JsonProperty]
-        //public string ResolverServiceUri { get; set; }
-
         #endregion Web Services
 
         #region Telemetry

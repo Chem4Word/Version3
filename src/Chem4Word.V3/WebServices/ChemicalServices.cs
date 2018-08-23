@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Windows.Forms;
@@ -19,6 +20,10 @@ namespace Chem4Word.WebServices
         public ChemicalServices(IChem4WordTelemetry telemetry)
         {
             Telemetry = telemetry;
+
+            ServicePointManager.DefaultConnectionLimit = 100;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
         }
 
         public ChemicalServicesResult GetChemicalServicesResult(string molfile)
