@@ -2121,8 +2121,9 @@ namespace Chem4Word
 
                 if (!InUndoRedo && !string.IsNullOrEmpty(NewContentControl?.Tag))
                 {
-                    Debug.WriteLine("  Looking for " + NewContentControl?.Tag);
-                    Telemetry.Write(module, "Information", "Looking for " + NewContentControl?.Tag);
+                    string message = $"ContentControl {NewContentControl?.ID} added; Looking for structure {NewContentControl?.Tag}";
+                    Debug.WriteLine("  " + message);
+                    Telemetry.Write(module, "Information", message);
 
                     Word.Document doc = NewContentControl.Application.ActiveDocument;
                     Word.Application app = Globals.Chem4WordV3.Application;

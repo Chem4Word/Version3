@@ -769,6 +769,8 @@ namespace Chem4Word
             Word.ContentControl cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText,
                 ref _missing);
 
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Inserting 2D structure in ContentControl {cc.ID} Tag {tag}");
+
             cc.Range.InsertFile(tempfileName, bookmarkName);
             if (doc.Bookmarks.Exists(bookmarkName))
             {
@@ -786,6 +788,7 @@ namespace Chem4Word
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Updating 2D structure in ContentControl {cc.ID} Tag {tag}");
             cc.LockContents = false;
             if (cc.Type == Word.WdContentControlType.wdContentControlPicture)
             {
@@ -820,6 +823,8 @@ namespace Chem4Word
             Word.ContentControl cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText,
                 ref _missing);
 
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Inserting 1D label in ContentControl {cc.ID} Tag {tag}");
+
             bool existingState = app.AutoCorrect.CorrectSentenceCaps;
             app.AutoCorrect.CorrectSentenceCaps = false;
 
@@ -836,6 +841,8 @@ namespace Chem4Word
         private static void Update1D(Word.Application app, Word.ContentControl cc, string text, bool isFormula, string tag)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Updating 1D label in ContentControl {cc.ID} Tag {tag}");
 
             cc.LockContents = false;
             cc.Range.Delete();
@@ -905,6 +912,7 @@ namespace Chem4Word
             Word.Document doc = app.ActiveDocument;
             Word.ContentControl cc = null;
 
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Started");
             try
             {
                 if (Globals.Chem4WordV3.SystemOptions == null)
@@ -1234,7 +1242,6 @@ namespace Chem4Word
 
                                 // Insert a new CC
                                 cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
-                                Debug.WriteLine("Inserted ContentControl " + cc.ID);
 
                                 cc.Title = Constants.ContentControlTitle;
                                 if (isNewDrawing)
@@ -1304,7 +1311,11 @@ namespace Chem4Word
                 {
                     // Move selection point into the Content Control which was just edited or added
                     app.Selection.SetRange(cc.Range.Start, cc.Range.End);
-                    //Globals.Chem4WordV3.SelectChemistry(app.Selection);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Finished; ContentControl {cc?.ID} was inserted");
+                }
+                else
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Finished; No ContentControl was inserted");
                 }
             }
         }
