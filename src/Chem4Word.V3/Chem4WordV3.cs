@@ -161,6 +161,10 @@ namespace Chem4Word
                         case "16.0":
                             version = 2016;
                             break;
+
+                        case "17.0":
+                            version = 2019;
+                            break;
                     }
                 }
                 catch
