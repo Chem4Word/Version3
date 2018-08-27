@@ -45,7 +45,7 @@ namespace Chem4Word.WebServices
 
                 var content = new FormUrlEncodedContent(formData);
 
-                httpClient.Timeout = TimeSpan.FromSeconds(5);
+                httpClient.Timeout = TimeSpan.FromSeconds(10);
                 httpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 
                 var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
