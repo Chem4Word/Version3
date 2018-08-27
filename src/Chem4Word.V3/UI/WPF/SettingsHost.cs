@@ -125,10 +125,19 @@ namespace Chem4Word.UI.WPF
 
             return output;
         }
+        private string StripTrailingSlash(string uri)
+        {
+            if (uri.EndsWith("/"))
+            {
+                uri = uri.Remove(uri.Length - 1);
+            }
+
+            return uri;
+        }
 
         private void SaveChanges()
         {
-            SystemOptions.Chem4WordWebServiceUri = EnsureTrailingSlash(SystemOptions.Chem4WordWebServiceUri);
+            SystemOptions.Chem4WordWebServiceUri = StripTrailingSlash(SystemOptions.Chem4WordWebServiceUri);
 
             string json = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
 

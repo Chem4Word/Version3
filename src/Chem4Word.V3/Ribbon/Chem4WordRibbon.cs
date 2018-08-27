@@ -973,7 +973,7 @@ namespace Chem4Word
 
                             int matchedMolecules = 0;
 
-                            #region Copy old formulae and labels to new model if molecule Id and Concise Formula match
+                            #region Copy old formulae and labels to new model and count matched molecues
 
                             foreach (Molecule beforeMolecule in beforeModel.Molecules)
                             {
@@ -1010,9 +1010,9 @@ namespace Chem4Word
 
                             bool showLabelEditor = afterModel.Molecules.Count != matchedMolecules;
 
-                            #region ChemSpider Calls
+                            #region WebService API Calls
 
-                            int chemSpiderCalls = afterModel.Molecules.Count * 2;
+                            int chemSpiderCalls = afterModel.Molecules.Count + 1;
 
                             Progress pb = new Progress();
                             pb.TopLeft = Globals.Chem4WordV3.WordTopLeft;
@@ -1038,34 +1038,41 @@ namespace Chem4Word
                                     pb.Increment(1);
                                     pb.Message = $"Fetching InChiKey from Chem4Word Web Service for molecule {mol.Id}";
 
-                                    Model.Model temp = new Model.Model();
-                                    temp.Molecules.Add(mol);
-
-                                    string afterMolFile = molConverter.Export(temp);
-                                    mol.ConciseFormula = mol.CalculatedFormula();
-
-                                    ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
-                                    var csr = cs.GetChemicalServicesResult(afterMolFile);
-
-                                    if (csr.Properties.Any())
+                                    try
                                     {
-                                        var first = csr.Properties[0];
-                                        if (!string.IsNullOrEmpty(first.InchiKey))
+                                        Model.Model temp = new Model.Model();
+                                        temp.Molecules.Add(mol);
+
+                                        string afterMolFile = molConverter.Export(temp);
+                                        mol.ConciseFormula = mol.CalculatedFormula();
+
+                                        ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
+                                        var csr = cs.GetChemicalServicesResult(afterMolFile);
+
+                                        if (csr.Properties.Any())
                                         {
-                                            synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
+                                            var first = csr.Properties[0];
+                                            if (!string.IsNullOrEmpty(first.InchiKey))
+                                            {
+                                                synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
+                                            }
+                                            if (!string.IsNullOrEmpty(first.Formula))
+                                            {
+                                                synonyms.Add(Constants.Chem4WordResolverFormulaName, first.Formula);
+                                            }
+                                            if (!string.IsNullOrEmpty(first.Name))
+                                            {
+                                                synonyms.Add(Constants.Chem4WordResolverIupacName, first.Name);
+                                            }
+                                            if (!string.IsNullOrEmpty(first.Smiles))
+                                            {
+                                                synonyms.Add(Constants.Chem4WordResolverSmilesName, first.Smiles);
+                                            }
                                         }
-                                        if (!string.IsNullOrEmpty(first.Formula))
-                                        {
-                                            synonyms.Add(Constants.CactusResolverFormulaName, first.Formula);
-                                        }
-                                        if (!string.IsNullOrEmpty(first.Name))
-                                        {
-                                            synonyms.Add(Constants.CactusResolverIupacName, first.Name);
-                                        }
-                                        if (!string.IsNullOrEmpty(first.Smiles))
-                                        {
-                                            synonyms.Add(Constants.CactusResolverSmilesName, first.Smiles);
-                                        }
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Globals.Chem4WordV3.Telemetry.Write(module,"Exception",$"{e.ToString()}");
                                     }
                                 }
 
@@ -1076,8 +1083,8 @@ namespace Chem4Word
                                     {
                                         case Constants.ChemspiderFormulaName:
                                         case Constants.ChemSpiderSmilesName:
-                                        case Constants.CactusResolverFormulaName:
-                                        case Constants.CactusResolverSmilesName:
+                                        case Constants.Chem4WordResolverFormulaName:
+                                        case Constants.Chem4WordResolverSmilesName:
                                             updated = false;
                                             foreach (var formula in mol.Formulas)
                                             {
@@ -1101,7 +1108,7 @@ namespace Chem4Word
                                         case Constants.Chem4WordInchiKeyName:
                                         case Constants.ChemSpiderSynonymName:
                                         case Constants.ChemspiderInchiKeyName:
-                                        case Constants.CactusResolverIupacName:
+                                        case Constants.Chem4WordResolverIupacName:
                                             updated = false;
                                             foreach (var name in mol.ChemicalNames)
                                             {
@@ -1128,7 +1135,7 @@ namespace Chem4Word
                             pb.Hide();
                             pb.Close();
 
-                            #endregion ChemSpider Calls
+                            #endregion WebService API Calls
 
                             string guidString;
                             string fullTag;
@@ -1146,6 +1153,15 @@ namespace Chem4Word
                                 {
                                     guidString = Guid.NewGuid().ToString("N"); // No dashes
                                 }
+                            }
+
+                            if (isNewDrawing)
+                            {
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Creating new structure {fullTag}");
+                            }
+                            else
+                            {
+                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Editing existing structure {fullTag}");
                             }
 
                             afterModel.CustomXmlPartGuid = guidString;

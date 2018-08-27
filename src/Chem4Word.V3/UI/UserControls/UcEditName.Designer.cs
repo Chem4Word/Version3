@@ -40,9 +40,9 @@
             // 
             this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtName.Location = new System.Drawing.Point(182, 10);
+            this.txtName.Location = new System.Drawing.Point(211, 10);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(276, 23);
+            this.txtName.Size = new System.Drawing.Size(247, 23);
             this.txtName.TabIndex = 0;
             this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
@@ -84,10 +84,10 @@
             this.txtDictRef.Location = new System.Drawing.Point(0, 10);
             this.txtDictRef.Name = "txtDictRef";
             this.txtDictRef.ReadOnly = true;
-            this.txtDictRef.Size = new System.Drawing.Size(176, 23);
+            this.txtDictRef.Size = new System.Drawing.Size(205, 23);
             this.txtDictRef.TabIndex = 7;
             // 
-            // UcEditNameV2
+            // UcEditName
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -98,7 +98,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtName);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "UcEditNameV2";
+            this.Name = "UcEditName";
             this.Size = new System.Drawing.Size(554, 43);
             this.Load += new System.EventHandler(this.UcEditName_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbNameCheck)).EndInit();

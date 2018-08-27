@@ -34,10 +34,10 @@ namespace Chem4Word.Core.Helpers
         public const string ChemspiderFormulaName = "chemspider:Formula";
         public const string ChemSpiderSmilesName = "chemspider:Smiles";
 
-        public const string Chem4WordInchiKeyName = "chem4word:Inchikey";
-        public const string CactusResolverIupacName = "cactus:Iupacname";
-        public const string CactusResolverSmilesName = "cactus:Smiles";
-        public const string CactusResolverFormulaName = "cactus:Formula";
+        public const string Chem4WordInchiKeyName = "chem4word:CalculatedInchikey";
+        public const string Chem4WordResolverIupacName = "chem4word:ResolvedIupacname";
+        public const string Chem4WordResolverSmilesName = "chem4word:ResolvedSmiles";
+        public const string Chem4WordResolverFormulaName = "chem4word:ResolvedFormula";
 
         public const string Chem4WordUserFormula = "chem4word:Formula";
         public const string Chem4WordUserSynonym = "chem4word:Synonym";
