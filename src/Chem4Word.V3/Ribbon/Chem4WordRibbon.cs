@@ -1036,7 +1036,7 @@ namespace Chem4Word
                                 {
                                     pb.Show();
                                     pb.Increment(1);
-                                    pb.Message = $"Fetching InChiKey from Chem4Word Web Service for molecule {mol.Id}";
+                                    pb.Message = $"Calculating InChiKey and Resolving Names using Chem4Word Web Service for molecule {mol.Id}";
 
                                     try
                                     {

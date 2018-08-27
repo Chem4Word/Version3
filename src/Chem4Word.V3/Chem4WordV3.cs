@@ -21,6 +21,7 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -61,6 +62,8 @@ namespace Chem4Word
         public C4wAddInInfo AddInInfo = new C4wAddInInfo();
         public Options SystemOptions = null;
         public TelemetryWriter Telemetry = new TelemetryWriter(true);
+
+        public static HttpClient HttpClient = new HttpClient();
 
         public List<IChem4WordEditor> Editors;
         public List<IChem4WordRenderer> Renderers;
@@ -204,6 +207,9 @@ namespace Chem4Word
 
             try
             {
+                HttpClient.Timeout = TimeSpan.FromSeconds(10);
+                HttpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
+
                 UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
 
                 Word.Application app = Globals.Chem4WordV3.Application;
