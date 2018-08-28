@@ -30,6 +30,8 @@ namespace Chem4Word.WebServices
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
+            DateTime started = DateTime.Now;
+
             ChemicalServicesResult data = null;
 
             var formData = new List<KeyValuePair<string, string>>();
@@ -73,6 +75,11 @@ namespace Chem4Word.WebServices
                     }
                 }
             }
+
+            DateTime ended = DateTime.Now;
+            TimeSpan duration = ended - started;
+
+            Telemetry.Write(module, "Timing", $"Calling Azure http Function Took {duration.TotalMilliseconds.ToString("#,##0.00")}ms");
 
             return data;
         }

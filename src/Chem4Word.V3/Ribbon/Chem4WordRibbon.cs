@@ -1020,12 +1020,12 @@ namespace Chem4Word
 
                             #region WebService API Calls
 
-                            int chemSpiderCalls = afterModel.Molecules.Count + 1;
+                            int webServiceCalls = afterModel.Molecules.Count + 1;
 
                             Progress pb = new Progress();
                             pb.TopLeft = Globals.Chem4WordV3.WordTopLeft;
                             pb.Value = 0;
-                            pb.Maximum = chemSpiderCalls;
+                            pb.Maximum = webServiceCalls;
 
                             foreach (Molecule mol in afterModel.Molecules)
                             {
@@ -1037,7 +1037,7 @@ namespace Chem4Word
                                 int minAtomicNumber = mol.Atoms.Min(x => ((Element)x.Element).AtomicNumber);
                                 if (invalidBonds.Any() || minAtomicNumber < 1 || maxAtomicNumber > 118)
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to ChemSpider; Invalid Bonds: {invalidBonds?.Count} Min Atomic Number: {minAtomicNumber} Max Atomic Number: {maxAtomicNumber}");
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to Web Service; Invalid Bonds: {invalidBonds?.Count} Min Atomic Number: {minAtomicNumber} Max Atomic Number: {maxAtomicNumber}");
                                     synonyms.Add(Constants.Chem4WordInchiKeyName, "Not Requested");
                                 }
                                 else
