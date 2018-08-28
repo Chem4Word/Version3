@@ -21,6 +21,7 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -211,6 +212,12 @@ namespace Chem4Word
 
             try
             {
+                ServicePointManager.DefaultConnectionLimit = 100;
+                ServicePointManager.UseNagleAlgorithm = false;
+                ServicePointManager.Expect100Continue = false;
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 HttpClient.Timeout = TimeSpan.FromSeconds(10);
                 HttpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 

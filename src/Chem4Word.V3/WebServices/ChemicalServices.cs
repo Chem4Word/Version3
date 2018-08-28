@@ -20,10 +20,9 @@ namespace Chem4Word.WebServices
         {
             Telemetry = telemetry;
 
-            ServicePointManager.DefaultConnectionLimit = 100;
-            ServicePointManager.UseNagleAlgorithm = false;
-            ServicePointManager.Expect100Continue = false;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            // http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
+            var sp = ServicePointManager.FindServicePoint(new Uri(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri));
+            sp.ConnectionLeaseTimeout = 60 * 1000; // 1 minute
         }
 
         public ChemicalServicesResult GetChemicalServicesResult(string molfile)
@@ -34,46 +33,54 @@ namespace Chem4Word.WebServices
 
             ChemicalServicesResult data = null;
 
-            var formData = new List<KeyValuePair<string, string>>();
+            try
+            {
+                var formData = new List<KeyValuePair<string, string>>();
 
-            formData.Add(new KeyValuePair<string, string>("mol", molfile));
-            formData.Add(new KeyValuePair<string, string>("version", Globals.Chem4WordV3.AddInInfo.AssemblyVersionNumber));
+                formData.Add(new KeyValuePair<string, string>("mol", molfile));
+                formData.Add(new KeyValuePair<string, string>("version", Globals.Chem4WordV3.AddInInfo.AssemblyVersionNumber));
 
 #if DEBUG
-            formData.Add(new KeyValuePair<string, string>("debug", "true"));
+                formData.Add(new KeyValuePair<string, string>("debug", "true"));
 #endif
 
-            var content = new FormUrlEncodedContent(formData);
+                var content = new FormUrlEncodedContent(formData);
 
-            Chem4WordV3.HttpClient.CancelPendingRequests();
+                Chem4WordV3.HttpClient.CancelPendingRequests();
 
-            var response = Chem4WordV3.HttpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
-            if (response.Content != null)
+                var response = Chem4WordV3.HttpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
+                if (response.Content != null)
+                {
+                    var responseContent = response.Content;
+                    var jsonContent = responseContent.ReadAsStringAsync().Result;
+
+                    try
+                    {
+                        data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
+                    }
+                    catch (Exception e2)
+                    {
+                        Telemetry.Write(module, "Exception", e2.Message);
+                        Telemetry.Write(module, "Exception(Data)", jsonContent);
+                    }
+
+                    if (data != null)
+                    {
+                        if (data.Messages.Any())
+                        {
+                            Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                        }
+                        if (data.Errors.Any())
+                        {
+                            Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                        }
+                    }
+                }
+            }
+            catch (Exception e1)
             {
-                var responseContent = response.Content;
-                var jsonContent = responseContent.ReadAsStringAsync().Result;
-
-                try
-                {
-                    data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
-                }
-                catch (Exception e)
-                {
-                    Telemetry.Write(module, "Exception", e.Message);
-                    Telemetry.Write(module, "Exception(Data)", jsonContent);
-                }
-
-                if (data != null)
-                {
-                    if (data.Messages.Any())
-                    {
-                        Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
-                    }
-                    if (data.Errors.Any())
-                    {
-                        Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
-                    }
-                }
+                Telemetry.Write(module, "Exception", e1.Message);
+                Telemetry.Write(module, "Exception", e1.ToString());
             }
 
             DateTime ended = DateTime.Now;
