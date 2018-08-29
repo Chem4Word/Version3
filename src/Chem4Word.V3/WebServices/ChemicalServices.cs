@@ -35,44 +35,49 @@ namespace Chem4Word.WebServices
 
             try
             {
-                var formData = new List<KeyValuePair<string, string>>();
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    var formData = new List<KeyValuePair<string, string>>();
 
-                formData.Add(new KeyValuePair<string, string>("mol", molfile));
-                formData.Add(new KeyValuePair<string, string>("version", Globals.Chem4WordV3.AddInInfo.AssemblyVersionNumber));
+                    formData.Add(new KeyValuePair<string, string>("mol", molfile));
+                    formData.Add(new KeyValuePair<string, string>("version", Globals.Chem4WordV3.AddInInfo.AssemblyVersionNumber));
 
 #if DEBUG
-                formData.Add(new KeyValuePair<string, string>("debug", "true"));
+                    formData.Add(new KeyValuePair<string, string>("debug", "true"));
 #endif
 
-                var content = new FormUrlEncodedContent(formData);
+                    var content = new FormUrlEncodedContent(formData);
 
-                Chem4WordV3.HttpClient.CancelPendingRequests();
+                    httpClient.CancelPendingRequests();
+                    httpClient.Timeout = TimeSpan.FromSeconds(10);
+                    httpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 
-                var response = Chem4WordV3.HttpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
-                if (response.Content != null)
-                {
-                    var responseContent = response.Content;
-                    var jsonContent = responseContent.ReadAsStringAsync().Result;
-
-                    try
+                    var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
+                    if (response.Content != null)
                     {
-                        data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
-                    }
-                    catch (Exception e2)
-                    {
-                        Telemetry.Write(module, "Exception", e2.Message);
-                        Telemetry.Write(module, "Exception(Data)", jsonContent);
-                    }
+                        var responseContent = response.Content;
+                        var jsonContent = responseContent.ReadAsStringAsync().Result;
 
-                    if (data != null)
-                    {
-                        if (data.Messages.Any())
+                        try
                         {
-                            Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                            data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
                         }
-                        if (data.Errors.Any())
+                        catch (Exception e2)
                         {
-                            Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                            Telemetry.Write(module, "Exception", e2.Message);
+                            Telemetry.Write(module, "Exception(Data)", jsonContent);
+                        }
+
+                        if (data != null)
+                        {
+                            if (data.Messages.Any())
+                            {
+                                Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                            }
+                            if (data.Errors.Any())
+                            {
+                                Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                            }
                         }
                     }
                 }

@@ -64,8 +64,6 @@ namespace Chem4Word
         public Options SystemOptions = null;
         public TelemetryWriter Telemetry = new TelemetryWriter(true);
 
-        public static HttpClient HttpClient = new HttpClient();
-
         public List<IChem4WordEditor> Editors;
         public List<IChem4WordRenderer> Renderers;
         public List<IChem4WordSearcher> Searchers;
@@ -218,8 +216,6 @@ namespace Chem4Word
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                HttpClient.Timeout = TimeSpan.FromSeconds(10);
-                HttpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 
                 UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
 
