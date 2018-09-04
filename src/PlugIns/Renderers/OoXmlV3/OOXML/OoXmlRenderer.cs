@@ -48,7 +48,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         private Rect _canvasExtents;
 
         private double _medianBondLength;
-        private Rect _moleculeExtents;
+        private Rect _modelExtents;
 
         private const double EPSILON = 1e-4;
 
@@ -84,7 +84,27 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             var yMax = _chemistryModel.AllAtoms.Select(a => a.Position.Y).Max();
             var yMin = _chemistryModel.AllAtoms.Select(a => a.Position.Y).Min();
 
-            _moleculeExtents = new Rect(new Point(xMin, yMin), new Point(xMax, yMax));
+            _modelExtents = new Rect(new Point(xMin, yMin), new Point(xMax, yMax));
+        }
+
+        private Rect MoleculeExtents(Molecule mol)
+        {
+            var chars = _atomLabelCharacters.Where(m => m.ParentMolecule.Equals(mol.Id));
+
+            double xMin = mol.BoundingBox.Left;
+            double xMax = mol.BoundingBox.Right;
+            double yMin = mol.BoundingBox.Top;
+            double yMax = mol.BoundingBox.Bottom;
+
+            foreach (var c in chars)
+            {
+                xMin = Math.Min(xMin, c.Position.X);
+                yMin = Math.Min(yMin, c.Position.Y);
+                xMax = Math.Max(xMax, c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width));
+                yMax = Math.Max(yMax, c.Position.Y + OoXmlHelper.ScaleCsTtfToCml(c.Character.Height));
+            }
+
+            return new Rect(new Point(xMin, yMin), new Point(xMax, yMax));
         }
 
         public Run GenerateRun()
@@ -202,10 +222,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             if (_options.ShowMoleculeBoundingBoxes)
             {
-                DrawBox(wordprocessingGroup1, _moleculeExtents, "0000ff", 1);
+                DrawBox(wordprocessingGroup1, _modelExtents, "00ff00", 1);
                 foreach (Molecule mol in _chemistryModel.Molecules)
                 {
-                    DrawBox(wordprocessingGroup1, mol.BoundingBox, "ff000", 1);
+                    DrawBox(wordprocessingGroup1, mol.BoundingBox, "0000ff", 1);
+                    DrawBox(wordprocessingGroup1, MoleculeExtents(mol), "ff0000", 1);
                 }
                 DrawBox(wordprocessingGroup1, _canvasExtents, "000000", 1);
             }
@@ -450,7 +471,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                         {
                             // Line was clipped at both ends;
                             // 1. Generate new line
-                            BondLine extraLine = new BondLine(new Point(end.X, end.Y), new Point(bl.End.X, bl.End.Y), bl.Type, bl.Parent);
+                            BondLine extraLine = new BondLine(new Point(end.X, end.Y), new Point(bl.End.X, bl.End.Y), bl.Type, bl.ParentBond, bl.ParentMolecule);
                             extraBondLines.Add(extraLine);
                             // 2. Trim existing line
                             bl.End = new Point(start.X, start.Y);
@@ -476,10 +497,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             //Debug.WriteLine(m_canvasExtents);
 
-            double xMin = _moleculeExtents.Left;
-            double xMax = _moleculeExtents.Right;
-            double yMin = _moleculeExtents.Top;
-            double yMax = _moleculeExtents.Bottom;
+            double xMin = _modelExtents.Left;
+            double xMax = _modelExtents.Right;
+            double yMin = _modelExtents.Top;
+            double yMax = _modelExtents.Bottom;
 
             foreach (AtomLabelCharacter alc in _atomLabelCharacters)
             {
@@ -543,7 +564,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 if (atom.Bonds.Count == 3)
                 {
                     bool isInRing = atom.Rings.Count != 0;
-                    List<BondLine> lines = _bondLines.Where(bl => bl.Parent.Equals(bondId)).ToList();
+                    List<BondLine> lines = _bondLines.Where(bl => bl.ParentBond.Equals(bondId)).ToList();
                     List<Bond> otherBonds;
                     if (isInRing)
                     {
@@ -555,8 +576,8 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                     }
                     if (otherBonds.Count == 2)
                     {
-                        BondLine line1 = _bondLines.First(bl => bl.Parent.Equals(otherBonds[0].Id));
-                        BondLine line2 = _bondLines.First(bl => bl.Parent.Equals(otherBonds[1].Id));
+                        BondLine line1 = _bondLines.First(bl => bl.ParentBond.Equals(otherBonds[0].Id));
+                        BondLine line2 = _bondLines.First(bl => bl.ParentBond.Equals(otherBonds[1].Id));
                         TrimLines(lines, line1, line2, isInRing);
                     }
                 }

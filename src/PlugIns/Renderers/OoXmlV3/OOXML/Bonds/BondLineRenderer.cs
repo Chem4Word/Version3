@@ -405,7 +405,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             Point p2 = new Point(points[2].X, points[2].Y);
 
             // Draw Tail Line
-            BondLine blTail = new BondLine(points[1], points[2], BondLineStyle.Solid, null);
+            BondLine blTail = new BondLine(points[1], points[2], BondLineStyle.Solid, null, null);
             DrawBondLine(wordprocessingGroup1, blTail);
 
             // Prep for intermediate lines
@@ -434,7 +434,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     out linesIntersect, out segmentsIntersect, out outIntersectP1);
                 CoordinateTool.FindIntersection(rightTailEnd, p0, p1, p2,
                     out linesIntersect, out segmentsIntersect, out outIntersectP2);
-                blNext = new BondLine(outIntersectP1, outIntersectP2, BondLineStyle.Solid, null);
+                blNext = new BondLine(outIntersectP1, outIntersectP2, BondLineStyle.Solid, null, null);
                 DrawBondLine(wordprocessingGroup1, blNext);
             }
 
@@ -442,7 +442,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             Point n1 = new Point(points[0].X - 0.025, points[0].Y - 0.025);
             Point n2 = new Point(points[0].X + 0.025, points[0].Y + 0.025);
 
-            BondLine blNose = new BondLine(n1, n2, BondLineStyle.Solid, null);
+            BondLine blNose = new BondLine(n1, n2, BondLineStyle.Solid, null, null);
             DrawBondLine(wordprocessingGroup1, blNose);
         }
 
