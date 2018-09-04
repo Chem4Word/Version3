@@ -30,6 +30,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using Chem4Word.Model.Converters.CML;
 using Extensions = Microsoft.Office.Tools.Word.Extensions;
 using OfficeTools = Microsoft.Office.Tools;
 using Word = Microsoft.Office.Interop.Word;

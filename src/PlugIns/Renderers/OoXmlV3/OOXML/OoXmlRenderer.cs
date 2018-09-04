@@ -502,7 +502,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         {
             BondLinePositioner br = new BondLinePositioner(_bondLines, _medianBondLength);
 
-            if (mol.Bonds.Count > 0)
+            if (mol.AllBonds.Count > 0)
             {
                 pb.Show();
             }
@@ -510,7 +510,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             pb.Value = 0;
             pb.Maximum = mol.Bonds.Count;
 
-            foreach (Bond bond in mol.Bonds)
+            foreach (Bond bond in mol.AllBonds)
             {
                 pb.Increment(1);
                 br.CreateLines(bond);
@@ -521,7 +521,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             // Implement beautification of semi open double bonds and double bonds touching rings
 
             // Obtain list of Double Bonds with Placement of BondDirection.None
-            List<Bond> doubleBonds = mol.Bonds.Where(b => b.OrderValue.Value == 2 && b.Placement == BondDirection.None).ToList();
+            List<Bond> doubleBonds = mol.AllBonds.Where(b => b.OrderValue.Value == 2 && b.Placement == BondDirection.None).ToList();
             if (doubleBonds.Count > 0)
             {
                 pb.Message = $"Processing Double Bonds in Molecule {moleculeNo}";

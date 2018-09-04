@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Model.Converters.CML;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace Chem4Word.Helpers

@@ -14,7 +14,8 @@ namespace Chem4Word.Model.Geometry
 {
     public enum ClockDirections
     {
-        One = 1,
+        Nothing = 0,
+        One,
         Two,
         Three,
         Four,
