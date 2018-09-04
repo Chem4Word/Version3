@@ -20,10 +20,28 @@ namespace Chem4Word.Model
     /// <summary>
     /// Represents an undordered ring of atoms
     /// </summary>
-    [DebuggerDisplay("Atoms: {Atoms.Count} Priority: {Priority}")]
     public class Ring : IComparer<Ring>
     {
-        //private Point? _centroid;
+        #region Constructors
+
+        public Ring()
+        {
+            Atoms = new ObservableCollection<Atom>();
+
+            Atoms.CollectionChanged += Atoms_CollectionChanged;
+        }
+
+        public Ring(HashSet<Atom> ringAtoms) : this()
+        {
+            foreach (Atom atom in ringAtoms)
+            {
+                Atoms.Add(atom);
+            }
+        }
+
+        #endregion Constructors
+
+        #region Properties
 
         public int Priority
         {
@@ -73,8 +91,6 @@ namespace Chem4Word.Model
             }
         }
 
-        #region properties
-
         /// <summary>
         /// Collection of atoms that go to make up the ring
         /// </summary>
@@ -92,13 +108,10 @@ namespace Chem4Word.Model
                 var ringbonds = from a in Atoms
                                 select new
                                 {
-                                    Bondlist = (
-                                        from n in a.Neighbours
+                                    Bondlist = from n in a.Neighbours
                                         where Atoms.Contains(n)
                                         select new { Bond = a.BondBetween(n) }
-                                        )
-                                }
-                      ;
+                                };
 
                 //and then flatten it
                 //I HATE selectmany!
@@ -119,7 +132,9 @@ namespace Chem4Word.Model
                 Vector toCenter = center.Value - b.StartAtom.Position;
                 Vector bv = b.BondVector;
                 if (Vector.AngleBetween(toCenter, bv) > 0)
+                {
                     return BondDirection.Clockwise;
+                }
                 else
                 {
                     return BondDirection.Anticlockwise;
@@ -136,22 +151,6 @@ namespace Chem4Word.Model
         ///  </summary>
         /// <remarks>Do NOT set explicitly.  Add or remove the ring from a Molecule</remarks>
         public Molecule Parent { get; set; }
-
-        /// <summary>
-        /// Obtains the centroid of the ring.
-        ///  </summary>
-        /*public System.Windows.Point? Centroid
-        {
-            get
-            {
-                if (_centroid == null)
-                {
-                    _centroid = Geometry<Atom>.GetCentroid(Traverse().ToArray(), atom => atom.Position);
-                }
-                return _centroid;
-            }
-        }
-        */
 
         public System.Windows.Point? Centroid
         {
@@ -197,7 +196,9 @@ namespace Chem4Word.Model
             res.Add(start);
             Atom next;
             if (start == null)
+            {
                 start = Atoms[0];
+            }
 
             //start with the start atom, and find the other two adjacent atoms that are part of the ring
             var adj = from n in start.Neighbours
@@ -237,21 +238,12 @@ namespace Chem4Word.Model
 
         #endregion properties
 
-        #region Constructors
 
-        public Ring()
+        #region Methods
+
+        public override string ToString()
         {
-            Atoms = new ObservableCollection<Atom>();
-
-            Atoms.CollectionChanged += Atoms_CollectionChanged;
-        }
-
-        public Ring(HashSet<Atom> ringAtoms) : this()
-        {
-            foreach (Atom atom in ringAtoms)
-            {
-                Atoms.Add(atom);
-            }
+            return $"Atoms: {Atoms.Count} Priority: {Priority}";
         }
 
         private void Atoms_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -262,7 +254,9 @@ namespace Chem4Word.Model
                     foreach (Atom atom in e.NewItems)
                     {
                         if (!atom.Rings.Contains(this))
+                        {
                             atom.Rings.Add(this);
+                        }
                     }
                     break;
 
@@ -270,13 +264,15 @@ namespace Chem4Word.Model
                     foreach (Atom atom in e.NewItems)
                     {
                         if (atom.Rings.Contains(this))
+                        {
                             atom.Rings.Remove(this);
+                        }
                     }
                     break;
             }
         }
 
-        #endregion Constructors
+        #endregion Methods
 
         #region Operators
 
