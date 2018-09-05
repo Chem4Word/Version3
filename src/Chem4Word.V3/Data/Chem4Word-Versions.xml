@@ -5,7 +5,7 @@
   <Version>
     <Number>3.0.19 Release 6</Number>
     <IsBeta>false</IsBeta>
-    <Released>31-Aug-2018</Released>
+    <Released>05-Sep-2018</Released>
     <Changes>
       <Change>Change method of opeing files for import to improve handling of locked files.</Change>
       <Change>Change to using our own InchiKey resolver, ChemSpider is no longer working.</Change>
