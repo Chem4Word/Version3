@@ -9,8 +9,11 @@ using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Core.UI.Wpf;
+using Chem4Word.Database;
 using IChem4Word.Contracts;
+using Ookii.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,8 +22,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Chem4Word.Library;
-using Ookii.Dialogs;
 using Forms = System.Windows.Forms;
 
 namespace Chem4Word.UI.WPF
@@ -258,7 +259,6 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-
         #endregion Tab 2 Events
 
         #region Tab 3 Events
@@ -399,10 +399,56 @@ namespace Chem4Word.UI.WPF
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-#if DEBUG
-            Debugger.Break();
-#endif
-            UserInteractions.InformUser("Not Implemented (yet)!");
+
+            try
+            {
+                string exportFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                VistaFolderBrowserDialog browser = new VistaFolderBrowserDialog();
+
+                browser.Description = "Select a folder to export your Library's structures as cml files";
+                browser.UseDescriptionForTitle = true;
+                browser.RootFolder = Environment.SpecialFolder.Desktop;
+                browser.ShowNewFolderButton = false;
+                browser.SelectedPath = exportFolder;
+                Forms.DialogResult dr = browser.ShowDialog();
+
+                if (dr == Forms.DialogResult.OK)
+                {
+                    exportFolder = browser.SelectedPath;
+
+                    if (Directory.Exists(exportFolder))
+                    {
+                        string[] existingCmlFiles = Directory.GetFiles(exportFolder, "*.cml");
+                        if (existingCmlFiles.Length > 0)
+                        {
+                            var doExport = UserInteractions.AskUserYesNo($"This folder contains {existingCmlFiles.Length} cml files. Do you wish to continue?", Forms.MessageBoxDefaultButton.Button2);
+                            if (doExport == Forms.DialogResult.Yes)
+                            {
+                                Database.Library lib = new Database.Library();
+
+                                int exported = 0;
+
+                                List<ChemistryDTO> dto = lib.GetAllChemistry(null);
+                                foreach (var obj in dto)
+                                {
+                                    var filename = Path.Combine(browser.SelectedPath, $"Chem4Word-{obj.Id:000000000}.cml");
+                                    File.WriteAllText(filename, obj.Cml);
+                                    exported++;
+                                }
+
+                                if (exported > 0)
+                                {
+                                    UserInteractions.InformUser($"Exported {exported} structures to {browser.SelectedPath}");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Globals.Chem4WordV3.Telemetry, TopLeft, module, ex).ShowDialog();
+            }
         }
 
         private void EraseLibrary_OnClick(object sender, RoutedEventArgs e)
@@ -452,9 +498,9 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-#endregion Tab 4 Events
+        #endregion Tab 4 Events
 
-#region Tab 5 Events
+        #region Tab 5 Events
 
         private void SettingsFolder_OnClick(object sender, RoutedEventArgs e)
         {
@@ -501,15 +547,15 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-#endregion Tab 5 Events
+        #endregion Tab 5 Events
 
-#region Private methods
+        #region Private methods
 
         private void LoadSettings()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-#region Tab 1
+            #region Tab 1
 
             SelectEditorPlugIn.Items.Clear();
             SelectRendererPlugIn.Items.Clear();
@@ -568,15 +614,15 @@ namespace Chem4Word.UI.WPF
                 }
             }
 
-#endregion Tab 1
+            #endregion Tab 1
 
-#region Tab 2
+            #region Tab 2
 
             Chem4WordWebServiceUri.Text = SystemOptions.Chem4WordWebServiceUri;
 
-#endregion Tab 2
+            #endregion Tab 2
 
-#region Tab 3
+            #region Tab 3
 
             string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
             bool isBeta = betaValue != null && bool.Parse(betaValue);
@@ -588,7 +634,7 @@ namespace Chem4Word.UI.WPF
                 BetaInformation.Visibility = Visibility.Hidden;
             }
 
-#endregion Tab 3
+            #endregion Tab 3
         }
 
         private BitmapImage CreateImageFromStream(Stream stream)
@@ -606,6 +652,6 @@ namespace Chem4Word.UI.WPF
             return bitmap;
         }
 
-#endregion Private methods
+        #endregion Private methods
     }
 }
