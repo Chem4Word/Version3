@@ -7,11 +7,9 @@
     <IsBeta>false</IsBeta>
     <Released>31-Aug-2018</Released>
     <Changes>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
+      <Change>Change method of opeing files for import to improve handling of locked files.</Change>
+      <Change>Change to using our own InchiKey resolver, ChemSpider is no longer working.</Change>
+      <Change>Update SQLite to latest version.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.19.Release.6.msi</Url>
