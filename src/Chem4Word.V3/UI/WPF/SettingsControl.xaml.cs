@@ -399,8 +399,10 @@ namespace Chem4Word.UI.WPF
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-
+#if DEBUG
             Debugger.Break();
+#endif
+            UserInteractions.InformUser("Not Implemented (yet)!");
         }
 
         private void EraseLibrary_OnClick(object sender, RoutedEventArgs e)
@@ -430,7 +432,9 @@ namespace Chem4Word.UI.WPF
                     Globals.Chem4WordV3.LoadNamesFromLibrary();
 
                     // Close the existing Library Pane
+#if DEBUG
                     Debugger.Break();
+#endif
                     //var app = Globals.Chem4WordV3.Application;
                     //foreach (CustomTaskPane taskPane in Globals.Chem4WordV3.CustomTaskPanes)
                     //{
@@ -448,9 +452,9 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-        #endregion Tab 4 Events
+#endregion Tab 4 Events
 
-        #region Tab 5 Events
+#region Tab 5 Events
 
         private void SettingsFolder_OnClick(object sender, RoutedEventArgs e)
         {
@@ -497,15 +501,15 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-        #endregion Tab 5 Events
+#endregion Tab 5 Events
 
-        #region Private methods
+#region Private methods
 
         private void LoadSettings()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            #region Tab 1
+#region Tab 1
 
             SelectEditorPlugIn.Items.Clear();
             SelectRendererPlugIn.Items.Clear();
@@ -564,15 +568,15 @@ namespace Chem4Word.UI.WPF
                 }
             }
 
-            #endregion Tab 1
+#endregion Tab 1
 
-            #region Tab 2
+#region Tab 2
 
             Chem4WordWebServiceUri.Text = SystemOptions.Chem4WordWebServiceUri;
 
-            #endregion Tab 2
+#endregion Tab 2
 
-            #region Tab 3
+#region Tab 3
 
             string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
             bool isBeta = betaValue != null && bool.Parse(betaValue);
@@ -584,7 +588,7 @@ namespace Chem4Word.UI.WPF
                 BetaInformation.Visibility = Visibility.Hidden;
             }
 
-            #endregion Tab 3
+#endregion Tab 3
         }
 
         private BitmapImage CreateImageFromStream(Stream stream)
@@ -602,6 +606,6 @@ namespace Chem4Word.UI.WPF
             return bitmap;
         }
 
-        #endregion Private methods
+#endregion Private methods
     }
 }
