@@ -75,14 +75,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4WordUpdater", "Install
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiX.CustomAction", "Installer\WiX.CustomAction\WiX.CustomAction.csproj", "{D8A20813-2BAC-4094-9586-927121C10D06}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{3699F2D4-9F6F-4983-8006-33687EC7E2DB}"
-	ProjectSection(SolutionItems) = preProject
-		DeepClean.ps1 = DeepClean.ps1
-		Tools\Install-Dev-Certificate.ps1 = Tools\Install-Dev-Certificate.ps1
-		SetAssemblyVersion.ps1 = SetAssemblyVersion.ps1
-		SignFiles.cmd = SignFiles.cmd
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{1B81DF60-6A34-4B5B-86F3-24ED42587450}"
 	ProjectSection(SolutionItems) = preProject
 		Notes\Build Event Macro Locations.xlsx = Notes\Build Event Macro Locations.xlsx
@@ -98,6 +90,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Editor.ChemDoodleWeb800", "PlugIns\Editors\ChemDoodleWeb.800\Chem4Word.Editor.ChemDoodleWeb800.csproj", "{666B7E5E-D48A-42CF-91A6-8E58E90B830D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Editor.ChemDoodleWeb702", "PlugIns\Editors\ChemDoodleWeb.702\Chem4Word.Editor.ChemDoodleWeb702.csproj", "{8C226D4E-FB23-4501-AEAE-796028C9874B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{EAD5BD8A-5E42-4E79-8025-60026CE4173E}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\DeepClean.ps1 = Scripts\DeepClean.ps1
+		Scripts\Install-Dev-Certificate.ps1 = Scripts\Install-Dev-Certificate.ps1
+		Scripts\SetAssemblyVersion.ps1 = Scripts\SetAssemblyVersion.ps1
+		Scripts\SignAssembly.ps1 = Scripts\SignAssembly.ps1
+		Scripts\SignFiles.cmd = Scripts\SignFiles.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

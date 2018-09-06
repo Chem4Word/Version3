@@ -151,14 +151,15 @@
 echo Build configuration is $(ConfigurationName)
 
 if "$(ConfigurationName)" == "Vso-Ci" (
-echo "goto :nocopy"
-goto :nocopy
+  echo "goto :nocopy"
+  goto :nocopy
 )
 
 if "$(ConfigurationName)-%25SignClient%25" == "Setup-Configured" (
-  echo  Signing $(TargetFileName)
-  C:\Tools\Azure\SignClient\SignClient.exe sign -c C:\Tools\Azure\SignClient\appsettings.json -r %25SignClientUser%25 -s %25SignClientPassword%25 -n Chem4Word -i $(TargetPath)
-  echo  Signed $(TargetFileName)
+  powershell.exe -NoLogo -NonInteractive -ExecutionPolicy Unrestricted -Command ^
+  .'$(SolutionDir)Scripts\SignAssembly.ps1' ^
+  -TargetFileName '$(TargetFileName)' ^
+  -TargetPath '$(TargetPath)'
 )
 
 echo "Copying file"
