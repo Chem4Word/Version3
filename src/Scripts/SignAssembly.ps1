@@ -16,28 +16,30 @@
 param
 (
 	[string]$TargetFileName,
-    [string]$TargetPath
+	[string]$TargetPath
 )
 
 try
 {
-    $signClientPath = "C:\Tools\Azure\SignClient"
-    $signClientExe = "$($signClientPath)\SignClient.exe"
-    $signClientSettings = "$($signClientPath)\appsettings.json"
+	$signClientPath = "C:\Tools\Azure\SignClient"
+	$signClientExe = "$($signClientPath)\SignClient.exe"
+	$signClientSettings = "$($signClientPath)\appsettings.json"
 
-    if (Test-Path $signClientExe)
-    {
-    	# Call .Net Foundation Code Signing Service
-        Write-Output "Signing $($TargetFileName)"
-	    & $signClientExe sign -c $signClientSettings -r $env:SignClientUser -s $env:SignClientPassword -n Chem4Word -i $TargetPath
-    }
+	$errorLevel = 0
+
+	if (Test-Path $signClientExe)
+	{
+		# Call .Net Foundation Code Signing Service
+		Write-Output "Signing $($TargetFileName)"
+		& $signClientExe sign -c $signClientSettings -r $env:SignClientUser -s $env:SignClientPassword -n Chem4Word -i $TargetPath
+	}
 
 	# Check that the file was signed
-    Write-Output "Checking if $($TargetFileName) is signed"
+	Write-Output "Checking if $($TargetFileName) is signed"
 	$sig = Get-AuthenticodeSignature -FilePath $TargetPath
 	if ($sig.Status -eq "Valid")
 	{
-		Write-Output "File $($TargetFileName) signed by $($sig.SignerCertificate.Subject)."
+		Write-Output "File $($TargetFileName) is signed by $($sig.SignerCertificate.Subject)."
 		exit 0
 	}
 	else
@@ -49,8 +51,8 @@ try
 catch
 {
 	Write-Error $_.Exception.Message
-	exit 1 #causes the build to fail
+	exit 2
 }
 
 # Should never get here !
-exit 2
+exit 3
