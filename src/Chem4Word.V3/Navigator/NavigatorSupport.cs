@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Chem4Word.Model.Converters.CML;
 
 namespace Chem4Word.Navigator
 {

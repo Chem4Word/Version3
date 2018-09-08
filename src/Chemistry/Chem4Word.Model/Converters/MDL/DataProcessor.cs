@@ -5,14 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Converters.MDL;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Chem4Word.Model.Converters
+namespace Chem4Word.Model.Converters.MDL
 {
-    internal class DataProcessor : SdFileBase
+    public class DataProcessor : SdFileBase
     {
         private List<PropertyType> _propertyTypes;
         private Molecule _molecule;

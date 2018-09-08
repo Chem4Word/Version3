@@ -5,8 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Converters.MDL;
-using Chem4Word.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,10 +12,11 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
+using Chem4Word.Model.Enums;
 
-namespace Chem4Word.Model.Converters
+namespace Chem4Word.Model.Converters.MDL
 {
-    internal class CtabProcessor : SdFileBase
+    public class CtabProcessor : SdFileBase
     {
         public static int doubletRadicalConvention = 4;
 
@@ -483,7 +482,7 @@ namespace Chem4Word.Model.Converters
             return stereo;
         }
 
-        private int MdlBondType(string bondOrder)
+        public static int MdlBondType(string bondOrder)
         {
             // bond type; 1 = Single, 2 = Double, 3 = Triple, 4 = Aromatic, 5 = Single or Double, 6 = Single or Aromatic, 7 = Double or Aromatic, 8 = Any
 

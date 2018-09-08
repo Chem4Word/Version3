@@ -158,11 +158,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip">
@@ -206,16 +206,16 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net451\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.109.1\lib\net451\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.108.0\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.109.0\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.109.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Design" />
@@ -345,6 +345,7 @@
     <Compile Include="UI\ImportErrors.Designer.cs">
       <DependentUpon>ImportErrors.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\PlugInComboItem.cs" />
     <Compile Include="UI\UpdateFailure.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -370,7 +371,17 @@
       <DependentUpon>UcMoleculeLabelEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\WaitCursor.cs" />
-    <Compile Include="WebServices\Chemspider.cs" />
+    <Compile Include="UI\WPF\SettingsControl.xaml.cs">
+      <DependentUpon>SettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\WPF\SettingsHost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\WPF\SettingsHost.Designer.cs">
+      <DependentUpon>SettingsHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WebServices\ChemicalProperties.cs" />
+    <Compile Include="WebServices\ChemicalServices.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -380,12 +391,6 @@
     </Compile>
     <Compile Include="UI\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\XmlViewer.cs">
       <SubType>Form</SubType>
@@ -398,6 +403,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="WebServices\ChemicalServicesResult.cs" />
     <None Include="Data\Chem4Word-Versions.xml">
       <SubType>Designer</SubType>
     </None>
@@ -418,12 +424,12 @@
     <Content Include="Resources\Button Images\Manual.png" />
     <Content Include="Resources\Button Images\Navigation-32.png" />
     <Content Include="Resources\Button Images\Office-2016\Edit-Labels.png" />
-    <Content Include="Resources\Button Images\Office-2016\File-Open.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\File-Open.png" />
     <Content Include="Resources\Button Images\Office-2016\File-Save.png" />
-    <Content Include="Resources\Button Images\Office-2016\Gallery-Delete.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\Gallery-Delete.png" />
     <Content Include="Resources\Button Images\Office-2016\Gallery-Find.png" />
-    <Content Include="Resources\Button Images\Office-2016\Gallery-Save.png" />
-    <Content Include="Resources\Button Images\Office-2016\Gallery-Toggle.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\Gallery-Save.png" />
+    <EmbeddedResource Include="Resources\Button Images\Office-2016\Gallery-Toggle.png" />
     <Content Include="Resources\Button Images\Office-2016\Navigator-Toggle.png" />
     <Content Include="Resources\Button Images\Office-2016\Seperate-Molecules.png" />
     <Content Include="Resources\Button Images\Office-2016\WebSearch.png" />
@@ -466,9 +472,6 @@
     <EmbeddedResource Include="UI\ImportErrors.resx">
       <DependentUpon>ImportErrors.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\UpdateFailure.resx">
       <DependentUpon>UpdateFailure.cs</DependentUpon>
     </EmbeddedResource>
@@ -480,6 +483,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControls\UcMoleculeLabelEditor.resx">
       <DependentUpon>UcMoleculeLabelEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\WPF\SettingsHost.resx">
+      <DependentUpon>SettingsHost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\XmlViewer.resx">
       <DependentUpon>XmlViewer.cs</DependentUpon>
@@ -529,7 +535,7 @@
     <Content Include="Resources\Button Images\Label.png" />
     <Content Include="Resources\Button Images\LabelAdd.png" />
     <Content Include="Resources\Button Images\Options.png" />
-    <Content Include="Resources\Button Images\Preferences.png" />
+    <EmbeddedResource Include="Resources\Button Images\Preferences.png" />
     <Content Include="Resources\Button Images\Search.png" />
     <Content Include="Resources\Button Images\Show.png" />
     <Content Include="Resources\Button Images\SmallTick.png" />
@@ -617,6 +623,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\WPF\SettingsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -644,7 +654,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Setup|AnyCPU'">
     <OutputPath>bin\Setup\</OutputPath>
@@ -671,15 +681,24 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo Starting PostBuild of $(ProjectName)
+echo Build configuration is $(ConfigurationName)
+
+if "$(ConfigurationName)-%25SignClient%25" == "Release-Configured" (
+  echo  Signing $(TargetFileName)
+  C:\Tools\Azure\SignClient\SignClient.exe sign -c C:\Tools\Azure\SignClient\appsettings.json -r %25SignClientUser%25 -s %25SignClientPassword%25 -n Chem4Word -i $(TargetPath)
+  echo  Signed $(TargetFileName)
+)
+
+:done
+echo Finished PostBuild of $(ProjectName)</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.104.0\build\net451\System.Data.SQLite.Core.targets')" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.109.1\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
 </Project>

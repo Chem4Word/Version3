@@ -63,9 +63,9 @@
             // 
             this.txtFormula.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFormula.Location = new System.Drawing.Point(182, 10);
+            this.txtFormula.Location = new System.Drawing.Point(211, 10);
             this.txtFormula.Name = "txtFormula";
-            this.txtFormula.Size = new System.Drawing.Size(276, 23);
+            this.txtFormula.Size = new System.Drawing.Size(247, 23);
             this.txtFormula.TabIndex = 7;
             this.txtFormula.TextChanged += new System.EventHandler(this.txtFormula_TextChanged);
             // 
@@ -74,10 +74,10 @@
             this.txtConvention.Location = new System.Drawing.Point(0, 10);
             this.txtConvention.Name = "txtConvention";
             this.txtConvention.ReadOnly = true;
-            this.txtConvention.Size = new System.Drawing.Size(176, 23);
+            this.txtConvention.Size = new System.Drawing.Size(205, 23);
             this.txtConvention.TabIndex = 11;
             // 
-            // UcEditFormulaV2
+            // UcEditFormula
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -86,7 +86,7 @@
             this.Controls.Add(this.pbFormulaCheck);
             this.Controls.Add(this.txtFormula);
             this.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "UcEditFormulaV2";
+            this.Name = "UcEditFormula";
             this.Size = new System.Drawing.Size(554, 43);
             this.Load += new System.EventHandler(this.UcEditFormula_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbFormulaCheck)).EndInit();

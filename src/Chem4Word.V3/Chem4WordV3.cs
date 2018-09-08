@@ -21,6 +21,8 @@ using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -28,6 +30,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using Chem4Word.Model.Converters.CML;
 using Extensions = Microsoft.Office.Tools.Word.Extensions;
 using OfficeTools = Microsoft.Office.Tools;
 using Word = Microsoft.Office.Interop.Word;
@@ -158,6 +161,10 @@ namespace Chem4Word
                         case "16.0":
                             version = 2016;
                             break;
+
+                        case "17.0":
+                            version = 2019;
+                            break;
                     }
                 }
                 catch
@@ -204,6 +211,13 @@ namespace Chem4Word
 
             try
             {
+                ServicePointManager.DefaultConnectionLimit = 100;
+                ServicePointManager.UseNagleAlgorithm = false;
+                ServicePointManager.Expect100Continue = false;
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
                 UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
 
                 Word.Application app = Globals.Chem4WordV3.Application;
@@ -2115,8 +2129,9 @@ namespace Chem4Word
 
                 if (!InUndoRedo && !string.IsNullOrEmpty(NewContentControl?.Tag))
                 {
-                    Debug.WriteLine("  Looking for " + NewContentControl?.Tag);
-                    Telemetry.Write(module, "Information", "Looking for " + NewContentControl?.Tag);
+                    string message = $"ContentControl {NewContentControl?.ID} added; Looking for structure {NewContentControl?.Tag}";
+                    Debug.WriteLine("  " + message);
+                    Telemetry.Write(module, "Information", message);
 
                     Word.Document doc = NewContentControl.Application.ActiveDocument;
                     Word.Application app = Globals.Chem4WordV3.Application;

@@ -72,10 +72,6 @@ namespace Chem4Word.Telemetry
                 {
                     ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Https;
 
-                    ServicePointManager.DefaultConnectionLimit = 100;
-                    ServicePointManager.UseNagleAlgorithm = false;
-                    ServicePointManager.Expect100Continue = false;
-
                     _client = QueueClient.CreateFromConnectionString(ServiceBus, QueueName);
 
                     WriteMessage(buffer2.Dequeue());

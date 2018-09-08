@@ -1,0 +1,374 @@
+﻿<UserControl
+    x:Class="Chem4Word.UI.WPF.SettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Chem4Word.UI.WPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    FontFamily="Tahoma"
+    FontSize="16"
+    Loaded="SettingsControl_OnLoaded"
+    mc:Ignorable="d">
+    <!--
+        Need to style the tops of the tabs
+        This site should help
+        https://www.codeproject.com/Tips/485099/Styling-WPF-TabControl-Borders
+    -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="55" />
+        </Grid.RowDefinitions>
+        <TabControl
+            Grid.Row="0"
+            Margin="10,10,10,0"
+            Background="{DynamicResource {x:Static SystemColors.ControlColor}}">
+            <TabItem Header="Plug Ins">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox
+                        Grid.Row="0"
+                        BorderThickness="2"
+                        Header="Editor">
+                        <DockPanel>
+                            <DockPanel Dock="Top">
+                                <Button Name="SelectedEditorSettings"
+                                    Width="34"
+                                    Height="34"
+                                    Margin="5"
+                                    Click="SelectedEditorSettings_OnClick"
+                                    DockPanel.Dock="Right">
+                                    <Image x:Name="EditorSettingsButtonImage"
+                                        Margin="1"
+                                        Source="/Resources/Button Images/Preferences.png" />
+                                </Button>
+                                <ComboBox x:Name="SelectEditorPlugIn"
+                                    Margin="5"
+                                    Height="30"
+                                    SelectionChanged="SelectEditorPlugIn_OnSelectionChanged" />
+                            </DockPanel>
+                            <TextBlock x:Name="SelectedEditorPlugInDescription"
+                                Margin="5"
+                                Text="Description of the editor ..."
+                                TextWrapping="Wrap" />
+                        </DockPanel>
+                    </GroupBox>
+                    <GroupBox
+                        Grid.Row="1"
+                        BorderThickness="2"
+                        Header="Renderer">
+                        <DockPanel>
+                            <DockPanel Dock="Top">
+                                <Button x:Name="SelectedRendererSettings"
+                                    Width="34"
+                                    Height="34"
+                                    Margin="5"
+                                    Click="SelectedRendererSettings_OnClick"
+                                    DockPanel.Dock="Right">
+                                    <Image x:Name="RendererSettingsButtonImage"
+                                        Margin="1"
+                                        Source="/Resources/Button Images/Preferences.png" />
+                                </Button>
+                                <ComboBox x:Name="SelectRendererPlugIn"
+                                    Margin="5"
+                                    Height="30"
+                                    SelectionChanged="SelectRenderer_OnSelectionChanged" />
+                            </DockPanel>
+                            <TextBlock x:Name="SelectedRendererDescription"
+                                Margin="5"
+                                Text="Description of the renderer ..."
+                                TextWrapping="Wrap" />
+                        </DockPanel>
+                    </GroupBox>
+                    <GroupBox
+                        Grid.Row="2"
+                        BorderThickness="2"
+                        Header="Searcher">
+                        <DockPanel>
+                            <DockPanel Dock="Top">
+                                <Button x:Name="SelectedSearcherSettings"
+                                    Width="34"
+                                    Height="34"
+                                    Margin="5"
+                                    Click="SelectedSearcherSettings_OnClick"
+                                    DockPanel.Dock="Right">
+                                    <Image x:Name="SearcherSettingsButtonImage"
+                                        Margin="1"
+                                        Source="/Resources/Button Images/Preferences.png" />
+                                </Button>
+                                <ComboBox x:Name="SelectSearcherPlugIn"
+                                    Margin="5"
+                                    Height="30"
+                                    SelectionChanged="SelectSearcher_OnSelectionChanged" />
+                            </DockPanel>
+                            <TextBlock x:Name="SelectedSearcherDescription"
+                                Margin="5"
+                                Text="Description of the renderer ..."
+                                TextWrapping="Wrap" />
+                        </DockPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Web Services">
+                <Grid Margin="5">
+                    <StackPanel>
+                        <DockPanel Margin="0,10,5,0">
+                            <Label
+                                Width="200"
+                                Margin="0,0,5,0"
+                                HorizontalContentAlignment="Right"
+                                Content="Chem4Word Web Service:"
+                                DockPanel.Dock="Left" />
+                            <TextBox x:Name="Chem4WordWebServiceUri"
+                                Margin="5,0,0,0"
+                                Text="https://chemicalservices.azurewebsites.net/api/Resolve"
+                                TextChanged="Chem4WordWebServiceUri_OnTextChanged" />
+                        </DockPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Privacy">
+                <Grid Margin="5">
+                    <StackPanel>
+                        <CheckBox x:Name="TelemetryEnabled"
+                            Margin="10,10,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalContentAlignment="Center"
+                            Click="TelemetryEnabled_OnClick"
+                            Content="Telemetry Enabled" />
+                        <TextBlock
+                            Margin="32,10,0,0"
+                            Text="When you check this box, you are helping to improve the quality, reliability, and performance of this software. Chem4Word automatically collects information from your computer, including error messages and hardware and software information. Any information that is sent to us is anonymous. This information isn't used in advertising or sales in any way."
+                            TextWrapping="Wrap" />
+                        <TextBlock x:Name="BetaInformation"
+                            Margin="32,10,0,0"
+                            FontWeight="SemiBold"
+                            Text="NB: Telemetry is always on for Beta Releases."
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Library">
+                <Grid Margin="5">
+                    <StackPanel>
+                        <GroupBox
+                            BorderThickness="2"
+                            Header="Import">
+                            <DockPanel>
+                                <Button x:Name="ImportIntoLibrary"
+                                    Width="120"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Left"
+                                    Click="ImportIntoLibrary_OnClick"
+                                    DockPanel.Dock="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="ImportIntoLibraryButtonImage"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="5"
+                                            Source="/Resources/Button Images/Office-2016/Gallery-Toggle.png" />
+                                        <Label
+                                            VerticalContentAlignment="Center"
+                                            Content="Import" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="The Library replaces the Gallery from previous versions of Chem4Word. You can import structures from your old Gallery (or any other folder of cml files) into the Library."
+                                    TextWrapping="Wrap" />
+                            </DockPanel>
+                        </GroupBox>
+                        <GroupBox
+                            BorderThickness="2"
+                            Header="Export">
+                            <DockPanel>
+                                <Button x:Name="ExportFromLibrary"
+                                    Width="120"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Left"
+                                    Click="ExportFromLibrary_OnClick"
+                                    DockPanel.Dock="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="ExportFromLibraryButtonImage"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="5"
+                                            Source="/Resources/Button Images/Office-2016/Gallery-Save.png" />
+                                        <Label
+                                            VerticalContentAlignment="Center"
+                                            Content="Export" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="You can export all of your structures to cml files in a folder."
+                                    TextWrapping="Wrap" />
+                            </DockPanel>
+                        </GroupBox>
+                        <GroupBox
+                            BorderThickness="2"
+                            Header="Clear">
+                            <DockPanel>
+                                <Button x:Name="EraseLibrary"
+                                    Width="120"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Left"
+                                    Click="EraseLibrary_OnClick"
+                                    DockPanel.Dock="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="EraseLibraryButtonImage"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="5"
+                                            Source="/Resources/Button Images/Office-2016/Gallery-Delete.png" />
+                                        <Label
+                                            VerticalContentAlignment="Center"
+                                            Content="Clear" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="If you wish to start again with a clean slate, you can erase all the structures in your library."
+                                    TextWrapping="Wrap" />
+                            </DockPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Maintenance">
+                <Grid Margin="5">
+                    <StackPanel>
+                        <Label Content="You should back up the contents of these folders regularily." />
+                        <GroupBox
+                            BorderThickness="2"
+                            Header="Settings">
+                            <DockPanel>
+                                <Button x:Name="SettingsFolder"
+                                    Width="120"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Left"
+                                    Click="SettingsFolder_OnClick"
+                                    DockPanel.Dock="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="SettingsFolderButtonImage"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="5"
+                                            Source="/Resources/Button Images/Office-2016/File-Open.png" />
+                                        <Label
+                                            VerticalContentAlignment="Center"
+                                            Content="Open" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="This folder is where Chem4Word stores your personal settings."
+                                    TextWrapping="Wrap" />
+                            </DockPanel>
+                        </GroupBox>
+                        <GroupBox
+                            BorderThickness="2"
+                            Header="Library">
+                            <DockPanel>
+                                <Button x:Name="LibraryFolder"
+                                    Width="120"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Left"
+                                    Click="LibraryFolder_OnClick"
+                                    DockPanel.Dock="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="LibraryFolderButtonImage"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="5"
+                                            Source="/Resources/Button Images/Office-2016/File-Open.png" />
+                                        <Label
+                                            VerticalContentAlignment="Center"
+                                            Content="Open" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="This folder is where Chem4Word stores your library."
+                                    TextWrapping="Wrap" />
+                            </DockPanel>
+                        </GroupBox>
+                        <GroupBox
+                            BorderThickness="2"
+                            Header="Plug-Ins">
+                            <DockPanel>
+                                <Button x:Name="PlugInsFolder"
+                                    Width="120"
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    HorizontalContentAlignment="Left"
+                                    Click="PlugInsFolder_OnClick"
+                                    DockPanel.Dock="Left">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image x:Name="PlugInsFolderButtonImage"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="5"
+                                            Source="/Resources/Button Images/Office-2016/File-Open.png" />
+                                        <Label
+                                            VerticalContentAlignment="Center"
+                                            Content="Open" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock
+                                    Margin="5"
+                                    VerticalAlignment="Center"
+                                    Text="This folder is where the Chem4Word Plug-Ins are installed."
+                                    TextWrapping="Wrap" />
+                            </DockPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel
+            Grid.Row="1"
+            Margin="10,0,10,0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button x:Name="DefaultsButton"
+                Width="80"
+                Height="32"
+                Margin="5,5,30,5"
+                VerticalAlignment="Center"
+                Click="DefaultsButton_OnClick"
+                Content="Defaults" />
+            <Button x:Name="CancelButton"
+                Width="80"
+                Height="32"
+                Margin="5"
+                VerticalAlignment="Center"
+                Click="CancelButton_OnClick"
+                Content="Cancel" />
+            <Button x:Name="OkButton"
+                Width="80"
+                Height="32"
+                Margin="5"
+                VerticalAlignment="Center"
+                Click="OkButton_Click"
+                Content="OK" />
+        </StackPanel>
+    </Grid>
+</UserControl>

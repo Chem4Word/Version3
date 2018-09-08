@@ -201,57 +201,56 @@ namespace Chem4Word.Helpers
             bool foundOurXmlFile = false;
             foreach (var domain in Domains)
             {
-                HttpClient client = new HttpClient();
-                string exceptionMessage;
+                using (HttpClient client = new HttpClient())
+                {
+                    string exceptionMessage;
 
-                try
-                {
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Looking for Chem4Word-Versions.xml at {domain}");
+                    try
+                    {
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Looking for Chem4Word-Versions.xml at {domain}");
 
-                    client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
-                    client.BaseAddress = new Uri(domain);
-                    var response = client.GetAsync(VersionsFile).Result;
-                    response.EnsureSuccessStatusCode();
-                    Debug.Write(response.StatusCode);
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    if (result.Contains(VersionsFileMarker))
-                    {
-                        foundOurXmlFile = true;
-                        contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                        client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
+                        client.BaseAddress = new Uri(domain);
+                        var response = client.GetAsync(VersionsFile).Result;
+                        response.EnsureSuccessStatusCode();
+                        Debug.Write(response.StatusCode);
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        if (result.Contains(VersionsFileMarker))
+                        {
+                            foundOurXmlFile = true;
+                            contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                        }
+                        else
+                        {
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Chem4Word-Versions.xml at {domain} is corrupt");
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", result);
+                        }
                     }
-                    else
+                    catch (ArgumentNullException nex)
                     {
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Chem4Word-Versions.xml at {domain} is corrupt");
-                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", result);
+                        exceptionMessage = GetExceptionMessages(nex);
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"ArgumentNullException: [{domain}] - {exceptionMessage}");
                     }
-                }
-                catch (ArgumentNullException nex)
-                {
-                    exceptionMessage = GetExceptionMessages(nex);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"ArgumentNullException: [{domain}] - {exceptionMessage}");
-                }
-                catch (HttpRequestException hex)
-                {
-                    exceptionMessage = GetExceptionMessages(hex);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"HttpRequestException: [{domain}] - {exceptionMessage}");
-                }
-                catch (WebException wex)
-                {
-                    exceptionMessage = GetExceptionMessages(wex);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"WebException: [{domain}] - {exceptionMessage}");
-                }
-                catch (Exception ex)
-                {
-                    exceptionMessage = GetExceptionMessages(ex);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Exception: [{domain}] - {exceptionMessage}");
-                }
-                finally
-                {
-                    client.Dispose();
-                }
-                if (foundOurXmlFile)
-                {
-                    break;
+                    catch (HttpRequestException hex)
+                    {
+                        exceptionMessage = GetExceptionMessages(hex);
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"HttpRequestException: [{domain}] - {exceptionMessage}");
+                    }
+                    catch (WebException wex)
+                    {
+                        exceptionMessage = GetExceptionMessages(wex);
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"WebException: [{domain}] - {exceptionMessage}");
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionMessage = GetExceptionMessages(ex);
+                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"Exception: [{domain}] - {exceptionMessage}");
+                    }
+
+                    if (foundOurXmlFile)
+                    {
+                        break;
+                    }
                 }
             }
 

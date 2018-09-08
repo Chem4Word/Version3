@@ -1,27 +1,8 @@
 ﻿# Set Build Numbers
 
-.\SetAssemblyVersion.ps1 -version 3.0.0 -name "Alpha" -released "01-Jun-2017" -path .
-.\SetAssemblyVersion.ps1 -version 3.0.1 -name "Beta 1" -released "08-Jun-2017" -path .
-.\SetAssemblyVersion.ps1 -version 3.0.2 -name "Beta 2" -released "18-Jun-2017" -path .
-.\SetAssemblyVersion.ps1 -version 3.0.3 -name "Beta 3" -released "04-Oct-2017" -path .
+.\SetAssemblyVersion.ps1 -version 3.0.19 -name "Release 6" -released "08-Sep-2018" -path .
 
-# Sign Files
-
-CD "C:\Tools\Code Signing Certificate"
-
-SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.exe
-SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.0.Alpha.msi
-SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.1.Beta.1.msi
-SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.2.Beta.2.msi
-
-CD "C:\Tools\Code Signing Certificate"
-
-.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.exe
-.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.0.Alpha.msi
-.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.1.Beta.1.msi
-.\SignTool.exe sign /n "Open Source Developer, Mike Williams" /t http://timestamp.verisign.com/scripts/timstamp.dll Chem4Word-Setup.3.0.2.Beta.2.msi
-
-GetReady.cmd
+# GetReady.cmd
 set release=Chem4Word-Setup.3.0.2.Beta.2.msi
 set working=C:\Temp
 
@@ -32,7 +13,5 @@ copy Chem4Word.V3\Data\index.html %working%
 
 copy Installer\Chem4WordSetup\bin\Setup\Chem4Word-Setup.exe %working%
 copy Installer\WiXInstaller\bin\Setup\%release% %working%
-
-DigiCertUtil.exe Chem4Word-Setup.exe %release%
 
 popd

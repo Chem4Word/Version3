@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using Chem4Word.Model.Converters.CML;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML
 {

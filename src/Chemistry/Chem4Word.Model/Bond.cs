@@ -18,7 +18,6 @@ using System.Windows;
 
 namespace Chem4Word.Model
 {
-    [DebuggerDisplay("Id: {Id} From: {StartAtom.Id} To: {EndAtom.Id}")]
     public class Bond : INotifyPropertyChanged
     {
         private Atom _startAtom, _endAtom;
@@ -52,6 +51,11 @@ namespace Chem4Word.Model
 
         public Bond()
         {
+        }
+
+        public override string ToString()
+        {
+            return $"Id: {Id} From: {StartAtom.Id} To: {EndAtom.Id}";
         }
 
         private void Rings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

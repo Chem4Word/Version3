@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using Chem4Word.Model.Converters.CML;
 
 namespace Chem4Word.Editor.SimpleWpfEditor
 {

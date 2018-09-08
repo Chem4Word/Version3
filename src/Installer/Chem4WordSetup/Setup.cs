@@ -305,57 +305,57 @@ namespace Chem4WordSetup
             bool foundOurXmlFile = false;
             foreach (var domain in Domains)
             {
-                HttpClient client = new HttpClient();
-                string exceptionMessage;
+                using (HttpClient client = new HttpClient())
+                {
+                    string exceptionMessage;
 
-                try
-                {
-                    RegistryHelper.WriteAction($"Looking for Chem4Word-Versions.xml at {domain}");
+                    try
+                    {
+                        RegistryHelper.WriteAction($"Looking for Chem4Word-Versions.xml at {domain}");
 
-                    client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
-                    client.BaseAddress = new Uri(domain);
-                    var response = client.GetAsync(VersionsFile).Result;
-                    response.EnsureSuccessStatusCode();
-                    Debug.Write(response.StatusCode);
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    if (result.Contains(VersionsFileMarker))
-                    {
-                        foundOurXmlFile = true;
-                        _domainUsed = domain;
-                        contents = ChangeDomain(result);
+                        client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
+                        client.BaseAddress = new Uri(domain);
+                        var response = client.GetAsync(VersionsFile).Result;
+                        response.EnsureSuccessStatusCode();
+                        Debug.Write(response.StatusCode);
+
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        if (result.Contains(VersionsFileMarker))
+                        {
+                            foundOurXmlFile = true;
+                            _domainUsed = domain;
+                            contents = ChangeDomain(result);
+                        }
+                        else
+                        {
+                            RegistryHelper.WriteAction($"Chem4Word-Versions.xml at {domain} is corrupt");
+                        }
                     }
-                    else
+                    catch (ArgumentNullException nex)
                     {
-                        RegistryHelper.WriteAction($"Chem4Word-Versions.xml at {domain} is corrupt");
+                        exceptionMessage = GetExceptionMessages(nex);
+                        RegistryHelper.WriteAction($"ArgumentNullException: [{domain}] - {exceptionMessage}");
                     }
-                }
-                catch (ArgumentNullException nex)
-                {
-                    exceptionMessage = GetExceptionMessages(nex);
-                    RegistryHelper.WriteAction($"ArgumentNullException: [{domain}] - {exceptionMessage}");
-                }
-                catch (HttpRequestException hex)
-                {
-                    exceptionMessage = GetExceptionMessages(hex);
-                    RegistryHelper.WriteAction($"HttpRequestException: [{domain}] - {exceptionMessage}");
-                }
-                catch (WebException wex)
-                {
-                    exceptionMessage = GetExceptionMessages(wex);
-                    RegistryHelper.WriteAction($"WebException: [{domain}] - {exceptionMessage}");
-                }
-                catch (Exception ex)
-                {
-                    exceptionMessage = GetExceptionMessages(ex);
-                    RegistryHelper.WriteAction($"Exception: [{domain}] - {exceptionMessage}");
-                }
-                finally
-                {
-                    client.Dispose();
-                }
-                if (foundOurXmlFile)
-                {
-                    break;
+                    catch (HttpRequestException hex)
+                    {
+                        exceptionMessage = GetExceptionMessages(hex);
+                        RegistryHelper.WriteAction($"HttpRequestException: [{domain}] - {exceptionMessage}");
+                    }
+                    catch (WebException wex)
+                    {
+                        exceptionMessage = GetExceptionMessages(wex);
+                        RegistryHelper.WriteAction($"WebException: [{domain}] - {exceptionMessage}");
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptionMessage = GetExceptionMessages(ex);
+                        RegistryHelper.WriteAction($"Exception: [{domain}] - {exceptionMessage}");
+                    }
+
+                    if (foundOurXmlFile)
+                    {
+                        break;
+                    }
                 }
             }
 

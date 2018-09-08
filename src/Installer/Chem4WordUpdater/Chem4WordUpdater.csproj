@@ -147,20 +147,28 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if "$(ConfigurationName)" == "Vso-Ci" (
-echo "goto :nocopy"
-goto :nocopy
+    <PostBuildEvent>echo Starting PostBuild of $(ProjectName)
+echo Build configuration is $(ConfigurationName)
+
+if "$(ConfigurationName)" == "Vso-Ci" (
+  echo "goto :nocopy"
+  goto :nocopy
 )
 
-if "$(ConfigurationName)" == "Setup" (
-echo "Signing file"
-$(SolutionDir)\Tools\DigiCertUtil.exe sign /sha1 "6217CFB6A0926B17939F104EE2A282CDBE8A0BF7" /noInput $(TargetFileName)
+if "$(ConfigurationName)-%25SignClient%25" == "Setup-Configured" (
+  powershell.exe -NoLogo -NonInteractive -ExecutionPolicy Unrestricted -Command ^
+  .'$(SolutionDir)Scripts\SignAssembly.ps1' ^
+  -TargetFileName '$(TargetFileName)' ^
+  -TargetPath '$(TargetPath)'
 )
 
 echo "Copying file"
 xcopy "$(TargetDir)$(TargetFileName)" "$(SolutionDir)$(SolutionName)\$(OutDir)" /C /f /r /y /i
 
-:nocopy</PostBuildEvent>
+:nocopy
+
+:done
+echo Finished PostBuild of $(ProjectName)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

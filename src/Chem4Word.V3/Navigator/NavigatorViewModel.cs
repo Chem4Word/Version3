@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using Chem4Word.Model.Converters.CML;
 using ContentControl = Microsoft.Office.Interop.Word.ContentControl;
 
 namespace Chem4Word.Navigator
