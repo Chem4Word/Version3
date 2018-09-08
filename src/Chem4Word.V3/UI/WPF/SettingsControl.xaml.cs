@@ -418,28 +418,32 @@ namespace Chem4Word.UI.WPF
 
                     if (Directory.Exists(exportFolder))
                     {
+                        Forms.DialogResult doExport = Forms.DialogResult.Yes;
                         string[] existingCmlFiles = Directory.GetFiles(exportFolder, "*.cml");
                         if (existingCmlFiles.Length > 0)
                         {
-                            var doExport = UserInteractions.AskUserYesNo($"This folder contains {existingCmlFiles.Length} cml files. Do you wish to continue?", Forms.MessageBoxDefaultButton.Button2);
-                            if (doExport == Forms.DialogResult.Yes)
+                            StringBuilder sb = new StringBuilder();
+                            sb.AppendLine($"This folder contains {existingCmlFiles.Length} cml files.");
+                            sb.AppendLine($"Do you wish to continue?");
+                            doExport = UserInteractions.AskUserYesNo(sb.ToString(), Forms.MessageBoxDefaultButton.Button2);
+                        }
+                        if (doExport == Forms.DialogResult.Yes)
+                        {
+                            Database.Library lib = new Database.Library();
+
+                            int exported = 0;
+
+                            List<ChemistryDTO> dto = lib.GetAllChemistry(null);
+                            foreach (var obj in dto)
                             {
-                                Database.Library lib = new Database.Library();
+                                var filename = Path.Combine(browser.SelectedPath, $"Chem4Word-{obj.Id:000000000}.cml");
+                                File.WriteAllText(filename, obj.Cml);
+                                exported++;
+                            }
 
-                                int exported = 0;
-
-                                List<ChemistryDTO> dto = lib.GetAllChemistry(null);
-                                foreach (var obj in dto)
-                                {
-                                    var filename = Path.Combine(browser.SelectedPath, $"Chem4Word-{obj.Id:000000000}.cml");
-                                    File.WriteAllText(filename, obj.Cml);
-                                    exported++;
-                                }
-
-                                if (exported > 0)
-                                {
-                                    UserInteractions.InformUser($"Exported {exported} structures to {browser.SelectedPath}");
-                                }
+                            if (exported > 0)
+                            {
+                                UserInteractions.InformUser($"Exported {exported} structures to {browser.SelectedPath}");
                             }
                         }
                     }

@@ -25,17 +25,15 @@ try
 	$signClientExe = "$($signClientPath)\SignClient.exe"
 	$signClientSettings = "$($signClientPath)\appsettings.json"
 
-	$errorLevel = 0
-
 	if (Test-Path $signClientExe)
 	{
 		# Call .Net Foundation Code Signing Service
-		Write-Output "Signing $($TargetFileName)"
+		Write-Output "Signing $($TargetFileName) ..."
 		& $signClientExe sign -c $signClientSettings -r $env:SignClientUser -s $env:SignClientPassword -n Chem4Word -i $TargetPath
 	}
 
 	# Check that the file was signed
-	Write-Output "Checking if $($TargetFileName) is signed"
+	Write-Output "Checking if $($TargetFileName) is signed ..."
 	$sig = Get-AuthenticodeSignature -FilePath $TargetPath
 	if ($sig.Status -eq "Valid")
 	{
@@ -44,7 +42,7 @@ try
 	}
 	else
 	{
-		Write-Output "File $($TargetFileName) is not signed."
+		Write-Output "File $($TargetFileName) is not signed !"
 		exit 1
 	}
 }
