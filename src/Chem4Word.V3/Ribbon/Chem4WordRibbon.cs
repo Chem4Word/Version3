@@ -1069,7 +1069,7 @@ namespace Chem4Word
                                         ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
                                         var csr = cs.GetChemicalServicesResult(afterMolFile);
 
-                                        if (csr.Properties.Any())
+                                        if (csr?.Properties != null && csr.Properties.Any())
                                         {
                                             var first = csr.Properties[0];
                                             if (!string.IsNullOrEmpty(first.InchiKey))

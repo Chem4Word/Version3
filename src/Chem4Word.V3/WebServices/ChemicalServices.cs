@@ -52,33 +52,41 @@ namespace Chem4Word.WebServices
                     httpClient.Timeout = TimeSpan.FromSeconds(10);
                     httpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 
-                    var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
-                    if (response.Content != null)
+                    try
                     {
-                        var responseContent = response.Content;
-                        var jsonContent = responseContent.ReadAsStringAsync().Result;
+                        var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
+                        if (response.Content != null)
+                        {
+                            var responseContent = response.Content;
+                            var jsonContent = responseContent.ReadAsStringAsync().Result;
 
-                        try
-                        {
-                            data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
-                        }
-                        catch (Exception e2)
-                        {
-                            Telemetry.Write(module, "Exception", e2.Message);
-                            Telemetry.Write(module, "Exception(Data)", jsonContent);
-                        }
+                            try
+                            {
+                                data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
+                            }
+                            catch (Exception e3)
+                            {
+                                Telemetry.Write(module, "Exception", e3.Message);
+                                Telemetry.Write(module, "Exception(Data)", jsonContent);
+                            }
 
-                        if (data != null)
-                        {
-                            if (data.Messages.Any())
+                            if (data != null)
                             {
-                                Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
-                            }
-                            if (data.Errors.Any())
-                            {
-                                Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                                if (data.Messages.Any())
+                                {
+                                    Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                                }
+                                if (data.Errors.Any())
+                                {
+                                    Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                                }
                             }
                         }
+                    }
+                    catch (Exception e2)
+                    {
+                        Telemetry.Write(module, "Exception", e2.Message);
+                        Telemetry.Write(module, "Exception", e2.ToString());
                     }
                 }
             }
