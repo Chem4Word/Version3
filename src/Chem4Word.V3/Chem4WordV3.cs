@@ -217,7 +217,6 @@ namespace Chem4Word
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-
                 UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
 
                 Word.Application app = Globals.Chem4WordV3.Application;
