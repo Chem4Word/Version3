@@ -495,7 +495,7 @@ namespace Chem4Word.Core.UI.Controls
             get { return base.BackgroundImageLayout; }
             set
             {
-                throw new NotImplementedException("BackgroundImageLayout is not implemented.");
+                // throw new NotImplementedException("BackgroundImageLayout is not implemented.");
             }
         }
 
@@ -508,7 +508,7 @@ namespace Chem4Word.Core.UI.Controls
             get { return null; }
             set
             {
-                throw new NotImplementedException("BackgroundImage is not implemented.");
+                // throw new NotImplementedException("BackgroundImage is not implemented.");
             }
         }
 
@@ -521,7 +521,7 @@ namespace Chem4Word.Core.UI.Controls
             get { return false; }
             set
             {
-                throw new NotImplementedException("TabStop is not implemented.");
+                // throw new NotImplementedException("TabStop is not implemented.");
             }
         }
 
@@ -534,7 +534,7 @@ namespace Chem4Word.Core.UI.Controls
             get { return base.TabIndex; }
             set
             {
-                throw new NotImplementedException("TabIndex is not implemented.");
+                // throw new NotImplementedException("TabIndex is not implemented.");
             }
         }
     }
