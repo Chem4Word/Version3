@@ -22,7 +22,7 @@ namespace Chem4Word.Telemetry
 {
     public class SystemHelper
     {
-        private string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
+        private static string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
         private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
         private const string DetectionFile = "files3/client-ip.php";
@@ -56,22 +56,30 @@ namespace Chem4Word.Telemetry
 
         private static int _retryCount;
 
+        public static string GetMachineId()
+        {
+            string result = "";
+            try
+            {
+                // Need special routine here as MachineGuid does not exist in the wow6432 path
+                result = RegistryWOW6432.GetRegKey64(RegHive.HKEY_LOCAL_MACHINE, CryptoRoot, "MachineGuid");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                result = "Exception " + ex.Message;
+            }
+
+            return result;
+        }
+
         public SystemHelper()
         {
             WordVersion = -1;
 
             #region Get Machine Guid
 
-            try
-            {
-                // Need special routine here as MachineGuid does not exist in the wow6432 path
-                MachineId = RegistryWOW6432.GetRegKey64(RegHive.HKEY_LOCAL_MACHINE, CryptoRoot, "MachineGuid");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                MachineId = "Exception " + ex.Message;
-            }
+            MachineId = GetMachineId();
 
             #endregion Get Machine Guid
 
