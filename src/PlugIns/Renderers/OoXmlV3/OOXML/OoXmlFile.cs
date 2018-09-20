@@ -22,7 +22,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
     public static class OoXmlFile
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         /// <summary>
         /// Create an OpenXml Word Document from the CML

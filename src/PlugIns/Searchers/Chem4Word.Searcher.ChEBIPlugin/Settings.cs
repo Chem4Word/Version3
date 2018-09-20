@@ -21,7 +21,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
     {
         #region Fields
 
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private bool _dirty;
 

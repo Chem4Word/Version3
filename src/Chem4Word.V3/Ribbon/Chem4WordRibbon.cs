@@ -368,24 +368,6 @@ namespace Chem4Word
                 BeforeButtonChecks(sender as RibbonButton);
                 try
                 {
-                    //Settings optionsForm = new Settings();
-
-                    //if (Globals.Chem4WordV3.SystemOptions == null)
-                    //{
-                    //    Globals.Chem4WordV3.LoadOptions();
-                    //}
-                    //Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
-
-                    //optionsForm.SystemOptions = tempOptions;
-                    //optionsForm.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-
-                    //DialogResult dr = optionsForm.ShowDialog();
-                    //if (dr == DialogResult.OK)
-                    //{
-                    //    Globals.Chem4WordV3.SystemOptions = tempOptions.Clone();
-                    //    Globals.Chem4WordV3.Telemetry = new TelemetryWriter(Globals.Chem4WordV3.SystemOptions.TelemetryEnabled);
-                    //}
-
                     SettingsHost f = new SettingsHost(true);
                     f.SystemOptions = Globals.Chem4WordV3.SystemOptions.Clone();
                     f.TopLeft = Globals.Chem4WordV3.WordTopLeft;

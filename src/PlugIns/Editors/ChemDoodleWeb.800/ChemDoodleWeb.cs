@@ -24,7 +24,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
     public partial class ChemDoodleWeb : Form, IMessageFilter
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         private const int WM_KEYDOWN = 0x0100;
 

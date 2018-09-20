@@ -23,7 +23,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
     public class Editor : IChem4WordEditor
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public string Name => "ChemDoodle Web Structure Editor V7.0.2";
 

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Chem4Word.Core.Helpers;
 
 namespace Chem4Word.WebServices
 {
@@ -106,7 +107,7 @@ namespace Chem4Word.WebServices
             DateTime ended = DateTime.Now;
             TimeSpan duration = ended - started;
 
-            Telemetry.Write(module, "Timing", $"Calling Azure http Function Took {duration.TotalMilliseconds.ToString("#,##0.00")}ms");
+            Telemetry.Write(module, "Timing", $"Calling Azure http Function Took {SafeDouble.Duration(duration.TotalMilliseconds)}ms");
 
             return data;
         }

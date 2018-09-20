@@ -28,7 +28,7 @@ namespace Chem4Word.Library
     public class LibraryViewModel : DependencyObject
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         private bool _initializing = false;
 

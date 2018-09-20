@@ -29,7 +29,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
     public partial class SearchPubChem : Form
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public System.Windows.Point TopLeft { get; set; }
         public IChem4WordTelemetry Telemetry { get; set; }
