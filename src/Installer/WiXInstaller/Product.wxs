@@ -175,6 +175,10 @@
         <File Id="Chem4Word.Editor.ChemDoodleWeb702.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb702.dll" />
         <File Id="Chem4Word.Editor.ChemDoodleWeb702.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb702.pdb" />
       </Component>
+      <Component Id="Chem4Word.Editor.ChemDoodleWeb.800">
+        <File Id="Chem4Word.Editor.ChemDoodleWeb800.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb800.dll" />
+        <File Id="Chem4Word.Editor.ChemDoodleWeb800.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb800.pdb" />
+      </Component>
       <Component Id="Chem4Word.Renderer.OoXmlV3">
         <File Id="Chem4Word.Renderer.OoXmlV3.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Renderer.OoXmlV3.dll" />
         <File Id="Chem4Word.Renderer.OoXmlV3.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Renderer.OoXmlV3.pdb" />

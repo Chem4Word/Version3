@@ -270,36 +270,6 @@ function ShowCarbons(value) {
     sketcher.repaint();
 }
 
-function SetMolFile(molFile, length) {
-    if (sketcher.oneMolecule) {
-        var mol = ChemDoodle.readMOL(molFile);
-        ShowMol(mol, length);
-    }
-}
-
-function SetCmlFile(cmlFile, length) {
-    if (sketcher.oneMolecule) {
-        var data = ChemDoodle.readCML(cmlFile);
-        if (data !== null && data.length >= 1) {
-            var mol = data[0];
-            if (mol !== null) {
-                ShowMol(mol, length);
-            }
-            else {
-                alert("mol is null");
-            }
-        }
-        else {
-            if (data === null) {
-                alert("data is null");
-            }
-            else {
-                alert("data.length " + data.length);
-            }
-        }
-    }
-}
-
 function SetJSON(molFile, length) {
     var jsonObject = JSON.parse(molFile);
     if (jsonObject) {
@@ -421,21 +391,6 @@ function ReScale(length) {
     sketcher.center();
     sketcher.repaint();
     sketcher.specs.bondLength_2D = len;
-}
-
-function GetMolFile() {
-    if (sketcher.oneMolecule) {
-        var mol = sketcher.getMolecule();
-        var molFile = new ChemDoodle.io.MOLInterpreter().write(mol);
-        return molFile;
-    }
-}
-
-function GetCmlFile() {
-    if (sketcher.oneMolecule) {
-        var cmlFile = new ChemDoodle.io.CMLInterpreter().write(sketcher.molecules);
-        return cmlFile;
-    }
 }
 
 function GetFirstMolJSON() {

@@ -77,15 +77,16 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
             try
             {
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                _loading = true;
-                _sw.Start();
+                if (!string.IsNullOrEmpty(StructureJson))
+                {
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                    _loading = true;
+                    _sw.Start();
 
-                _sw.Start();
-
-                DeployCdw800();
-                SetupControls();
-                LoadCdw();
+                    DeployCdw800();
+                    SetupControls();
+                    LoadCdw();
+                }
             }
             catch (Exception ex)
             {
@@ -97,34 +98,45 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private void WebBrowser_OnLoadCompleted(object sender, NavigationEventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            var version = ExecuteJavaScript("GetVersion");
-            var source = (HwndSource)PresentationSource.FromDependencyObject(WebBrowser);
-            if (source != null)
+            try
             {
-                var host = (System.Windows.Forms.Integration.ElementHost)Control.FromChildHandle(source.Handle);
-                var form = (Form)host?.TopLevelControl;
-                if (form != null)
+                if (!string.IsNullOrEmpty(StructureJson))
                 {
-                    form.Text = AppTitle + version;
+                    var version = ExecuteJavaScript("GetVersion");
+                    var source = (HwndSource)PresentationSource.FromDependencyObject(WebBrowser);
+                    if (source != null)
+                    {
+                        var host = (System.Windows.Forms.Integration.ElementHost)Control.FromChildHandle(source.Handle);
+                        var form = (Form)host?.TopLevelControl;
+                        if (form != null)
+                        {
+                            form.Text = AppTitle + version;
+                        }
+                    }
+
+                    // Send JSON to ChemDoodle before we do anything else
+                    ExecuteJavaScript("SetJSON", StructureJson, AverageBondLength);
+
+                    ExecuteJavaScript("ShowHydrogens", UserOptions.ShowHydrogens);
+                    ExecuteJavaScript("AtomsInColour", UserOptions.ColouredAtoms);
+                    ExecuteJavaScript("ShowCarbons", UserOptions.ShowCarbons);
+
+                    ExecuteJavaScript("ReScale", BondLength.Text);
+
+                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+
+                    _sw.Stop();
+
+                    Telemetry.Write(module, "Timing", $"ChemDoodle Web ready in {SafeDouble.Duration(_sw.ElapsedMilliseconds)}ms");
+
+                    _loading = false;
                 }
             }
-
-            // Send JSON to ChemDoodle before we do anything else
-            ExecuteJavaScript("SetJSON", StructureJson, AverageBondLength);
-
-            ExecuteJavaScript("ShowHydrogens", UserOptions.ShowHydrogens);
-            ExecuteJavaScript("AtomsInColour", UserOptions.ColouredAtoms);
-            ExecuteJavaScript("ShowCarbons", UserOptions.ShowCarbons);
-
-            ExecuteJavaScript("ReScale", BondLength.Text);
-
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
-
-            _sw.Stop();
-
-            Telemetry.Write(module, "Timing", $"ChemDoodle Web ready in {SafeDouble.Duration(_sw.ElapsedMilliseconds)}ms");
-
-            _loading = false;
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+            }
         }
 
         private void AddHydrogens_OnClick(object sender, RoutedEventArgs e)
@@ -457,24 +469,27 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            string htmlfile = "";
-            if (IsSingleMolecule)
+            if (!string.IsNullOrEmpty(ProductAppDataPath))
             {
-                htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Single.html");
-            }
-            else
-            {
-                htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Multi.html");
-            }
-            File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
 
-            Telemetry.Write(module, "Timing", $"Writing resources to disk took {SafeDouble.Duration(sw.ElapsedMilliseconds)}ms");
+                string htmlfile = "";
+                if (IsSingleMolecule)
+                {
+                    htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Single.html");
+                }
+                else
+                {
+                    htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Multi.html");
+                }
+                File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
 
-            Telemetry.Write(module, "Information", "Starting browser");
-            WebBrowser.Navigate(Path.Combine(ProductAppDataPath, "Editor.html"));
+                Telemetry.Write(module, "Timing", $"Writing resources to disk took {SafeDouble.Duration(sw.ElapsedMilliseconds)}ms");
+
+                Telemetry.Write(module, "Information", "Starting browser");
+                WebBrowser.Navigate(Path.Combine(ProductAppDataPath, "Editor.html"));
+            }
         }
 
         private void SetupControls()
@@ -513,41 +528,44 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            string otherVersion = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-702.txt");
-            if (File.Exists(otherVersion))
+            if (!string.IsNullOrEmpty(ProductAppDataPath))
             {
-                Telemetry.Write(module, "Information", "Deleting CDW 702 resources from disk");
-                File.Delete(otherVersion);
-                DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
-            }
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
 
-            string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-800.txt");
-            if (!File.Exists(markerFile))
-            {
-                Telemetry.Write(module, "Information", "Writing resources to disk");
-                File.WriteAllText(markerFile, "Delete this file to refresh ChemDoodle Web");
-
-                Stream stream = ResourceHelper.GetBinaryResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.ChemDoodleWeb_800.zip");
-
-                // NB: Top level of zip file must be the folder ChemDoodleWeb
-                using (ZipFile zip = ZipFile.Read(stream))
+                string otherVersion = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-702.txt");
+                if (File.Exists(otherVersion))
                 {
-                    zip.ExtractAll(ProductAppDataPath, ExtractExistingFileAction.OverwriteSilently);
+                    Telemetry.Write(module, "Information", "Deleting CDW 702 resources from disk");
+                    File.Delete(otherVersion);
+                    DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
 
-                string cssfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Chem4Word.css");
-                File.WriteAllText(Path.Combine(ProductAppDataPath, "Chem4Word.css"), cssfile);
+                string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-800.txt");
+                if (!File.Exists(markerFile))
+                {
+                    Telemetry.Write(module, "Information", "Writing resources to disk");
+                    File.WriteAllText(markerFile, "Delete this file to refresh ChemDoodle Web");
 
-                string jsfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Chem4Word.js");
-                File.WriteAllText(Path.Combine(ProductAppDataPath, "Chem4Word.js"), jsfile);
+                    Stream stream = ResourceHelper.GetBinaryResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.ChemDoodleWeb_800.zip");
+
+                    // NB: Top level of zip file must be the folder ChemDoodleWeb
+                    using (ZipFile zip = ZipFile.Read(stream))
+                    {
+                        zip.ExtractAll(ProductAppDataPath, ExtractExistingFileAction.OverwriteSilently);
+                    }
+
+                    string cssfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Chem4Word.css");
+                    File.WriteAllText(Path.Combine(ProductAppDataPath, "Chem4Word.css"), cssfile);
+
+                    string jsfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Chem4Word.js");
+                    File.WriteAllText(Path.Combine(ProductAppDataPath, "Chem4Word.js"), jsfile);
+                }
+
+                sw.Stop();
+
+                Telemetry.Write(module, "Timing", $"Writing resources to disk took {SafeDouble.Duration(sw.ElapsedMilliseconds)}ms");
             }
-
-            sw.Stop();
-
-            Telemetry.Write(module, "Timing", $"Writing resources to disk took {SafeDouble.Duration(sw.ElapsedMilliseconds)}ms");
         }
 
         private void SwapMode()
@@ -579,11 +597,14 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            string json = JsonConvert.SerializeObject(UserOptions, Formatting.Indented);
+            if (!string.IsNullOrEmpty(ProductAppDataPath))
+            {
+                string json = JsonConvert.SerializeObject(UserOptions, Formatting.Indented);
 
-            string fileName = $"{_product}.json";
-            string optionsFile = Path.Combine(ProductAppDataPath, fileName);
-            File.WriteAllText(optionsFile, json);
+                string fileName = $"{_product}.json";
+                string optionsFile = Path.Combine(ProductAppDataPath, fileName);
+                File.WriteAllText(optionsFile, json);
+            }
         }
 
         private object ExecuteJavaScript(string functionName, params object[] args)
