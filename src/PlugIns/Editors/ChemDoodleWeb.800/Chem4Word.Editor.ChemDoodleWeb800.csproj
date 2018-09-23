@@ -89,12 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Editor.cs" />
-    <Compile Include="ChemDoodleWeb.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChemDoodleWeb.Designer.cs">
-      <DependentUpon>ChemDoodleWeb.cs</DependentUpon>
-    </Compile>
     <Compile Include="EditorHost.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,9 +127,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChemDoodleWeb.resx">
-      <DependentUpon>ChemDoodleWeb.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="EditorHost.resx">
       <DependentUpon>EditorHost.cs</DependentUpon>
     </EmbeddedResource>
@@ -152,12 +143,6 @@
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Chem4Word.js" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Multi.html" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Single.html" />
-    <Content Include="Resources\Images\Flip.png" />
-    <Content Include="Resources\Images\Minus.png" />
-    <Content Include="Resources\Images\Mirror.png" />
-    <Content Include="Resources\Images\Multi.png" />
-    <Content Include="Resources\Images\Plus.png" />
-    <Content Include="Resources\Images\Single.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
