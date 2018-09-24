@@ -368,9 +368,9 @@ namespace Chem4Word.Model.Converters.CML
             {
                 var newMol = CreateMolecule(childElement);
                 m.Molecules.Add(newMol);
-                Debug.WriteLine(m.Molecules.Count);
-                Debug.WriteLine(m.AllAtoms.Count);
-                Debug.WriteLine(m.AllBonds.Count);
+                //Debug.WriteLine(m.Molecules.Count);
+                //Debug.WriteLine(m.AllAtoms.Count);
+                //Debug.WriteLine(m.AllBonds.Count);
             }
 
             foreach (XElement atomElement in atomElements)
