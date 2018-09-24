@@ -71,17 +71,20 @@
                         Margin="0,0,2,2"
                         Click="ShowHydrogens_OnClick"
                         Content="Hydrogen counts"
-                        Foreground="{StaticResource Chem4WordBlue}" />
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        ToolTip="Show hydrogen counts of terminal atoms" />
                     <CheckBox x:Name="ShowColour"
                         Margin="0,0,2,2"
                         Click="ShowColour_OnClick"
                         Content="Coloured atoms"
-                        Foreground="{StaticResource Chem4WordBlue}" />
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        ToolTip="Show visible atoms in colour" />
                     <CheckBox x:Name="ShowCarbons"
                         Margin="0,0,2,0"
                         Click="ShowCarbons_OnClick"
                         Content="All Carbon atoms"
-                        Foreground="{StaticResource Chem4WordBlue}" />
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        ToolTip="Show all carbon atoms" />
                 </StackPanel>
             </GroupBox>
             <GroupBox
@@ -116,7 +119,8 @@
                             Height="15"
                             VerticalAlignment="Bottom"
                             Click="IncreaseButton_OnClick"
-                            Focusable="False">
+                            Focusable="False"
+                            ToolTip="Increment bond length by 5">
                             <Path
                                 Data="M 0 20 L 35 -20 L 70 20 Z"
                                 Fill="{StaticResource Chem4WordBlue}"
@@ -128,7 +132,8 @@
                             Height="15"
                             VerticalAlignment="Top"
                             Click="DecreaseButton_OnClick"
-                            Focusable="False">
+                            Focusable="False"
+                            ToolTip="Decrement bond length by 5">
                             <Path
                                 Data="M 0 0 L 35 40 L 70 0 Z"
                                 Fill="{StaticResource Chem4WordBlue}"

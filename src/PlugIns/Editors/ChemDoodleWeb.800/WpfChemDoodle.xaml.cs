@@ -179,6 +179,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 if (!_loading)
                 {
                     ExecuteJavaScript("ShowHydrogens", ShowHydrogens.IsChecked.Value);
+                    UserOptions.ShowHydrogens = ShowHydrogens.IsChecked.Value;
                     _saveSettings = true;
                 }
             }
@@ -196,6 +197,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 if (!_loading)
                 {
                     ExecuteJavaScript("AtomsInColour", ShowColour.IsChecked.Value);
+                    UserOptions.ColouredAtoms = ShowColour.IsChecked.Value;
                     _saveSettings = true;
                 }
             }
@@ -244,7 +246,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             {
                 if (!_loading)
                 {
-                    ExecuteJavaScript("ShowCarbons", ShowCarbons.IsChecked);
+                    ExecuteJavaScript("ShowCarbons", ShowCarbons.IsChecked.Value);
+                    UserOptions.ShowCarbons = ShowCarbons.IsChecked.Value;
                     _saveSettings = true;
                 }
             }
