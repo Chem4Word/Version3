@@ -102,7 +102,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{EAD5
 		Scripts\DeepClean.ps1 = Scripts\DeepClean.ps1
 		Scripts\Install-Dev-Certificate.ps1 = Scripts\Install-Dev-Certificate.ps1
 		SetAssemblyVersion.ps1 = SetAssemblyVersion.ps1
-		Scripts\SignAssembly.ps1 = Scripts\SignAssembly.ps1
+		Scripts\SetAssemblyVersion.ps1 = Scripts\SetAssemblyVersion.ps1
 		Scripts\SignFiles.cmd = Scripts\SignFiles.cmd
 	EndProjectSection
 EndProject

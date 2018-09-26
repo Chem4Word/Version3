@@ -3,12 +3,24 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.21 Release 8</Number>
+    <IsBeta>false</IsBeta>
+    <Released>17-Oct-2018</Released>
+    <Changes>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.20.Release.7.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.20 Release 7</Number>
     <IsBeta>false</IsBeta>
     <Released>26-Sep-2018</Released>
     <Changes>
       <Change>New resolution independent ChemDoodle Web Editor (8.0.0).</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.20.Release.7.msi</Url>
   </Version>
