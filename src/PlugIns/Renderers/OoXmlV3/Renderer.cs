@@ -22,7 +22,7 @@ namespace Chem4Word.Renderer.OoXmlV3
     public class Renderer : IChem4WordRenderer
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public string Name => "Open Office Xml Renderer V3";
         public string Description => "This is the standard renderer used in Chem4Word V3";

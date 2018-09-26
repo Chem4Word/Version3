@@ -21,7 +21,7 @@ namespace Chem4Word.Editor.SimpleWpfEditor
     public class Editor : IChem4WordEditor
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public string Name => "Example Wpf Structure Editor";
 

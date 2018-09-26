@@ -21,7 +21,7 @@ namespace Chem4Word.Searcher.ExamplePlugIn
     public class Searcher : IChem4WordSearcher
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public int DisplayOrder => -1; // Don't Show
         public string ShortName => "Example";

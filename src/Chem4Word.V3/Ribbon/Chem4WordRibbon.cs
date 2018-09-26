@@ -368,24 +368,6 @@ namespace Chem4Word
                 BeforeButtonChecks(sender as RibbonButton);
                 try
                 {
-                    //Settings optionsForm = new Settings();
-
-                    //if (Globals.Chem4WordV3.SystemOptions == null)
-                    //{
-                    //    Globals.Chem4WordV3.LoadOptions();
-                    //}
-                    //Options tempOptions = Globals.Chem4WordV3.SystemOptions.Clone();
-
-                    //optionsForm.SystemOptions = tempOptions;
-                    //optionsForm.TopLeft = Globals.Chem4WordV3.WordTopLeft;
-
-                    //DialogResult dr = optionsForm.ShowDialog();
-                    //if (dr == DialogResult.OK)
-                    //{
-                    //    Globals.Chem4WordV3.SystemOptions = tempOptions.Clone();
-                    //    Globals.Chem4WordV3.Telemetry = new TelemetryWriter(Globals.Chem4WordV3.SystemOptions.TelemetryEnabled);
-                    //}
-
                     SettingsHost f = new SettingsHost(true);
                     f.SystemOptions = Globals.Chem4WordV3.SystemOptions.Clone();
                     f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
@@ -1069,7 +1051,7 @@ namespace Chem4Word
                                         ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
                                         var csr = cs.GetChemicalServicesResult(afterMolFile);
 
-                                        if (csr.Properties.Any())
+                                        if (csr?.Properties != null && csr.Properties.Any())
                                         {
                                             var first = csr.Properties[0];
                                             if (!string.IsNullOrEmpty(first.InchiKey))
@@ -1323,11 +1305,10 @@ namespace Chem4Word
                 {
                     // Move selection point into the Content Control which was just edited or added
                     app.Selection.SetRange(cc.Range.Start, cc.Range.End);
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Finished; ContentControl {cc?.ID} was inserted");
                 }
                 else
                 {
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Finished; No ContentControl was inserted");
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Finished; No ContentControl was inserted");
                 }
             }
         }

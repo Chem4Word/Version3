@@ -19,7 +19,7 @@ namespace Chem4Word.UI
     public partial class XmlViewer : Form
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         private readonly Color BracketsColor = Color.Blue; // "<" "/" ">"
         private readonly Color EqualsColor = Color.Blue;

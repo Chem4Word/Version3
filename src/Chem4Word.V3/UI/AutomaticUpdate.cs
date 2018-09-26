@@ -26,7 +26,7 @@ namespace Chem4Word.UI
     public partial class AutomaticUpdate : Form
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public XDocument NewVersions { get; set; }
         public XDocument CurrentVersion { get; set; }

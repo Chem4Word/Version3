@@ -85,14 +85,15 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Editor.cs" />
-    <Compile Include="ChemDoodleWeb.cs">
+    <Compile Include="EditorHost.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChemDoodleWeb.Designer.cs">
-      <DependentUpon>ChemDoodleWeb.cs</DependentUpon>
+    <Compile Include="EditorHost.Designer.cs">
+      <DependentUpon>EditorHost.cs</DependentUpon>
     </Compile>
     <Compile Include="Options.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WpfChemDoodle.xaml.cs">
+      <DependentUpon>WpfChemDoodle.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -123,8 +127,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ChemDoodleWeb.resx">
-      <DependentUpon>ChemDoodleWeb.cs</DependentUpon>
+    <EmbeddedResource Include="EditorHost.resx">
+      <DependentUpon>EditorHost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -139,16 +143,16 @@
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Chem4Word.js" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Multi.html" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\Single.html" />
-    <Content Include="Resources\Images\Flip.png" />
-    <Content Include="Resources\Images\Minus.png" />
-    <Content Include="Resources\Images\Mirror.png" />
-    <Content Include="Resources\Images\Multi.png" />
-    <Content Include="Resources\Images\Plus.png" />
-    <Content Include="Resources\Images\Single.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <EmbeddedResource Include="Resources\ChemDoodleWeb\ChemDoodleWeb_800.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="WpfChemDoodle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

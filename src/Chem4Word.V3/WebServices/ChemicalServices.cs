@@ -1,4 +1,11 @@
-﻿using IChem4Word.Contracts;
+﻿// ---------------------------------------------------------------------------
+//  Copyright (c) 2018, The .NET Foundation.
+//  This software is released under the Apache License, Version 2.0.
+//  The license and further copyright text can be found in the file LICENSE.md
+//  at the root directory of the distribution.
+// ---------------------------------------------------------------------------
+
+using IChem4Word.Contracts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,6 +13,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Telemetry;
 
 namespace Chem4Word.WebServices
 {
@@ -40,6 +49,7 @@ namespace Chem4Word.WebServices
                     var formData = new List<KeyValuePair<string, string>>();
 
                     formData.Add(new KeyValuePair<string, string>("mol", molfile));
+                    formData.Add(new KeyValuePair<string, string>("machine", SystemHelper.GetMachineId()));
                     formData.Add(new KeyValuePair<string, string>("version", Globals.Chem4WordV3.AddInInfo.AssemblyVersionNumber));
 
 #if DEBUG
@@ -48,37 +58,45 @@ namespace Chem4Word.WebServices
 
                     var content = new FormUrlEncodedContent(formData);
 
-                    httpClient.CancelPendingRequests();
-                    httpClient.Timeout = TimeSpan.FromSeconds(10);
+                    //httpClient.CancelPendingRequests();
+                    httpClient.Timeout = TimeSpan.FromSeconds(30);
                     httpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 
-                    var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
-                    if (response.Content != null)
+                    try
                     {
-                        var responseContent = response.Content;
-                        var jsonContent = responseContent.ReadAsStringAsync().Result;
+                        var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
+                        if (response.Content != null)
+                        {
+                            var responseContent = response.Content;
+                            var jsonContent = responseContent.ReadAsStringAsync().Result;
 
-                        try
-                        {
-                            data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
-                        }
-                        catch (Exception e2)
-                        {
-                            Telemetry.Write(module, "Exception", e2.Message);
-                            Telemetry.Write(module, "Exception(Data)", jsonContent);
-                        }
+                            try
+                            {
+                                data = JsonConvert.DeserializeObject<ChemicalServicesResult>(jsonContent);
+                            }
+                            catch (Exception e3)
+                            {
+                                Telemetry.Write(module, "Exception", e3.Message);
+                                Telemetry.Write(module, "Exception(Data)", jsonContent);
+                            }
 
-                        if (data != null)
-                        {
-                            if (data.Messages.Any())
+                            if (data != null)
                             {
-                                Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
-                            }
-                            if (data.Errors.Any())
-                            {
-                                Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                                if (data.Messages.Any())
+                                {
+                                    Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
+                                }
+                                if (data.Errors.Any())
+                                {
+                                    Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
+                                }
                             }
                         }
+                    }
+                    catch (Exception e2)
+                    {
+                        Telemetry.Write(module, "Exception", e2.Message);
+                        Telemetry.Write(module, "Exception", e2.ToString());
                     }
                 }
             }
@@ -91,7 +109,7 @@ namespace Chem4Word.WebServices
             DateTime ended = DateTime.Now;
             TimeSpan duration = ended - started;
 
-            Telemetry.Write(module, "Timing", $"Calling Azure http Function Took {duration.TotalMilliseconds.ToString("#,##0.00")}ms");
+            Telemetry.Write(module, "Timing", $"Calling Azure http Function Took {SafeDouble.Duration(duration.TotalMilliseconds)}ms");
 
             return data;
         }

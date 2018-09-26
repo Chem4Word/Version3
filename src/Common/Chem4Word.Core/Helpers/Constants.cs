@@ -19,7 +19,7 @@ namespace Chem4Word.Core.Helpers
 
         public static string DefaultChem4WordWebServiceUri = "https://chemicalservices.azurewebsites.net/api/Resolve";
         
-        public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V7.0.2";
+        public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V8.0.0";
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
         // Task 336

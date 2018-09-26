@@ -42,7 +42,7 @@ namespace Chem4Word
     {
         // Internal variables for class
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public static CustomRibbon Ribbon;
 
@@ -216,7 +216,6 @@ namespace Chem4Word
                 ServicePointManager.Expect100Continue = false;
 
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
 
                 UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
 

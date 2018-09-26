@@ -24,6 +24,11 @@ namespace Chem4Word.Core.Helpers
             return result;
         }
 
+        public static string Duration(double duration)
+        {
+            return duration.ToString("#,##0.00", CultureInfo.InvariantCulture);
+        }
+
         public static string AsString(double? source, string format)
         {
             string result = "{null}";

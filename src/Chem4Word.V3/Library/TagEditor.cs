@@ -20,7 +20,7 @@ namespace Chem4Word.Library
     public class TagEditor : RichTextBox
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-        private static string _class = MethodBase.GetCurrentMethod().DeclaringType.Name;
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public static readonly DependencyProperty TagTemplateProperty =
                 DependencyProperty.Register("TagTemplate", typeof(DataTemplate), typeof(TagEditor));

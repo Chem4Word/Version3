@@ -1,10 +1,18 @@
-﻿using Chem4Word.Core.Helpers;
+﻿// ---------------------------------------------------------------------------
+//  Copyright (c) 2018, The .NET Foundation.
+//  This software is released under the Apache License, Version 2.0.
+//  The license and further copyright text can be found in the file LICENSE.md
+//  at the root directory of the distribution.
+// ---------------------------------------------------------------------------
+
+using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Model.Converters;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -231,7 +239,7 @@ namespace Chem4Word.Database
             }
         }
 
-        public string GetChemistryByID(int id)
+        public string GetChemistryByID(long id)
         {
             string result = null;
             using (SQLiteConnection conn = LibraryConnection())
@@ -240,7 +248,7 @@ namespace Chem4Word.Database
                 while (chemistry.Read())
                 {
                     var byteArray = (Byte[])chemistry["Chemistry"];
-                    result = Encoding.UTF8.GetString(byteArray);
+                    result = CmlFromBytes(byteArray, id);
                     break;
                 }
 
@@ -251,7 +259,7 @@ namespace Chem4Word.Database
             return result;
         }
 
-        private SQLiteDataReader GetChemistryByID(SQLiteConnection conn, int id)
+        private SQLiteDataReader GetChemistryByID(SQLiteConnection conn, long id)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
@@ -430,7 +438,7 @@ namespace Chem4Word.Database
 
                     dto.Id = (long)chemistry["ID"];
                     var byteArray = (Byte[])chemistry["Chemistry"];
-                    dto.Cml = Encoding.UTF8.GetString(byteArray);
+                    dto.Cml = CmlFromBytes(byteArray, dto.Id);
                     dto.Name = chemistry["name"] as string;
                     dto.Formula = chemistry["formula"] as string;
 
@@ -442,6 +450,23 @@ namespace Chem4Word.Database
             }
 
             return results;
+        }
+
+        private string CmlFromBytes(byte[] byteArray, long id)
+        {
+            string cml = Encoding.UTF8.GetString(byteArray);
+            CMLConverter cc = new CMLConverter();
+            Model.Model m = cc.Import(cml);
+            double before = m.MeanBondLength;
+            if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
+                || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
+            {
+                m.ScaleToAverageBondLength(Constants.StandardBondLength);
+                double after = m.MeanBondLength;
+                Debug.WriteLine($"Structure Id: {id} rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
+            }
+
+            return cc.Export(m);
         }
 
         public List<ChemistryTagDTO> GetChemistryByTags()

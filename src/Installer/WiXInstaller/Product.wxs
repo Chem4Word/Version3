@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!-- For automatic upgrade to work only first three parts of version number are used -->
-  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.19 Release 6" Manufacturer="Chem4Word" Version="3.0.19.6825" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
+  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.20 Release 7" Manufacturer="Chem4Word" Version="3.0.20.6843" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of Chem4Word is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
@@ -174,6 +174,10 @@
       <Component Id="Chem4Word.Editor.ChemDoodleWeb.702">
         <File Id="Chem4Word.Editor.ChemDoodleWeb702.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb702.dll" />
         <File Id="Chem4Word.Editor.ChemDoodleWeb702.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb702.pdb" />
+      </Component>
+      <Component Id="Chem4Word.Editor.ChemDoodleWeb.800">
+        <File Id="Chem4Word.Editor.ChemDoodleWeb800.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb800.dll" />
+        <File Id="Chem4Word.Editor.ChemDoodleWeb800.pdb" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Editor.ChemDoodleWeb800.pdb" />
       </Component>
       <Component Id="Chem4Word.Renderer.OoXmlV3">
         <File Id="Chem4Word.Renderer.OoXmlV3.dll" Source="$(var.Chem4Word.V3.TargetDir)\PlugIns\Chem4Word.Renderer.OoXmlV3.dll" />

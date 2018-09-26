@@ -50,8 +50,8 @@
                                         Source="/Resources/Button Images/Preferences.png" />
                                 </Button>
                                 <ComboBox x:Name="SelectEditorPlugIn"
-                                    Margin="5"
                                     Height="30"
+                                    Margin="5"
                                     SelectionChanged="SelectEditorPlugIn_OnSelectionChanged" />
                             </DockPanel>
                             <TextBlock x:Name="SelectedEditorPlugInDescription"
@@ -77,8 +77,8 @@
                                         Source="/Resources/Button Images/Preferences.png" />
                                 </Button>
                                 <ComboBox x:Name="SelectRendererPlugIn"
-                                    Margin="5"
                                     Height="30"
+                                    Margin="5"
                                     SelectionChanged="SelectRenderer_OnSelectionChanged" />
                             </DockPanel>
                             <TextBlock x:Name="SelectedRendererDescription"
@@ -104,8 +104,8 @@
                                         Source="/Resources/Button Images/Preferences.png" />
                                 </Button>
                                 <ComboBox x:Name="SelectSearcherPlugIn"
-                                    Margin="5"
                                     Height="30"
+                                    Margin="5"
                                     SelectionChanged="SelectSearcher_OnSelectionChanged" />
                             </DockPanel>
                             <TextBlock x:Name="SelectedSearcherDescription"
@@ -158,9 +158,7 @@
             <TabItem Header="Library">
                 <Grid Margin="5">
                     <StackPanel>
-                        <GroupBox
-                            BorderThickness="2"
-                            Header="Import">
+                        <GroupBox BorderThickness="2" Header="Import">
                             <DockPanel>
                                 <Button x:Name="ImportIntoLibrary"
                                     Width="120"
@@ -175,9 +173,7 @@
                                             Height="32"
                                             Margin="5"
                                             Source="/Resources/Button Images/Office-2016/Gallery-Toggle.png" />
-                                        <Label
-                                            VerticalContentAlignment="Center"
-                                            Content="Import" />
+                                        <Label VerticalContentAlignment="Center" Content="Import" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock
@@ -187,9 +183,7 @@
                                     TextWrapping="Wrap" />
                             </DockPanel>
                         </GroupBox>
-                        <GroupBox
-                            BorderThickness="2"
-                            Header="Export">
+                        <GroupBox BorderThickness="2" Header="Export">
                             <DockPanel>
                                 <Button x:Name="ExportFromLibrary"
                                     Width="120"
@@ -204,9 +198,7 @@
                                             Height="32"
                                             Margin="5"
                                             Source="/Resources/Button Images/Office-2016/Gallery-Save.png" />
-                                        <Label
-                                            VerticalContentAlignment="Center"
-                                            Content="Export" />
+                                        <Label VerticalContentAlignment="Center" Content="Export" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock
@@ -216,9 +208,7 @@
                                     TextWrapping="Wrap" />
                             </DockPanel>
                         </GroupBox>
-                        <GroupBox
-                            BorderThickness="2"
-                            Header="Clear">
+                        <GroupBox BorderThickness="2" Header="Clear">
                             <DockPanel>
                                 <Button x:Name="EraseLibrary"
                                     Width="120"
@@ -233,9 +223,7 @@
                                             Height="32"
                                             Margin="5"
                                             Source="/Resources/Button Images/Office-2016/Gallery-Delete.png" />
-                                        <Label
-                                            VerticalContentAlignment="Center"
-                                            Content="Clear" />
+                                        <Label VerticalContentAlignment="Center" Content="Clear" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock
@@ -252,9 +240,7 @@
                 <Grid Margin="5">
                     <StackPanel>
                         <Label Content="You should back up the contents of these folders regularily." />
-                        <GroupBox
-                            BorderThickness="2"
-                            Header="Settings">
+                        <GroupBox BorderThickness="2" Header="Settings">
                             <DockPanel>
                                 <Button x:Name="SettingsFolder"
                                     Width="120"
@@ -269,9 +255,7 @@
                                             Height="32"
                                             Margin="5"
                                             Source="/Resources/Button Images/Office-2016/File-Open.png" />
-                                        <Label
-                                            VerticalContentAlignment="Center"
-                                            Content="Open" />
+                                        <Label VerticalContentAlignment="Center" Content="Open" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock
@@ -281,9 +265,7 @@
                                     TextWrapping="Wrap" />
                             </DockPanel>
                         </GroupBox>
-                        <GroupBox
-                            BorderThickness="2"
-                            Header="Library">
+                        <GroupBox BorderThickness="2" Header="Library">
                             <DockPanel>
                                 <Button x:Name="LibraryFolder"
                                     Width="120"
@@ -298,9 +280,7 @@
                                             Height="32"
                                             Margin="5"
                                             Source="/Resources/Button Images/Office-2016/File-Open.png" />
-                                        <Label
-                                            VerticalContentAlignment="Center"
-                                            Content="Open" />
+                                        <Label VerticalContentAlignment="Center" Content="Open" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock
@@ -310,9 +290,7 @@
                                     TextWrapping="Wrap" />
                             </DockPanel>
                         </GroupBox>
-                        <GroupBox
-                            BorderThickness="2"
-                            Header="Plug-Ins">
+                        <GroupBox BorderThickness="2" Header="Plug-Ins">
                             <DockPanel>
                                 <Button x:Name="PlugInsFolder"
                                     Width="120"
@@ -327,9 +305,7 @@
                                             Height="32"
                                             Margin="5"
                                             Source="/Resources/Button Images/Office-2016/File-Open.png" />
-                                        <Label
-                                            VerticalContentAlignment="Center"
-                                            Content="Open" />
+                                        <Label VerticalContentAlignment="Center" Content="Open" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock

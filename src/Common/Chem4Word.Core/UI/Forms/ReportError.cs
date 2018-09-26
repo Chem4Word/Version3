@@ -69,24 +69,27 @@ namespace Chem4Word.Core.UI.Forms
 
         private void ReportError_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_exceptionMessage))
+            if (_telemetry != null)
             {
-                _telemetry.Write(_operation, "Exception", _exceptionMessage);
-            }
-            if (!string.IsNullOrEmpty(_callStack))
-            {
-                _telemetry.Write(_operation, "Exception", _callStack);
-            }
-
-            if (DialogResult == DialogResult.OK)
-            {
-                if (!string.IsNullOrEmpty(EmailAddress.Text))
+                if (!string.IsNullOrEmpty(_exceptionMessage))
                 {
-                    _telemetry.Write(_operation, "Exception(Data)", EmailAddress.Text);
+                    _telemetry.Write(_operation, "Exception", _exceptionMessage);
                 }
-                if (!string.IsNullOrEmpty(richTextBox1.Text))
+                if (!string.IsNullOrEmpty(_callStack))
                 {
-                    _telemetry.Write(_operation, "Exception(Data)", richTextBox1.Text);
+                    _telemetry.Write(_operation, "Exception", _callStack);
+                }
+
+                if (DialogResult == DialogResult.OK)
+                {
+                    if (!string.IsNullOrEmpty(EmailAddress.Text))
+                    {
+                        _telemetry.Write(_operation, "Exception(Data)", EmailAddress.Text);
+                    }
+                    if (!string.IsNullOrEmpty(richTextBox1.Text))
+                    {
+                        _telemetry.Write(_operation, "Exception(Data)", richTextBox1.Text);
+                    }
                 }
             }
         }
