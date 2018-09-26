@@ -88,8 +88,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{1B81DF60
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Editor.ChemDoodleWeb800", "PlugIns\Editors\ChemDoodleWeb.800\Chem4Word.Editor.ChemDoodleWeb800.csproj", "{666B7E5E-D48A-42CF-91A6-8E58E90B830D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C89BC92A-4183-48A6-B039-AD76AA1DF48F} = {C89BC92A-4183-48A6-B039-AD76AA1DF48F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chem4Word.Editor.ChemDoodleWeb702", "PlugIns\Editors\ChemDoodleWeb.702\Chem4Word.Editor.ChemDoodleWeb702.csproj", "{8C226D4E-FB23-4501-AEAE-796028C9874B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C89BC92A-4183-48A6-B039-AD76AA1DF48F} = {C89BC92A-4183-48A6-B039-AD76AA1DF48F}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{EAD5BD8A-5E42-4E79-8025-60026CE4173E}"
 	ProjectSection(SolutionItems) = preProject
