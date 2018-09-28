@@ -103,14 +103,17 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 if (!string.IsNullOrEmpty(StructureJson))
                 {
                     var version = ExecuteJavaScript("GetVersion");
-                    var source = (HwndSource)PresentationSource.FromDependencyObject(WebBrowser);
-                    if (source != null)
+                    if (version != null)
                     {
-                        var host = (System.Windows.Forms.Integration.ElementHost)Control.FromChildHandle(source.Handle);
-                        var form = (Form)host?.TopLevelControl;
-                        if (form != null)
+                        var source = (HwndSource)PresentationSource.FromDependencyObject(WebBrowser);
+                        if (source != null)
                         {
-                            form.Text = AppTitle + version;
+                            var host = (System.Windows.Forms.Integration.ElementHost)Control.FromChildHandle(source.Handle);
+                            var form = (Form)host?.TopLevelControl;
+                            if (form != null)
+                            {
+                                form.Text = AppTitle + version;
+                            }
                         }
                     }
 
@@ -346,29 +349,32 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                if (_saveSettings)
+                if (!_loading)
                 {
-                    SaveSettings();
-                }
-
-                WpfEventArgs args = new WpfEventArgs();
-
-                // Set defaults if fetch fails
-                args.OutputValue = "";
-                args.Button = "Cancel";
-
-                object obj = ExecuteJavaScript("GetJSON");
-                if (obj != null)
-                {
-                    string mol = obj.ToString();
-                    if (!string.IsNullOrEmpty(mol))
+                    if (_saveSettings)
                     {
-                        args.OutputValue = mol;
-                        args.Button = "OK";
+                        SaveSettings();
+                    }
+
+                    WpfEventArgs args = new WpfEventArgs();
+
+                    // Set defaults if fetch fails
+                    args.OutputValue = "";
+                    args.Button = "Cancel";
+
+                    object obj = ExecuteJavaScript("GetJSON");
+                    if (obj != null)
+                    {
+                        string mol = obj.ToString();
+                        if (!string.IsNullOrEmpty(mol))
+                        {
+                            args.OutputValue = mol;
+                            args.Button = "OK";
+
+                            OnButtonClick?.Invoke(this, args);
+                        }
                     }
                 }
-
-                OnButtonClick?.Invoke(this, args);
             }
             catch (Exception ex)
             {
@@ -474,6 +480,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
             if (!string.IsNullOrEmpty(ProductAppDataPath))
             {
+                _loading = true;
+
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
@@ -613,7 +621,23 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         private object ExecuteJavaScript(string functionName, params object[] args)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            return WebBrowser.InvokeScript(functionName, args);
+
+            object result = null;
+
+            try
+            {
+                if (WebBrowser.IsLoaded)
+                {
+                    result = WebBrowser.InvokeScript(functionName, args);
+                }
+            }
+            catch (Exception ex)
+            {
+                Telemetry.Write(module, "Exception", ex.Message);
+                Telemetry.Write(module, "Exception", ex.StackTrace);
+            }
+
+            return result;
         }
 
         private void DelTree(string sPath)
