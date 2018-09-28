@@ -30,6 +30,8 @@ namespace Chem4Word.Telemetry
 
         public string MachineId { get; set; }
 
+        public int ProcessId { get; set; }
+
         public string SystemOs { get; set; }
 
         public string WordProduct { get; set; }
@@ -80,6 +82,8 @@ namespace Chem4Word.Telemetry
             #region Get Machine Guid
 
             MachineId = GetMachineId();
+
+            ProcessId = Process.GetCurrentProcess().Id;
 
             #endregion Get Machine Guid
 
