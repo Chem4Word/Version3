@@ -200,6 +200,8 @@ namespace Chem4Word.Telemetry
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(exeName);
 
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
             startInfo.WorkingDirectory = folder;
             startInfo.RedirectStandardInput = true;
@@ -209,8 +211,6 @@ namespace Chem4Word.Telemetry
             Process process = new Process();
             process.StartInfo = startInfo;
             process.Start();
-
-            //return process.StandardOutput.ReadLine();
 
             var results = new List<string>();
             while (!process.StandardOutput.EndOfStream)
