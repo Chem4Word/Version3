@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -190,9 +191,13 @@ namespace Chem4Word.Telemetry
             // git rev-parse --abbrev-ref HEAD == Current Branch
             result.AddRange(RunCommand("git.exe", "rev-parse --abbrev-ref HEAD", AddInLocation));
 
-            result.Add("Changed Files");
             // git status --porcelain == Get List of changed files
-            result.AddRange(RunCommand("git.exe", "status --porcelain", AddInLocation));
+            var changedFiles = RunCommand("git.exe", "status --porcelain", AddInLocation);
+            if (changedFiles.Any())
+            {
+                result.Add("Changed Files");
+                result.AddRange(changedFiles);
+            }
             GitStatus = string.Join(Environment.NewLine, result.ToArray());
         }
 
