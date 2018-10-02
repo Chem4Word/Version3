@@ -935,6 +935,15 @@ namespace Chem4Word
                             if (customXmlPart != null)
                             {
                                 beforeCml = customXmlPart.XML;
+                                CMLConverter cmlConverter = new CMLConverter();
+                                Model.Model beforeModel = cmlConverter.Import(beforeCml);
+                                if (beforeModel.Molecules.Count
+                                    + beforeModel.AllAtoms.Count
+                                    + beforeModel.AllBonds.Count == 0)
+                                {
+                                    UserInteractions.InformUser("No 2D data to edit!");
+                                    return;
+                                }
                                 isNewDrawing = false;
                             }
                         }
