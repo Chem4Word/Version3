@@ -264,6 +264,7 @@
     <Compile Include="AssemblyReflectionManager.cs" />
     <Compile Include="Database\Library.cs" />
     <Compile Include="Helpers\ConfigWatcher.cs" />
+    <Compile Include="Helpers\ContentControlHelper.cs" />
     <Compile Include="Helpers\ReferenceKeeper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\TargetWord.cs" />

@@ -161,6 +161,7 @@ namespace Chem4Word.Helpers
                 Debug.WriteLine(ex.Message);
             }
 
+            Dictionary<string, CustomXMLPart> customXmlParts = new Dictionary<string, CustomXMLPart>();
             List<UpgradeTarget> targets = CollectData(doc);
             int upgradedCCs = 0;
             int upgradedXml = 0;
@@ -204,11 +205,19 @@ namespace Chem4Word.Helpers
 
                 CMLConverter converter = new CMLConverter();
                 CustomXMLPart cxml = doc.CustomXMLParts.SelectByID(target.CxmlPartId);
-                cxml.Delete();
+                if (customXmlParts.ContainsKey(cxml.Id))
+                {
+                    customXmlParts.Add(cxml.Id, cxml);
+                }
                 doc.CustomXMLParts.Add(converter.Export(target.Model));
             }
 
             EraseChemistryZones(doc);
+
+            foreach (var kvp in customXmlParts.ToList())
+            {
+                kvp.Value.Delete();
+            }
 
             Globals.Chem4WordV3.EnableDocumentEvents(doc);
             doc.Application.Selection.SetRange(sel, sel);
