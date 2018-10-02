@@ -60,9 +60,9 @@ namespace Chem4Word.Helpers
                         || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
                     {
                         model.ScaleToAverageBondLength(Constants.StandardBondLength);
+                        modified = true;
                         double after = model.MeanBondLength;
                         Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
-                        modified = true;
                     }
 
                     if (isCopy)
@@ -85,6 +85,7 @@ namespace Chem4Word.Helpers
                     renderer.Properties.Add("Guid", guid);
                     renderer.Cml = cml;
 
+                    // Generate temp file which can be inserted into a content control
                     string tempfileName = renderer.Render();
                     if (File.Exists(tempfileName))
                     {
@@ -187,12 +188,12 @@ namespace Chem4Word.Helpers
                 string prefix = "";
                 string ccTag = cc?.Tag;
 
-                if (ccTag.Contains(":"))
+                if (ccTag != null && ccTag.Contains(":"))
                 {
-                    prefix = ccTag?.Split(':')[0];
+                    prefix = ccTag.Split(':')[0];
                 }
 
-                if (ccTag.Equals(cxmlId))
+                if (ccTag != null && ccTag.Equals(cxmlId))
                 {
                     // Only 2D Structures if filename supplied
                     if (!string.IsNullOrEmpty(tempFilename))
