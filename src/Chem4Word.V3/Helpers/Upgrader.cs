@@ -174,6 +174,7 @@ namespace Chem4Word.Helpers
                     upgradedXml++;
                     upgradedCCs += target.ContentControls.Count;
                 }
+
                 foreach (var cci in target.ContentControls)
                 {
                     foreach (Word.ContentControl cc in doc.ContentControls)
@@ -186,6 +187,8 @@ namespace Chem4Word.Helpers
                                 cc.Title = Constants.ContentControlTitle;
                                 cc.Tag = target.Model.CustomXmlPartGuid;
                                 cc.LockContents = true;
+
+                                // ToDo: Regenerate converted 2D structures
                             }
                             else
                             {
@@ -193,6 +196,7 @@ namespace Chem4Word.Helpers
                                 cc.Range.Delete();
                                 int start = cc.Range.Start;
                                 cc.Delete();
+
                                 doc.Application.Selection.SetRange(start - 1, start - 1);
                                 bool isFormula = false;
                                 string source;
