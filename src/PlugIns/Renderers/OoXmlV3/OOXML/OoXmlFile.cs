@@ -30,6 +30,8 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         /// <param name="cml">Input Chemistry</param>
         /// <param name="guid">Bookmark to create</param>
         /// <param name="options"></param>
+        /// <param name="telemetry"></param>
+        /// <param name="topLeft"></param>
         /// <returns></returns>
         public static string CreateFromCml(string cml, string guid, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
@@ -56,7 +58,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             if (canRender)
             {
-                string bookmarkName = "C4W_" + guid;
+                string bookmarkName = Constants.OoXmlBookmarkPrefix + guid;
 
                 // Create a Wordprocessing document.
                 using (WordprocessingDocument package = WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document))
@@ -83,9 +85,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
         /// Creates the DrawingML objects and adds them to the document
         /// </summary>
         /// <param name="docbody"></param>
-        /// <param name="cml"></param>
+        /// <param name="model"></param>
         /// <param name="bookmarkName"></param>
         /// <param name="options"></param>
+        /// <param name="telemetry"></param>
+        /// <param name="topLeft"></param>
         private static void AddPictureFromModel(Body docbody, Model.Model model, string bookmarkName, Options options, IChem4WordTelemetry telemetry, Point topLeft)
         {
             Paragraph paragraph1 = new Paragraph();

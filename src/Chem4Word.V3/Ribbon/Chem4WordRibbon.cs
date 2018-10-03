@@ -113,44 +113,44 @@ namespace Chem4Word
                         {
                             string chosenState = b.Tag.ToString();
                             string prefix = "2D";
-                            string guid = cc?.Tag;
+                            string guid = cc.Tag;
                             if (guid.Contains(":"))
                             {
-                                prefix = cc?.Tag.Split(':')[0];
-                                guid = cc?.Tag.Split(':')[1];
+                                prefix = cc.Tag.Split(':')[0];
+                                guid = cc.Tag.Split(':')[1];
                             }
 
                             if (!prefix.Equals(chosenState))
                             {
-                                // Stop Screen Updating and Disable Document Event Handlers
-                                app.ScreenUpdating = false;
-                                Globals.Chem4WordV3.DisableDocumentEvents(doc);
-
-                                // Erase old CC
-                                cc.LockContents = false;
-                                cc.Range.Delete();
-                                cc.Delete();
-
-                                customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(guid, app.ActiveDocument);
-                                if (customXmlPart != null)
+                                IChem4WordRenderer renderer =
+                                    Globals.Chem4WordV3.GetRendererPlugIn(
+                                        Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+                                if (renderer != null)
                                 {
-                                    CMLConverter conv = new CMLConverter();
-                                    Model.Model model = conv.Import(customXmlPart.XML);
-
-                                    if (chosenState.Equals("2D"))
+                                    customXmlPart = CustomXmlPartHelper.GetCustomXmlPart(guid, app.ActiveDocument);
+                                    if (customXmlPart != null)
                                     {
-                                        string bookmarkName = "C4W_" + guid;
-                                        if (Globals.Chem4WordV3.SystemOptions == null)
-                                        {
-                                            Globals.Chem4WordV3.LoadOptions();
-                                        }
-                                        Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-                                        IChem4WordRenderer renderer =
-                                            Globals.Chem4WordV3.GetRendererPlugIn(
-                                                Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
+                                        // Stop Screen Updating and Disable Document Event Handlers
+                                        app.ScreenUpdating = false;
+                                        Globals.Chem4WordV3.DisableDocumentEvents(doc);
 
-                                        if (renderer != null)
+                                        // Erase old CC
+                                        cc.LockContents = false;
+                                        cc.Range.Delete();
+                                        cc.Delete();
+
+                                        // Insert new CC
+                                        cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+
+                                        Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
+
+                                        if (chosenState.Equals("2D"))
                                         {
+                                            if (Globals.Chem4WordV3.SystemOptions == null)
+                                            {
+                                                Globals.Chem4WordV3.LoadOptions();
+                                            }
+
                                             renderer.Properties = new Dictionary<string, string>();
                                             renderer.Properties.Add("Guid", guid);
                                             renderer.Cml = customXmlPart.XML;
@@ -158,32 +158,35 @@ namespace Chem4Word
                                             string tempfileName = renderer.Render();
                                             if (File.Exists(tempfileName))
                                             {
-                                                cc = Insert2D(doc, tempfileName, bookmarkName, guid);
+                                                ChemistryHelper.Insert2D(cc, tempfileName, guid);
+                                            }
+                                            else
+                                            {
+                                                cc = null;
                                             }
                                         }
                                         else
                                         {
-                                            cc = null;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        bool isFormula = false;
-                                        string text;
-                                        if (chosenState.Equals("c0"))
-                                        {
-                                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Render structure as Overall ConciseFormula");
-                                            text = model.ConciseFormula;
-                                            isFormula = true;
-                                        }
-                                        else
-                                        {
-                                            string source;
-                                            text = GetInlineText(model, chosenState, ref isFormula, out source);
-                                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Render structure as {source}");
-                                        }
+                                            CMLConverter conv = new CMLConverter();
+                                            Model.Model model = conv.Import(customXmlPart.XML);
 
-                                        cc = Insert1D(app, doc, text, isFormula, chosenState + ":" + guid);
+                                            bool isFormula = false;
+                                            string text;
+                                            if (chosenState.Equals("c0"))
+                                            {
+                                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Render structure as Overall ConciseFormula");
+                                                text = model.ConciseFormula;
+                                                isFormula = true;
+                                            }
+                                            else
+                                            {
+                                                string source;
+                                                text = GetInlineText(model, chosenState, ref isFormula, out source);
+                                                Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Render structure as {source}");
+                                            }
+
+                                            ChemistryHelper.Insert1D(cc, text, isFormula, chosenState + ":" + guid);
+                                        }
                                     }
                                 }
                             }
@@ -395,7 +398,6 @@ namespace Chem4Word
 
             Word.Application app = Globals.Chem4WordV3.Application;
             Word.Document doc = app.ActiveDocument;
-            Word.ContentControl cc = null;
 
             try
             {
@@ -469,78 +471,14 @@ namespace Chem4Word
 
                                 if (dr == DialogResult.OK)
                                 {
-                                    double before = model.MeanBondLength;
-                                    if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                                        || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
-                                    {
-                                        model.ScaleToAverageBondLength(Constants.StandardBondLength);
-                                        double after = model.MeanBondLength;
-                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
-                                    }
-
-                                    // Always generate new Guid on Import
-                                    model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
-
-                                    // Ensure each molecule has a Consise Furmula set
-                                    foreach (var molecule in model.Molecules)
-                                    {
-                                        if (string.IsNullOrEmpty(molecule.ConciseFormula))
-                                        {
-                                            molecule.ConciseFormula = molecule.CalculatedFormula();
-                                        }
-                                    }
-
                                     CMLConverter cmlConverter = new CMLConverter();
                                     cml = cmlConverter.Export(model);
-
-                                    #region Insert OoXml Drawing into document
-
-                                    app.ScreenUpdating = false;
-                                    Globals.Chem4WordV3.DisableDocumentEvents(doc);
-
-                                    string guidString = model.CustomXmlPartGuid;
-                                    string bookmarkName = "C4W_" + guidString;
-
-                                    if (Globals.Chem4WordV3.SystemOptions == null)
+                                    Word.ContentControl cc = ChemistryHelper.Insert2DChemistry(doc, cml, true);
+                                    if (cc != null)
                                     {
-                                        Globals.Chem4WordV3.LoadOptions();
+                                        // Move selection point into the Content Control which was just inserted
+                                        app.Selection.SetRange(cc.Range.Start, cc.Range.End);
                                     }
-                                    Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-                                    IChem4WordRenderer renderer =
-                                        Globals.Chem4WordV3.GetRendererPlugIn(
-                                            Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
-
-                                    if (renderer == null)
-                                    {
-                                        UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
-                                    }
-                                    else
-                                    {
-                                        renderer.Properties = new Dictionary<string, string>();
-                                        renderer.Properties.Add("Guid", guidString);
-                                        renderer.Cml = cml;
-
-                                        string tempfileName = renderer.Render();
-
-                                        if (File.Exists(tempfileName))
-                                        {
-                                            cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                                            doc.CustomXMLParts.Add(cml);
-
-                                            try
-                                            {
-                                                // Delete the temporary file now we are finished with it
-                                                File.Delete(tempfileName);
-                                            }
-                                            catch
-                                            {
-                                                // Not much we can do here
-                                            }
-                                        }
-                                    }
-
-                                    #endregion Insert OoXml Drawing into document
                                 }
                             }
                             else
@@ -567,18 +505,6 @@ namespace Chem4Word
             catch (Exception ex)
             {
                 new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            }
-            finally
-            {
-                // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
-                app.ScreenUpdating = true;
-                Globals.Chem4WordV3.EnableDocumentEvents(doc);
-
-                if (cc != null)
-                {
-                    // Move selection point into the Content Control which was just inserted
-                    app.Selection.SetRange(cc.Range.Start, cc.Range.End);
-                }
             }
         }
 
@@ -1615,103 +1541,12 @@ namespace Chem4Word
                             DialogResult dr = searcher.Search();
                             if (dr == DialogResult.OK)
                             {
-                                Word.Application app = Globals.Chem4WordV3.Application;
-                                Word.Document doc = app.ActiveDocument;
-                                Word.Selection sel = app.Selection;
-                                Word.ContentControl cc = null;
-
-                                Model.Model model = null;
-                                CMLConverter cmlConverter = new CMLConverter();
-                                model = cmlConverter.Import(searcher.Cml);
-
-                                if (model != null)
-                                {
-                                    double before = model.MeanBondLength;
-                                    if (before < Constants.MinimumBondLength - Constants.BondLengthTolerance
-                                        || before > Constants.MaximumBondLength + Constants.BondLengthTolerance)
-                                    {
-                                        model.ScaleToAverageBondLength(Constants.StandardBondLength);
-                                        double after = model.MeanBondLength;
-                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
-                                    }
-
-                                    // Always generate new Guid on Import
-                                    model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
-
-                                    // Ensure each molecule has a Consise Furmula set
-                                    foreach (var molecule in model.Molecules)
-                                    {
-                                        if (string.IsNullOrEmpty(molecule.ConciseFormula))
-                                        {
-                                            molecule.ConciseFormula = molecule.CalculatedFormula();
-                                        }
-                                    }
-
-                                    string cml = cmlConverter.Export(model);
-
-                                    #region Insert OoXml Drawing into document
-
-                                    app.ScreenUpdating = false;
-                                    Globals.Chem4WordV3.DisableDocumentEvents(doc);
-
-                                    string guidString = model.CustomXmlPartGuid;
-                                    string bookmarkName = "C4W_" + guidString;
-
-                                    if (Globals.Chem4WordV3.SystemOptions == null)
-                                    {
-                                        Globals.Chem4WordV3.LoadOptions();
-                                    }
-                                    Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
-                                    IChem4WordRenderer renderer =
-                                        Globals.Chem4WordV3.GetRendererPlugIn(
-                                            Globals.Chem4WordV3.SystemOptions.SelectedRendererPlugIn);
-
-                                    if (renderer == null)
-                                    {
-                                        UserInteractions.WarnUser("Unable to find a Renderer Plug-In");
-                                    }
-                                    else
-                                    {
-                                        renderer.Properties = new Dictionary<string, string>();
-                                        renderer.Properties.Add("Guid", guidString);
-                                        renderer.Cml = cml;
-
-                                        string tempfileName = renderer.Render();
-
-                                        if (File.Exists(tempfileName))
-                                        {
-                                            cc = Insert2D(doc, tempfileName, bookmarkName, guidString);
-
-                                            doc.CustomXMLParts.Add(cml);
-
-                                            try
-                                            {
-                                                // Delete the temporary file now we are finished with it
-                                                File.Delete(tempfileName);
-                                            }
-                                            catch
-                                            {
-                                                // Not much we can do here
-                                            }
-                                        }
-                                    }
-
-                                    #endregion Insert OoXml Drawing into document
-                                }
-                                else
-                                {
-                                    Exception x = new Exception("Could not import search result, Model is null");
-                                    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft,
-                                        module, x).ShowDialog();
-                                }
-
-                                app.ScreenUpdating = true;
-                                Globals.Chem4WordV3.EnableDocumentEvents(doc);
-
+                                Word.Document doc = Globals.Chem4WordV3.Application.ActiveDocument;
+                                Word.ContentControl cc = ChemistryHelper.Insert2DChemistry(doc, searcher.Cml, true);
                                 if (cc != null)
                                 {
                                     // Move selection point into the Content Control which was just inserted
-                                    app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                    Globals.Chem4WordV3.Application.Selection.SetRange(cc.Range.Start, cc.Range.End);
                                 }
                             }
                         }

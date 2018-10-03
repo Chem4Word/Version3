@@ -72,6 +72,16 @@ namespace Chem4Word.Helpers
                         modified = true;
                     }
 
+                    // Ensure each molecule has a Concise Formula set
+                    foreach (var molecule in model.Molecules)
+                    {
+                        if (string.IsNullOrEmpty(molecule.ConciseFormula))
+                        {
+                            molecule.ConciseFormula = molecule.CalculatedFormula();
+                            modified = true;
+                        }
+                    }
+
                     if (modified)
                     {
                         // Re-export as the CustomXmlPartGuid or Bond Length has been changed
@@ -79,7 +89,6 @@ namespace Chem4Word.Helpers
                     }
 
                     string guid = model.CustomXmlPartGuid;
-                    string bookmarkName = "C4W_" + guid;
 
                     renderer.Properties = new Dictionary<string, string>();
                     renderer.Properties.Add("Guid", guid);
@@ -90,7 +99,7 @@ namespace Chem4Word.Helpers
                     if (File.Exists(tempfileName))
                     {
                         cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
-                        Insert2D(cc, tempfileName, bookmarkName, guid);
+                        Insert2D(cc, tempfileName, guid);
 
                         if (isCopy)
                         {
@@ -220,13 +229,15 @@ namespace Chem4Word.Helpers
             }
         }
 
-        public static void Insert2D(Word.ContentControl cc, string tempfileName, string bookmarkName, string tag)
+        public static void Insert2D(Word.ContentControl cc, string tempfileName, string guid)
         {
             string module = $"{Product}.{Class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Inserting 2D structure in ContentControl {cc.ID} Tag {tag}");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Inserting 2D structure in ContentControl {cc.ID} Tag {guid}");
 
             Word.Document doc = cc.Application.ActiveDocument;
+
+            string bookmarkName = Constants.OoXmlBookmarkPrefix + guid;
 
             cc.Range.InsertFile(tempfileName, bookmarkName);
             if (doc.Bookmarks.Exists(bookmarkName))
@@ -234,7 +245,7 @@ namespace Chem4Word.Helpers
                 doc.Bookmarks[bookmarkName].Delete();
             }
 
-            cc.Tag = tag;
+            cc.Tag = guid;
             cc.Title = Constants.ContentControlTitle;
             cc.LockContents = true;
         }
