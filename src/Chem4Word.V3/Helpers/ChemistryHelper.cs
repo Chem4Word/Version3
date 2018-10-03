@@ -131,7 +131,7 @@ namespace Chem4Word.Helpers
             return cc;
         }
 
-        public static Word.ContentControl Insert1DChemistry(Word.Document doc, string cml, bool isCopy)
+        public static Word.ContentControl Insert1DChemistry(Word.Document doc, string text, bool isFormula, string tag)
         {
             string module = $"{Product}.{Class}.{MethodBase.GetCurrentMethod().Name}()";
 
@@ -140,7 +140,18 @@ namespace Chem4Word.Helpers
                 Globals.Chem4WordV3.LoadOptions();
             }
 
+            Word.Application app = Globals.Chem4WordV3.Application;
+
             Word.ContentControl cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+            bool existingState = app.AutoCorrect.CorrectSentenceCaps;
+            app.AutoCorrect.CorrectSentenceCaps = false;
+
+            SetRichText(cc, text, isFormula);
+
+            app.AutoCorrect.CorrectSentenceCaps = existingState;
+            cc.Tag = tag;
+            cc.Title = Constants.ContentControlTitle;
+            cc.LockContents = true;
 
             return cc;
         }
@@ -207,8 +218,7 @@ namespace Chem4Word.Helpers
                     // Only 2D Structures if filename supplied
                     if (!string.IsNullOrEmpty(tempFilename))
                     {
-                        string bookmarkName = "C4W_" + cxmlId;
-                        Update2D(cc, tempFilename, bookmarkName, cxmlId);
+                        Update2D(cc, tempFilename, cxmlId);
                     }
                 }
                 else
@@ -250,11 +260,11 @@ namespace Chem4Word.Helpers
             cc.LockContents = true;
         }
 
-        public static void Update2D(Word.ContentControl cc, string tempfileName, string bookmarkName, string tag)
+        public static void Update2D(Word.ContentControl cc, string tempfileName, string guid)
         {
             string module = $"{Product}.{Class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Updating 2D structure in ContentControl {cc.ID} Tag {tag}");
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Updating 2D structure in ContentControl {cc.ID} Tag {guid}");
 
             Word.Document doc = cc.Application.ActiveDocument;
 
@@ -265,7 +275,7 @@ namespace Chem4Word.Helpers
                 Word.Range range = cc.Range;
                 cc.Delete();
                 cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, range);
-                cc.Tag = tag;
+                cc.Tag = guid;
                 cc.Title = Constants.ContentControlTitle;
                 cc.Range.Delete();
             }
@@ -274,13 +284,14 @@ namespace Chem4Word.Helpers
                 cc.Range.Delete();
             }
 
+            string bookmarkName = Constants.OoXmlBookmarkPrefix + guid;
             cc.Range.InsertFile(tempfileName, bookmarkName);
             if (doc.Bookmarks.Exists(bookmarkName))
             {
                 doc.Bookmarks[bookmarkName].Delete();
             }
 
-            cc.Tag = tag;
+            cc.Tag = guid;
             cc.Title = Constants.ContentControlTitle;
             cc.LockContents = true;
         }

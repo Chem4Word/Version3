@@ -30,8 +30,9 @@ namespace Chem4Word.Helpers
     public static class Upgrader
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
-
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
+
+        private static object _missing = Type.Missing;
 
         public static DialogResult UpgradeIsRequired(Word.Document doc)
         {
@@ -195,8 +196,9 @@ namespace Chem4Word.Helpers
                                 doc.Application.Selection.SetRange(start - 1, start - 1);
                                 bool isFormula = false;
                                 string source;
-                                string text = CustomRibbon.GetInlineText(target.Model, cci.Type, ref isFormula, out source);
-                                Word.ContentControl ccn = CustomRibbon.Insert1D(doc.Application, doc, text, isFormula, $"{cci.Type}:{target.Model.CustomXmlPartGuid}");
+                                string text = ChemistryHelper.GetInlineText(target.Model, cci.Type, ref isFormula, out source);
+                                Word.ContentControl ccn = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+                                ChemistryHelper.Insert1D(ccn, text, isFormula, $"{cci.Type}:{target.Model.CustomXmlPartGuid}");
                                 ccn.LockContents = true;
                             }
                         }

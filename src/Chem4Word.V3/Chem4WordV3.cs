@@ -961,16 +961,56 @@ namespace Chem4Word
                     var lib = new Database.Library();
                     string cml = lib.GetChemistryByID(tw.ChemistryId);
 
-
                     if (cml == null)
                     {
                         UserInteractions.WarnUser($"No match for '{tw.ChemicalName}' was found in your library");
                     }
                     else
                     {
-                        Application.ActiveDocument.Range(tw.Start, tw.End).Select();
-                        Insert1DChemistry(cml, tw.ChemicalName, false, true);
+                        CMLConverter converter = new CMLConverter();
+                        var model = converter.Import(cml);
+                        model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
+                        cml = converter.Export(model);
+
+                        // ToDo: This needs a bit of tweaking
+                        int insertionPoint = tw.Start;
+                        Application.ActiveDocument.Range(tw.Start, tw.End).Delete();
+                        Application.Selection.SetRange(insertionPoint, insertionPoint);
+                        Application.Selection.InsertAfter(" ");
+                        Application.Selection.SetRange(insertionPoint, insertionPoint);
+
+                        string tagPrefix = "";
+                        foreach (var mol in model.Molecules)
+                        {
+                            foreach (var name in mol.ChemicalNames)
+                            {
+                                if (tw.ChemicalName.ToLower().Equals(name.Name.ToLower()))
+                                {
+                                    tagPrefix = name.Id;
+                                    break;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(tagPrefix))
+                            {
+                                break;
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(tagPrefix))
+                        {
+                            tagPrefix = "c0";
+                        }
+
+                        string tag = $"{tagPrefix}:{model.CustomXmlPartGuid}";
+
+                        Word.ContentControl cc = ChemistryHelper.Insert1DChemistry(Application.ActiveDocument, tw.ChemicalName, true, tag);
                         Telemetry.Write(module, "Information", $"Inserted 1D version of {tw.ChemicalName} from library");
+                        if (cc != null)
+                        {
+                            Application.ActiveDocument.CustomXMLParts.Add(cml);
+                            Application.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                        }
                     }
 
                     _markAsChemistryHandled = true;
@@ -1149,6 +1189,7 @@ namespace Chem4Word
             ((Word.Template)doc.AttachedTemplate).Saved = true;
         }
 
+        [Obsolete]
         public static void Insert1DChemistry(string xml, string text, bool is2D, bool isCopy)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -1190,7 +1231,6 @@ namespace Chem4Word
                 }
 
                 string guidString = chem.CustomXmlPartGuid;
-                string bookmarkName = "C4W_" + guidString;
 
                 // Export just incase the CustomXmlPartGuid has been changed
                 string cml = cmlConverter.Export(chem);
@@ -1221,7 +1261,8 @@ namespace Chem4Word
                         string tempfileName = renderer.Render();
                         if (File.Exists(tempfileName))
                         {
-                            cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
+                            //cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
+                            ChemistryHelper.Insert2D(cc, tempfileName, guidString);
 
                             try
                             {
@@ -1259,7 +1300,7 @@ namespace Chem4Word
                             break;
                         }
                     }
-                    cc = CustomRibbon.Insert1D(app, doc, text, false, tag);
+                    ChemistryHelper.Insert1D(cc, text, false, tag);
                 }
 
                 if (isCopy)
