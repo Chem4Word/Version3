@@ -291,7 +291,7 @@
     <Compile Include="Library\TagBlock.xaml.cs">
       <DependentUpon>TagBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Navigator\NavigatorSupport.cs" />
+    <Compile Include="Helpers\TaskPaneHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

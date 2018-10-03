@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Chem4Word.Helpers;
 using static Chem4Word.Core.UserInteractions;
 using UserControl = System.Windows.Controls.UserControl;
 
@@ -62,7 +63,7 @@ namespace Chem4Word.Library
                         ActiveDocument = Globals.Chem4WordV3.Application.ActiveDocument;
                         if (ActiveDocument?.ActiveWindow?.Selection != null)
                         {
-                            Navigator.NavigatorSupport.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
+                            TaskPaneHelper.InsertChemistry(true, ActiveDocument.Application, FlexDisplay);
                         }
                     }
                     Globals.Chem4WordV3.EventsEnabled = true;
