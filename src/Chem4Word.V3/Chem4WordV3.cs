@@ -972,12 +972,19 @@ namespace Chem4Word
                         model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
                         cml = converter.Export(model);
 
+                        Debug.WriteLine($"'{tw.ChemicalName}' {tw.Start} > {tw.End}");
+
                         // ToDo: This needs a bit of tweaking
                         int insertionPoint = tw.Start;
-                        Application.ActiveDocument.Range(tw.Start, tw.End).Delete();
-                        Application.Selection.SetRange(insertionPoint, insertionPoint);
+                        Application.ActiveDocument.Range(tw.Start, tw.Start + tw.ChemicalName.Length).Delete();
+                        Application.Selection.SetRange(insertionPoint - 1, insertionPoint- 1);
+
                         Application.Selection.InsertAfter(" ");
                         Application.Selection.SetRange(insertionPoint, insertionPoint);
+
+                        // Test phrases
+                        // This is benzene, this is not.
+                        // This is benzene. This is not.
 
                         string tagPrefix = "";
                         foreach (var mol in model.Molecules)

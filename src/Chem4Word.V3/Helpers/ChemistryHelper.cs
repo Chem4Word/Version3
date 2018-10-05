@@ -142,13 +142,19 @@ namespace Chem4Word.Helpers
 
             Word.Application app = Globals.Chem4WordV3.Application;
 
+            bool existingStateOfCorrectSentenceCaps = app.AutoCorrect.CorrectSentenceCaps;
+            bool existingStateOfSmartCutPaste = app.Options.SmartCutPaste;
+
             Word.ContentControl cc = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
-            bool existingState = app.AutoCorrect.CorrectSentenceCaps;
+
             app.AutoCorrect.CorrectSentenceCaps = false;
+            app.Options.SmartCutPaste = false;
 
             SetRichText(cc, text, isFormula);
 
-            app.AutoCorrect.CorrectSentenceCaps = existingState;
+            app.AutoCorrect.CorrectSentenceCaps = existingStateOfCorrectSentenceCaps;
+            app.Options.SmartCutPaste = existingStateOfSmartCutPaste;
+
             cc.Tag = tag;
             cc.Title = Constants.ContentControlTitle;
             cc.LockContents = true;
