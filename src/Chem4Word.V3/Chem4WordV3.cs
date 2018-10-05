@@ -967,24 +967,26 @@ namespace Chem4Word
                     }
                     else
                     {
+                        Word.Application app = Globals.Chem4WordV3.Application;
+                        Word.Document doc = app.ActiveDocument;
+
                         CMLConverter converter = new CMLConverter();
                         var model = converter.Import(cml);
                         model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
                         cml = converter.Export(model);
 
-                        Debug.WriteLine($"'{tw.ChemicalName}' {tw.Start} > {tw.End}");
-
-                        // ToDo: This needs a bit of tweaking
-                        int insertionPoint = tw.Start;
-                        Application.ActiveDocument.Range(tw.Start, tw.Start + tw.ChemicalName.Length).Delete();
-                        Application.Selection.SetRange(insertionPoint - 1, insertionPoint- 1);
-
-                        Application.Selection.InsertAfter(" ");
-                        Application.Selection.SetRange(insertionPoint, insertionPoint);
-
-                        // Test phrases
+                        // Test phrases (ensure benzene is in your library)
                         // This is benzene, this is not.
                         // This is benzene. This is not.
+
+                        Debug.WriteLine($"'{tw.ChemicalName}' {tw.Start} > {tw.End}");
+
+                        int insertionPoint = tw.Start;
+                        doc.Range(tw.Start, tw.Start + tw.ChemicalName.Length).Delete();
+                        app.Selection.SetRange(insertionPoint - 1, insertionPoint- 1);
+
+                        app.Selection.InsertAfter(" ");
+                        app.Selection.SetRange(insertionPoint, insertionPoint);
 
                         string tagPrefix = "";
                         foreach (var mol in model.Molecules)
@@ -1011,12 +1013,32 @@ namespace Chem4Word
 
                         string tag = $"{tagPrefix}:{model.CustomXmlPartGuid}";
 
-                        Word.ContentControl cc = ChemistryHelper.Insert1DChemistry(Application.ActiveDocument, tw.ChemicalName, true, tag);
-                        Telemetry.Write(module, "Information", $"Inserted 1D version of {tw.ChemicalName} from library");
+                        Word.ContentControl cc = null;
+
+                        try
+                        {
+                            app.ScreenUpdating = false;
+                            Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+                            cc = ChemistryHelper.Insert1DChemistry(doc, tw.ChemicalName, true, tag);
+
+                            Telemetry.Write(module, "Information", $"Inserted 1D version of {tw.ChemicalName} from library");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                        finally
+                        {
+                            Globals.Chem4WordV3.EnableDocumentEvents(doc);
+                            app.ScreenUpdating = false;
+                        }
+
                         if (cc != null)
                         {
-                            Application.ActiveDocument.CustomXMLParts.Add(cml);
-                            Application.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                            doc.CustomXMLParts.Add(cml);
+                            app.Selection.SetRange(cc.Range.Start, cc.Range.End);
                         }
                     }
 
