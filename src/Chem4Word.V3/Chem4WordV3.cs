@@ -287,15 +287,6 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                // ToDo: Remove before check in
-                //string libraryTarget = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProgramDataPath, Constants.LibraryFileName);
-                //if (!File.Exists(libraryTarget))
-                //{
-                //    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Copying initial Library database");
-                //    ResourceHelper.WriteResource(Assembly.GetExecutingAssembly(), "Data.Library.db", libraryTarget);
-                //}
-
-                //Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Reading Library database");
                 var lib = new Database.Library();
                 LibraryNames = lib.GetLibraryNames();
             }
@@ -983,6 +974,8 @@ namespace Chem4Word
 
                         int insertionPoint = tw.Start;
                         doc.Range(tw.Start, tw.Start + tw.ChemicalName.Length).Delete();
+
+                        // Not sure why we have to do this after deletion of text, probably something to do with Application.Options.SmartCutPaste
                         app.Selection.SetRange(insertionPoint - 1, insertionPoint- 1);
 
                         app.Selection.InsertAfter(" ");
@@ -1089,6 +1082,8 @@ namespace Chem4Word
                         if (doc != null)
                         {
                             int last = doc.Range().End;
+                            //ToDo: Handle if the text is found inside an existing 1D ContentControl
+
                             // Handling the selected text sentence by sentence should make us immune to return character sizing.
                             for (int i = 1; i <= sel.Sentences.Count; i++)
                             {
