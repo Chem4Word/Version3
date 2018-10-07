@@ -5,8 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using System.Windows.Forms;
-
 namespace Chem4Word.Core.Helpers
 {
     public static class Constants
@@ -21,7 +19,7 @@ namespace Chem4Word.Core.Helpers
         public const string LibraryFileName = "Library.db";
 
         public static string DefaultChem4WordWebServiceUri = "https://chemicalservices.azurewebsites.net/api/Resolve";
-        
+
         public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V8.0.0";
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
