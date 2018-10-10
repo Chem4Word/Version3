@@ -32,7 +32,6 @@
                 </Style>
             </Style.Resources>
         </Style>
-
         <Style  TargetType="Path">
             <Setter Property="Fill" Value="DarkBlue" />
             <Setter Property="Data" Value="F1 M 24.5417,19L 33.25,19L 55.4167,41.1667C 56.6534,42.4033 56.6533,44.4083 55.4167,45.645L 45.645,55.4167C 44.4084,56.6533 42.4033,56.6533 41.1667,55.4167L 19,33.25L 19,24.5417C 19,22.6945 19,
@@ -40,8 +39,13 @@
         </Style>
         <!-- this is the template for the tags that appear in the tag box -->
         <DataTemplate x:Key="NameTagTemplate">
-
-            <Border x:Name="border" Background="LightBlue" BorderBrush="DarkBlue" Margin="2" BorderThickness="1" CornerRadius="2.5" Height="Auto">
+            <Border x:Name="border"
+                    Height="Auto"
+                    Margin="2"
+                    Background="LightBlue"
+                    BorderBrush="DarkBlue"
+                    BorderThickness="1"
+                    CornerRadius="2.5">
                 <Grid
                     Width="Auto"
                     Height="18"
@@ -82,56 +86,56 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="SearchBox"
-                     Grid.Column="0"
-                     BorderThickness="0" 
-                     FontSize="24"
-                     Foreground="{StaticResource Chem4WordBlue}"
-                     TextChanged="SearchBox_OnTextChanged" />
+                Grid.Column="0"
+                BorderThickness="0"
+                FontSize="24"
+                Foreground="{StaticResource Chem4WordBlue}"
+                TextChanged="SearchBox_OnTextChanged" />
             <Button x:Name="SearchButton"
-                    Grid.Column="2"
-                    Click="SearchButton_OnClick"
-                    Style="{StaticResource NavButtonStyle}">
+                Grid.Column="2"
+                Click="SearchButton_OnClick"
+                Style="{StaticResource NavButtonStyle}">
                 <Button.Content>
                     <Viewbox Stretch="Uniform">
                         <Canvas
-                        Width="32"
-                        Height="32"
-                        ClipToBounds="True">
+                            Width="32"
+                            Height="32"
+                            ClipToBounds="True">
                             <Path
-                            Canvas.Left="4"
-                            Canvas.Top="4"
-                            Width="24"
-                            Height="24"
-                            Data="F1 M 42.5,22C 49.4036,22 55,27.5964 55,34.5C 55,41.4036 49.4036,47 42.5,47C 40.1356,47 37.9245,46.3435 36,45.2426L 26.9749,54.2678C 25.8033,55.4393 23.9038,55.4393 22.7322,54.2678C 21.5607,53.0962 21.5607,51.1967 22.7322,50.0251L 31.7971,40.961C 30.6565,39.0755 30,36.8644 30,34.5C 30,27.5964 35.5964,22 42.5,22 Z M 42.5,26C 37.8056,26 34,29.8056 34,34.5C 34,39.1944 37.8056,43 42.5,43C 47.1944,43 51,39.1944 51,34.5C 51,29.8056 47.1944,26 42.5,26 Z"
-                            Fill="{StaticResource Chem4WordBlue}"
-                            Stretch="Fill"
-                            Tag="Search"
-                            Visibility="Visible" />
+                                Canvas.Left="4"
+                                Canvas.Top="4"
+                                Width="24"
+                                Height="24"
+                                Data="F1 M 42.5,22C 49.4036,22 55,27.5964 55,34.5C 55,41.4036 49.4036,47 42.5,47C 40.1356,47 37.9245,46.3435 36,45.2426L 26.9749,54.2678C 25.8033,55.4393 23.9038,55.4393 22.7322,54.2678C 21.5607,53.0962 21.5607,51.1967 22.7322,50.0251L 31.7971,40.961C 30.6565,39.0755 30,36.8644 30,34.5C 30,27.5964 35.5964,22 42.5,22 Z M 42.5,26C 37.8056,26 34,29.8056 34,34.5C 34,39.1944 37.8056,43 42.5,43C 47.1944,43 51,39.1944 51,34.5C 51,29.8056 47.1944,26 42.5,26 Z"
+                                Fill="{StaticResource Chem4WordBlue}"
+                                Stretch="Fill"
+                                Tag="Search"
+                                Visibility="Visible" />
                         </Canvas>
                     </Viewbox>
                 </Button.Content>
             </Button>
             <Button x:Name="ClearButton"
-                    Grid.Column="1"
-                    Click="ClearButton_OnClick"
-                    Style="{StaticResource NavButtonStyle}">
+                Grid.Column="1"
+                Click="ClearButton_OnClick"
+                Style="{StaticResource NavButtonStyle}">
                 <Button.Content>
                     <Viewbox Stretch="Uniform">
                         <Canvas
-                        Width="24"
-                        Height="24"
-                        Background="Transparent"
-                        ClipToBounds="True">
-                            <Path
-                            Canvas.Left="0"
-                            Canvas.Top="0"
                             Width="24"
                             Height="24"
-                            Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z"
-                            Fill="{StaticResource Chem4WordBlue}"
-                            Stretch="Fill"
-                            Tag="Search"
-                            Visibility="Visible" />
+                            Background="Transparent"
+                            ClipToBounds="True">
+                            <Path
+                                Canvas.Left="0"
+                                Canvas.Top="0"
+                                Width="24"
+                                Height="24"
+                                Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z"
+                                Fill="{StaticResource Chem4WordBlue}"
+                                Stretch="Fill"
+                                Tag="Search"
+                                Visibility="Visible" />
                         </Canvas>
                     </Viewbox>
                 </Button.Content>
@@ -139,13 +143,13 @@
         </Grid>
         <ListBox x:Name="LibraryList"
             Grid.Row="1"
-                 HorizontalAlignment="Stretch"
-                 VerticalAlignment="Stretch"
-                 HorizontalContentAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
             Grid.IsSharedSizeScope="True"
-                 ItemsSource="{Binding Mode=OneWay, Path=ChemistryItems}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 VirtualizingStackPanel.IsVirtualizing="True">
+            ItemsSource="{Binding Mode=OneWay, Path=ChemistryItems}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            VirtualizingStackPanel.IsVirtualizing="True">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border
