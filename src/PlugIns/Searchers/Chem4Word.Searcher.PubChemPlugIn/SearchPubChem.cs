@@ -396,7 +396,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                                 {
                                     model.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
                                 }
-                                this.flexDisplayControl1.Chemistry = model;
+                                this.display1.Chemistry = model;
                                 if (model.AllWarnings.Count > 0 || model.AllErrors.Count > 0)
                                 {
                                     Telemetry.Write(module, "Exception(Data)", lastMolfile);

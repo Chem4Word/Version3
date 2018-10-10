@@ -11,11 +11,11 @@ using System.Windows.Controls;
 namespace Chem4Word.Controls
 {
     /// <summary>
-    /// Interaction logic for FlexDisplayControl.xaml
+    /// Interaction logic for DisplayControl.xaml
     /// </summary>
-    public partial class FlexDisplayControl : UserControl
+    public partial class DisplayControl : UserControl
     {
-        public FlexDisplayControl()
+        public DisplayControl()
         {
             InitializeComponent();
         }
@@ -27,7 +27,7 @@ namespace Chem4Word.Controls
         }
 
         public static readonly DependencyProperty ShowCarbonLabelsProperty
-            = DependencyProperty.Register("ShowCarbonLabels", typeof(bool), typeof(FlexDisplayControl), new PropertyMetadata(default(bool)));
+            = DependencyProperty.Register("ShowCarbonLabels", typeof(bool), typeof(DisplayControl), new PropertyMetadata(default(bool)));
 
         public object Chemistry
         {
@@ -37,6 +37,6 @@ namespace Chem4Word.Controls
 
         // Using a DependencyProperty as the backing store for Chemistry.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ChemistryProperty =
-            DependencyProperty.Register("Chemistry", typeof(object), typeof(FlexDisplayControl), new PropertyMetadata(null));
+            DependencyProperty.Register("Chemistry", typeof(object), typeof(DisplayControl), new PropertyMetadata(null));
     }
 }

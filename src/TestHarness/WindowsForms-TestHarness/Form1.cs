@@ -80,7 +80,7 @@ namespace WinFormsTestHarness
                     lblFromCml.Text = $"{fCml}";
                     lblOverall.Text = $"{model.ConciseFormula}";
 
-                    flexDisplayControl1.Chemistry = mol;
+                    display1.Chemistry = mol;
                 }
             }
         }

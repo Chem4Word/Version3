@@ -23,12 +23,12 @@ using ChemistryModel = Chem4Word.Model.Model;
 namespace Chem4Word.Controls
 {
     /// <summary>
-    /// Interaction logic for FlexDisplay.xaml
+    /// Interaction logic for Display.xaml
     /// </summary>
     [ToolboxItem(false)]
-    public partial class FlexDisplay : UserControl
+    public partial class Display : UserControl
     {
-        public FlexDisplay()
+        public Display()
         {
             InitializeComponent();
         }
@@ -42,7 +42,7 @@ namespace Chem4Word.Controls
         }
 
         public static readonly DependencyProperty ShowCarbonLabelsProperty
-            = DependencyProperty.Register("ShowCarbonLabels", typeof(bool), typeof(FlexDisplay),
+            = DependencyProperty.Register("ShowCarbonLabels", typeof(bool), typeof(Display),
                 new PropertyMetadata(default(bool)));
 
         #region Chemistry (DependencyProperty)
@@ -55,14 +55,14 @@ namespace Chem4Word.Controls
 
         // Using a DependencyProperty as the backing store for Chemistry.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ChemistryProperty =
-            DependencyProperty.Register("Chemistry", typeof(object), typeof(FlexDisplay),
+            DependencyProperty.Register("Chemistry", typeof(object), typeof(Display),
                 new FrameworkPropertyMetadata(null,
                     FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsArrange |
                     FrameworkPropertyMetadataOptions.AffectsMeasure, ChemistryChanged));
 
         private static void ChemistryChanged(DependencyObject source, DependencyPropertyChangedEventArgs args)
         {
-            var view = source as FlexDisplay;
+            var view = source as Display;
             if (view == null)
             {
                 return;
@@ -82,7 +82,7 @@ namespace Chem4Word.Controls
         }
 
         public static readonly DependencyProperty ChemistryWidthProperty = DependencyProperty.Register(
-            "ChemistryWidth", typeof(double), typeof(FlexDisplay), new PropertyMetadata(default(double)));
+            "ChemistryWidth", typeof(double), typeof(Display), new PropertyMetadata(default(double)));
 
         #endregion ChemistryWidth (DependencyProperty)
 
@@ -95,7 +95,7 @@ namespace Chem4Word.Controls
         }
 
         public static readonly DependencyProperty ChemistryHeightProperty = DependencyProperty.Register(
-            "ChemistryHeight", typeof(double), typeof(FlexDisplay), new PropertyMetadata(default(double)));
+            "ChemistryHeight", typeof(double), typeof(Display), new PropertyMetadata(default(double)));
 
         #endregion ChemistryHeight (DependencyProperty)
 

@@ -36,8 +36,8 @@
                 FontSize="14"
                 Foreground="{StaticResource BlueBrush}"
                 Formula="{Binding Path=Name}" />
-        <controls:FlexDisplay
-                Name="FlexDisplay"
+        <controls:Display
+                Name="Display"
                 Grid.Row="1"
                 Width="Auto"
                 Height="150"

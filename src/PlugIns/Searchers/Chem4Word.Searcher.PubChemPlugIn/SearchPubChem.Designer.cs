@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchPubChem));
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.flexDisplayControl1 = new Chem4Word.Controls.FlexDisplayControl();
+            this.display1 = new Chem4Word.Controls.DisplayControl();
             this.SearchButton = new System.Windows.Forms.Button();
             this.SearchFor = new System.Windows.Forms.TextBox();
             this.Results = new System.Windows.Forms.ListView();
@@ -57,7 +57,7 @@
             this.elementHost1.Size = new System.Drawing.Size(390, 428);
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this.flexDisplayControl1;
+            this.elementHost1.Child = this.display1;
             // 
             // SearchButton
             // 
@@ -220,7 +220,7 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private Controls.FlexDisplayControl flexDisplayControl1;
+        private Controls.DisplayControl display1;
         private System.Windows.Forms.Button SearchButton;
         private System.Windows.Forms.TextBox SearchFor;
         private System.Windows.Forms.ListView Results;

@@ -20,7 +20,7 @@ namespace Chem4Word.Helpers
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
-        public static void InsertChemistry(bool isCopy, Application app, FlexDisplay flexDisplay)
+        public static void InsertChemistry(bool isCopy, Application app, Display display)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
@@ -58,7 +58,7 @@ namespace Chem4Word.Helpers
             {
                 try
                 {
-                    cc = ChemistryHelper.Insert2DChemistry(doc, flexDisplay.Chemistry.ToString(), isCopy);
+                    cc = ChemistryHelper.Insert2DChemistry(doc, display.Chemistry.ToString(), isCopy);
                 }
                 catch (Exception ex)
                 {

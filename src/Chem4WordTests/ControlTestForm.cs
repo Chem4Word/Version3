@@ -18,8 +18,8 @@ namespace Chem4WordTests
 
         public string Chemistry
         {
-            get { return (string)this.FlexDisplay1.Chemistry; }
-            set { this.FlexDisplay1.Chemistry = value; }
+            get { return (string)this.display1.Chemistry; }
+            set { this.display1.Chemistry = value; }
         }
 
         private void elementHost1_ChildChanged(object sender, System.Windows.Forms.Integration.ChildChangedEventArgs e)

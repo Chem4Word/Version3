@@ -76,8 +76,8 @@
         </Expander>
         <nav:FormulaBlock FontSize="16" Foreground="{StaticResource WordBlueBrush}"
                           Grid.Row="2" x:Name="FormulaBlock" Formula="{Binding Path=Formula, Converter={StaticResource DoNothingConverter}}" />
-        <controls:FlexDisplay
-            Name="FlexDisplay"
+        <controls:Display
+            Name="Display"
                 Grid.Row="3"
                 Width="Auto"
                 Height="150"
