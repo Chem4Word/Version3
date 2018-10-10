@@ -47,7 +47,7 @@
         <TextBox x:Name="NameBox"
                  Validation.ErrorTemplate="{StaticResource NameValTemplate}"
                  Style="{StaticResource textBoxInError}"
-                 FontSize="16" Foreground="{StaticResource WordBlueBrush}"
+                 FontSize="16" Foreground="{StaticResource WordChem4WordBlue}"
                  TextChanged="NameBox_TextChanged"
                  Height="Auto"
                  TextWrapping="Wrap"
@@ -61,20 +61,20 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Expander Grid.Row="1" Foreground="{StaticResource WordBlueBrush}"
+        <Expander Grid.Row="1" Foreground="{StaticResource WordChem4WordBlue}"
                   IsHitTestVisible="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}"
                     IsExpanded="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}"
                   Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
                   BorderThickness="0" BorderBrush="Transparent">
             <Expander.Header>
-                <TextBlock  Foreground="{StaticResource WordBlueBrush}"
+                <TextBlock  Foreground="{StaticResource WordChem4WordBlue}"
                             Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}">Other Names</TextBlock>
             </Expander.Header>
-            <ListBox ItemsSource="{Binding Path=OtherNames}" Foreground="{StaticResource WordBlueBrush}" Name="OtherNameList"
+            <ListBox ItemsSource="{Binding Path=OtherNames}" Foreground="{StaticResource WordChem4WordBlue}" Name="OtherNameList"
                      Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
                      BorderThickness="0" BorderBrush="Transparent" />
         </Expander>
-        <nav:FormulaBlock FontSize="16" Foreground="{StaticResource WordBlueBrush}"
+        <nav:FormulaBlock FontSize="16" Foreground="{StaticResource WordChem4WordBlue}"
                           Grid.Row="2" x:Name="FormulaBlock" Formula="{Binding Path=Formula, Converter={StaticResource DoNothingConverter}}" />
         <controls:Display
             Name="Display"
@@ -112,7 +112,7 @@
                             Canvas.Top="4"
                             Width="24"
                             Height="24"
-                            Fill="{StaticResource WordBlueBrush}"
+                            Fill="{StaticResource WordChem4WordBlue}"
                             Stretch="Fill" />
                     </Canvas>
                 </Viewbox>
@@ -137,7 +137,7 @@
                             Width="24"
                             Height="24"
                             Data="F1 M 27,20L 38.75,20L 37.75,19L 24,19L 24,50L 27,50L 27,20 Z M 46.25,20L 59,32.75L 59,59L 27,59L 27,54L 20,54L 20,15L 39.25,15L 44.25,20L 46.25,20 Z M 31,24L 31,55L 55,55L 55,37L 42,37L 42,24L 31,24 Z M 46,25.25L 46,33L 53.75,33L 46,25.25 Z "
-                            Fill="{StaticResource WordBlueBrush}"
+                            Fill="{StaticResource WordChem4WordBlue}"
                             Stretch="Fill" />
                     </Canvas>
                 </Viewbox>

@@ -9,7 +9,7 @@
              x:Name="lvc"
              d:DesignHeight="334.783" d:DesignWidth="328.261">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="WordBlueBrush">
+        <SolidColorBrush x:Key="WordChem4WordBlue">
             <SolidColorBrush.Color>#2A579A</SolidColorBrush.Color>
         </SolidColorBrush>
         <Style x:Key="MagPath" TargetType="{x:Type Path}">
@@ -69,7 +69,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="SearchBox" Foreground="{StaticResource WordBlueBrush}" Grid.Column="0" FontSize="24" TextChanged="SearchBox_OnTextChanged" BorderThickness="0" />
+            <TextBox x:Name="SearchBox" Foreground="{StaticResource WordChem4WordBlue}" Grid.Column="0" FontSize="24" TextChanged="SearchBox_OnTextChanged" BorderThickness="0" />
 
             <Button x:Name="SearchButton" Click="SearchButton_OnClick" Grid.Column="2" Style="{StaticResource NavButtonStyle}">
                 <Button.Content>
@@ -85,7 +85,7 @@
                             Width="24"
                             Height="24"
                             Data="F1 M 42.5,22C 49.4036,22 55,27.5964 55,34.5C 55,41.4036 49.4036,47 42.5,47C 40.1356,47 37.9245,46.3435 36,45.2426L 26.9749,54.2678C 25.8033,55.4393 23.9038,55.4393 22.7322,54.2678C 21.5607,53.0962 21.5607,51.1967 22.7322,50.0251L 31.7971,40.961C 30.6565,39.0755 30,36.8644 30,34.5C 30,27.5964 35.5964,22 42.5,22 Z M 42.5,26C 37.8056,26 34,29.8056 34,34.5C 34,39.1944 37.8056,43 42.5,43C 47.1944,43 51,39.1944 51,34.5C 51,29.8056 47.1944,26 42.5,26 Z"
-                            Fill="{StaticResource WordBlueBrush}"
+                            Fill="{StaticResource WordChem4WordBlue}"
                             Stretch="Fill"
                             Tag="Search"
                             Visibility="Visible" />
@@ -106,7 +106,7 @@
                             Canvas.Top="0"
                             Width="24"
                             Height="24"
-                            Fill="{StaticResource WordBlueBrush}"
+                            Fill="{StaticResource WordChem4WordBlue}"
                             Data="F1 M 26.9166,22.1667L 37.9999,33.25L 49.0832,22.1668L 53.8332,26.9168L 42.7499,38L 53.8332,49.0834L 49.0833,53.8334L 37.9999,42.75L 26.9166,53.8334L 22.1666,49.0833L 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z"
                             Stretch="Fill"
                             Tag="Search"
@@ -125,7 +125,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border
-                        BorderBrush="{StaticResource WordBlueBrush}"
+                        BorderBrush="{StaticResource WordChem4WordBlue}"
                         BorderThickness="2"
                         HorizontalAlignment="Stretch"
                         CornerRadius="2">

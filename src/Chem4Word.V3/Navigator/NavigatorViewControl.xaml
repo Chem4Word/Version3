@@ -13,30 +13,42 @@
     mc:Ignorable="d"
     x:Name="NavViewControl">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BlueBrush">
+        <SolidColorBrush x:Key="Chem4WordBlue">
             <SolidColorBrush.Color>#2A579A</SolidColorBrush.Color>
         </SolidColorBrush>
     </UserControl.Resources>
 
-    <Grid>
-        <ListBox x:Name="NavigatorList" Grid.IsSharedSizeScope="True" ItemsSource="{Binding Path=NavigatorItems}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border
-                        BorderBrush="{StaticResource BlueBrush}"
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" VerticalAlignment="Stretch">
+            <ListBox x:Name="NavigatorList"
+                 Grid.IsSharedSizeScope="True"
+                 ItemsSource="{Binding Path=NavigatorItems}"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 HorizontalContentAlignment="Stretch"
+                 ScrollViewer.CanContentScroll="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 VirtualizingStackPanel.IsVirtualizing="True">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                        BorderBrush="{StaticResource Chem4WordBlue}"
                         BorderThickness="2"
                         HorizontalAlignment="Stretch"
                         CornerRadius="2">
-                        <local:NavigatorItemControl
+                            <local:NavigatorItemControl
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
                             DataContext="{Binding}"
                             ActiveDocument="{Binding ElementName=NavViewControl, Path=ActiveDocument}"
                             x:Name="NavigatorItemControl" />
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
     </Grid>
 </UserControl>
