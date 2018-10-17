@@ -13,17 +13,16 @@ namespace Chem4Word.Core.Helpers
         public static string LegacyContentControlTitle = "chemistry";
         public static string NavigatorTaskPaneTitle = "Navigator";
         public static string LibraryTaskPaneTitle = "Library";
-        public static double TopLeftOffset = 24;
 
+        public static double TopLeftOffset = 24;
+        public static string OoXmlBookmarkPrefix = "C4W_";
         public const string LibraryFileName = "Library.db";
 
         public static string DefaultChem4WordWebServiceUri = "https://chemicalservices.azurewebsites.net/api/Resolve";
-        
+
         public static string DefaultEditorPlugIn = "ChemDoodle Web Structure Editor V8.0.0";
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
-        // Task 336
-        // CML constants
         public static string CmlNameSpaceCode = "cml";
 
         public static string CmlElementMolecule = "molecule";

@@ -95,21 +95,21 @@
   <ItemGroup>
     <Compile Include="Behaviors\AdjustScaleToFitContentBehavior.cs" />
     <Compile Include="DoNothingConverter.cs" />
-    <Compile Include="FlexDisplay.xaml.cs">
-      <DependentUpon>FlexDisplay.xaml</DependentUpon>
+    <Compile Include="Display.xaml.cs">
+      <DependentUpon>Display.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FlexDisplayControl.xaml.cs">
-      <DependentUpon>FlexDisplayControl.xaml</DependentUpon>
+    <Compile Include="DisplayControl.xaml.cs">
+      <DependentUpon>DisplayControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="FlexDisplay.xaml">
+    <Page Include="Display.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FlexDisplayControl.xaml">
+    <Page Include="DisplayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

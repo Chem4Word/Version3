@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -29,6 +30,8 @@ namespace Chem4Word.Telemetry
         private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com" };
 
         public string MachineId { get; set; }
+
+        public int ProcessId { get; set; }
 
         public string SystemOs { get; set; }
 
@@ -53,6 +56,7 @@ namespace Chem4Word.Telemetry
         public string GitStatus { get; set; }
 
         public long UtcOffset { get; set; }
+        public string DateHeader { get; set; }
 
         private static int _retryCount;
 
@@ -80,6 +84,8 @@ namespace Chem4Word.Telemetry
             #region Get Machine Guid
 
             MachineId = GetMachineId();
+
+            ProcessId = Process.GetCurrentProcess().Id;
 
             #endregion Get Machine Guid
 
@@ -186,9 +192,13 @@ namespace Chem4Word.Telemetry
             // git rev-parse --abbrev-ref HEAD == Current Branch
             result.AddRange(RunCommand("git.exe", "rev-parse --abbrev-ref HEAD", AddInLocation));
 
-            result.Add("Changed Files");
             // git status --porcelain == Get List of changed files
-            result.AddRange(RunCommand("git.exe", "status --porcelain", AddInLocation));
+            var changedFiles = RunCommand("git.exe", "status --porcelain", AddInLocation);
+            if (changedFiles.Any())
+            {
+                result.Add("Changed Files");
+                result.AddRange(changedFiles);
+            }
             GitStatus = string.Join(Environment.NewLine, result.ToArray());
         }
 
@@ -196,6 +206,8 @@ namespace Chem4Word.Telemetry
         {
             ProcessStartInfo startInfo = new ProcessStartInfo(exeName);
 
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.CreateNoWindow = true;
             startInfo.UseShellExecute = false;
             startInfo.WorkingDirectory = folder;
             startInfo.RedirectStandardInput = true;
@@ -205,8 +217,6 @@ namespace Chem4Word.Telemetry
             Process process = new Process();
             process.StartInfo = startInfo;
             process.Start();
-
-            //return process.StandardOutput.ReadLine();
 
             var results = new List<string>();
             while (!process.StandardOutput.EndOfStream)
@@ -395,8 +405,8 @@ namespace Chem4Word.Telemetry
                             try
                             {
                                 // Get Server Date header i.e. "Wed, 11 Jul 2018 19:52:46 GMT"
-                                var serverTime = response.Headers["date"];
-                                var serverUtcTime = DateTime.ParseExact(serverTime, "ddd, dd MMM yyyy HH:mm:ss GMT",
+                                DateHeader = response.Headers["date"];
+                                var serverUtcTime = DateTime.ParseExact(DateHeader, "ddd, dd MMM yyyy HH:mm:ss GMT",
                                     CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AdjustToUniversal);
                                 var systemDate = DateTime.UtcNow;
                                 UtcOffset = systemDate.Ticks - serverUtcTime.Ticks;

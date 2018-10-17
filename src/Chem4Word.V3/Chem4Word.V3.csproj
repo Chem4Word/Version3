@@ -264,6 +264,7 @@
     <Compile Include="AssemblyReflectionManager.cs" />
     <Compile Include="Database\Library.cs" />
     <Compile Include="Helpers\ConfigWatcher.cs" />
+    <Compile Include="Helpers\ChemistryHelper.cs" />
     <Compile Include="Helpers\ReferenceKeeper.cs" />
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\TargetWord.cs" />
@@ -290,7 +291,7 @@
     <Compile Include="Library\TagBlock.xaml.cs">
       <DependentUpon>TagBlock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Navigator\NavigatorSupport.cs" />
+    <Compile Include="Helpers\TaskPaneHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

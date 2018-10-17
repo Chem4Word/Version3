@@ -10,19 +10,17 @@ using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
 using Chem4Word.Library;
-using Chem4Word.Model.Converters;
+using Chem4Word.Model.Converters.CML;
 using Chem4Word.Telemetry;
 using IChem4Word.Contracts;
 using Microsoft.Office.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -30,7 +28,6 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using Chem4Word.Model.Converters.CML;
 using Extensions = Microsoft.Office.Tools.Word.Extensions;
 using OfficeTools = Microsoft.Office.Tools;
 using Word = Microsoft.Office.Interop.Word;
@@ -42,6 +39,7 @@ namespace Chem4Word
     {
         // Internal variables for class
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
+
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         public static CustomRibbon Ribbon;
@@ -287,15 +285,6 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                // ToDo: Remove before check in
-                //string libraryTarget = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProgramDataPath, Constants.LibraryFileName);
-                //if (!File.Exists(libraryTarget))
-                //{
-                //    Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Copying initial Library database");
-                //    ResourceHelper.WriteResource(Assembly.GetExecutingAssembly(), "Data.Library.db", libraryTarget);
-                //}
-
-                //Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Reading Library database");
                 var lib = new Database.Library();
                 LibraryNames = lib.GetLibraryNames();
             }
@@ -961,16 +950,90 @@ namespace Chem4Word
                     var lib = new Database.Library();
                     string cml = lib.GetChemistryByID(tw.ChemistryId);
 
-
                     if (cml == null)
                     {
                         UserInteractions.WarnUser($"No match for '{tw.ChemicalName}' was found in your library");
                     }
                     else
                     {
-                        Application.ActiveDocument.Range(tw.Start, tw.End).Select();
-                        Insert1DChemistry(cml, tw.ChemicalName, false, true);
-                        Telemetry.Write(module, "Information", $"Inserted 1D version of {tw.ChemicalName} from library");
+                        Word.Application app = Globals.Chem4WordV3.Application;
+                        Word.Document doc = app.ActiveDocument;
+
+                        // Generate new CustomXmlPartGuid
+                        CMLConverter converter = new CMLConverter();
+                        var model = converter.Import(cml);
+                        model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
+                        cml = converter.Export(model);
+
+                        #region Find Id of name
+
+                        string tagPrefix = "";
+                        foreach (var mol in model.Molecules)
+                        {
+                            foreach (var name in mol.ChemicalNames)
+                            {
+                                if (tw.ChemicalName.ToLower().Equals(name.Name.ToLower()))
+                                {
+                                    tagPrefix = name.Id;
+                                    break;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(tagPrefix))
+                            {
+                                break;
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(tagPrefix))
+                        {
+                            tagPrefix = "c0";
+                        }
+
+                        #endregion Find Id of name
+
+                        // Test phrases (ensure benzene is in your library)
+                        // This is benzene, this is not.
+                        // This is benzene. This is not.
+
+                        Word.ContentControl cc = null;
+                        bool previousState = app.Options.SmartCutPaste;
+
+                        try
+                        {
+                            app.ScreenUpdating = false;
+                            Globals.Chem4WordV3.DisableDocumentEvents(doc);
+
+                            //Debug.WriteLine($"'{tw.ChemicalName}' {tw.Start} > {tw.End}");
+
+                            app.Options.SmartCutPaste = false;
+                            int insertionPoint = tw.Start;
+                            doc.Range(tw.Start, tw.Start + tw.ChemicalName.Length).Delete();
+
+                            app.Selection.SetRange(insertionPoint, insertionPoint);
+
+                            string tag = $"{tagPrefix}:{model.CustomXmlPartGuid}";
+                            cc = ChemistryHelper.Insert1DChemistry(doc, tw.ChemicalName, true, tag);
+
+                            Telemetry.Write(module, "Information", $"Inserted 1D version of {tw.ChemicalName} from library");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                            throw;
+                        }
+                        finally
+                        {
+                            Globals.Chem4WordV3.EnableDocumentEvents(doc);
+                            app.ScreenUpdating = true;
+                            app.Options.SmartCutPaste = previousState;
+                        }
+
+                        if (cc != null)
+                        {
+                            doc.CustomXMLParts.Add(cml);
+                            app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                        }
                     }
 
                     _markAsChemistryHandled = true;
@@ -1000,9 +1063,6 @@ namespace Chem4Word
             _markAsChemistryHandled = false;
             _rightClickEvents = 0;
 
-            //Debug.WriteLine(sel.Text);
-            //Debug.WriteLine(sel.Sentences.Count);
-
             List<TargetWord> selectedWords = new List<TargetWord>();
 
             try
@@ -1030,22 +1090,27 @@ namespace Chem4Word
                                 end = Math.Min(end, last);
                                 if (start < end)
                                 {
-                                    string sentenceText = doc.Range(start, end).Text;
-                                    Debug.WriteLine($"Sentences[{i}] --> {sentenceText}");
-                                    if (!string.IsNullOrEmpty(sentenceText))
+                                    var range = doc.Range(start, end);
+                                    //Exclude any ranges which contain content controls
+                                    if (range.ContentControls.Count == 0)
                                     {
-                                        foreach (var kvp in LibraryNames)
+                                        string sentenceText = range.Text;
+                                        //Debug.WriteLine($"Sentences[{i}] --> {sentenceText}");
+                                        if (!string.IsNullOrEmpty(sentenceText))
                                         {
-                                            int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
-                                            if (idx > 0)
+                                            foreach (var kvp in LibraryNames)
                                             {
-                                                selectedWords.Add(new TargetWord
+                                                int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
+                                                if (idx > 0)
                                                 {
-                                                    ChemicalName = kvp.Key,
-                                                    Start = start + idx,
-                                                    ChemistryId = kvp.Value,
-                                                    End = start + idx + kvp.Key.Length
-                                                });
+                                                    selectedWords.Add(new TargetWord
+                                                    {
+                                                        ChemicalName = kvp.Key,
+                                                        Start = start + idx,
+                                                        ChemistryId = kvp.Value,
+                                                        End = start + idx + kvp.Key.Length
+                                                    });
+                                                }
                                             }
                                         }
                                     }
@@ -1064,6 +1129,7 @@ namespace Chem4Word
                         ChemistryAllowed = false;
                         ChemistryProhibitedReason = "can't create a selection object";
                         break;
+
                     default:
                         // Keep exception hidden from end user.
                         Telemetry.Write(module, "Exception", $"ErrorCode: {comCode}");
@@ -1149,6 +1215,7 @@ namespace Chem4Word
             ((Word.Template)doc.AttachedTemplate).Saved = true;
         }
 
+        [Obsolete]
         public static void Insert1DChemistry(string xml, string text, bool is2D, bool isCopy)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
@@ -1190,7 +1257,6 @@ namespace Chem4Word
                 }
 
                 string guidString = chem.CustomXmlPartGuid;
-                string bookmarkName = "C4W_" + guidString;
 
                 // Export just incase the CustomXmlPartGuid has been changed
                 string cml = cmlConverter.Export(chem);
@@ -1221,7 +1287,8 @@ namespace Chem4Word
                         string tempfileName = renderer.Render();
                         if (File.Exists(tempfileName))
                         {
-                            cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
+                            //cc = CustomRibbon.Insert2D(doc, tempfileName, bookmarkName, guidString);
+                            ChemistryHelper.Insert2D(cc, tempfileName, guidString);
 
                             try
                             {
@@ -1259,7 +1326,7 @@ namespace Chem4Word
                             break;
                         }
                     }
-                    cc = CustomRibbon.Insert1D(app, doc, text, false, tag);
+                    ChemistryHelper.Insert1D(cc, text, false, tag);
                 }
 
                 if (isCopy)
@@ -1705,12 +1772,11 @@ namespace Chem4Word
 
                     if (doc != null)
                     {
-                        if (doc.CompatibilityMode < (int) Word.WdCompatibilityMode.wdWord2010)
+                        if (doc.CompatibilityMode < (int)Word.WdCompatibilityMode.wdWord2010)
                         {
                             allowed = false;
                             ChemistryProhibitedReason = "document is in compatibility mode.";
                         }
-
 
                         try
                         {
@@ -1859,14 +1925,17 @@ namespace Chem4Word
                         ChemistryAllowed = false;
                         ChemistryProhibitedReason = "can't determine where the current selection is.";
                         break;
+
                     case "0x800A11FD":
                         ChemistryAllowed = false;
                         ChemistryProhibitedReason = "changes are not permitted in the current selection.";
                         break;
+
                     case "0x800A1759":
                         ChemistryAllowed = false;
                         ChemistryProhibitedReason = "can't create a selection when a dialogue is active.";
                         break;
+
                     default:
                         // Keep exception hidden from end user.
                         Telemetry.Write(module, "Exception", $"ErrorCode: {comCode}");

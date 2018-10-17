@@ -8,7 +8,7 @@
              d:DesignHeight="20" d:DesignWidth="85"
              Name="TagBlockParent">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="WordBlueBrush" Color="#2A579A" />
+        <SolidColorBrush x:Key="Chem4WordBlue" Color="#2A579A" />
 
         <Style x:Key="DelButtonPath" TargetType="Path">
             <Setter Property="Data" Value="F1 M 0,7.89185L 2.65756,4.4368L 0.181,1.25839L 2.38931,0L 4.49869,2.51559L 6.72134,0L 8.78256,1.25839L 6.38541,4.33398L 9.15366,7.89185L 6.92319,9.15292L 4.49869,6.31573L 2.05209,9.15292L 0,7.89185 Z" />

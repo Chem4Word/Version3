@@ -37,7 +37,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblOverall = new System.Windows.Forms.Label();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.flexDisplayControl1 = new Chem4Word.Controls.FlexDisplayControl();
+            this.display1 = new Chem4Word.Controls.DisplayControl();
             this.SuspendLayout();
             // 
             // button1
@@ -126,7 +126,7 @@
             this.elementHost1.Size = new System.Drawing.Size(460, 258);
             this.elementHost1.TabIndex = 1;
             this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this.flexDisplayControl1;
+            this.elementHost1.Child = this.display1;
             // 
             // Form1
             // 
@@ -160,7 +160,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblOverall;
-        private Chem4Word.Controls.FlexDisplayControl flexDisplayControl1;
+        private Chem4Word.Controls.DisplayControl display1;
     }
 }
 

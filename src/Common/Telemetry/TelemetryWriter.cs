@@ -140,6 +140,7 @@ namespace Chem4Word.Telemetry
             {
                 var systemDate = DateTime.UtcNow;
                 WritePrivate("StartUp", "Information", $"Systen UTC Time {systemDate.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
+                WritePrivate("StartUp", "Information", $"Date Header {_helper.DateHeader}");
                 WritePrivate("StartUp", "Information", $"UTC Offset {_helper.UtcOffset}");
                 if (_helper.UtcOffset > 0)
                 {
@@ -169,7 +170,7 @@ namespace Chem4Word.Telemetry
 
         private void WritePrivate(string operation, string level, string message)
         {
-            ServiceBusMessage sbm = new ServiceBusMessage(_helper.UtcOffset);
+            ServiceBusMessage sbm = new ServiceBusMessage(_helper.UtcOffset, _helper.ProcessId);
             sbm.MachineId = _helper.MachineId;
             sbm.Operation = operation;
             sbm.Level = level;

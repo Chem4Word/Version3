@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.FlexDisplay1 = new Chem4Word.Controls.FlexDisplay();
+            this.display1 = new Chem4Word.Controls.Display();
             this.SuspendLayout();
             // 
             // elementHost1
@@ -41,7 +41,7 @@
             this.elementHost1.TabIndex = 0;
             this.elementHost1.Text = "elementHost1";
             this.elementHost1.ChildChanged += new System.EventHandler<System.Windows.Forms.Integration.ChildChangedEventArgs>(this.elementHost1_ChildChanged);
-            this.elementHost1.Child = this.FlexDisplay1;
+            this.elementHost1.Child = this.display1;
             // 
             // ControlTestForm
             // 
@@ -58,6 +58,6 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private Chem4Word.Controls.FlexDisplay FlexDisplay1;
+        private Chem4Word.Controls.Display display1;
     }
 }

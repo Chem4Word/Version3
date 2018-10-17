@@ -117,7 +117,7 @@ namespace Chem4Word.UI.UserControls
                 model.Molecules.Add(Molecule);
                 CMLConverter cmlConverter = new CMLConverter();
                 _cml = cmlConverter.Export(model);
-                flexDisplayControl1.Chemistry = _cml;
+                _display1.Chemistry = _cml;
             }
         }
 

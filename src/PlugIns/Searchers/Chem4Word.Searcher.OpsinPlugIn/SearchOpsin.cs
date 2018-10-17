@@ -85,7 +85,7 @@ namespace Chem4Word.Searcher.OpsinPlugIn
         private void ShowFailureMessage(string message)
         {
             LabelInfo.Text = message;
-            flexDisplayControl1.Chemistry = "";
+            display1.Chemistry = "";
             ImportButton.Enabled = false;
         }
 
@@ -99,7 +99,7 @@ namespace Chem4Word.Searcher.OpsinPlugIn
                 {
                     StreamReader sr = new StreamReader(resStream);
                     Cml = sr.ReadToEnd();
-                    flexDisplayControl1.Chemistry = Cml;
+                    display1.Chemistry = Cml;
                     ImportButton.Enabled = true;
                 }
             }

@@ -68,7 +68,7 @@ namespace WinFormsTestHarness
                 }
 
                 this.Text = filename;
-                this.flexDisplayControl1.Chemistry = cml;
+                this.display1.Chemistry = cml;
             }
         }
 
