@@ -58,8 +58,7 @@ namespace Chem4Word.WebServices
 
                     var content = new FormUrlEncodedContent(formData);
 
-                    //httpClient.CancelPendingRequests();
-                    httpClient.Timeout = TimeSpan.FromSeconds(30);
+                    httpClient.Timeout = TimeSpan.FromSeconds(15);
                     httpClient.DefaultRequestHeaders.Add("user-agent", "Chem4Word");
 
                     try

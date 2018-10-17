@@ -7,13 +7,11 @@
     <IsBeta>false</IsBeta>
     <Released>17-Oct-2018</Released>
     <Changes>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
+      <Change>Fix horizontal scrolling of structure in Task Panes.</Change>
+      <Change>Handle error when WPF Browser does not load ChemDoodle Web.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
-    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.20.Release.7.msi</Url>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.21.Release.8.msi</Url>
   </Version>
   <Version>
     <Number>3.0.20 Release 7</Number>
