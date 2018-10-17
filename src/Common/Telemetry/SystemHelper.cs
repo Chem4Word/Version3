@@ -56,6 +56,7 @@ namespace Chem4Word.Telemetry
         public string GitStatus { get; set; }
 
         public long UtcOffset { get; set; }
+        public string DateHeader { get; set; }
 
         private static int _retryCount;
 
@@ -404,8 +405,8 @@ namespace Chem4Word.Telemetry
                             try
                             {
                                 // Get Server Date header i.e. "Wed, 11 Jul 2018 19:52:46 GMT"
-                                var serverTime = response.Headers["date"];
-                                var serverUtcTime = DateTime.ParseExact(serverTime, "ddd, dd MMM yyyy HH:mm:ss GMT",
+                                DateHeader = response.Headers["date"];
+                                var serverUtcTime = DateTime.ParseExact(DateHeader, "ddd, dd MMM yyyy HH:mm:ss GMT",
                                     CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AdjustToUniversal);
                                 var systemDate = DateTime.UtcNow;
                                 UtcOffset = systemDate.Ticks - serverUtcTime.Ticks;
