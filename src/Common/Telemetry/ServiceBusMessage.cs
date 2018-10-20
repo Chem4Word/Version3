@@ -20,8 +20,9 @@ namespace Chem4Word.Telemetry
             // Second part of RowKey is to give a sequence per process
             // Third part of RowKey is to guarantee uniqueness
             _order++;
-            long systemTicks = DateTime.UtcNow.Ticks - utcOffset;
-            long messageTicks = DateTime.MaxValue.Ticks - systemTicks;
+            //long systemTicks = DateTime.UtcNow.Ticks - utcOffset;
+            //long messageTicks = DateTime.MaxValue.Ticks - systemTicks;
+            long messageTicks = DateTime.MaxValue.Ticks - DateTime.UtcNow.Ticks;
             string[] parts = new string[3];
             parts[0] = $"{messageTicks:D19}";
             parts[1] = procId + "-" + _order.ToString("000000");

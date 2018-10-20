@@ -89,7 +89,7 @@ namespace Chem4Word.Core.UI.Forms
                     if (!string.IsNullOrEmpty(richTextBox1.Text))
                     {
                         _telemetry.Write(_operation, "Exception(Data)", richTextBox1.Text);
-                        _telemetry.Write(_operation, "Email Supplied", richTextBox1.Text);
+                        //_telemetry.Write(_operation, "Email Supplied", richTextBox1.Text);
                     }
                 }
             }
