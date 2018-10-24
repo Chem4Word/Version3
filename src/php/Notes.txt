@@ -1,0 +1,8 @@
+https://chem4word.azurewebsites.net/files3/client-ip.php
+https://chem4word.azurewebsites.net/files3/client-ip-date.php
+
+http://www.chem4word.com/files3/client-ip.php
+http://www.chem4word.com/files3/client-ip-date.php
+
+https://www.chem4word.co.uk/files3/client-ip.php
+https://www.chem4word.co.uk/files3/client-ip-date.php

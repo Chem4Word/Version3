@@ -7,9 +7,10 @@
 
 // Get IP Address
 $ip = get_client_ip_server();
-echo "Your IP address : " . $ip;
+echo "Your IP address : " . $ip . "<br/>";
+echo "UTC Date : " . date("Y,m,d,H,i,s", time() - date("Z"));
 
-// Function to get the client IP Address
+// Function to get the client ip address
 function get_client_ip_server() {
     $ipaddress = '';
     if ($_SERVER['HTTP_CLIENT_IP'])
