@@ -244,8 +244,11 @@ namespace Chem4Word.Model
         /// </summary>
         public void Refresh()
         {
-            Atom start = this.Atoms[0];
-            Refresh(start);
+            if (Atoms.Any())
+            {
+                Atom start = this.Atoms[0];
+                Refresh(start);
+            }
         }
 
         #region Properties

@@ -16,6 +16,21 @@ namespace Chem4Word.Model.Converters.Tests
     [TestClass()]
     public class PersistenceTests
     {
+        [TestMethod]
+        public void CmlImportNoAtoms()
+        {
+            CMLConverter mc = new CMLConverter();
+            Model m = mc.Import(ResourceHelper.GetStringResource("NoAtoms.xml"));
+
+            // Basic sanity checks
+            Assert.IsTrue(m.Molecules.Count == 1, $"Expected 1 Molecule; Got {m.Molecules.Count}");
+            Assert.IsTrue(m.AllAtoms.Count == 0, $"Expected 0 Atoms; Got {m.AllAtoms.Count}");
+            Assert.IsTrue(m.AllBonds.Count == 0, $"Expected 0 Bonds; Got {m.AllBonds.Count}");
+
+            // Check that names and formulae have not been trashed
+            Assert.IsTrue(m.Molecules[0].ChemicalNames.Count == 1, $"Expected 1 Chemical Names; Got {m.Molecules[0].ChemicalNames.Count}");
+        }
+
         [TestMethod()]
         public void CmlImportBenzene()
         {
@@ -28,7 +43,7 @@ namespace Chem4Word.Model.Converters.Tests
             Assert.IsTrue(m.AllBonds.Count == 6, $"Expected 6 Bonds; Got {m.AllBonds.Count}");
 
             // Check that names and formulae have not been trashed
-            Assert.IsTrue(m.Molecules[0].ChemicalNames.Count == 3, $"Expected 3 Chemical Names; Got {m.Molecules[0].ChemicalNames.Count}");
+            Assert.IsTrue(m.Molecules[0].ChemicalNames.Count == 2, $"Expected 2 Chemical Names; Got {m.Molecules[0].ChemicalNames.Count}");
             Assert.IsTrue(m.Molecules[0].Formulas.Count == 2, $"Expected 2 Formulae; Got {m.Molecules[0].Formulas.Count }");
 
             // Check that we have one ring
