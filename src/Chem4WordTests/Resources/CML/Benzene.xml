@@ -5,7 +5,6 @@
   xmlns:nameDict="http://www.xml-cml.org/dictionary/cml/name/"
   xmlns:c4w="http://www.chem4word.com/cml"
   conventions="convention:molecular">
-  <c4w:customXmlPartGuid>0359874d67b54d32a0c761e08bf8e291</c4w:customXmlPartGuid>
   <cml:molecule id="m1">
     <cml:formula id="m1.f0" concise="C 6 H 6" />
     <cml:formula id="m1.f1" convention="chem4word:ResolvedFormula" inline="C6H6" concise="C 6 H 6" />

@@ -7,10 +7,10 @@
     <IsBeta>false</IsBeta>
     <Released>14-Nov-2018</Released>
     <Changes>
-      <Change>..</Change>
-      <Change>..</Change>
-      <Change>..</Change>
-      <Change>..</Change>
+      <Change>Changed compatibility level to IE10 in ChemDoodle Web 8.0.0</Change>
+      <Change>Changes to UTC system time detection.</Change>
+      <Change>Allow structure with No atoms</Change>
+      <Change>Set Default editor to ChemDoodle Web 7.0.2 for new users if Windows 7 is detected</Change>
       <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.22.Release.9.msi</Url>
