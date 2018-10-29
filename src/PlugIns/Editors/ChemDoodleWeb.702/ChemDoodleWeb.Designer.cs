@@ -50,10 +50,14 @@
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.groupBoxBondLength = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.groupBoxMode = new System.Windows.Forms.GroupBox();
+            this.SwitchToSingle = new System.Windows.Forms.RadioButton();
+            this.SwitchToMulti = new System.Windows.Forms.RadioButton();
             this.groupBoxExplicit.SuspendLayout();
             this.groupBoxImplicit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBondLength)).BeginInit();
             this.groupBoxBondLength.SuspendLayout();
+            this.groupBoxMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // browser
@@ -67,14 +71,14 @@
             this.browser.MinimumSize = new System.Drawing.Size(23, 25);
             this.browser.Name = "browser";
             this.browser.ScrollBarsEnabled = false;
-            this.browser.Size = new System.Drawing.Size(710, 425);
+            this.browser.Size = new System.Drawing.Size(785, 445);
             this.browser.TabIndex = 0;
             this.browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.Browser_DocumentCompleted);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(614, 501);
+            this.btnCancel.Location = new System.Drawing.Point(689, 521);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(87, 29);
             this.btnCancel.TabIndex = 1;
@@ -85,7 +89,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(615, 467);
+            this.btnOk.Location = new System.Drawing.Point(690, 487);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(87, 29);
             this.btnOk.TabIndex = 2;
@@ -100,7 +104,7 @@
             this.groupBoxExplicit.Controls.Add(this.label1);
             this.groupBoxExplicit.Controls.Add(this.btnRemoveExplicitHydrogens);
             this.groupBoxExplicit.Controls.Add(this.btnAddExplicitHydrogens);
-            this.groupBoxExplicit.Location = new System.Drawing.Point(7, 433);
+            this.groupBoxExplicit.Location = new System.Drawing.Point(7, 453);
             this.groupBoxExplicit.Name = "groupBoxExplicit";
             this.groupBoxExplicit.Size = new System.Drawing.Size(133, 98);
             this.groupBoxExplicit.TabIndex = 3;
@@ -157,7 +161,7 @@
             this.groupBoxImplicit.Controls.Add(this.chkToggleShowCarbons);
             this.groupBoxImplicit.Controls.Add(this.chkColouredAtoms);
             this.groupBoxImplicit.Controls.Add(this.chkToggleShowHydrogens);
-            this.groupBoxImplicit.Location = new System.Drawing.Point(146, 433);
+            this.groupBoxImplicit.Location = new System.Drawing.Point(146, 453);
             this.groupBoxImplicit.Name = "groupBoxImplicit";
             this.groupBoxImplicit.Size = new System.Drawing.Size(147, 98);
             this.groupBoxImplicit.TabIndex = 4;
@@ -237,7 +241,7 @@
             // 
             this.btnFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnFlip.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Flip;
-            this.btnFlip.Location = new System.Drawing.Point(417, 480);
+            this.btnFlip.Location = new System.Drawing.Point(417, 504);
             this.btnFlip.Name = "btnFlip";
             this.btnFlip.Size = new System.Drawing.Size(48, 48);
             this.btnFlip.TabIndex = 16;
@@ -249,7 +253,7 @@
             // 
             this.btnMirror.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnMirror.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Mirror;
-            this.btnMirror.Location = new System.Drawing.Point(469, 480);
+            this.btnMirror.Location = new System.Drawing.Point(417, 454);
             this.btnMirror.Name = "btnMirror";
             this.btnMirror.Size = new System.Drawing.Size(48, 48);
             this.btnMirror.TabIndex = 18;
@@ -264,7 +268,7 @@
             this.chkSingleOrMany.AutoSize = true;
             this.chkSingleOrMany.ImageIndex = 0;
             this.chkSingleOrMany.ImageList = this.imageList1;
-            this.chkSingleOrMany.Location = new System.Drawing.Point(540, 489);
+            this.chkSingleOrMany.Location = new System.Drawing.Point(568, 465);
             this.chkSingleOrMany.Name = "chkSingleOrMany";
             this.chkSingleOrMany.Size = new System.Drawing.Size(38, 38);
             this.chkSingleOrMany.TabIndex = 20;
@@ -283,7 +287,7 @@
             // 
             this.groupBoxBondLength.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBoxBondLength.Controls.Add(this.nudBondLength);
-            this.groupBoxBondLength.Location = new System.Drawing.Point(304, 434);
+            this.groupBoxBondLength.Location = new System.Drawing.Point(304, 454);
             this.groupBoxBondLength.Name = "groupBoxBondLength";
             this.groupBoxBondLength.Size = new System.Drawing.Size(98, 97);
             this.groupBoxBondLength.TabIndex = 17;
@@ -300,14 +304,53 @@
             this.checkBox1.Text = "checkBox1";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // groupBoxMode
+            // 
+            this.groupBoxMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxMode.Controls.Add(this.SwitchToMulti);
+            this.groupBoxMode.Controls.Add(this.SwitchToSingle);
+            this.groupBoxMode.Location = new System.Drawing.Point(483, 454);
+            this.groupBoxMode.Name = "groupBoxMode";
+            this.groupBoxMode.Size = new System.Drawing.Size(79, 97);
+            this.groupBoxMode.TabIndex = 21;
+            this.groupBoxMode.TabStop = false;
+            this.groupBoxMode.Text = "Mode";
+            // 
+            // SwitchToSingle
+            // 
+            this.SwitchToSingle.AutoSize = true;
+            this.SwitchToSingle.Location = new System.Drawing.Point(7, 21);
+            this.SwitchToSingle.Name = "SwitchToSingle";
+            this.SwitchToSingle.Size = new System.Drawing.Size(61, 20);
+            this.SwitchToSingle.TabIndex = 21;
+            this.SwitchToSingle.TabStop = true;
+            this.SwitchToSingle.Text = "Single";
+            this.toolTip1.SetToolTip(this.SwitchToSingle, "Switch to single molecule mode");
+            this.SwitchToSingle.UseVisualStyleBackColor = true;
+            this.SwitchToSingle.CheckedChanged += new System.EventHandler(this.SwitchToSingle_CheckedChanged);
+            // 
+            // SwitchToMulti
+            // 
+            this.SwitchToMulti.AutoSize = true;
+            this.SwitchToMulti.Location = new System.Drawing.Point(7, 43);
+            this.SwitchToMulti.Name = "SwitchToMulti";
+            this.SwitchToMulti.Size = new System.Drawing.Size(53, 20);
+            this.SwitchToMulti.TabIndex = 22;
+            this.SwitchToMulti.TabStop = true;
+            this.SwitchToMulti.Text = "Multi";
+            this.toolTip1.SetToolTip(this.SwitchToMulti, "Switch to multiple molecule mode");
+            this.SwitchToMulti.UseVisualStyleBackColor = true;
+            this.SwitchToMulti.CheckedChanged += new System.EventHandler(this.SwitchToMulti_CheckedChanged);
+            // 
             // ChemDoodleWeb
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(709, 541);
-            this.Controls.Add(this.chkSingleOrMany);
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.groupBoxMode);
             this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.chkSingleOrMany);
             this.Controls.Add(this.btnMirror);
             this.Controls.Add(this.btnFlip);
             this.Controls.Add(this.groupBoxBondLength);
@@ -330,6 +373,8 @@
             this.groupBoxImplicit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBondLength)).EndInit();
             this.groupBoxBondLength.ResumeLayout(false);
+            this.groupBoxMode.ResumeLayout(false);
+            this.groupBoxMode.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -357,5 +402,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkColouredAtoms;
         private System.Windows.Forms.CheckBox chkToggleShowCarbons;
+        private System.Windows.Forms.GroupBox groupBoxMode;
+        private System.Windows.Forms.RadioButton SwitchToMulti;
+        private System.Windows.Forms.RadioButton SwitchToSingle;
     }
 }

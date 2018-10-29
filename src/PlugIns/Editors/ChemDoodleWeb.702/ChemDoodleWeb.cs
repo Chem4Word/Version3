@@ -628,5 +628,49 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                 new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
             }
         }
+
+        private void SwitchToSingle_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            try
+            {
+                if (_eventsEnabled)
+                {
+                    Telemetry.Write(module, "Action", "Triggered");
+
+                    _sw.Reset();
+                    _sw.Start();
+
+                    // Switch to Single molecule Mode
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
+        private void SwitchToMulti_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            try
+            {
+                if (_eventsEnabled)
+                {
+                    Telemetry.Write(module, "Action", "Triggered");
+
+                    _sw.Reset();
+                    _sw.Start();
+
+                    // Switch to Multiple molecule Mode
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
     }
 }

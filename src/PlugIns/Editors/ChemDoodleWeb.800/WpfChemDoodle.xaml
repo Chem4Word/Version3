@@ -216,20 +216,20 @@
                     VerticalAlignment="Top"
                     Orientation="Vertical">
                     <RadioButton x:Name="SwitchToSingle"
-                                 GroupName="Mode"
-                                 Foreground="{StaticResource Chem4WordBlue}"
-                                 Content="Single"
-                                 Margin="1,1,1,1"
-                                 IsChecked="True"
-                                 ToolTip="Switch to single molecule mode"
-                                 Click="SwitchToSingle_OnClick" />
+                        Margin="1,1,1,1"
+                        Click="SwitchToSingle_OnClick"
+                        Content="Single"
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        GroupName="Mode"
+                        IsChecked="True"
+                        ToolTip="Switch to single molecule mode" />
                     <RadioButton x:Name="SwitchToMulti"
-                                 GroupName="Mode"
-                                 Foreground="{StaticResource Chem4WordBlue}"
-                                 Content="Multi"
-                                 Margin="1,1,1,1"
-                                 ToolTip="Switch to multiple molecule mode"
-                                 Click="SwitchToMulti_OnClick" />
+                        Margin="1,1,1,1"
+                        Click="SwitchToMulti_OnClick"
+                        Content="Multi"
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        GroupName="Mode"
+                        ToolTip="Switch to multiple molecule mode" />
                 </StackPanel>
             </GroupBox>
             <StackPanel
