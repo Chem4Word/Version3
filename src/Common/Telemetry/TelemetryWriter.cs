@@ -133,6 +133,7 @@ namespace Chem4Word.Telemetry
 
             // Log System
             WritePrivate("StartUp", "Information", _helper.SystemOs);
+            WritePrivate("StartUp", "Information", $"Browser Version: {_helper.BrowserVersion}");
             WritePrivate("StartUp", "Information", _helper.DotNetVersion);
 
             //if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromMinutes(5).Ticks)

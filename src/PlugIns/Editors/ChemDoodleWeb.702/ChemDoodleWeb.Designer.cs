@@ -239,7 +239,7 @@
             // 
             this.btnFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnFlip.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Flip;
-            this.btnFlip.Location = new System.Drawing.Point(498, 504);
+            this.btnFlip.Location = new System.Drawing.Point(498, 502);
             this.btnFlip.Name = "btnFlip";
             this.btnFlip.Size = new System.Drawing.Size(48, 48);
             this.btnFlip.TabIndex = 16;
@@ -251,7 +251,7 @@
             // 
             this.btnMirror.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnMirror.Image = global::Chem4Word.Editor.ChemDoodleWeb702.Properties.Resources.Mirror;
-            this.btnMirror.Location = new System.Drawing.Point(498, 454);
+            this.btnMirror.Location = new System.Drawing.Point(552, 502);
             this.btnMirror.Name = "btnMirror";
             this.btnMirror.Size = new System.Drawing.Size(48, 48);
             this.btnMirror.TabIndex = 18;
