@@ -1,0 +1,11 @@
+<cml:cml
+  xmlns:conventions="http://www.xml-cml.org/convention/" 
+  xmlns:cml="http://www.xml-cml.org/schema"
+  xmlns:cmlDict="http://www.xml-cml.org/dictionary/cml/"
+  xmlns:nameDict="http://www.xml-cml.org/dictionary/cml/name/"
+  xmlns:c4w="http://www.chem4word.com/cml"
+  conventions="convention:molecular">
+  <cml:molecule id="m1">
+    <cml:name id="m1.n1" dictRef="chem4word:Synonym">This molecule only has a name</cml:name>
+  </cml:molecule>
+</cml:cml>

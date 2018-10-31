@@ -191,21 +191,21 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                 }
 
                 Telemetry.Write(module, "Information", "Writing html to disk");
+                SwitchChemDoodleMode();
                 string htmlfile = "";
                 if (IsSingleMolecule)
                 {
                     htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Single.html");
-                    chkSingleOrMany.Checked = false;
-                    chkSingleOrMany.ImageIndex = 0;
-                    toolTip1.SetToolTip(chkSingleOrMany, "Change to Multiple molecules mode");
+                    SwitchToSingle.Checked = true;
+                    SwitchToMulti.Checked = false;
                 }
                 else
                 {
                     htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Multi.html");
-                    chkSingleOrMany.Checked = true;
-                    chkSingleOrMany.ImageIndex = 1;
-                    toolTip1.SetToolTip(chkSingleOrMany, "Change to Single molecule mode");
+                    SwitchToMulti.Checked = true;
+                    SwitchToSingle.Checked = false;
                 }
+
                 File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
 
                 long sofar = sw.ElapsedMilliseconds;
@@ -516,61 +516,25 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
         }
 
-        private void chkSingleOrMany_CheckedChanged(object sender, EventArgs e)
+        private void SwitchChemDoodleMode()
         {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-
-            _sw.Reset();
-            _sw.Start();
-
-            try
+            string htmlfile = "";
+            if (IsSingleMolecule)
             {
-                if (_eventsEnabled)
-                {
-                    Telemetry.Write(module, "Action", "Triggered");
-                    if (IsSingleMolecule)
-                    {
-                        _tempJson = (string)ExecuteJavaScript("GetJSON");
-                    }
-                    else
-                    {
-                        _tempJson = (string)ExecuteJavaScript("GetFirstMolJSON");
-                    }
-
-                    if (chkSingleOrMany.Checked)
-                    {
-                        // Now in Multi molecules mode
-                        chkSingleOrMany.ImageIndex = 1;
-                        toolTip1.SetToolTip(chkSingleOrMany, "Change to Single molecule mode");
-                        IsSingleMolecule = false;
-                    }
-                    else
-                    {
-                        // Now in Single molecule mode
-                        chkSingleOrMany.ImageIndex = 0;
-                        toolTip1.SetToolTip(chkSingleOrMany, "Change to Multiple molecules mode");
-                        IsSingleMolecule = true;
-                    }
-
-                    string htmlfile = "";
-                    if (IsSingleMolecule)
-                    {
-                        htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Single.html");
-                    }
-                    else
-                    {
-                        htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Multi.html");
-                    }
-
-                    File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
-                    AverageBondLength = (double)nudBondLength.Value;
-                    browser.Navigate(Path.Combine(ProductAppDataPath, "Editor.html"));
-                }
+                htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Single.html");
+                SwitchToSingle.Checked = true;
+                SwitchToMulti.Checked = false;
             }
-            catch (Exception ex)
+            else
             {
-                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+                htmlfile = ResourceHelper.GetStringResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.Multi.html");
+                SwitchToMulti.Checked = true;
+                SwitchToSingle.Checked = false;
             }
+
+            File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
+            AverageBondLength = (double) nudBondLength.Value;
+            browser.Navigate(Path.Combine(ProductAppDataPath, "Editor.html"));
         }
 
         private void chkColouredAtoms_CheckedChanged(object sender, EventArgs e)
@@ -621,6 +585,56 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
                         ExecuteJavaScript("ShowCarbons", false);
                     }
                     _saveSettings = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
+        private void SwitchToSingle_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            try
+            {
+                if (_eventsEnabled && SwitchToSingle.Checked)
+                {
+                    Telemetry.Write(module, "Action", "Triggered");
+                    _eventsEnabled = false;
+
+                    _sw.Reset();
+                    _sw.Start();
+
+                    _tempJson = (string)ExecuteJavaScript("GetFirstMolJSON");
+                    IsSingleMolecule = true;
+                    SwitchChemDoodleMode();
+                }
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
+        private void SwitchToMulti_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            try
+            {
+                if (_eventsEnabled && SwitchToMulti.Checked)
+                {
+                    Telemetry.Write(module, "Action", "Triggered");
+                    _eventsEnabled = false;
+
+                    _sw.Reset();
+                    _sw.Start();
+
+                    _tempJson = (string)ExecuteJavaScript("GetJSON");
+                    IsSingleMolecule = false;
+                    SwitchChemDoodleMode();
                 }
             }
             catch (Exception ex)

@@ -26,7 +26,7 @@ namespace Chem4Word.Telemetry
         private static string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
         private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
-        private const string DetectionFile = "files3/client-ip.php";
+        private const string DetectionFile = "files3/client-ip-date.php";
         private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com" };
 
         public string MachineId { get; set; }
@@ -56,7 +56,11 @@ namespace Chem4Word.Telemetry
         public string GitStatus { get; set; }
 
         public long UtcOffset { get; set; }
-        public string DateHeader { get; set; }
+        public DateTime SystemUtcDateTime { get; set; }
+        public string ServerDateHeader { get; set; }
+        public string ServerUtcDateRaw { get; set; }
+        public DateTime ServerUtcDateTime { get; set; }
+        public string BrowserVersion { get; set; }
 
         private static int _retryCount;
 
@@ -177,6 +181,8 @@ namespace Chem4Word.Telemetry
             #endregion Get IpAddress
 
             GetDotNetVersionFromRegistry();
+
+            BrowserVersion = new WebBrowser().Version.ToString();
 
             GetScreens();
 
@@ -402,32 +408,17 @@ namespace Chem4Word.Telemetry
                             request.UserAgent = "Chem4Word Add-In";
                             request.Timeout = 2000; // 2 seconds
                             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
                             try
                             {
                                 // Get Server Date header i.e. "Wed, 11 Jul 2018 19:52:46 GMT"
-                                DateHeader = response.Headers["date"];
-                                var serverUtcTime = DateTime.ParseExact(DateHeader, "ddd, dd MMM yyyy HH:mm:ss GMT",
-                                    CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AdjustToUniversal);
-                                var systemDate = DateTime.UtcNow;
-                                UtcOffset = systemDate.Ticks - serverUtcTime.Ticks;
-                                if (UtcOffset > 0)
-                                {
-                                    TimeSpan delta = TimeSpan.FromTicks(UtcOffset);
-                                    Debug.WriteLine($"System time is {delta} ahead of Server time");
-                                }
-                                if (UtcOffset < 0)
-                                {
-                                    TimeSpan delta = TimeSpan.FromTicks(0 - UtcOffset);
-                                    Debug.WriteLine($"System time is {delta} behind Server time");
-                                }
-                                Debug.WriteLine($"UTC Offset {UtcOffset}");
-                                Debug.WriteLine($"{systemDate.ToString("yyyy-MM-dd HH:mm:ss.fff")} {serverUtcTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
-                                Debug.WriteLine($"{systemDate.Ticks} {serverUtcTime.Ticks} {systemDate.Ticks - UtcOffset}");
+                                ServerDateHeader = response.Headers["date"];
                             }
                             catch
                             {
                                 // Do Nothing
                             }
+
                             if (HttpStatusCode.OK.Equals(response.StatusCode))
                             {
                                 using (var reader = new StreamReader(response.GetResponseStream()))
@@ -438,20 +429,22 @@ namespace Chem4Word.Telemetry
                                     {
                                         // Tidy Up the data
                                         webPage = webPage.Replace("Your IP address : ", "");
-                                        webPage = webPage.Replace("<br/>", "");
-                                        webPage = webPage.Replace("<br />", "");
+                                        webPage = webPage.Replace("UTC Date : ", "");
+                                        webPage = webPage.Replace("<br/>", "|");
+                                        webPage = webPage.Replace("<br />", "|");
+
+                                        string[] lines = webPage.Split('|');
 
                                         #region Detect IPv6
 
-                                        if (webPage.Contains(":"))
+                                        if (lines[0].Contains(":"))
                                         {
-                                            string[] ipV6Parts = webPage.Split(':');
+                                            string[] ipV6Parts = lines[0].Split(':');
                                             // Must have between 4 and 8 parts
                                             if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
                                             {
-                                                IpAddress = "IpAddress " + webPage;
+                                                IpAddress = "IpAddress " + lines[0];
                                                 IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
-                                                break;
                                             }
                                         }
 
@@ -459,19 +452,36 @@ namespace Chem4Word.Telemetry
 
                                         #region Detect IPv4
 
-                                        if (webPage.Contains("."))
+                                        if (lines[0].Contains("."))
                                         {
                                             // Must have 4 parts
-                                            string[] ipV4Parts = webPage.Split('.');
+                                            string[] ipV4Parts = lines[0].Split('.');
                                             if (ipV4Parts.Length == 4)
                                             {
-                                                IpAddress = "IpAddress " + webPage;
+                                                IpAddress = "IpAddress " + lines[0];
                                                 IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
-                                                break;
                                             }
                                         }
 
                                         #endregion Detect IPv4
+
+                                        #region Detect Php UTC Date
+
+                                        if (lines.Length > 1)
+                                        {
+                                            ServerUtcDateRaw = lines[1];
+                                            ServerUtcDateTime = FromPhpDate(lines[1]);
+                                            SystemUtcDateTime = DateTime.UtcNow;
+
+                                            UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
+                                        }
+
+                                        #endregion
+
+                                        if (!IpAddress.Contains("0.0.0.0"))
+                                        {
+                                            break;
+                                        }
                                     }
 
                                     Debug.WriteLine(IpAddress);
@@ -505,6 +515,13 @@ namespace Chem4Word.Telemetry
                     t.Start(null);
                 }
             }
+        }
+
+        private DateTime FromPhpDate(string line)
+        {
+            string[] p = line.Split(',');
+            var serverUtc = new DateTime(int.Parse(p[0]), int.Parse(p[1]), int.Parse(p[2]), int.Parse(p[3]), int.Parse(p[4]), int.Parse(p[5]));
+            return DateTime.SpecifyKind(serverUtc, DateTimeKind.Utc);
         }
 
         private int GetOfficeVersionNumber(string wordVersionString)

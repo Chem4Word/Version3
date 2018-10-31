@@ -133,26 +133,31 @@ namespace Chem4Word.Telemetry
 
             // Log System
             WritePrivate("StartUp", "Information", _helper.SystemOs);
+            WritePrivate("StartUp", "Information", $"Browser Version: {_helper.BrowserVersion}");
             WritePrivate("StartUp", "Information", _helper.DotNetVersion);
 
+            //if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromMinutes(5).Ticks)
+            //{
+
             // Log UtcOffset
-            if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromMinutes(15).Ticks)
+            WritePrivate("StartUp", "Information", $"Server UTC DateTime is {_helper.ServerUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
+            WritePrivate("StartUp", "Information", $"System UTC DateTime {_helper.SystemUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
+
+            WritePrivate("StartUp", "Information", $"Server Header[Date] is {_helper.ServerDateHeader}");
+            WritePrivate("StartUp", "Information", $"Server UTC DateTime raw is {_helper.ServerUtcDateRaw}");
+
+            WritePrivate("StartUp", "Information", $"Calculated UTC Offset {_helper.UtcOffset}");
+            if (_helper.UtcOffset > 0)
             {
-                var systemDate = DateTime.UtcNow;
-                WritePrivate("StartUp", "Information", $"Systen UTC Time {systemDate.ToString("yyyy-MM-dd HH:mm:ss.fff")}");
-                WritePrivate("StartUp", "Information", $"Date Header {_helper.DateHeader}");
-                WritePrivate("StartUp", "Information", $"UTC Offset {_helper.UtcOffset}");
-                if (_helper.UtcOffset > 0)
-                {
-                    TimeSpan delta = TimeSpan.FromTicks(_helper.UtcOffset);
-                    WritePrivate("StartUp", "Information", $"System time is {delta} ahead of Server time");
-                }
-                if (_helper.UtcOffset < 0)
-                {
-                    TimeSpan delta = TimeSpan.FromTicks(0 - _helper.UtcOffset);
-                    WritePrivate("StartUp", "Information", $"System time is {delta} behind Server time");
-                }
+                TimeSpan delta = TimeSpan.FromTicks(_helper.UtcOffset);
+                WritePrivate("StartUp", "Information", $"System time is {delta} ahead of Server time");
             }
+            if (_helper.UtcOffset < 0)
+            {
+                TimeSpan delta = TimeSpan.FromTicks(0 - _helper.UtcOffset);
+                WritePrivate("StartUp", "Information", $"System time is {delta} behind Server time");
+            }
+            //}
 
             // Log IP Address
             WritePrivate("StartUp", "Information", _helper.IpAddress);

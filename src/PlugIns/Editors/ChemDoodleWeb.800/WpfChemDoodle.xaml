@@ -91,24 +91,24 @@
                 Grid.Column="2"
                 BorderThickness="2"
                 Foreground="{StaticResource Chem4WordBlue}"
-                Header="Bonds">
+                Header="Bond Length">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <TextBox x:Name="BondLength"
                         Grid.Column="0"
                         Width="30"
-                        Margin="5,0,1,0"
                         VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
                         HorizontalContentAlignment="Right"
                         Text="20"
                         TextChanged="BondLength_OnTextChanged"
                         ToolTip="Set bond length" />
                     <Grid
                         Grid.Column="1"
-                        Margin="0,0,5,0">
+                        HorizontalAlignment="Left">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -213,62 +213,23 @@
                 Header="Mode">
                 <StackPanel
                     Margin="5,5,5,0"
-                    VerticalAlignment="Center"
+                    VerticalAlignment="Top"
                     Orientation="Vertical">
-                    <Button x:Name="SwitchToMulti"
-                        Width="80"
-                        Height="33"
-                        Margin="0,0,0,2"
-                        HorizontalContentAlignment="Left"
-                        Click="SwitchToMulti_OnClick"
-                        ToolTip="Switch to multi molecule mode">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="24" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Path
-                                Grid.Column="0"
-                                Width="24"
-                                Height="24"
-                                Data="M9.8290001,6.0040008L9.667998,11.225001C9.667998,11.225001,9.4589983,14.677999,5.6549979,14.261L2.3930012,14.172999 2.3930012,29.006997C2.3930012,29.337998,2.6630014,29.604996,2.9929997,29.604996L19.753998,29.604996C20.083001,29.604996,20.351998,29.337998,20.351998,29.006997L20.351998,6.6020004C20.351998,6.2730018,20.083001,6.0040008,19.753998,6.0040008z M9.6719996,3.6100003L19.753998,3.6100003C21.406998,3.6100001,22.747994,4.95,22.747994,6.6020004L22.747994,29.006997C22.747994,30.660996,21.406998,32.000001,19.753998,32.000001L2.9929997,32.000001C1.3399999,32.000001,-4.1612282E-08,30.660996,0,29.006997L0,13.815001 1.1850009,12.564002 1.1860003,12.530001 7.3979975,6.0040008 7.3799998,6.0040008 5.7200004,7.7559997 7.4599978,5.9120018 7.4839998,5.9120018 7.5390001,5.8550026 7.5450007,5.8550026z M13.463998,0L24.510993,0 26.873999,0 26.873999,2.1060023 26.873999,24.489999 24.510993,24.489999 24.510993,2.1060023 13.463998,2.1060023z"
-                                Fill="{StaticResource Chem4WordBlue}"
-                                Stretch="Uniform" />
-                            <Label
-                                Grid.Column="1"
-                                Margin="0,0,0,0"
-                                VerticalContentAlignment="Center"
-                                Content="Multi"
-                                Foreground="{StaticResource Chem4WordBlue}" />
-                        </Grid>
-                    </Button>
-                    <Button x:Name="SwitchToSingle"
-                        Width="80"
-                        Height="33"
-                        Margin="0,0,0,2"
-                        HorizontalContentAlignment="Left"
+                    <RadioButton x:Name="SwitchToSingle"
+                        Margin="1,1,1,1"
                         Click="SwitchToSingle_OnClick"
-                        ToolTip="Switch to single molecule mode">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="24" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Path
-                                Grid.Column="0"
-                                Width="24"
-                                Height="24"
-                                Data="M11.580997,2.6999842L11.392,8.5849994C11.392,8.5849994,11.145998,12.474987,6.6629961,12.004986L2.8199925,11.905011 2.8199925,28.624997C2.8199925,28.999997,3.1369941,29.299985,3.5260017,29.299985L23.276998,29.299985C23.664998,29.299985,23.982,28.999997,23.982,28.624997L23.982,3.375003C23.982,3.000003,23.664998,2.6999842,23.276998,2.6999842z M11.397005,0L23.276998,0C25.225011,0,26.805,1.5099807,26.805,3.375003L26.805,28.624997C26.805,30.48999,25.225011,32.000001,23.276998,32.000001L3.5260017,32.000001C1.578995,32.000001,-9.8288183E-08,30.48999,0,28.624997L0,11.504985 1.3959962,10.095011 1.3970033,10.055003 8.7169974,2.6999842 8.6970084,2.6999842 6.7400072,4.6749924 8.7899954,2.5950037 8.8190024,2.5950037 8.8840048,2.5300013 8.8900015,2.5300013z"
-                                Fill="{StaticResource Chem4WordBlue}"
-                                Stretch="Uniform" />
-                            <Label
-                                Grid.Column="1"
-                                Margin="0,0,0,0"
-                                VerticalContentAlignment="Center"
-                                Content="Single"
-                                Foreground="{StaticResource Chem4WordBlue}" />
-                        </Grid>
-                    </Button>
+                        Content="Single"
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        GroupName="Mode"
+                        IsChecked="True"
+                        ToolTip="Switch to single molecule mode" />
+                    <RadioButton x:Name="SwitchToMulti"
+                        Margin="1,1,1,1"
+                        Click="SwitchToMulti_OnClick"
+                        Content="Multi"
+                        Foreground="{StaticResource Chem4WordBlue}"
+                        GroupName="Mode"
+                        ToolTip="Switch to multiple molecule mode" />
                 </StackPanel>
             </GroupBox>
             <StackPanel

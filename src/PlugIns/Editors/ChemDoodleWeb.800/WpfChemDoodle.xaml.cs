@@ -525,13 +525,17 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
             if (IsSingleMolecule)
             {
-                SwitchToMulti.Visibility = Visibility.Visible;
-                SwitchToSingle.Visibility = Visibility.Collapsed;
+                //SwitchToMulti.Visibility = Visibility.Visible;
+                //SwitchToSingle.Visibility = Visibility.Collapsed;
+                SwitchToSingle.IsChecked = true;
+                SwitchToMulti.IsChecked = false;
             }
             else
             {
-                SwitchToMulti.Visibility = Visibility.Collapsed;
-                SwitchToSingle.Visibility = Visibility.Visible;
+                //SwitchToMulti.Visibility = Visibility.Collapsed;
+                //SwitchToSingle.Visibility = Visibility.Visible;
+                SwitchToMulti.IsChecked = true;
+                SwitchToSingle.IsChecked = false;
             }
         }
 
@@ -583,14 +587,18 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             if (IsSingleMolecule)
             {
-                SwitchToMulti.Visibility = Visibility.Collapsed;
-                SwitchToSingle.Visibility = Visibility.Visible;
+                //SwitchToMulti.Visibility = Visibility.Collapsed;
+                //SwitchToSingle.Visibility = Visibility.Visible;
+                SwitchToMulti.IsChecked = true;
+                SwitchToSingle.IsChecked = false;
                 IsSingleMolecule = false;
             }
             else
             {
-                SwitchToMulti.Visibility = Visibility.Visible;
-                SwitchToSingle.Visibility = Visibility.Collapsed;
+                //SwitchToMulti.Visibility = Visibility.Visible;
+                //SwitchToSingle.Visibility = Visibility.Collapsed;
+                SwitchToSingle.IsChecked = true;
+                SwitchToMulti.IsChecked = false;
                 IsSingleMolecule = true;
             }
 

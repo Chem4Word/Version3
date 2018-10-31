@@ -5,6 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System;
 using Chem4Word.Core.Helpers;
 using Newtonsoft.Json;
 using System.Windows;
@@ -82,7 +83,16 @@ namespace Chem4Word
             // User Options
             TelemetryEnabled = true;
 
-            SelectedEditorPlugIn = Constants.DefaultEditorPlugIn;
+            var os = Environment.OSVersion;
+            if (os.VersionString.Contains("Windows 7")
+                || os.Version.Major == 6 && os.Version.Minor == 1)
+            {
+                SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
+            }
+            else
+            {
+                SelectedEditorPlugIn = Constants.DefaultEditorPlugIn800;
+            }
             SelectedRendererPlugIn = Constants.DefaultRendererPlugIn;
 
             UseWebServices = true;
