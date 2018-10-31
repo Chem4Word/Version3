@@ -93,29 +93,9 @@ namespace Chem4Word.Editor.ChemDoodleWeb702.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Multi {
-            get {
-                object obj = ResourceManager.GetObject("Multi", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Plus {
             get {
                 object obj = ResourceManager.GetObject("Plus", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Single {
-            get {
-                object obj = ResourceManager.GetObject("Single", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

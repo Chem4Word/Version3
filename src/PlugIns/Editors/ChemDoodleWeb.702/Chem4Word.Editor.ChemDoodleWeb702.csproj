@@ -145,9 +145,7 @@
     <Content Include="Resources\Images\Flip.png" />
     <Content Include="Resources\Images\Minus.png" />
     <Content Include="Resources\Images\Mirror.png" />
-    <Content Include="Resources\Images\Multi.png" />
     <Content Include="Resources\Images\Plus.png" />
-    <Content Include="Resources\Images\Single.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
