@@ -87,6 +87,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 JSONConverter jc = new JSONConverter();
                 Model.Model model = jc.Import(args.OutputValue);
                 OutputValue = cc.Export(model);
+                elementHost1.Child = null;
                 Hide();
             }
 
@@ -94,6 +95,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             {
                 DialogResult = DialogResult.Cancel;
                 OutputValue = "";
+                elementHost1.Child = null;
                 Hide();
             }
         }
