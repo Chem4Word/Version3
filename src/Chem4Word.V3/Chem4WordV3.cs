@@ -52,6 +52,7 @@ namespace Chem4Word
 
         public bool ChemistryAllowed = false;
         public string ChemistryProhibitedReason = "";
+        private string _LastContentControlAdded = "";
 
         private bool ChemistrySelected = false;
         private bool _markAsChemistryHandled = false;
@@ -2255,39 +2256,46 @@ namespace Chem4Word
                     LoadOptions();
                 }
 
-                if (!InUndoRedo && !string.IsNullOrEmpty(NewContentControl?.Tag))
+                string ccId = NewContentControl.ID;
+                string ccTag = NewContentControl.Tag;
+                if (!InUndoRedo && !string.IsNullOrEmpty(ccTag))
                 {
-                    string message = $"ContentControl {NewContentControl?.ID} added; Looking for structure {NewContentControl?.Tag}";
-                    Debug.WriteLine("  " + message);
-                    Telemetry.Write(module, "Information", message);
+                    if (!ccId.Equals(_LastContentControlAdded))
+                    {
+                        string message = $"ContentControl {ccId} added; Looking for structure {ccTag}";
+                        Debug.WriteLine("  " + message);
+                        Telemetry.Write(module, "Information", message);
 
-                    Word.Document doc = NewContentControl.Application.ActiveDocument;
-                    Word.Application app = Globals.Chem4WordV3.Application;
-                    CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(NewContentControl?.Tag, app.ActiveDocument);
-                    if (cxml != null)
-                    {
-                        Telemetry.Write(module, "Information", "Found copy of " + NewContentControl?.Tag + " in this document.");
-                    }
-                    else
-                    {
-                        if (doc.Application.Documents.Count > 1)
+                        Word.Document doc = NewContentControl.Application.ActiveDocument;
+                        Word.Application app = Globals.Chem4WordV3.Application;
+                        CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(ccTag, app.ActiveDocument);
+                        if (cxml != null)
                         {
-                            Word.Application app1 = Globals.Chem4WordV3.Application;
-                            cxml = CustomXmlPartHelper.FindCustomXmlPart(NewContentControl?.Tag, app1.ActiveDocument);
-                            if (cxml != null)
+                            Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in this document.");
+                        }
+                        else
+                        {
+                            if (doc.Application.Documents.Count > 1)
                             {
-                                Telemetry.Write(module, "Information", "Found copy of " + NewContentControl?.Tag + " in other document, adding it into this.");
+                                Word.Application app1 = Globals.Chem4WordV3.Application;
+                                cxml = CustomXmlPartHelper.FindCustomXmlPart(ccTag, app1.ActiveDocument);
+                                if (cxml != null)
+                                {
+                                    Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in other document, adding it into this.");
 
-                                // Generate new molecule Guid and apply it
-                                string newGuid = Guid.NewGuid().ToString("N");
-                                NewContentControl.Tag = newGuid;
+                                    // Generate new molecule Guid and apply it
+                                    string newGuid = Guid.NewGuid().ToString("N");
+                                    NewContentControl.Tag = newGuid;
 
-                                CMLConverter cmlConverter = new CMLConverter();
-                                Model.Model model = cmlConverter.Import(cxml.XML);
-                                model.CustomXmlPartGuid = newGuid;
-                                doc.CustomXMLParts.Add(cmlConverter.Export(model));
+                                    CMLConverter cmlConverter = new CMLConverter();
+                                    Model.Model model = cmlConverter.Import(cxml.XML);
+                                    model.CustomXmlPartGuid = newGuid;
+                                    doc.CustomXMLParts.Add(cmlConverter.Export(model));
+                                }
                             }
                         }
+
+                        _LastContentControlAdded = ccId;
                     }
                 }
             }
