@@ -87,17 +87,21 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 JSONConverter jc = new JSONConverter();
                 Model.Model model = jc.Import(args.OutputValue);
                 OutputValue = cc.Export(model);
-                elementHost1.Child = null;
-                Hide();
             }
 
             if (args.Button.ToUpper().Equals("CANCEL"))
             {
                 DialogResult = DialogResult.Cancel;
                 OutputValue = "";
-                elementHost1.Child = null;
-                Hide();
             }
+
+            WpfChemDoodle editor = elementHost1.Child as WpfChemDoodle;
+            if (editor != null)
+            {
+                editor.OnButtonClick -= OnWpfButtonClick;
+                editor = null;
+            }
+            Hide();
         }
     }
 }

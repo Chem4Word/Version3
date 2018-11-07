@@ -135,6 +135,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 {
                     Properties = new Dictionary<string, string>();
                     Cml = host.OutputValue;
+                    host.Close();
+                    host = null;
                 }
             }
             catch (Exception ex)

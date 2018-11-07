@@ -718,13 +718,45 @@ namespace Chem4Word
             // Remember to add corresponding code in DisableDocumentEvents()
 
             // ContentControlOnEnter Event Handler
-            wdoc.ContentControlOnEnter += OnContentControlOnEnter;
+            try
+            {
+                wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+                wdoc.ContentControlOnEnter += OnContentControlOnEnter;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlOnExit Event Handler
-            wdoc.ContentControlOnExit += OnContentControlOnExit;
+            try
+            {
+                wdoc.ContentControlOnExit -= OnContentControlOnExit;
+                wdoc.ContentControlOnExit += OnContentControlOnExit;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlBeforeDelete Event Handler
-            wdoc.ContentControlBeforeDelete += OnContentControlBeforeDelete;
+            try
+            {
+                wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+                wdoc.ContentControlBeforeDelete += OnContentControlBeforeDelete;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlAfterAdd Event Handler
-            wdoc.ContentControlAfterAdd += OnContentControlAfterAdd;
+            try
+            {
+                wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+                wdoc.ContentControlAfterAdd += OnContentControlAfterAdd;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
 
             EventsEnabled = true;
         }
@@ -747,13 +779,41 @@ namespace Chem4Word
             // Remember to add corresponding code in EnableDocumentEvents()
 
             // ContentControlOnEnter Event Handler
-            wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+            try
+            {
+                wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlOnExit Event Handler
-            wdoc.ContentControlOnExit -= OnContentControlOnExit;
+            try
+            {
+                wdoc.ContentControlOnExit -= OnContentControlOnExit;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlBeforeDelete Event Handler
-            wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+            try
+            {
+                wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlAfterAdd Event Handler
-            wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+            try
+            {
+                wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private void SetButtonStates(ButtonState state)
