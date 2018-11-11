@@ -25,7 +25,6 @@ using System.Windows.Interop;
 using System.Windows.Navigation;
 using Chem4Word.Core.UI.Forms;
 using Newtonsoft.Json;
-using Application = System.Windows.Application;
 using Control = System.Windows.Forms.Control;
 using Path = System.IO.Path;
 using UserControl = System.Windows.Controls.UserControl;
