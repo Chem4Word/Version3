@@ -236,7 +236,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                     if (itemUnderCursor != null)
                     {
                         UpdateDisplay();
-                        if (display1.Chemistry != null)
+                        if (_lastModel != null && _lastModel.AllErrors.Count + _lastModel.AllWarnings.Count == 0)
                         {
                             ResultsListView.SelectedItems.Clear();
                             itemUnderCursor.Selected = true;

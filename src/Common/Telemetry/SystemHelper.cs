@@ -182,7 +182,14 @@ namespace Chem4Word.Telemetry
 
             GetDotNetVersionFromRegistry();
 
-            BrowserVersion = new WebBrowser().Version.ToString();
+            try
+            {
+                BrowserVersion = new WebBrowser().Version.ToString();
+            }
+            catch
+            {
+                BrowserVersion = "?";
+            }
 
             GetScreens();
 

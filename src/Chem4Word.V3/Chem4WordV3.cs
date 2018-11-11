@@ -340,6 +340,26 @@ namespace Chem4Word
 
                 // Re-Initiallize Telemetry with granted permissions
                 Telemetry = new TelemetryWriter(isBeta || SystemOptions.TelemetryEnabled);
+
+                try
+                {
+                    if (SystemOptions.SelectedEditorPlugIn.Equals(Constants.DefaultEditorPlugIn800))
+                    {
+                        var browser = new WebBrowser().Version;
+                        if (browser.Major < 10)
+                        {
+                            SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
+                            string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Patching Options file");
+                            File.WriteAllText(optionsFile, temp);
+                        }
+                    }
+                }
+                catch
+                {
+                    //
+                }
+
             }
             catch (Exception ex)
             {
