@@ -236,8 +236,14 @@ namespace Chem4Word.UI.WPF
                             SelectedEditorPlugInDescription.Text = pci?.Description;
                             IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
                             SelectedEditorSettings.IsEnabled = editor.HasSettings;
-
                         }
+                    }
+                    else
+                    {
+                        SystemOptions.SelectedEditorPlugIn = pci?.Name;
+                        SelectedEditorPlugInDescription.Text = pci?.Description;
+                        IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
+                        SelectedEditorSettings.IsEnabled = editor.HasSettings;
                     }
                 }
                 catch

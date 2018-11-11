@@ -338,7 +338,7 @@ namespace Chem4Word
                 string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
                 bool isBeta = betaValue != null && bool.Parse(betaValue);
 
-                // Re-Initiallize Telemetry with granted permissions
+                // Re-Initialize Telemetry with granted permissions
                 Telemetry = new TelemetryWriter(isBeta || SystemOptions.TelemetryEnabled);
 
                 try
