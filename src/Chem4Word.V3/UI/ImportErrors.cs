@@ -39,7 +39,7 @@ namespace Chem4Word.UI
                     Top = (int)TopLeft.Y;
                 }
 
-                _display.Chemistry = Model;
+                display1.Chemistry = Model;
                 Errors.Text = String.Join(Environment.NewLine, Model.AllErrors);
                 Warnings.Text = String.Join(Environment.NewLine, Model.AllWarnings);
                 if (Model.AllErrors.Count > 0)

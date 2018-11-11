@@ -34,7 +34,7 @@ namespace Chem4WordSetup
         private const string DetectV2AddIn = @"Chemistry Add-in for Word\Chem4Word.AddIn.vsto";
         private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.V3.vsto";
 
-        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.20.Release.7.msi";
+        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.22.Release.9.msi";
         private const string VstoInstaller = "https://www.chem4word.co.uk/files3/vstor_redist.exe";
 
         private WebClient _webClient;
@@ -54,6 +54,10 @@ namespace Chem4WordSetup
 
         private void Setup_Load(object sender, EventArgs e)
         {
+            // Move up and left by half the form size
+            Left = Left - Width / 2;
+            Top = Top - Height / 2;
+
             Show();
             Application.DoEvents();
 

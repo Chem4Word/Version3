@@ -36,7 +36,7 @@
             this.OuterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this._display1 = new Chem4Word.Controls.DisplayControl();
+            this.display1 = new Chem4Word.Controls.DisplayControl();
             ((System.ComponentModel.ISupportInitialize)(this.InnerSplitContainer)).BeginInit();
             this.InnerSplitContainer.Panel1.SuspendLayout();
             this.InnerSplitContainer.Panel2.SuspendLayout();
@@ -160,7 +160,7 @@
             this.elementHost1.Size = new System.Drawing.Size(276, 298);
             this.elementHost1.TabIndex = 6;
             this.elementHost1.Text = "elementHost1";
-            this.elementHost1.Child = this._display1;
+            this.elementHost1.Child = this.display1;
             // 
             // UcMoleculeLabelEditor
             // 
@@ -192,6 +192,6 @@
         private System.Windows.Forms.SplitContainer OuterSplitContainer;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Integration.ElementHost elementHost1;
-        private Controls.DisplayControl _display1;
+        private Controls.DisplayControl display1;
     }
 }

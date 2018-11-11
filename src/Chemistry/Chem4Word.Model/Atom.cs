@@ -225,7 +225,7 @@ namespace Chem4Word.Model
                     {
                         if (Element.Symbol == "C")
                         {
-                            if (ShowSymbol | Degree <= 1)
+                            if (ShowSymbol || Degree <= 1)
                             {
                                 return "C";
                             }
