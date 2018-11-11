@@ -478,13 +478,32 @@ namespace Chem4Word
 
                                 if (dr == DialogResult.OK)
                                 {
+                                    model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
                                     CMLConverter cmlConverter = new CMLConverter();
                                     cml = cmlConverter.Export(model);
-                                    Word.ContentControl cc = ChemistryHelper.Insert2DChemistry(doc, cml, true);
-                                    if (cc != null)
+                                    if (model.AllAtoms.Any())
                                     {
-                                        // Move selection point into the Content Control which was just inserted
-                                        app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                        Word.ContentControl cc = ChemistryHelper.Insert2DChemistry(doc, cml, true);
+                                        if (cc != null)
+                                        {
+                                            // Move selection point into the Content Control which was just inserted
+                                            app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (model.Molecules.Any() && model.Molecules[0].ChemicalNames.Any())
+                                        {
+                                            Word.ContentControl cc = ChemistryHelper.Insert1DChemistry(doc,
+                                                model.Molecules[0].ChemicalNames[0].Name, false,
+                                                $"{model.Molecules[0].ChemicalNames[0].Id}:{model.CustomXmlPartGuid}");
+                                            doc.CustomXMLParts.Add(cml);
+                                            if (cc != null)
+                                            {
+                                                // Move selection point into the Content Control which was just inserted
+                                                app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -592,7 +611,7 @@ namespace Chem4Word
                                 if (beforeModel.AllAtoms.Count
                                     + beforeModel.AllBonds.Count == 0)
                                 {
-                                    UserInteractions.InformUser("This chemistry item has no 2D data to edit!\nPlease use the 'Edit Labels' button");
+                                    UserInteractions.InformUser("This chemistry item has no 2D data to edit!\nPlease use the 'Edit Labels' button.");
                                     return;
                                 }
                                 isNewDrawing = false;
@@ -1322,16 +1341,26 @@ namespace Chem4Word
                             {
                                 string cml = customXmlPart.XML;
                                 m = new CMLConverter().Import(cml);
-                                if (Globals.Chem4WordV3.LibraryNames == null)
+                                if (m.AllAtoms.Any())
                                 {
+                                    if (Globals.Chem4WordV3.LibraryNames == null)
+                                    {
+                                        Globals.Chem4WordV3.LoadNamesFromLibrary();
+                                    }
+
+                                    var lib = new Database.Library();
+                                    lib.ImportCml(cml);
+
+                                    // Re- Read the Library Names
                                     Globals.Chem4WordV3.LoadNamesFromLibrary();
+
+                                    UserInteractions.InformUser($"Structure '{m.ConciseFormula}' added into Library");
+                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure '{m.ConciseFormula}' added into Library");
                                 }
-
-                                var lib = new Database.Library();
-                                lib.ImportCml(cml);
-
-                                // Re- Read the Library Names
-                                Globals.Chem4WordV3.LoadNamesFromLibrary();
+                                else
+                                {
+                                    UserInteractions.InformUser("Only chemistry with Atoms can be saved into the library.");
+                                }
                             }
 
                             CustomTaskPane custTaskPane = null;
@@ -1347,9 +1376,6 @@ namespace Chem4Word
                             {
                                 (custTaskPane.Control as LibraryHost)?.Refresh();
                             }
-
-                            UserInteractions.InformUser($"Structure '{m?.ConciseFormula}' added into Library");
-                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Structure '{m?.ConciseFormula}' added into Library");
                         }
                     }
                 }
