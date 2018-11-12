@@ -206,54 +206,10 @@ namespace Chem4Word.UI.WPF
                 Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
                 PlugInComboItem pci = SelectEditorPlugIn.SelectedItem as PlugInComboItem;
-
-                Version browser = null;
-                try
-                {
-                    browser = new Forms.WebBrowser().Version;
-                }
-                catch (Exception)
-                {
-                    browser = null;
-                }
-
-                string previous = SelectEditorPlugIn.Text;
-                string selected = pci?.Name;
-
-                if (!string.IsNullOrEmpty(selected) && selected.Equals(Constants.DefaultEditorPlugIn800))
-                {
-                    if (browser != null && browser.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
-                    {
-                        int index = 0;
-                        foreach (IChem4WordEditor editor in Globals.Chem4WordV3.Editors)
-                        {
-                            if (editor.Name.Equals(previous))
-                            {
-                                _loading = true;
-                                SelectedEditorSettings.IsEnabled = editor.HasSettings;
-                                SelectedEditorPlugInDescription.Text = editor.Description;
-                                SelectEditorPlugIn.SelectedIndex = index;
-                                _loading = false;
-                                break;
-                            }
-                            index++;
-                        }
-                    }
-                    else
-                    {
-                        SystemOptions.SelectedEditorPlugIn = pci?.Name;
-                        SelectedEditorPlugInDescription.Text = pci?.Description;
-                        IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
-                        SelectedEditorSettings.IsEnabled = editor.HasSettings;
-                    }
-                }
-                else
-                {
-                    SystemOptions.SelectedEditorPlugIn = pci?.Name;
-                    SelectedEditorPlugInDescription.Text = pci?.Description;
-                    IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
-                    SelectedEditorSettings.IsEnabled = editor.HasSettings;
-                }
+                SystemOptions.SelectedEditorPlugIn = pci?.Name;
+                SelectedEditorPlugInDescription.Text = pci?.Description;
+                IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
+                SelectedEditorSettings.IsEnabled = editor.HasSettings;
 
                 Dirty = true;
             }
@@ -271,6 +227,7 @@ namespace Chem4Word.UI.WPF
                 SelectedRendererDescription.Text = pci?.Description;
                 IChem4WordRenderer renderer = Globals.Chem4WordV3.GetRendererPlugIn(pci.Name);
                 SelectedRendererSettings.IsEnabled = renderer.HasSettings;
+
                 Dirty = true;
             }
         }
@@ -614,36 +571,47 @@ namespace Chem4Word.UI.WPF
             SelectedRendererSettings.IsEnabled = false;
             SelectedSearcherSettings.IsEnabled = false;
 
-            string selectedEditor = SystemOptions.SelectedEditorPlugIn;
+
+            Version browser = null;
             try
             {
-                if (SystemOptions.SelectedEditorPlugIn.Equals(Constants.DefaultEditorPlugIn800))
-                {
-                    var browser = new Forms.WebBrowser().Version;
-                    if (browser.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
-                    {
-                        SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
-                    }
-                }
+                browser = new Forms.WebBrowser().Version;
             }
             catch
             {
-                //
+                browser = null;
             }
+
+            if (SystemOptions.SelectedEditorPlugIn.Equals(Constants.DefaultEditorPlugIn800))
+            {
+                if (browser?.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
+                {
+                    SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
+                }
+            }
+
+            string selectedEditor = SystemOptions.SelectedEditorPlugIn;
 
             foreach (IChem4WordEditor editor in Globals.Chem4WordV3.Editors)
             {
-                PlugInComboItem pci = new PlugInComboItem()
+                bool add = !(editor.Name.Equals(Constants.DefaultEditorPlugIn800)
+                             && browser?.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion);
+
+                if (add)
                 {
-                    Name = editor.Name,
-                    Description = editor.Description
-                };
-                int item = SelectEditorPlugIn.Items.Add(pci);
-                if (editor.Name.Equals(selectedEditor))
-                {
-                    SelectedEditorSettings.IsEnabled = editor.HasSettings;
-                    SelectedEditorPlugInDescription.Text = editor.Description;
-                    SelectEditorPlugIn.SelectedIndex = item;
+                    PlugInComboItem pci = new PlugInComboItem()
+                    {
+                        Name = editor.Name,
+                        Description = editor.Description
+                    };
+                    int item = SelectEditorPlugIn.Items.Add(pci);
+
+                    if (editor.Name.Equals(selectedEditor))
+                    {
+                        SelectedEditorSettings.IsEnabled = editor.HasSettings;
+                        SelectedEditorPlugInDescription.Text = editor.Description;
+                        SelectEditorPlugIn.SelectedIndex = item;
+                    }
                 }
             }
 

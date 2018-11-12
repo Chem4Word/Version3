@@ -350,7 +350,7 @@ namespace Chem4Word
                         {
                             SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
                             string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
-                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Patching Options file");
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "IE 10+ not detected; Switching to ChemDoodle Web 7.0.2");
                             File.WriteAllText(optionsFile, temp);
                         }
                     }
