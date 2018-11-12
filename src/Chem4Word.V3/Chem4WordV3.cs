@@ -346,7 +346,7 @@ namespace Chem4Word
                     if (SystemOptions.SelectedEditorPlugIn.Equals(Constants.DefaultEditorPlugIn800))
                     {
                         var browser = new WebBrowser().Version;
-                        if (browser.Major < 10)
+                        if (browser.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
                         {
                             SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
                             string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
