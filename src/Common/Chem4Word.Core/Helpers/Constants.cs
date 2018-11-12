@@ -51,6 +51,7 @@ namespace Chem4Word.Core.Helpers
         public const string Chem4WordSetupRegistryKey = @"SOFTWARE\Chem4Word V3\Setup";
         public const string Chem4WordUpdateRegistryKey = @"SOFTWARE\Chem4Word V3\Update";
 
+        // Bond length limits etc
         public const double MinimumBondLength = 5;
         public const double StandardBondLength = 20;
         public const double MaximumBondLength = 95;
