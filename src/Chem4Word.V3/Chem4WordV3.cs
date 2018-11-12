@@ -52,9 +52,9 @@ namespace Chem4Word
 
         public bool ChemistryAllowed = false;
         public string ChemistryProhibitedReason = "";
-        private string _LastContentControlAdded = "";
+        private string _lastContentControlAdded = "";
 
-        private bool ChemistrySelected = false;
+        private bool _chemistrySelected = false;
         private bool _markAsChemistryHandled = false;
         private int _rightClickEvents = 0;
 
@@ -966,7 +966,7 @@ namespace Chem4Word
                     SetButtonStates(ButtonState.CanInsert);
                 }
 
-                ChemistrySelected = chemistrySelected;
+                _chemistrySelected = chemistrySelected;
             }
             catch (Exception e)
             {
@@ -2205,7 +2205,7 @@ namespace Chem4Word
                 Debug.WriteLine($"{module.Replace("()", $"({sel.Document.Name})")}");
                 Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
 
-                if (EventsEnabled && ChemistrySelected)
+                if (EventsEnabled && _chemistrySelected)
                 {
                     CustomRibbon.PerformEdit();
                 }
@@ -2280,7 +2280,7 @@ namespace Chem4Word
                 string ccTag = NewContentControl.Tag;
                 if (!InUndoRedo && !string.IsNullOrEmpty(ccTag))
                 {
-                    if (!ccId.Equals(_LastContentControlAdded))
+                    if (!ccId.Equals(_lastContentControlAdded))
                     {
                         string message = $"ContentControl {ccId} added; Looking for structure {ccTag}";
                         Debug.WriteLine("  " + message);
@@ -2315,7 +2315,7 @@ namespace Chem4Word
                             }
                         }
 
-                        _LastContentControlAdded = ccId;
+                        _lastContentControlAdded = ccId;
                     }
                 }
             }
