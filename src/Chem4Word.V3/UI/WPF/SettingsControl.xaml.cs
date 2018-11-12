@@ -207,35 +207,35 @@ namespace Chem4Word.UI.WPF
 
                 PlugInComboItem pci = SelectEditorPlugIn.SelectedItem as PlugInComboItem;
 
+                Version browser = null;
                 try
                 {
-                    string previous = SelectEditorPlugIn.Text;
-                    string selected = pci?.Name;
-                    if (!string.IsNullOrEmpty(selected) && selected.Equals(Constants.DefaultEditorPlugIn800))
+                    browser = new Forms.WebBrowser().Version;
+                }
+                catch (Exception)
+                {
+                    browser = null;
+                }
+
+                string previous = SelectEditorPlugIn.Text;
+                string selected = pci?.Name;
+
+                if (!string.IsNullOrEmpty(selected) && selected.Equals(Constants.DefaultEditorPlugIn800))
+                {
+                    if (browser != null && browser.Major < 10)
                     {
-                        var browser = new Forms.WebBrowser().Version;
-                        if (browser.Major < 10)
+                        foreach (IChem4WordEditor editor in Globals.Chem4WordV3.Editors)
                         {
-                            foreach (IChem4WordEditor editor in Globals.Chem4WordV3.Editors)
+                            if (editor.Name.Equals(previous))
                             {
-                                if (editor.Name.Equals(previous))
-                                {
-                                    _loading = true;
-                                    int item = SelectEditorPlugIn.Items.Add(pci);
-                                    SelectedEditorSettings.IsEnabled = editor.HasSettings;
-                                    SelectedEditorPlugInDescription.Text = editor.Description;
-                                    SelectEditorPlugIn.SelectedIndex = item;
-                                    _loading = false;
-                                    break;
-                                }
+                                _loading = true;
+                                int item = SelectEditorPlugIn.Items.Add(pci);
+                                SelectedEditorSettings.IsEnabled = editor.HasSettings;
+                                SelectedEditorPlugInDescription.Text = editor.Description;
+                                SelectEditorPlugIn.SelectedIndex = item;
+                                _loading = false;
+                                break;
                             }
-                        }
-                        else
-                        {
-                            SystemOptions.SelectedEditorPlugIn = pci?.Name;
-                            SelectedEditorPlugInDescription.Text = pci?.Description;
-                            IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
-                            SelectedEditorSettings.IsEnabled = editor.HasSettings;
                         }
                     }
                     else
@@ -246,9 +246,12 @@ namespace Chem4Word.UI.WPF
                         SelectedEditorSettings.IsEnabled = editor.HasSettings;
                     }
                 }
-                catch
+                else
                 {
-                    //
+                    SystemOptions.SelectedEditorPlugIn = pci?.Name;
+                    SelectedEditorPlugInDescription.Text = pci?.Description;
+                    IChem4WordEditor editor = Globals.Chem4WordV3.GetEditorPlugIn(pci.Name);
+                    SelectedEditorSettings.IsEnabled = editor.HasSettings;
                 }
 
                 Dirty = true;
