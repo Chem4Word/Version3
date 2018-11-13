@@ -287,5 +287,12 @@ namespace Chem4WordUpdater
                 e.Cancel = true;
             }
         }
+
+        private void Updater_Load(object sender, EventArgs e)
+        {
+            // Move up and left by half the form size
+            Left = Left - Width / 2;
+            Top = Top - Height / 2;
+        }
     }
 }

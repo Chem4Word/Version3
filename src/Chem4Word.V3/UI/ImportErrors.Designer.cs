@@ -36,11 +36,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.OuterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.elementHost2 = new System.Windows.Forms.Integration.ElementHost();
+            this.display1 = new Chem4Word.Controls.DisplayControl();
             this.InnerSplitContainer = new System.Windows.Forms.SplitContainer();
             this.panelFormulae = new System.Windows.Forms.Panel();
             this.panelNames = new System.Windows.Forms.Panel();
-            this.elementHost2 = new System.Windows.Forms.Integration.ElementHost();
-            this._display = new Chem4Word.Controls.DisplayControl();
             ((System.ComponentModel.ISupportInitialize)(this.OuterSplitContainer)).BeginInit();
             this.OuterSplitContainer.Panel1.SuspendLayout();
             this.OuterSplitContainer.Panel2.SuspendLayout();
@@ -142,6 +142,17 @@
             this.panel1.Size = new System.Drawing.Size(373, 396);
             this.panel1.TabIndex = 0;
             // 
+            // elementHost2
+            // 
+            this.elementHost2.BackColor = System.Drawing.Color.White;
+            this.elementHost2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost2.Location = new System.Drawing.Point(0, 0);
+            this.elementHost2.Name = "elementHost2";
+            this.elementHost2.Size = new System.Drawing.Size(371, 394);
+            this.elementHost2.TabIndex = 0;
+            this.elementHost2.Text = "elementHost2";
+            this.elementHost2.Child = this.display1;
+            // 
             // InnerSplitContainer
             // 
             this.InnerSplitContainer.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -187,17 +198,6 @@
             this.panelNames.Size = new System.Drawing.Size(428, 205);
             this.panelNames.TabIndex = 2;
             // 
-            // elementHost2
-            // 
-            this.elementHost2.BackColor = System.Drawing.Color.White;
-            this.elementHost2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.elementHost2.Location = new System.Drawing.Point(0, 0);
-            this.elementHost2.Name = "elementHost2";
-            this.elementHost2.Size = new System.Drawing.Size(371, 394);
-            this.elementHost2.TabIndex = 0;
-            this.elementHost2.Text = "elementHost2";
-            this.elementHost2.Child = this._display;
-            // 
             // ImportErrors
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -241,7 +241,7 @@
         private System.Windows.Forms.SplitContainer OuterSplitContainer;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Integration.ElementHost elementHost2;
-        private Controls.DisplayControl _display;
+        private Controls.DisplayControl display1;
         public System.Windows.Forms.SplitContainer InnerSplitContainer;
         private System.Windows.Forms.Panel panelFormulae;
         private System.Windows.Forms.Panel panelNames;

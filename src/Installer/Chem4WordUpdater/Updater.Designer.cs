@@ -116,6 +116,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Chem4Word Updater";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Updater_FormClosing);
+            this.Load += new System.EventHandler(this.Updater_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

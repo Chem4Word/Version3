@@ -22,6 +22,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Model;
 using Chem4Word.Model.Converters.CML;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -181,29 +182,56 @@ namespace Chem4Word.Helpers
                     {
                         if (cc.ID.Equals(cci.Id))
                         {
-                            if (cci.Type.Equals("2D"))
-                            {
-                                cc.LockContents = false;
-                                cc.Title = Constants.ContentControlTitle;
-                                cc.Tag = target.Model.CustomXmlPartGuid;
-                                cc.LockContents = true;
+                            int start;
+                            bool isFormula;
+                            string source;
+                            string text;
 
-                                // ToDo: Regenerate converted 2D structures
-                            }
-                            else
+                            switch (cci.Type)
                             {
-                                cc.LockContents = false;
-                                cc.Range.Delete();
-                                int start = cc.Range.Start;
-                                cc.Delete();
+                                case "2D":
+                                    cc.LockContents = false;
+                                    cc.Title = Constants.ContentControlTitle;
+                                    cc.Tag = target.Model.CustomXmlPartGuid;
+                                    cc.LockContents = true;
 
-                                doc.Application.Selection.SetRange(start - 1, start - 1);
-                                bool isFormula = false;
-                                string source;
-                                string text = ChemistryHelper.GetInlineText(target.Model, cci.Type, ref isFormula, out source);
-                                Word.ContentControl ccn = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
-                                ChemistryHelper.Insert1D(ccn, text, isFormula, $"{cci.Type}:{target.Model.CustomXmlPartGuid}");
-                                ccn.LockContents = true;
+                                    // ToDo: Regenerate converted 2D structures
+                                    break;
+
+                                case "new":
+                                    cc.LockContents = false;
+                                    cc.Range.Delete();
+                                    start = cc.Range.Start;
+                                    cc.Delete();
+
+                                    doc.Application.Selection.SetRange(start - 1, start - 1);
+                                    var model = new Model.Model();
+                                    var molecule = new Molecule();
+                                    molecule.ChemicalNames.Add(new ChemicalName { Id = "m1.n1", Name = cci.Text, DictRef = Constants.Chem4WordUserSynonym});
+                                    model.Molecules.Add(molecule);
+                                    model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
+
+                                    var cmlConvertor = new CMLConverter();
+                                    doc.CustomXMLParts.Add(cmlConvertor.Export(model));
+
+                                    Word.ContentControl ccn = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+                                    ChemistryHelper.Insert1D(ccn, cci.Text, false, $"m1.n1:{model.CustomXmlPartGuid}");
+                                    ccn.LockContents = true;
+                                    break;
+
+                                default:
+                                    cc.LockContents = false;
+                                    cc.Range.Delete();
+                                    start = cc.Range.Start;
+                                    cc.Delete();
+
+                                    doc.Application.Selection.SetRange(start - 1, start - 1);
+                                    isFormula = false;
+                                    text = ChemistryHelper.GetInlineText(target.Model, cci.Type, ref isFormula, out source);
+                                    Word.ContentControl ccr = doc.ContentControls.Add(Word.WdContentControlType.wdContentControlRichText, ref _missing);
+                                    ChemistryHelper.Insert1D(ccr, text, isFormula, $"{cci.Type}:{target.Model.CustomXmlPartGuid}");
+                                    ccr.LockContents = true;
+                                    break;
                             }
                         }
                     }
@@ -373,8 +401,9 @@ namespace Chem4Word.Helpers
                                 }
                                 else
                                 {
-                                    // Default to overall concise formula
-                                    cci.Type = "c0";
+                                    // Default to flagging that new 1D molecule is to be created
+                                    cci.Type = "new";
+                                    cci.Text = dv;
 
                                     #region Find new style 1D code
 
@@ -446,5 +475,6 @@ namespace Chem4Word.Helpers
         public int Index { get; set; }
         public int Location { get; set; }
         public string Type { get; set; }
+        public string Text { get; set; }
     }
 }

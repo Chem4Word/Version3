@@ -15,14 +15,14 @@ namespace Chem4Word.Telemetry
 {
     public class TelemetryWriter : IChem4WordTelemetry
     {
-        private static int Counter;
-        private static AzureServiceBusWriter AzureServiceBusWriter;
+        private static int _counter;
+        private static AzureServiceBusWriter _azureServiceBusWriter;
         private static bool _systemInfoSent;
 
         private static SystemHelper _helper;
-        private static WmiHelper _wmihelper;
+        private static WmiHelper _wmiHelper;
 
-        private bool _permissionGranted;
+        private readonly bool _permissionGranted;
 
         public TelemetryWriter(bool permissionGranted)
         {
@@ -32,16 +32,16 @@ namespace Chem4Word.Telemetry
                 _helper = new SystemHelper();
             }
 
-            if (_wmihelper == null)
+            if (_wmiHelper == null)
             {
-                _wmihelper = new WmiHelper();
+                _wmiHelper = new WmiHelper();
             }
-            AzureServiceBusWriter = new AzureServiceBusWriter();
+            _azureServiceBusWriter = new AzureServiceBusWriter();
         }
 
         public void Write(string operation, string level, string message)
         {
-            Counter++;
+            _counter++;
 
             string unwanted = "Chem4Word.V3.";
             if (operation.StartsWith(unwanted))
@@ -59,7 +59,7 @@ namespace Chem4Word.Telemetry
                 operation = operation.Remove(0, unwanted.Length);
             }
 
-            string debugMessage = $"[{Counter}] {operation} - {level} - {message}";
+            string debugMessage = $"[{_counter}] {operation} - {level} - {message}";
             Debug.WriteLine(debugMessage);
 
             try
@@ -123,10 +123,10 @@ namespace Chem4Word.Telemetry
 #endif
 
             // Log Wmi Gathered Data
-            WritePrivate("StartUp", "Information", $"CPU: {_wmihelper.CpuName}");
-            WritePrivate("StartUp", "Information", $"CPU Cores: {_wmihelper.LogicalProcessors}");
-            WritePrivate("StartUp", "Information", $"CPU Speed: {_wmihelper.CpuSpeed}");
-            WritePrivate("StartUp", "Information", $"Physical Memory: {_wmihelper.PhysicalMemory}");
+            WritePrivate("StartUp", "Information", $"CPU: {_wmiHelper.CpuName}");
+            WritePrivate("StartUp", "Information", $"CPU Cores: {_wmiHelper.LogicalProcessors}");
+            WritePrivate("StartUp", "Information", $"CPU Speed: {_wmiHelper.CpuSpeed}");
+            WritePrivate("StartUp", "Information", $"Physical Memory: {_wmiHelper.PhysicalMemory}");
 
             // Log screen sizes
             WritePrivate("StartUp", "Information", $"Screens: {_helper.Screens}");
@@ -136,28 +136,24 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", $"Browser Version: {_helper.BrowserVersion}");
             WritePrivate("StartUp", "Information", _helper.DotNetVersion);
 
-            //if (Math.Abs(_helper.UtcOffset) > TimeSpan.FromMinutes(5).Ticks)
-            //{
-
             // Log UtcOffset
             WritePrivate("StartUp", "Information", $"Server UTC DateTime is {_helper.ServerUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
-            WritePrivate("StartUp", "Information", $"System UTC DateTime {_helper.SystemUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
+            WritePrivate("StartUp", "Information", $"System UTC DateTime is {_helper.SystemUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
 
-            WritePrivate("StartUp", "Information", $"Server Header[Date] is {_helper.ServerDateHeader}");
+            WritePrivate("StartUp", "Information", $"Server Header [Date] is {_helper.ServerDateHeader}");
             WritePrivate("StartUp", "Information", $"Server UTC DateTime raw is {_helper.ServerUtcDateRaw}");
 
-            WritePrivate("StartUp", "Information", $"Calculated UTC Offset {_helper.UtcOffset}");
+            WritePrivate("StartUp", "Information", $"Calculated UTC Offset is {_helper.UtcOffset}");
             if (_helper.UtcOffset > 0)
             {
                 TimeSpan delta = TimeSpan.FromTicks(_helper.UtcOffset);
-                WritePrivate("StartUp", "Information", $"System time is {delta} ahead of Server time");
+                WritePrivate("StartUp", "Information", $"System UTC DateTime is {delta} ahead of Server time");
             }
             if (_helper.UtcOffset < 0)
             {
                 TimeSpan delta = TimeSpan.FromTicks(0 - _helper.UtcOffset);
-                WritePrivate("StartUp", "Information", $"System time is {delta} behind Server time");
+                WritePrivate("StartUp", "Information", $"System UTC DateTime is {delta} behind Server time");
             }
-            //}
 
             // Log IP Address
             WritePrivate("StartUp", "Information", _helper.IpAddress);
@@ -181,7 +177,7 @@ namespace Chem4Word.Telemetry
             sbm.Level = level;
             sbm.Message = message;
             sbm.AssemblyVersionNumber = _helper.AssemblyVersionNumber;
-            AzureServiceBusWriter.QueueMessage(sbm);
+            _azureServiceBusWriter.QueueMessage(sbm);
         }
     }
 }

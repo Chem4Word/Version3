@@ -22,6 +22,7 @@ namespace Chem4Word.Core.Helpers
 
         public static string DefaultEditorPlugIn800 = "ChemDoodle Web Structure Editor V8.0.0";
         public static string DefaultEditorPlugIn702 = "ChemDoodle Web Structure Editor V7.0.2";
+        public static int ChemDoodleWeb800MinimumBrowserVersion = 10;
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
         public static string CmlNameSpaceCode = "cml";
@@ -50,6 +51,7 @@ namespace Chem4Word.Core.Helpers
         public const string Chem4WordSetupRegistryKey = @"SOFTWARE\Chem4Word V3\Setup";
         public const string Chem4WordUpdateRegistryKey = @"SOFTWARE\Chem4Word V3\Update";
 
+        // Bond length limits etc
         public const double MinimumBondLength = 5;
         public const double StandardBondLength = 20;
         public const double MaximumBondLength = 95;

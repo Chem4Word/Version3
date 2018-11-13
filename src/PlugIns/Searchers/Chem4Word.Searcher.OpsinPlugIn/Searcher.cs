@@ -30,7 +30,7 @@ namespace Chem4Word.Searcher.OpsinPlugIn
 
         public string ShortName => "Opsin";
         public string Name => "Opsin Search PlugIn";
-        public string Description => "Searches the PubChem public database";
+        public string Description => "Searches the Opsin public database";
         public Image Image => Resources.Opsin_Logo;
 
         public int DisplayOrder

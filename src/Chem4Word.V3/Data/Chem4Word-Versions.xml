@@ -3,6 +3,19 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.23 Release 10</Number>
+    <IsBeta>false</IsBeta>
+    <Released>13-Nov-2018</Released>
+    <Changes>
+      <Change>Allow import of 1D chemical object (no atoms only labels)</Change>
+      <Change>Fix conversion of 1D chemical object (no atoms only labels)</Change>
+      <Change>Force ChemDoodle Web 8.0.0 if IE browser version is less than 10.</Change>
+      <Change>Fix memory leak in ChemDoodle Web 8.0.0 Editor.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.23.Release.10.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.22 Release 9</Number>
     <IsBeta>false</IsBeta>
     <Released>31-Oct-2018</Released>
@@ -11,7 +24,6 @@
       <Change>Changes to UTC system time detection.</Change>
       <Change>Allow structure with No atoms</Change>
       <Change>Set Default editor to ChemDoodle Web 7.0.2 for new users if Windows 7 is detected</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.22.Release.9.msi</Url>
   </Version>

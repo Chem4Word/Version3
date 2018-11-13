@@ -27,7 +27,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
         public string Name => "ChemDoodle Web Structure Editor V8.0.0";
 
-        public string Description => "The standard free editor using the ChemDoodle Web JavaScript structure editor";
+        public string Description => "The standard free editor using the ChemDoodle Web 8.0.0 (JavaScript) structure editor";
 
         public bool HasSettings => true;
 
@@ -135,6 +135,8 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 {
                     Properties = new Dictionary<string, string>();
                     Cml = host.OutputValue;
+                    host.Close();
+                    host = null;
                 }
             }
             catch (Exception ex)

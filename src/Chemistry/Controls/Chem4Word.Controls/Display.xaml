@@ -36,25 +36,27 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.Resources>
                 <local:DoNothingConverter x:Key="DoNothingConverter" />
-                <LinearGradientBrush x:Key="HatchBrush"  MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
-                    <GradientStop Offset="0.00" Color="Black" />
-                    <GradientStop Offset="0.25" Color="Black" />
-                    <GradientStop Offset="0.25" Color="Transparent" />
-                    <GradientStop Offset="0.30" Color="Transparent" />
-                    <LinearGradientBrush.Transform>
-                        <RotateTransform Angle="{Binding Path=Angle, Mode=OneWay}" />
-                    </LinearGradientBrush.Transform>
-                </LinearGradientBrush>
-                <LinearGradientBrush x:Key="HighlightHatchBrush"  MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
-                    <GradientStop Offset="0.00" Color="DarkOrange" />
-                    <GradientStop Offset="0.25" Color="DarkOrange" />
-                    <GradientStop Offset="0.25" Color="Transparent" />
-                    <GradientStop Offset="0.30" Color="Transparent" />
-                    <LinearGradientBrush.Transform>
-                        <RotateTransform Angle="{Binding Path=Angle, Mode=OneWay}" />
-                    </LinearGradientBrush.Transform>
-                </LinearGradientBrush>
                 <DataTemplate DataType="{x:Type model:Bond}">
+                    <DataTemplate.Resources>
+                        <LinearGradientBrush x:Key="HatchBrush"  MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
+                            <GradientStop Offset="0.00" Color="Black" />
+                            <GradientStop Offset="0.25" Color="Black" />
+                            <GradientStop Offset="0.25" Color="Transparent" />
+                            <GradientStop Offset="0.30" Color="Transparent" />
+                            <LinearGradientBrush.Transform>
+                                <RotateTransform Angle="{Binding Path=Angle, Mode=OneWay}" />
+                            </LinearGradientBrush.Transform>
+                        </LinearGradientBrush>
+                        <LinearGradientBrush x:Key="HighlightHatchBrush"  MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
+                            <GradientStop Offset="0.00" Color="DarkOrange" />
+                            <GradientStop Offset="0.25" Color="DarkOrange" />
+                            <GradientStop Offset="0.25" Color="Transparent" />
+                            <GradientStop Offset="0.30" Color="Transparent" />
+                            <LinearGradientBrush.Transform>
+                                <RotateTransform Angle="{Binding Path=Angle, Mode=OneWay}" />
+                            </LinearGradientBrush.Transform>
+                        </LinearGradientBrush>
+                    </DataTemplate.Resources>
                     <view:BondShape
                         Name="BondShape"
                         DrawingCanvas="{Binding ElementName=ChemCanvas, Mode=OneTime}"

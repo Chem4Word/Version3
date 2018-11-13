@@ -46,9 +46,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
         private Stopwatch _sw = new Stopwatch();
 
-        public delegate void EventHandler(object sender, WpfEventArgs args);
-
-        public event EventHandler OnButtonClick;
+        public event EventHandler<WpfEventArgs> OnButtonClick;
 
         public Point TopLeft { get; set; }
 
@@ -77,9 +75,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
             try
             {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                System.Windows.Forms.Application.DoEvents();
+
                 if (!string.IsNullOrEmpty(StructureJson))
                 {
-                    Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                     _loading = true;
                     _sw.Start();
 
@@ -525,15 +525,11 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
             if (IsSingleMolecule)
             {
-                //SwitchToMulti.Visibility = Visibility.Visible;
-                //SwitchToSingle.Visibility = Visibility.Collapsed;
                 SwitchToSingle.IsChecked = true;
                 SwitchToMulti.IsChecked = false;
             }
             else
             {
-                //SwitchToMulti.Visibility = Visibility.Collapsed;
-                //SwitchToSingle.Visibility = Visibility.Visible;
                 SwitchToMulti.IsChecked = true;
                 SwitchToSingle.IsChecked = false;
             }
@@ -587,16 +583,12 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
         {
             if (IsSingleMolecule)
             {
-                //SwitchToMulti.Visibility = Visibility.Collapsed;
-                //SwitchToSingle.Visibility = Visibility.Visible;
                 SwitchToMulti.IsChecked = true;
                 SwitchToSingle.IsChecked = false;
                 IsSingleMolecule = false;
             }
             else
             {
-                //SwitchToMulti.Visibility = Visibility.Visible;
-                //SwitchToSingle.Visibility = Visibility.Collapsed;
                 SwitchToSingle.IsChecked = true;
                 SwitchToMulti.IsChecked = false;
                 IsSingleMolecule = true;

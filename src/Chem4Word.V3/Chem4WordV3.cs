@@ -52,8 +52,9 @@ namespace Chem4Word
 
         public bool ChemistryAllowed = false;
         public string ChemistryProhibitedReason = "";
+        private string _lastContentControlAdded = "";
 
-        private bool ChemistrySelected = false;
+        private bool _chemistrySelected = false;
         private bool _markAsChemistryHandled = false;
         private int _rightClickEvents = 0;
 
@@ -337,8 +338,28 @@ namespace Chem4Word
                 string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
                 bool isBeta = betaValue != null && bool.Parse(betaValue);
 
-                // Re-Initiallize Telemetry with granted permissions
+                // Re-Initialize Telemetry with granted permissions
                 Telemetry = new TelemetryWriter(isBeta || SystemOptions.TelemetryEnabled);
+
+                try
+                {
+                    if (SystemOptions.SelectedEditorPlugIn.Equals(Constants.DefaultEditorPlugIn800))
+                    {
+                        var browser = new WebBrowser().Version;
+                        if (browser.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
+                        {
+                            SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
+                            string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
+                            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "IE 10+ not detected; Switching to ChemDoodle Web 7.0.2");
+                            File.WriteAllText(optionsFile, temp);
+                        }
+                    }
+                }
+                catch
+                {
+                    //
+                }
+
             }
             catch (Exception ex)
             {
@@ -718,13 +739,45 @@ namespace Chem4Word
             // Remember to add corresponding code in DisableDocumentEvents()
 
             // ContentControlOnEnter Event Handler
-            wdoc.ContentControlOnEnter += OnContentControlOnEnter;
+            try
+            {
+                wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+                wdoc.ContentControlOnEnter += OnContentControlOnEnter;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlOnExit Event Handler
-            wdoc.ContentControlOnExit += OnContentControlOnExit;
+            try
+            {
+                wdoc.ContentControlOnExit -= OnContentControlOnExit;
+                wdoc.ContentControlOnExit += OnContentControlOnExit;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlBeforeDelete Event Handler
-            wdoc.ContentControlBeforeDelete += OnContentControlBeforeDelete;
+            try
+            {
+                wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+                wdoc.ContentControlBeforeDelete += OnContentControlBeforeDelete;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlAfterAdd Event Handler
-            wdoc.ContentControlAfterAdd += OnContentControlAfterAdd;
+            try
+            {
+                wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+                wdoc.ContentControlAfterAdd += OnContentControlAfterAdd;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
 
             EventsEnabled = true;
         }
@@ -747,13 +800,41 @@ namespace Chem4Word
             // Remember to add corresponding code in EnableDocumentEvents()
 
             // ContentControlOnEnter Event Handler
-            wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+            try
+            {
+                wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlOnExit Event Handler
-            wdoc.ContentControlOnExit -= OnContentControlOnExit;
+            try
+            {
+                wdoc.ContentControlOnExit -= OnContentControlOnExit;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlBeforeDelete Event Handler
-            wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+            try
+            {
+                wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
             // ContentControlAfterAdd Event Handler
-            wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+            try
+            {
+                wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private void SetButtonStates(ButtonState state)
@@ -885,7 +966,7 @@ namespace Chem4Word
                     SetButtonStates(ButtonState.CanInsert);
                 }
 
-                ChemistrySelected = chemistrySelected;
+                _chemistrySelected = chemistrySelected;
             }
             catch (Exception e)
             {
@@ -2124,7 +2205,7 @@ namespace Chem4Word
                 Debug.WriteLine($"{module.Replace("()", $"({sel.Document.Name})")}");
                 Debug.WriteLine("  Selection: from " + sel.Range.Start + " to " + sel.Range.End);
 
-                if (EventsEnabled && ChemistrySelected)
+                if (EventsEnabled && _chemistrySelected)
                 {
                     CustomRibbon.PerformEdit();
                 }
@@ -2195,39 +2276,46 @@ namespace Chem4Word
                     LoadOptions();
                 }
 
-                if (!InUndoRedo && !string.IsNullOrEmpty(NewContentControl?.Tag))
+                string ccId = NewContentControl.ID;
+                string ccTag = NewContentControl.Tag;
+                if (!InUndoRedo && !string.IsNullOrEmpty(ccTag))
                 {
-                    string message = $"ContentControl {NewContentControl?.ID} added; Looking for structure {NewContentControl?.Tag}";
-                    Debug.WriteLine("  " + message);
-                    Telemetry.Write(module, "Information", message);
+                    if (!ccId.Equals(_lastContentControlAdded))
+                    {
+                        string message = $"ContentControl {ccId} added; Looking for structure {ccTag}";
+                        Debug.WriteLine("  " + message);
+                        Telemetry.Write(module, "Information", message);
 
-                    Word.Document doc = NewContentControl.Application.ActiveDocument;
-                    Word.Application app = Globals.Chem4WordV3.Application;
-                    CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(NewContentControl?.Tag, app.ActiveDocument);
-                    if (cxml != null)
-                    {
-                        Telemetry.Write(module, "Information", "Found copy of " + NewContentControl?.Tag + " in this document.");
-                    }
-                    else
-                    {
-                        if (doc.Application.Documents.Count > 1)
+                        Word.Document doc = NewContentControl.Application.ActiveDocument;
+                        Word.Application app = Globals.Chem4WordV3.Application;
+                        CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(ccTag, app.ActiveDocument);
+                        if (cxml != null)
                         {
-                            Word.Application app1 = Globals.Chem4WordV3.Application;
-                            cxml = CustomXmlPartHelper.FindCustomXmlPart(NewContentControl?.Tag, app1.ActiveDocument);
-                            if (cxml != null)
+                            Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in this document.");
+                        }
+                        else
+                        {
+                            if (doc.Application.Documents.Count > 1)
                             {
-                                Telemetry.Write(module, "Information", "Found copy of " + NewContentControl?.Tag + " in other document, adding it into this.");
+                                Word.Application app1 = Globals.Chem4WordV3.Application;
+                                cxml = CustomXmlPartHelper.FindCustomXmlPart(ccTag, app1.ActiveDocument);
+                                if (cxml != null)
+                                {
+                                    Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in other document, adding it into this.");
 
-                                // Generate new molecule Guid and apply it
-                                string newGuid = Guid.NewGuid().ToString("N");
-                                NewContentControl.Tag = newGuid;
+                                    // Generate new molecule Guid and apply it
+                                    string newGuid = Guid.NewGuid().ToString("N");
+                                    NewContentControl.Tag = newGuid;
 
-                                CMLConverter cmlConverter = new CMLConverter();
-                                Model.Model model = cmlConverter.Import(cxml.XML);
-                                model.CustomXmlPartGuid = newGuid;
-                                doc.CustomXMLParts.Add(cmlConverter.Export(model));
+                                    CMLConverter cmlConverter = new CMLConverter();
+                                    Model.Model model = cmlConverter.Import(cxml.XML);
+                                    model.CustomXmlPartGuid = newGuid;
+                                    doc.CustomXMLParts.Add(cmlConverter.Export(model));
+                                }
                             }
                         }
+
+                        _lastContentControlAdded = ccId;
                     }
                 }
             }
