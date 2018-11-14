@@ -52,7 +52,7 @@
             this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBox1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(12, 36);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(760, 384);
@@ -87,7 +87,7 @@
             this.linkReleasesPage.AutoSize = true;
             this.linkReleasesPage.Location = new System.Drawing.Point(12, 431);
             this.linkReleasesPage.Name = "linkReleasesPage";
-            this.linkReleasesPage.Size = new System.Drawing.Size(360, 13);
+            this.linkReleasesPage.Size = new System.Drawing.Size(375, 13);
             this.linkReleasesPage.TabIndex = 5;
             this.linkReleasesPage.TabStop = true;
             this.linkReleasesPage.Text = "Click here to download directly from the releases page if automatic update fails";
