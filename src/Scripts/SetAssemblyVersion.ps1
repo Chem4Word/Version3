@@ -126,7 +126,7 @@ CD "$($pwd)"
 # ---------------------------------------------------------- #
 
 # Update Assembly Info files
-Write-Host "Searching for files in $($pwd)" -ForegroundColor Yellow
+Write-Host "Searching for files in $($pwd)\$($path)" -ForegroundColor Green
 Update-AllAssemblyInfoFiles "$($version).$($delta.Days)"
 
 $number = "$($version) $($name)"
@@ -135,7 +135,8 @@ $number = "$($version) $($name)"
 
 # Update This-Version.xml
 Write-Host " Updating 'This-Version.xml'" -ForegroundColor Yellow
-$thisVersionFile = "..\Chem4Word.V3\Data\This-Version.xml"
+$thisVersionFile = "$($pwd)\..\Chem4Word.V3\Data\This-Version.xml"
+Write-Host "$($thisVersionFile)" -ForegroundColor Green
 
 $xml = [xml](Get-Content $thisVersionFile)
 $xml.Version.Number = $number
@@ -147,7 +148,8 @@ $xml.Save($thisVersionFile)
 
 # Update Product.wxs
 Write-Host " Updating 'Product.wxs'" -ForegroundColor Yellow
-$wixFile = "..\Installer\WiXInstaller\Product.wxs"
+$wixFile = "$($pwd)\..\Installer\WiXInstaller\Product.wxs"
+Write-Host "$($wixFile)" -ForegroundColor Green
 
 $xml = [xml](Get-Content $wixFile)
 $xml.Wix.Product.Version = "$($version).$($delta.Days)"
@@ -157,8 +159,9 @@ $xml.Save($wixFile)
 # ---------------------------------------------------------- #
 
 # Update Wix-Installer.wixproj
-Write-Host " Updating 'Wix-Installer.wixprojs'" -ForegroundColor Yellow
-$wixProj = "..\Installer\WiXInstaller\Wix-Installer.wixproj"
+Write-Host " Updating 'Wix-Installer.wixproj'" -ForegroundColor Yellow
+$wixProj = "$($pwd)\..\Installer\WiXInstaller\Wix-Installer.wixproj"
+Write-Host "$($wixProj)" -ForegroundColor Green
 
 $xml = [xml](Get-Content $wixProj)
 $dottedname = $name.Replace(" ", ".")
@@ -169,7 +172,9 @@ $xml.Save($wixProj)
 
 Write-Host " Updating 'SignFiles.cmd'" -ForegroundColor Yellow
 
-$file = "..\Scripts\SignFiles.cmd"
+$file = "$($pwd)\..\Scripts\SignFiles.cmd"
+Write-Host "$($file)" -ForegroundColor Green
+
 $findPattern = 'set release=Chem4Word-Setup.*'
 $replaceWith = "set release=Chem4Word-Setup.$($version).$($dottedname).msi"
 #(Get-Content $file).Replace($findPattern, $replaceWith) | Set-Content $file
