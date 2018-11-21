@@ -359,7 +359,6 @@ namespace Chem4Word
                 {
                     //
                 }
-
             }
             catch (Exception ex)
             {

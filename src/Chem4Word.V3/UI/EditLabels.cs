@@ -10,14 +10,13 @@ using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
 using Chem4Word.Model;
-using Chem4Word.Model.Converters;
+using Chem4Word.Model.Converters.CML;
 using Chem4Word.UI.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using Chem4Word.Model.Converters.CML;
 
 namespace Chem4Word.UI
 {

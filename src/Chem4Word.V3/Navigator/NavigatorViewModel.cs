@@ -7,7 +7,7 @@
 
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
-using Chem4Word.Model.Converters;
+using Chem4Word.Model.Converters.CML;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using System;
@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using Chem4Word.Model.Converters.CML;
 using ContentControl = Microsoft.Office.Interop.Word.ContentControl;
 
 namespace Chem4Word.Navigator

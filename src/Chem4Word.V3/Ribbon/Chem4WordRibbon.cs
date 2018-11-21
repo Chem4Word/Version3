@@ -11,10 +11,13 @@ using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
 using Chem4Word.Library;
 using Chem4Word.Model;
-using Chem4Word.Model.Converters;
+using Chem4Word.Model.Converters.CML;
+using Chem4Word.Model.Converters.MDL;
 using Chem4Word.Model.Geometry;
 using Chem4Word.Navigator;
+using Chem4Word.Telemetry;
 using Chem4Word.UI;
+using Chem4Word.UI.WPF;
 using Chem4Word.WebServices;
 using IChem4Word.Contracts;
 using Microsoft.Office.Core;
@@ -27,10 +30,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using Chem4Word.Model.Converters.CML;
-using Chem4Word.Model.Converters.MDL;
-using Chem4Word.Telemetry;
-using Chem4Word.UI.WPF;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
@@ -691,7 +690,7 @@ namespace Chem4Word
                                 }
                             }
 
-                            #endregion Copy old formulae and labels to new model if molecule Id and Concise Formula match
+                            #endregion Copy old formulae and labels to new model and count matched molecues
 
                             bool showLabelEditor = afterModel.Molecules.Count != matchedMolecules;
 
@@ -757,7 +756,7 @@ namespace Chem4Word
                                     }
                                     catch (Exception e)
                                     {
-                                        Globals.Chem4WordV3.Telemetry.Write(module,"Exception",$"{e.ToString()}");
+                                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"{e.ToString()}");
                                     }
                                 }
 

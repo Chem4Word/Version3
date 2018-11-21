@@ -5,9 +5,9 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using System;
 using Chem4Word.Core.Helpers;
 using Newtonsoft.Json;
+using System;
 using System.Windows;
 
 namespace Chem4Word

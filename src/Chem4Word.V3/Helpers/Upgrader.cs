@@ -7,7 +7,8 @@
 
 using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
-using Chem4Word.Model.Converters;
+using Chem4Word.Model;
+using Chem4Word.Model.Converters.CML;
 using Microsoft.Office.Core;
 using System;
 using System.Collections;
@@ -22,8 +23,6 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Chem4Word.Model;
-using Chem4Word.Model.Converters.CML;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace Chem4Word.Helpers
@@ -207,7 +206,7 @@ namespace Chem4Word.Helpers
                                     doc.Application.Selection.SetRange(start - 1, start - 1);
                                     var model = new Model.Model();
                                     var molecule = new Molecule();
-                                    molecule.ChemicalNames.Add(new ChemicalName { Id = "m1.n1", Name = cci.Text, DictRef = Constants.Chem4WordUserSynonym});
+                                    molecule.ChemicalNames.Add(new ChemicalName { Id = "m1.n1", Name = cci.Text, DictRef = Constants.Chem4WordUserSynonym });
                                     model.Molecules.Add(molecule);
                                     model.CustomXmlPartGuid = Guid.NewGuid().ToString("N");
 

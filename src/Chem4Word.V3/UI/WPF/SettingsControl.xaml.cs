@@ -22,7 +22,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Newtonsoft.Json;
 using Forms = System.Windows.Forms;
 
 namespace Chem4Word.UI.WPF
@@ -570,7 +569,6 @@ namespace Chem4Word.UI.WPF
             SelectedEditorSettings.IsEnabled = false;
             SelectedRendererSettings.IsEnabled = false;
             SelectedSearcherSettings.IsEnabled = false;
-
 
             Version browser = null;
             try

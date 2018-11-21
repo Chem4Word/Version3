@@ -55,10 +55,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Viewbox
-                        Grid.Row="0" 
+                        Grid.Row="0"
                         Grid.Column="0"
-                        Width="15" 
-                        Height="15" 
+                        Width="15"
+                        Height="15"
                         Margin="0"
                         Stretch="Uniform">
                         <Ellipse Width="10" Height="10" />
