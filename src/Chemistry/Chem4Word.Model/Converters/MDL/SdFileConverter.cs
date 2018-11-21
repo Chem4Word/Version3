@@ -5,12 +5,12 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Core.Helpers;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Chem4Word.Core.Helpers;
-using Newtonsoft.Json;
 
 namespace Chem4Word.Model.Converters.MDL
 {

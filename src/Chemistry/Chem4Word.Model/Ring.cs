@@ -109,8 +109,8 @@ namespace Chem4Word.Model
                                 select new
                                 {
                                     Bondlist = from n in a.Neighbours
-                                        where Atoms.Contains(n)
-                                        select new { Bond = a.BondBetween(n) }
+                                               where Atoms.Contains(n)
+                                               select new { Bond = a.BondBetween(n) }
                                 };
 
                 //and then flatten it
@@ -236,8 +236,7 @@ namespace Chem4Word.Model
             }
         }
 
-        #endregion properties
-
+        #endregion Properties
 
         #region Methods
 

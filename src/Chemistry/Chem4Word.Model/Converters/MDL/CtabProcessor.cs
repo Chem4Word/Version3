@@ -5,6 +5,7 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +13,6 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
-using Chem4Word.Model.Enums;
 
 namespace Chem4Word.Model.Converters.MDL
 {
