@@ -82,13 +82,13 @@ namespace Chem4Word.Core.UI.Forms
 
                 if (DialogResult == DialogResult.OK)
                 {
-                    if (!string.IsNullOrEmpty(EmailAddress.Text))
+                    if (!string.IsNullOrEmpty(UserEmailAddress.Text))
                     {
-                        _telemetry.Write(_operation, "Exception(Data)", EmailAddress.Text);
+                        _telemetry.Write(_operation, "Exception(Data)", UserEmailAddress.Text);
                     }
-                    if (!string.IsNullOrEmpty(richTextBox1.Text))
+                    if (!string.IsNullOrEmpty(UserComments.Text))
                     {
-                        _telemetry.Write(_operation, "Exception(Data)", richTextBox1.Text);
+                        _telemetry.Write(_operation, "Exception(Data)", UserComments.Text);
                     }
                 }
             }
