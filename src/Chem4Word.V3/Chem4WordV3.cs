@@ -836,7 +836,7 @@ namespace Chem4Word
             }
         }
 
-        private void SetButtonStates(ButtonState state)
+        public void SetButtonStates(ButtonState state)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
@@ -940,9 +940,11 @@ namespace Chem4Word
             try
             {
                 Word.Document doc = sel.Application.ActiveDocument;
+                Debug.WriteLine($"Document: {doc.Name} Selection From {sel.Range.Start} to {sel.Range.End}");
 
                 foreach (Word.ContentControl cc in doc.ContentControls)
                 {
+                    Debug.WriteLine($"CC {cc.Tag} Selection From {cc.Range.Start} to {cc.Range.End}");
                     if (cc.Range.Start <= sel.Range.Start && cc.Range.End >= sel.Range.End)
                     {
                         if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
@@ -1601,12 +1603,14 @@ namespace Chem4Word
 
                         if (docxMode)
                         {
-                            SetButtonStates(ButtonState.CanInsert);
+                            EvaluateChemistryAllowed();
+                            SelectChemistry(doc.Application.Selection);
                         }
                         else
                         {
                             SetButtonStates(ButtonState.NoDocument);
                         }
+
                     }
                 }
             }
@@ -2234,6 +2238,8 @@ namespace Chem4Word
             try
             {
                 Debug.WriteLine($"{module.Replace("()", $"({doc.Name})")}");
+
+                EvaluateChemistryAllowed();
 
                 // Deliberate crash to test Error Reporting
                 //int ii = 2;
