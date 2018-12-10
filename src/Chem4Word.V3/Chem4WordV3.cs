@@ -836,7 +836,7 @@ namespace Chem4Word
             }
         }
 
-        public void SetButtonStates(ButtonState state)
+        private void SetButtonStates(ButtonState state)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
