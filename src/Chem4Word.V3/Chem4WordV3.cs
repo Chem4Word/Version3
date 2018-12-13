@@ -990,7 +990,6 @@ namespace Chem4Word
                     else
                     {
                         SetButtonStates(ButtonState.NoDocument);
-                        ChemistryProhibitedReason = "selection contains at least one content control";
                     }
                 }
 
@@ -1946,6 +1945,7 @@ namespace Chem4Word
                             }
                         }
 
+                        // ToDo: Detect if selection contains CC
                         if (allowed)
                         {
                             Word.WdContentControlType? contentControlType = null;
