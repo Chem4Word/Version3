@@ -940,6 +940,7 @@ namespace Chem4Word
             try
             {
                 Word.Document doc = sel.Application.ActiveDocument;
+                int ccCount = sel.ContentControls.Count;
                 Debug.WriteLine($"SelectChemistry() Document: {doc.Name} Selection from {sel.Range.Start} to {sel.Range.End}");
                 Debug.WriteLine($"SelectChemistry() Document: {doc.Name} Selection has {sel.ContentControls.Count} CCs");
 
@@ -982,7 +983,15 @@ namespace Chem4Word
                 }
                 else
                 {
-                    SetButtonStates(ButtonState.CanInsert);
+                    if (ccCount == 0)
+                    {
+                        SetButtonStates(ButtonState.CanInsert);
+                    }
+                    else
+                    {
+                        SetButtonStates(ButtonState.NoDocument);
+                        ChemistryProhibitedReason = "selection contains at least one content control";
+                    }
                 }
 
                 _chemistrySelected = chemistrySelected;
