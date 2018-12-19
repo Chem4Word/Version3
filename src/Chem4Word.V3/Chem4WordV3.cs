@@ -1948,6 +1948,29 @@ namespace Chem4Word
                         // ToDo: Detect if selection contains CC
                         if (allowed)
                         {
+                            int ccCount = sel.ContentControls.Count;
+                            if (ccCount > 1)
+                            {
+                                allowed = false;
+                                ChemistryProhibitedReason = "more than one ContentControl is selected";
+                            }
+                        }
+
+                        if (allowed)
+                        {
+                            foreach (Word.ContentControl ccd in doc.ContentControls)
+                            {
+                                if (sel.Range.Start < ccd.Range.Start - 1 && sel.Range.End > ccd.Range.End + 1)
+                                {
+                                    allowed = false;
+                                    ChemistryProhibitedReason = "selection contains more than just a ContentControl";
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (allowed)
+                        {
                             Word.WdContentControlType? contentControlType = null;
                             string title = "";
                             foreach (Word.ContentControl ccd in doc.ContentControls)
@@ -1956,6 +1979,7 @@ namespace Chem4Word
                                 {
                                     contentControlType = ccd.Type;
                                     title = ccd.Title;
+                                    break;
                                 }
                             }
 
