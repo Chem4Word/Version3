@@ -457,7 +457,6 @@ namespace Chem4Word
                                 dr = DialogResult.OK;
                                 if (model.AllErrors.Count > 0 || model.AllWarnings.Count > 0)
                                 {
-                                    //Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", mol);
                                     if (model.AllErrors.Count > 0)
                                     {
                                         Globals.Chem4WordV3.Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, model.AllErrors));

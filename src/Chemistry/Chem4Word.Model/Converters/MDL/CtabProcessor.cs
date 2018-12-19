@@ -42,9 +42,16 @@ namespace Chem4Word.Model.Converters.MDL
                 while (!reader.EndOfStream)
                 {
                     Counts counts = ReadCtabHeader(reader);
-                    if (!string.IsNullOrEmpty(counts.Message) && counts.Message.Contains("Unsupported"))
+                    if (!string.IsNullOrEmpty(counts.Message))
                     {
-                        result = SdfState.Unsupported;
+                        if (counts.Message.Contains("Unsupported"))
+                        {
+                            result = SdfState.Unsupported;
+                        }
+                        else
+                        {
+                            result = SdfState.Error;
+                        }
                         message = counts.Message;
                         break;
                     }
@@ -119,16 +126,23 @@ namespace Chem4Word.Model.Converters.MDL
             // Counts
             string counts = SdFileConverter.GetNextLine(reader); //reader.ReadLine();
 
-            try
+            if (counts.ToLower().Contains("v2000"))
             {
-                result.Atoms = ParseInteger(counts, 0, 3);
-                result.Bonds = ParseInteger(counts, 3, 3);
-                result.Version = GetSubString(counts, 34, 5).ToUpper();
+                try
+                {
+                    result.Atoms = ParseInteger(counts, 0, 3);
+                    result.Bonds = ParseInteger(counts, 3, 3);
+                    result.Version = GetSubString(counts, 34, 5).ToUpper();
+                }
+                catch (Exception ex)
+                {
+                    result.Message = $"Exception {ex.Message}";
+                    Debug.WriteLine(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                result.Message = $"Exception {ex.Message}";
-                Debug.WriteLine(ex.Message);
+                result.Message = "Line containing atom and bond counts not found!";
             }
 
             return result;
