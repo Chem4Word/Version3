@@ -1945,7 +1945,6 @@ namespace Chem4Word
                             }
                         }
 
-                        // ToDo: Detect if selection contains CC
                         if (allowed)
                         {
                             int ccCount = sel.ContentControls.Count;
