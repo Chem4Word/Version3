@@ -650,7 +650,15 @@ namespace Chem4Word.UI.WPF
 
             #region Tab 2
 
-            Chem4WordWebServiceUri.Text = SystemOptions.Chem4WordWebServiceUri;
+            string uri = SystemOptions.Chem4WordWebServiceUri;
+            if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+            {
+                uri = Constants.DefaultChem4WordWebServiceUri;
+                SystemOptions.Chem4WordWebServiceUri = uri;
+                Dirty = true;
+            }
+
+            Chem4WordWebServiceUri.Text = uri;
 
             #endregion Tab 2
 
