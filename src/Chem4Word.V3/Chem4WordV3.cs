@@ -1959,7 +1959,7 @@ namespace Chem4Word
                         {
                             foreach (Word.ContentControl ccd in doc.ContentControls)
                             {
-                                if (sel.Range.Start < ccd.Range.Start - 1 && sel.Range.End > ccd.Range.End + 1)
+                                if (sel.Range.Start <= ccd.Range.Start - 1 && sel.Range.End >= ccd.Range.End + 1)
                                 {
                                     allowed = false;
                                     ChemistryProhibitedReason = "selection contains more than just a ContentControl";

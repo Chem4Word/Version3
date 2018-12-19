@@ -468,6 +468,7 @@ namespace Chem4Word
 
                                     ImportErrors f = new ImportErrors();
                                     f.TopLeft = Globals.Chem4WordV3.WordTopLeft;
+                                    model.ScaleToAverageBondLength(40);
                                     f.Model = model;
                                     dr = f.ShowDialog();
                                 }
