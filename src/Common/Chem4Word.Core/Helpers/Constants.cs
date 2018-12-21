@@ -24,7 +24,7 @@ namespace Chem4Word.Core.Helpers
 
         public static string DefaultEditorPlugIn800 = "ChemDoodle Web Structure Editor V8.0.0";
         public static string DefaultEditorPlugIn702 = "ChemDoodle Web Structure Editor V7.0.2";
-        public static int ChemDoodleWeb800MinimumBrowserVersion = 10;
+        public static int ChemDoodleWeb800MinimumBrowserVersion = 11;
         public static string DefaultRendererPlugIn = "Open Office Xml Renderer V3";
 
         public static string CmlNameSpaceCode = "cml";
