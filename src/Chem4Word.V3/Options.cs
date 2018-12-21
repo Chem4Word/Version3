@@ -9,6 +9,7 @@ using Chem4Word.Core.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace Chem4Word
 {
@@ -83,9 +84,18 @@ namespace Chem4Word
             // User Options
             TelemetryEnabled = true;
 
-            var os = Environment.OSVersion;
-            if (os.VersionString.Contains("Windows 7")
-                || os.Version.Major == 6 && os.Version.Minor == 1)
+            Version browser = null;
+            try
+            {
+                browser = new WebBrowser().Version;
+            }
+            catch
+            {
+                browser = null;
+            }
+
+            // Force CDW 702 if IE < 11
+            if (browser?.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
             {
                 SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
             }
