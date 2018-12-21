@@ -61,7 +61,7 @@ namespace Chem4Word
 
                 string tabLabel = "Chemistry";
 #if DEBUG
-                tabLabel += " (Debug 3.0)";
+                tabLabel += $" (Debug {Constants.Chem4WordVersion})";
 #endif
                 if (Globals.Chem4WordV3.WordVersion == 2013)
                 {
@@ -1799,7 +1799,7 @@ namespace Chem4Word
                         string[] parts = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value.Split(' ');
                         string temp = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;
                         int idx = temp.IndexOf(" ");
-                        fa.VersionString = $"Chem4Word V3 {temp.Substring(idx + 1)} [{fvi.FileVersion}]";
+                        fa.VersionString = $"Chem4Word V{Constants.Chem4WordVersion} {temp.Substring(idx + 1)} [{fvi.FileVersion}]";
                     }
                     else
                     {
