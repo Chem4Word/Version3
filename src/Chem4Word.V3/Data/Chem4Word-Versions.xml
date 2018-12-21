@@ -5,12 +5,12 @@
   <Version>
     <Number>3.0.24 Release 11</Number>
     <IsBeta>false</IsBeta>
-    <Released>31-Dec-2018</Released>
+    <Released>21-Dec-2018</Released>
     <Changes>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
-      <Change>.</Change>
+      <Change>Better reporting of MOLFile and SDFile import errors.</Change>
+      <Change>Fix detection of Chemistry selection when switching documents.</Change>
+      <Change>Prevent Out of Memory Exception by limiting import from SDFile to first 16 structures.</Change>
+      <Change>Fix blank Uri exception when calling our Chemical Services.</Change>
       <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.24.Release.11.msi</Url>
