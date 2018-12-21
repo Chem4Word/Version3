@@ -169,7 +169,7 @@ namespace Chem4Word.Helpers
             }
             else
             {
-                Globals.Chem4WordV3.Telemetry.Write(module, "Error", $"Failed to parse resource 'Data.This-Version.xml'");
+                Globals.Chem4WordV3.Telemetry.Write(module, "Error", "Failed to parse resource 'Data.This-Version.xml'");
             }
 
             return updateRequired;
@@ -191,7 +191,7 @@ namespace Chem4Word.Helpers
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            string VersionsFile = "files3/Chem4Word-Versions.xml";
+            string VersionsFile = $"{Constants.Chem4WordVersionFiles}/Chem4Word-Versions.xml";
             string PrimaryDomain = "https://www.chem4word.co.uk";
             string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
             string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";

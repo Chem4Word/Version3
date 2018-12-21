@@ -5,6 +5,8 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Core.Helpers;
+using Chem4Word.Telemetry;
 using IChem4Word.Contracts;
 using Newtonsoft.Json;
 using System;
@@ -13,8 +15,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using Chem4Word.Core.Helpers;
-using Chem4Word.Telemetry;
 
 namespace Chem4Word.WebServices
 {
@@ -30,7 +30,12 @@ namespace Chem4Word.WebServices
             Telemetry = telemetry;
 
             // http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
-            var sp = ServicePointManager.FindServicePoint(new Uri(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri));
+            string uri = Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri;
+            if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+            {
+                uri = Constants.DefaultChem4WordWebServiceUri;
+            }
+            var sp = ServicePointManager.FindServicePoint(new Uri(uri));
             sp.ConnectionLeaseTimeout = 60 * 1000; // 1 minute
         }
 
@@ -63,7 +68,12 @@ namespace Chem4Word.WebServices
 
                     try
                     {
-                        var response = httpClient.PostAsync(Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri, content).Result;
+                        string uri = Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri;
+                        if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+                        {
+                            uri = Constants.DefaultChem4WordWebServiceUri;
+                        }
+                        var response = httpClient.PostAsync(uri, content).Result;
                         if (response.Content != null)
                         {
                             var responseContent = response.Content;

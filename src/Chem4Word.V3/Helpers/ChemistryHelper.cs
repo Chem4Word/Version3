@@ -5,12 +5,12 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using System;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Model;
 using Chem4Word.Model.Converters.CML;
 using IChem4Word.Contracts;
 using Microsoft.Office.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -461,9 +461,9 @@ namespace Chem4Word.Helpers
 
             // Using $"{}" to coerce null to empty string
             List<string> targets = (from Word.ContentControl ccs in doc.ContentControls
-                orderby ccs.Range.Start
-                where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Contains(guidString)
-                select ccs.Tag).ToList();
+                                    orderby ccs.Range.Start
+                                    where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Contains(guidString)
+                                    select ccs.Tag).ToList();
 
             return targets;
         }
@@ -474,9 +474,9 @@ namespace Chem4Word.Helpers
 
             // Using $"{}" to coerce null to empty string
             List<string> targets = (from Word.ContentControl ccs in doc.ContentControls
-                orderby ccs.Range.Start
-                where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Equals(guidString)
-                select ccs.Tag).ToList();
+                                    orderby ccs.Range.Start
+                                    where $"{ccs.Title}" == Constants.ContentControlTitle & $"{ccs.Tag}".Equals(guidString)
+                                    select ccs.Tag).ToList();
 
             return targets;
         }

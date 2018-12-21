@@ -3,15 +3,27 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.24 Release 11</Number>
+    <IsBeta>false</IsBeta>
+    <Released>21-Dec-2018</Released>
+    <Changes>
+      <Change>Better reporting of MOLFile and SDFile import errors.</Change>
+      <Change>Fix detection of Chemistry selection when switching documents.</Change>
+      <Change>Prevent Out of Memory Exception by limiting import from SDFile to first 16 structures.</Change>
+      <Change>Fix blank Uri exception when calling our Chemical Services.</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.24.Release.11.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.23 Release 10</Number>
     <IsBeta>false</IsBeta>
     <Released>13-Nov-2018</Released>
     <Changes>
       <Change>Allow import of 1D chemical object (no atoms only labels)</Change>
       <Change>Fix conversion of 1D chemical object (no atoms only labels)</Change>
-      <Change>Force ChemDoodle Web 8.0.0 if IE browser version is less than 10.</Change>
+      <Change>Force ChemDoodle Web 7.0.2 if IE browser version is less than 10.</Change>
       <Change>Fix memory leak in ChemDoodle Web 8.0.0 Editor.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.23.Release.10.msi</Url>
   </Version>

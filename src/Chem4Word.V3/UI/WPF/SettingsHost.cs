@@ -125,6 +125,7 @@ namespace Chem4Word.UI.WPF
 
             return output;
         }
+
         private string StripTrailingSlash(string uri)
         {
             if (uri.EndsWith("/"))

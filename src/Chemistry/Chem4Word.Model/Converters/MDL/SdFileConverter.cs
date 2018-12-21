@@ -5,12 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using Chem4Word.Core.Helpers;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Chem4Word.Core.Helpers;
-using Newtonsoft.Json;
 
 namespace Chem4Word.Model.Converters.MDL
 {
@@ -77,12 +78,19 @@ namespace Chem4Word.Model.Converters.MDL
                             case SdfState.Null:
                             case SdfState.EndOfData:
                                 molecule = new Molecule();
-                                //NOTE:  do NOT add an empty molecule to the model.  Add it AFTER it's been populated
-                                //model.Molecules.Add(molecule);
                                 CtabProcessor pct = new CtabProcessor();
                                 state = pct.ImportFromStream(sr, molecule, out message);
-                                //THIS is where you should add the molecule!
+                                if (state == SdfState.Error)
+                                {
+                                    model.GeneralErrors.Add(message);
+                                }
+                                //Ensure we add the molecule after it's populated
                                 model.Molecules.Add(molecule);
+                                if (model.Molecules.Count >= 16)
+                                {
+                                    model.GeneralErrors.Add("This file has greater than 16 structures!");
+                                    sr.ReadToEnd();
+                                }
                                 break;
 
                             case SdfState.EndOfCtab:
@@ -92,12 +100,12 @@ namespace Chem4Word.Model.Converters.MDL
 
                             case SdfState.Error:
                                 // Swallow rest of stream
-                                string dumpOnError = sr.ReadToEnd();
+                                sr.ReadToEnd();
                                 break;
 
                             case SdfState.Unsupported:
                                 // Swallow rest of stream
-                                string dumponUnsupported = sr.ReadToEnd();
+                                sr.ReadToEnd();
                                 break;
                         }
                     }

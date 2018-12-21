@@ -52,10 +52,10 @@
                  TextWrapping="Wrap"
                  Validation.ErrorTemplate="{StaticResource NameValTemplate}">
             <TextBox.Text>
-                <Binding 
+                <Binding
                     Converter="{StaticResource NameConverter}"
                     Mode="TwoWay"
-                    Path="Name" 
+                    Path="Name"
                     UpdateSourceTrigger="LostFocus">
                     <Binding.ValidationRules>
                         <local:NameValidationRule />
@@ -63,7 +63,7 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Expander 
+        <Expander
             Grid.Row="1"
             Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
             BorderBrush="Transparent"
@@ -76,14 +76,14 @@
             </Expander.Header>
             <ListBox Name="OtherNameList"
                      Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
-                     BorderBrush="Transparent" 
-                     BorderThickness="0" 
-                     Foreground="{StaticResource Chem4WordBlue}" 
+                     BorderBrush="Transparent"
+                     BorderThickness="0"
+                     Foreground="{StaticResource Chem4WordBlue}"
                      ItemsSource="{Binding Path=OtherNames}" />
         </Expander>
-        <nav:FormulaBlock x:Name="FormulaBlock" 
-            Grid.Row="2" 
-            FontSize="16" 
+        <nav:FormulaBlock x:Name="FormulaBlock"
+            Grid.Row="2"
+            FontSize="16"
             Foreground="{StaticResource Chem4WordBlue}"
             Formula="{Binding Path=Formula, Converter={StaticResource DoNothingConverter}}" />
         <controls:Display Name="Display"
@@ -97,7 +97,7 @@
         <Grid
             Grid.Row="4"
             Margin="0"
-            HorizontalAlignment="Stretch" >
+            HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
