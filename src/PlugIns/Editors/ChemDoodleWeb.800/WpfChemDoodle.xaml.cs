@@ -633,6 +633,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             }
             catch (Exception ex)
             {
+                Telemetry.Write(module, "Exception", $"Calling JavaScript function {functionName}");
                 Telemetry.Write(module, "Exception", ex.Message);
                 Telemetry.Write(module, "Exception", ex.StackTrace);
             }
