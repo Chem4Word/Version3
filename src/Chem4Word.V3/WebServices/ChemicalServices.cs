@@ -57,10 +57,6 @@ namespace Chem4Word.WebServices
                     formData.Add(new KeyValuePair<string, string>("machine", SystemHelper.GetMachineId()));
                     formData.Add(new KeyValuePair<string, string>("version", Globals.Chem4WordV3.AddInInfo.AssemblyVersionNumber));
 
-#if DEBUG
-                    formData.Add(new KeyValuePair<string, string>("debug", "true"));
-#endif
-
                     var content = new FormUrlEncodedContent(formData);
 
                     httpClient.Timeout = TimeSpan.FromSeconds(15);

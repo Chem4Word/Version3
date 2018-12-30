@@ -559,21 +559,29 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 if (File.Exists(otherVersion))
                 {
                     Telemetry.Write(module, "Information", "Deleting CDW 702 resources from disk");
+
                     File.Delete(otherVersion);
+
                     DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
 
                 if (File.Exists(refreshFile))
                 {
                     Telemetry.Write(module, "Information", "Refreshing CDW 800 resources");
+
                     File.Delete(refreshFile);
-                    File.Delete(markerFile);
+                    if (File.Exists(markerFile))
+                    {
+                        File.Delete(markerFile);
+                    }
+
                     DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
 
                 if (!File.Exists(markerFile))
                 {
-                    Telemetry.Write(module, "Information", "Writing resources to disk");
+                    Telemetry.Write(module, "Information", "Writing CDW 800 resources to disk");
+
                     File.WriteAllText(markerFile, "Delete this file to refresh ChemDoodle Web");
 
                     Stream stream = ResourceHelper.GetBinaryResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.ChemDoodleWeb_800.zip");
