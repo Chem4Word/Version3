@@ -308,7 +308,18 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
 
         private object ExecuteJavaScript(string p_FunctionName, params object[] p_Args)
         {
-            return browser.Document.InvokeScript(p_FunctionName, p_Args);
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            try
+            {
+                return browser.Document.InvokeScript(p_FunctionName, p_Args);
+            }
+            catch (Exception ex)
+            {
+                Telemetry.Write(module, "Exception", $"Calling JavaScript function {p_FunctionName}");
+                Telemetry.Write(module, "Exception", ex.Message);
+                Telemetry.Write(module, "Exception", ex.StackTrace);
+                return null;
+            }
         }
 
         private void btnOk_Click(object sender, EventArgs e)

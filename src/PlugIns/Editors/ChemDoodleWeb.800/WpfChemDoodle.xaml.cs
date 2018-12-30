@@ -7,24 +7,25 @@
 
 using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
 using Chem4Word.Core.UI.Wpf;
 using Chem4Word.Model.Converters.Json;
 using IChem4Word.Contracts;
 using Ionic.Zip;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Navigation;
-using Chem4Word.Core.UI.Forms;
-using Newtonsoft.Json;
 using Control = System.Windows.Forms.Control;
 using Path = System.IO.Path;
 using UserControl = System.Windows.Controls.UserControl;
@@ -43,6 +44,7 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
 
         private bool _loading;
         private bool _saveSettings;
+        private int _javaScriptErrorCount = 0;
 
         private Stopwatch _sw = new Stopwatch();
 
@@ -100,6 +102,9 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
+                // Allow extra 500ms for document to load
+                Thread.Sleep(500);
+
                 if (!string.IsNullOrEmpty(StructureJson))
                 {
                     var version = ExecuteJavaScript("GetVersion");
@@ -482,6 +487,9 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             {
                 _loading = true;
 
+                // Allow extra 500ms for form to load
+                Thread.Sleep(500);
+
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
@@ -544,18 +552,36 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
+                string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-800.txt");
                 string otherVersion = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-702.txt");
+                string refreshFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-Refresh.txt");
+
                 if (File.Exists(otherVersion))
                 {
                     Telemetry.Write(module, "Information", "Deleting CDW 702 resources from disk");
+
                     File.Delete(otherVersion);
+
                     DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
 
-                string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-800.txt");
+                if (File.Exists(refreshFile))
+                {
+                    Telemetry.Write(module, "Information", "Refreshing CDW 800 resources");
+
+                    File.Delete(refreshFile);
+                    if (File.Exists(markerFile))
+                    {
+                        File.Delete(markerFile);
+                    }
+
+                    DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
+                }
+
                 if (!File.Exists(markerFile))
                 {
-                    Telemetry.Write(module, "Information", "Writing resources to disk");
+                    Telemetry.Write(module, "Information", "Writing CDW 800 resources to disk");
+
                     File.WriteAllText(markerFile, "Delete this file to refresh ChemDoodle Web");
 
                     Stream stream = ResourceHelper.GetBinaryResource(Assembly.GetExecutingAssembly(), "ChemDoodleWeb.ChemDoodleWeb_800.zip");
@@ -633,8 +659,18 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
             }
             catch (Exception ex)
             {
+                Telemetry.Write(module, "Exception", $"Calling JavaScript function {functionName}");
                 Telemetry.Write(module, "Exception", ex.Message);
                 Telemetry.Write(module, "Exception", ex.StackTrace);
+
+                _javaScriptErrorCount++;
+
+                if (_javaScriptErrorCount > 5)
+                {
+                    // Create refresh request file
+                    string markerFile = Path.Combine(ProductAppDataPath, "ChemDoodle-Web-Refresh.txt");
+                    File.WriteAllText(markerFile, "Refresh of ChemDoodle Web is required");
+                }
             }
 
             return result;

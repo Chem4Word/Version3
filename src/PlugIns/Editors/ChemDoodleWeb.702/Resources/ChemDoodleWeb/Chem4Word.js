@@ -5,26 +5,34 @@ var clientWidth;
 var clientHeight;
 
 function resize_canvas() {
-    clientWidth = document.getElementById('container').clientWidth;
-    clientHeight = document.getElementById('container').clientHeight;
+    try {
+        clientWidth = document.getElementById('container').clientWidth;
+        clientHeight = document.getElementById('container').clientHeight;
 
-    sketcher.resize(clientWidth - X_OFFSET, clientHeight - Y_OFFSET);
+        sketcher.resize(clientWidth - X_OFFSET, clientHeight - Y_OFFSET);
+    } catch (e) {
+        //
+    }
 }
 
 function setup_sketcher() {
-    // changes the default JMol color of hydrogen so it appears on white backgrounds
-    ChemDoodle.ELEMENT['H'].jmolColor = '#808080';
-    // darkens the default JMol color of sulphur so it appears on white backgrounds
-    ChemDoodle.ELEMENT['S'].jmolColor = '#808000';
+    try {
+        // changes the default JMol color of hydrogen so it appears on white backgrounds
+        ChemDoodle.ELEMENT['H'].jmolColor = '#808080';
+        // darkens the default JMol color of sulphur so it appears on white backgrounds
+        ChemDoodle.ELEMENT['S'].jmolColor = '#808000';
 
-    // sets terminal carbon labels to display
-    sketcher.specs.atoms_displayTerminalCarbonLabels_2D = true;
-    // sets atom labels to be colored by JMol colors, which are easy to recognize
-    sketcher.specs.atoms_useJMOLColors = true;
-    // enables overlap clear widths, so that some depth is introduced to overlapping bonds
-    sketcher.specs.bonds_clearOverlaps_2D = true;
-    // sets the shape color to improve contrast when drawing figures
-    sketcher.specs.shapes_color = '#c10000';
+        // sets terminal carbon labels to display
+        sketcher.specs.atoms_displayTerminalCarbonLabels_2D = true;
+        // sets atom labels to be colored by JMol colors, which are easy to recognize
+        sketcher.specs.atoms_useJMOLColors = true;
+        // enables overlap clear widths, so that some depth is introduced to overlapping bonds
+        sketcher.specs.bonds_clearOverlaps_2D = true;
+        // sets the shape color to improve contrast when drawing figures
+        sketcher.specs.shapes_color = '#c10000';
+    } catch (e) {
+        //
+    }
 }
 
 // Converts from degrees to radians.
@@ -164,10 +172,8 @@ function AddExplicitHydrogensToMol(mol) {
         avBondLength = 20;
     }
 
-    atoms = mol.atoms;
-    bonds = mol.bonds;
-    atomIdx = atoms.length;
-    bondIdx = bonds.length;
+    var atoms = mol.atoms;
+    var bonds = mol.bonds;
 
     for (var i = 0, ii = atoms.length; i < ii; i++) {
         AddHydrogensToAtom(atoms, bonds, avBondLength, atoms[i]);
