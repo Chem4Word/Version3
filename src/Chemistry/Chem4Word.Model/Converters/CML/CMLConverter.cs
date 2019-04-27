@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -333,7 +333,6 @@ namespace Chem4Word.Model.Converters.CML
                 newModel.RefreshMolecules();
                 foreach (Molecule molecule in newModel.Molecules)
                 {
-                    molecule.RebuildRings();
                     // Force ConciseFormula to be calculated
                     molecule.ConciseFormula = molecule.CalculatedFormula();
                 }

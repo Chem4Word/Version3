@@ -103,6 +103,10 @@
       <Project>{bdfee6c1-3f34-4200-9100-c543bf4c3783}</Project>
       <Name>Chem4Word.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Chem4Word.Core\Chem4Word.Core.csproj">
+      <Project>{2E7B1308-8149-4B03-9CB9-48E0B7151560}</Project>
+      <Name>Chem4Word.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

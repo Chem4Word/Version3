@@ -1,13 +1,13 @@
 ﻿# Set Build Numbers
 
-.\SetAssemblyVersion.ps1 -version 3.0.24 -name "Release 11" -released "31-Dec-2018" -path ..
+.\SetAssemblyVersion.ps1 -version 3.0.26 -name "Release 14" -released "01-Jan-2019" -path ..
 
 # GetReady.cmd
 set release=Chem4Word-Setup.3.0.2.Beta.2.msi
 set working=C:\Temp
 
 pushd %working%
-copy Tools\DigiCertUtil.exe %working%
+
 copy Chem4Word.V3\Data\Chem4Word-Versions.xml %working%
 copy Chem4Word.V3\Data\index.html %working%
 

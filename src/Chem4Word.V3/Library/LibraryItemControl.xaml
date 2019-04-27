@@ -18,14 +18,17 @@
                 <ResourceDictionary Source="LibraryResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <local:DefaultNameConverter x:Key="NameConverter" />
-            <controls:DoNothingConverter x:Key="DoNothingConverter" />
+
             <ControlTemplate x:Key="NameValTemplate">
                 <DockPanel>
-                    <TextBlock FontSize="20" Foreground="Red"><Bold> ! </Bold></TextBlock>
+                    <TextBlock
+                        FontSize="20"
+                        Foreground="Red"><Bold>!</Bold></TextBlock>
                     <AdornedElementPlaceholder />
                 </DockPanel>
             </ControlTemplate>
-            <Style x:Key="textBoxInError" TargetType="{x:Type TextBox}">
+            <Style x:Key="TextBoxInError"
+                TargetType="{x:Type TextBox}">
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="true">
                         <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
@@ -34,7 +37,11 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Name="MainGrid" Margin="20,0,0,0">
+    <UserControl.Background>
+        <SolidColorBrush Color="{x:Static SystemColors.WindowColor}" />
+    </UserControl.Background>
+    <Grid Name="MainGrid"
+        Margin="20,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -43,24 +50,20 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBox x:Name="NameBox"
-                 Width="{Binding ElementName=MainGrid, Path=ActualWidth}"
-                 Height="Auto"
-                 FontSize="16"
-                 Foreground="{StaticResource Chem4WordBlue}"
-                 Style="{StaticResource textBoxInError}"
-                 TextChanged="NameBox_TextChanged"
-                 TextWrapping="Wrap"
-                 Validation.ErrorTemplate="{StaticResource NameValTemplate}">
+            Width="{Binding ElementName=MainGrid, Path=ActualWidth}"
+            Height="Auto"
+            FontSize="16"
+            Foreground="{StaticResource Chem4WordBlue}"
+            Style="{StaticResource TextBoxInError}"
+            TextChanged="NameBox_TextChanged"
+            TextWrapping="Wrap"
+            Validation.ErrorTemplate="{StaticResource NameValTemplate}">
             <TextBox.Text>
                 <Binding
                     Converter="{StaticResource NameConverter}"
                     Mode="TwoWay"
                     Path="Name"
-                    UpdateSourceTrigger="LostFocus">
-                    <Binding.ValidationRules>
-                        <local:NameValidationRule />
-                    </Binding.ValidationRules>
-                </Binding>
+                    UpdateSourceTrigger="LostFocus" />
             </TextBox.Text>
         </TextBox>
         <Expander
@@ -69,31 +72,36 @@
             BorderBrush="Transparent"
             BorderThickness="0"
             Foreground="{StaticResource Chem4WordBlue}"
-             IsExpanded="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}"
+            IsExpanded="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}"
             IsHitTestVisible="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}">
             <Expander.Header>
-                <TextBlock Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}" Foreground="{StaticResource Chem4WordBlue}">Other Names</TextBlock>
+                <TextBlock
+                    Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
+                    Foreground="{StaticResource Chem4WordBlue}">
+                    Other Names
+                </TextBlock>
             </Expander.Header>
             <ListBox Name="OtherNameList"
-                     Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
-                     BorderBrush="Transparent"
-                     BorderThickness="0"
-                     Foreground="{StaticResource Chem4WordBlue}"
-                     ItemsSource="{Binding Path=OtherNames}" />
+                Background="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Background}"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Foreground="{StaticResource Chem4WordBlue}"
+                ItemsSource="{Binding Path=OtherNames}" />
         </Expander>
         <nav:FormulaBlock x:Name="FormulaBlock"
             Grid.Row="2"
             FontSize="16"
             Foreground="{StaticResource Chem4WordBlue}"
-            Formula="{Binding Path=Formula, Converter={StaticResource DoNothingConverter}}" />
+            Formula="{Binding Path=Formula}" />
         <controls:Display Name="Display"
-                Grid.Row="3"
-                Width="Auto"
-                Height="150"
-                Margin="8"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                Chemistry="{Binding Path=XML}" />
+            Grid.Row="3"
+            Width="Auto"
+            Height="150"
+            Margin="8"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            Background="{Binding RelativeSource={RelativeSource AncestorType=local:LibraryItemControl}, Path=Background}"
+            Chemistry="{Binding Path=XML}" />
         <Grid
             Grid.Row="4"
             Margin="0"

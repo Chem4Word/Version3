@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -559,22 +559,15 @@ namespace Chem4Word.Editor.ChemDoodleWeb800
                 if (File.Exists(otherVersion))
                 {
                     Telemetry.Write(module, "Information", "Deleting CDW 702 resources from disk");
-
                     File.Delete(otherVersion);
-
                     DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
 
                 if (File.Exists(refreshFile))
                 {
                     Telemetry.Write(module, "Information", "Refreshing CDW 800 resources");
-
                     File.Delete(refreshFile);
-                    if (File.Exists(markerFile))
-                    {
-                        File.Delete(markerFile);
-                    }
-
+                    File.Delete(markerFile);
                     DelTree(Path.Combine(ProductAppDataPath, "ChemDoodleWeb"));
                 }
 

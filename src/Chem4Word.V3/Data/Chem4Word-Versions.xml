@@ -3,13 +3,25 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.26 Release 14</Number>
+    <IsBeta>false</IsBeta>
+    <Released>27-Apr-2019</Released>
+    <Changes>
+      <Change>Detect if content control being added is ours (by examining it's tag) before trying to find it.</Change>
+      <Change>Fix Show As dropdown list of 1D labels, when a 1D structure selected.</Change>
+      <Change>Fix positioning of aromatic bond lines.</Change>
+      <Change>Update copyright to 2019</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.26.Release.14.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.25 Release 12</Number>
     <IsBeta>false</IsBeta>
     <Released>30-Dec-2018</Released>
     <Changes>
       <Change>Fix inability to double click on structures to invoke editor.</Change>
       <Change>Greater than 5 JavaScript errors in ChemDoodle Web 800 triggers refresh of deployed editor.</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.25.Release.12.msi</Url>
   </Version>

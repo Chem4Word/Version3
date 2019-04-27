@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -253,9 +253,15 @@ namespace Chem4Word
                             CMLConverter conv = new CMLConverter();
                             Model.Model model = conv.Import(cml);
 
-                            if (model.Molecules.Count > 1)
+                            if (model.Molecules.Count > 0)
                             {
-                                if (model.AllAtoms.Count > 0)
+                                int allAtomsCount = 0;
+                                foreach (var mol in model.Molecules)
+                                {
+                                    allAtomsCount = mol.Atoms.Count;
+                                }
+
+                                if (allAtomsCount > 0)
                                 {
                                     // Add 2D menu Item
                                     RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
@@ -269,17 +275,20 @@ namespace Chem4Word
                                     ribbonButton.Click += OnRenderAsButtonClick;
                                     ShowAsMenu.Items.Add(ribbonButton);
 
-                                    // Concise Formula
-                                    ribbonButton = Factory.CreateRibbonButton();
-                                    ribbonButton.Tag = "c0";
-                                    if (prefix.Equals(ribbonButton.Tag))
+                                    if (model.Molecules.Count > 1)
                                     {
-                                        ribbonButton.Image = Properties.Resources.SmallTick;
+                                        // Overall Concise Formula
+                                        ribbonButton = Factory.CreateRibbonButton();
+                                        ribbonButton.Tag = "c0";
+                                        if (prefix.Equals(ribbonButton.Tag))
+                                        {
+                                            ribbonButton.Image = Properties.Resources.SmallTick;
+                                        }
+                                        ribbonButton.Label = model.ConciseFormula;
+                                        ribbonButton.SuperTip = "Render as overall concise formula";
+                                        ribbonButton.Click += OnRenderAsButtonClick;
+                                        ShowAsMenu.Items.Add(ribbonButton);
                                     }
-                                    ribbonButton.Label = model.ConciseFormula;
-                                    ribbonButton.SuperTip = "Render as concise formula";
-                                    ribbonButton.Click += OnRenderAsButtonClick;
-                                    ShowAsMenu.Items.Add(ribbonButton);
                                 }
                             }
 
@@ -288,7 +297,7 @@ namespace Chem4Word
                                 RibbonSeparator separator = this.Factory.CreateRibbonSeparator();
                                 ShowAsMenu.Items.Add(separator);
 
-                                if (mol.AllAtoms.Count > 0)
+                                if (mol.Atoms.Count > 0)
                                 {
                                     // Concise Formula
                                     RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
@@ -320,7 +329,6 @@ namespace Chem4Word
                                 }
 
                                 // Chemical Names
-
                                 foreach (ChemicalName n in mol.ChemicalNames)
                                 {
                                     RibbonButton ribbonButton = this.Factory.CreateRibbonButton();
@@ -537,7 +545,7 @@ namespace Chem4Word
 
             try
             {
-                this.RibbonUI.ActivateTab(Chem4WordV3.ControlId.ToString());
+                RibbonUI.ActivateTab(Chem4WordV3.ControlId.ToString());
             }
             //catch (Exception ex)
             //{
@@ -740,21 +748,24 @@ namespace Chem4Word
                                         if (csr?.Properties != null && csr.Properties.Any())
                                         {
                                             var first = csr.Properties[0];
-                                            if (!string.IsNullOrEmpty(first.InchiKey))
+                                            if (first != null)
                                             {
-                                                synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
-                                            }
-                                            if (!string.IsNullOrEmpty(first.Formula))
-                                            {
-                                                synonyms.Add(Constants.Chem4WordResolverFormulaName, first.Formula);
-                                            }
-                                            if (!string.IsNullOrEmpty(first.Name))
-                                            {
-                                                synonyms.Add(Constants.Chem4WordResolverIupacName, first.Name);
-                                            }
-                                            if (!string.IsNullOrEmpty(first.Smiles))
-                                            {
-                                                synonyms.Add(Constants.Chem4WordResolverSmilesName, first.Smiles);
+                                                if (!string.IsNullOrEmpty(first.InchiKey))
+                                                {
+                                                    synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
+                                                }
+                                                if (!string.IsNullOrEmpty(first.Formula))
+                                                {
+                                                    synonyms.Add(Constants.Chem4WordResolverFormulaName, first.Formula);
+                                                }
+                                                if (!string.IsNullOrEmpty(first.Name))
+                                                {
+                                                    synonyms.Add(Constants.Chem4WordResolverIupacName, first.Name);
+                                                }
+                                                if (!string.IsNullOrEmpty(first.Smiles))
+                                                {
+                                                    synonyms.Add(Constants.Chem4WordResolverSmilesName, first.Smiles);
+                                                }
                                             }
                                         }
                                     }
@@ -880,10 +891,6 @@ namespace Chem4Word
 
                             string afterCml = cmlConverter.Export(afterModel);
 
-                            if (Globals.Chem4WordV3.SystemOptions == null)
-                            {
-                                Globals.Chem4WordV3.LoadOptions();
-                            }
                             Globals.Chem4WordV3.SystemOptions.WordTopLeft = Globals.Chem4WordV3.WordTopLeft;
                             IChem4WordRenderer renderer =
                                 Globals.Chem4WordV3.GetRendererPlugIn(

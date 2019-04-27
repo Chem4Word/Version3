@@ -292,6 +292,7 @@
       <DependentUpon>TagBlock.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TaskPaneHelper.cs" />
+    <Compile Include="Navigator\NavigatorSupport.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

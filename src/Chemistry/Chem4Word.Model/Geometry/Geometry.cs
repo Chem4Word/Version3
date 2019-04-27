@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -225,7 +225,8 @@ namespace Chem4Word.Model.Geometry
         }
 
         /// <summary>
-        /// Determines whether two line segments intersect
+        /// Determines whether two line segments intersect.
+        /// Used mainly for determining cis/trans geometry of double bonds
         /// </summary>
         /// <param name="segment1Start">Point at which first segment starts</param>
         /// <param name="segment1End">Point at which first segment ends</param>
@@ -247,10 +248,13 @@ namespace Chem4Word.Model.Geometry
 
         /// <summary>
         /// intersects two straight line segments.  Returns two values that indicate
-        /// how far along the segments the intersection takes place
+        /// how far along the segments the intersection takes place.
+        /// Values between 0 and 1 for both segments indicate the lines cross
+        /// Values between 0 and 1 for ONE segment indicates that the projection
+        /// of the other segment intersects it
         /// </summary>
         /// <param name="t">proportion along the line of the first segment</param>
-        /// <param name="u">proportion along the line of the second segmnt</param>
+        /// <param name="u">proportion along the line of the second segment</param>
         /// <param name="segment1Start">what it says</param>
         /// <param name="segment1End">what it says</param>
         /// <param name="segment2Start">what it says</param>
@@ -264,6 +268,7 @@ namespace Chem4Word.Model.Geometry
             u = Determinant(segment1End - segment1Start, segment2Start - segment1Start) / det;
         }
 
+        // ReSharper disable once InconsistentNaming
         public static CompassPoints SnapTo2EW(double angleFromNorth)
         {
             if (angleFromNorth >= 0 || angleFromNorth <= -180)
@@ -274,6 +279,7 @@ namespace Chem4Word.Model.Geometry
             return CompassPoints.West;
         }
 
+        // ReSharper disable once InconsistentNaming
         public static CompassPoints SnapTo4NESW(double angleFromNorth)
         {
             if (angleFromNorth >= -45 && angleFromNorth <= 45)

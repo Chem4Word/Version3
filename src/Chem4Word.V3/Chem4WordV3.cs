@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -11,6 +11,7 @@ using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
 using Chem4Word.Library;
 using Chem4Word.Model.Converters.CML;
+using Chem4Word.Navigator;
 using Chem4Word.Telemetry;
 using IChem4Word.Contracts;
 using Microsoft.Office.Core;
@@ -24,6 +25,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -357,11 +359,57 @@ namespace Chem4Word
                         var browser = new WebBrowser().Version;
                         if (browser.Major < Constants.ChemDoodleWeb800MinimumBrowserVersion)
                         {
+                            Telemetry.Write(module, "Information", "IE 10+ not detected; Switching to ChemDoodle Web 7.0.2");
                             SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
                             string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
-                            Telemetry.Write(module, "Information", "IE 10+ not detected; Switching to ChemDoodle Web 7.0.2");
                             File.WriteAllText(optionsFile, temp);
                         }
+                    }
+                }
+                catch
+                {
+                    //
+                }
+
+                try
+                {
+                    bool settingsChanged = false;
+
+                    if (string.IsNullOrEmpty(SystemOptions.SelectedEditorPlugIn))
+                    {
+                        SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
+                    }
+                    else
+                    {
+                        var editor = GetEditorPlugIn(SystemOptions.SelectedEditorPlugIn);
+                        if (editor == null)
+                        {
+                            SystemOptions.SelectedEditorPlugIn = Constants.DefaultEditorPlugIn702;
+                            Telemetry.Write(module, "Information", $"Setting editor to {SystemOptions.SelectedEditorPlugIn}");
+                            settingsChanged = true;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(SystemOptions.SelectedRendererPlugIn))
+                    {
+                        SystemOptions.SelectedRendererPlugIn = Constants.DefaultRendererPlugIn;
+                    }
+                    else
+                    {
+                        var renderer = GetRendererPlugIn(SystemOptions.SelectedRendererPlugIn);
+                        if (renderer == null)
+                        {
+                            SystemOptions.SelectedRendererPlugIn = Constants.DefaultRendererPlugIn;
+                            Telemetry.Write(module, "Information", $"Setting renderer to {SystemOptions.SelectedRendererPlugIn}");
+                            settingsChanged = true;
+                        }
+                    }
+
+                    if (settingsChanged)
+                    {
+                        Telemetry.Write(module, "Information", "Saving revised settings");
+                        string temp = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
+                        File.WriteAllText(optionsFile, temp);
                     }
                 }
                 catch
@@ -964,6 +1012,7 @@ namespace Chem4Word
                         if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
                             //Debug.WriteLine($"  Existing Selected Chemistry");
+                            NavigatorSupport.SelectNavigatorItem(CustomXmlPartHelper.GuidFromTag(cc.Tag));
                             chemistrySelected = true;
                         }
                         break;
@@ -980,6 +1029,7 @@ namespace Chem4Word
                             //Word.Selection s = doc.Application.Selection;
                             //Debug.WriteLine($"  SelectChemistry() New Selected Range is {s.Range.Start - 1} to {s.Range.End + 1}");
 #endif
+                            NavigatorSupport.SelectNavigatorItem(CustomXmlPartHelper.GuidFromTag(cc.Tag));
                             chemistrySelected = true;
                         }
                         break;
@@ -2201,44 +2251,50 @@ namespace Chem4Word
 
                 string ccId = NewContentControl.ID;
                 string ccTag = NewContentControl.Tag;
+
                 if (!InUndoRedo && !string.IsNullOrEmpty(ccTag))
                 {
-                    if (!ccId.Equals(_lastContentControlAdded))
+                    var regex = @"^[0-9a-fmn.:]+$";
+                    Match match = Regex.Match(ccTag, regex, RegexOptions.IgnoreCase);
+                    if (match.Success)
                     {
-                        string message = $"ContentControl {ccId} added; Looking for structure {ccTag}";
-                        Debug.WriteLine("  " + message);
-                        Telemetry.Write(module, "Information", message);
+                        if (!ccId.Equals(_lastContentControlAdded))
+                        {
+                            string message = $"ContentControl {ccId} added; Looking for structure {ccTag}";
+                            Debug.WriteLine("  " + message);
+                            Telemetry.Write(module, "Information", message);
 
-                        Word.Document doc = NewContentControl.Application.ActiveDocument;
-                        Word.Application app = Application;
-                        CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(ccTag, app.ActiveDocument);
-                        if (cxml != null)
-                        {
-                            Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in this document.");
-                        }
-                        else
-                        {
-                            if (doc.Application.Documents.Count > 1)
+                            Word.Document doc = NewContentControl.Application.ActiveDocument;
+                            Word.Application app = Application;
+                            CustomXMLPart cxml = CustomXmlPartHelper.GetCustomXmlPart(ccTag, app.ActiveDocument);
+                            if (cxml != null)
                             {
-                                Word.Application app1 = Application;
-                                cxml = CustomXmlPartHelper.FindCustomXmlPart(ccTag, app1.ActiveDocument);
-                                if (cxml != null)
+                                Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in this document.");
+                            }
+                            else
+                            {
+                                if (doc.Application.Documents.Count > 1)
                                 {
-                                    Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in other document, adding it into this.");
+                                    Word.Application app1 = Application;
+                                    cxml = CustomXmlPartHelper.FindCustomXmlPart(ccTag, app1.ActiveDocument);
+                                    if (cxml != null)
+                                    {
+                                        Telemetry.Write(module, "Information", "Found copy of " + ccTag + " in other document, adding it into this.");
 
-                                    // Generate new molecule Guid and apply it
-                                    string newGuid = Guid.NewGuid().ToString("N");
-                                    NewContentControl.Tag = newGuid;
+                                        // Generate new molecule Guid and apply it
+                                        string newGuid = Guid.NewGuid().ToString("N");
+                                        NewContentControl.Tag = newGuid;
 
-                                    CMLConverter cmlConverter = new CMLConverter();
-                                    Model.Model model = cmlConverter.Import(cxml.XML);
-                                    model.CustomXmlPartGuid = newGuid;
-                                    doc.CustomXMLParts.Add(cmlConverter.Export(model));
+                                        CMLConverter cmlConverter = new CMLConverter();
+                                        Model.Model model = cmlConverter.Import(cxml.XML);
+                                        model.CustomXmlPartGuid = newGuid;
+                                        doc.CustomXMLParts.Add(cmlConverter.Export(model));
+                                    }
                                 }
                             }
-                        }
 
-                        _lastContentControlAdded = ccId;
+                            _lastContentControlAdded = ccId;
+                        }
                     }
                 }
             }

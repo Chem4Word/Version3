@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -47,7 +47,7 @@ namespace Chem4Word.Telemetry
         {
             Debug.WriteLine($"WriteOnThread() - Started at {DateTime.Now.ToString("HH:mm:ss.fff")}");
 
-            Thread.Sleep(5);
+            Thread.Sleep(25);
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
@@ -66,19 +66,18 @@ namespace Chem4Word.Telemetry
                     Monitor.PulseAll(_queueLock);
                 }
 
-                // This is the slow part
-                // Send messages from 2nd stage buffer to Azure
+                ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Https;
+
+                ServicePointManager.DefaultConnectionLimit = 100;
+                ServicePointManager.UseNagleAlgorithm = false;
+                ServicePointManager.Expect100Continue = false;
+
+                _client = QueueClient.CreateFromConnectionString(ServiceBus, QueueName);
+
                 while (buffer2.Count > 0)
                 {
-                    ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Https;
-
-                    ServicePointManager.DefaultConnectionLimit = 100;
-                    ServicePointManager.UseNagleAlgorithm = false;
-                    ServicePointManager.Expect100Continue = false;
-
-                    _client = QueueClient.CreateFromConnectionString(ServiceBus, QueueName);
-
                     WriteMessage(buffer2.Dequeue());
+                    Thread.Sleep(10);
                 }
 
                 lock (_queueLock)

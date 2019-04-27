@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -74,7 +74,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                             break;
 
                         case BondStereo.Hatch:
-                            m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Hash, bond.Id, bond.Parent.Id));
+                            m_BondLines.Add(new BondLine(bondStart, bondEnd, BondLineStyle.Hatch, bond.Id, bond.Parent.Id));
                             break;
 
                         case BondStereo.Wedge:
@@ -95,8 +95,8 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                 case Bond.OrderPartial12:
                 case Bond.OrderAromatic:
                     BondLine a = new BondLine(bondStart, bondEnd, BondLineStyle.Solid, bond.Id, bond.Parent.Id);
-                    m_BondLines.Add(a);
-                    BondLine a1 = a.GetParallel(-BondOffset());
+                    m_BondLines.Add(a.GetParallel(-(BondOffset() / 2)));
+                    BondLine a1 = a.GetParallel(BondOffset() / 2);
                     Point newStarta = new Point(a1.Start.X, a1.Start.Y);
                     Point newEnda = new Point(a1.End.X, a1.End.Y);
                     CoordinateTool.AdjustLineAboutMidpoint(ref newStarta, ref newEnda, -(BondOffset() / 1.75));

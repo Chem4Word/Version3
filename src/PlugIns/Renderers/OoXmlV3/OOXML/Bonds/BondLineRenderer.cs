@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -47,8 +47,8 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     DrawFilledTriangle(wordprocessingGroup1, points);
                     break;
 
-                case BondLineStyle.Hash:
-                    DrawHashBondLines(wordprocessingGroup1, points);
+                case BondLineStyle.Hatch:
+                    DrawHatchBondLines(wordprocessingGroup1, points);
                     break;
 
                 default:
@@ -397,7 +397,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
             wordprocessingGroup1.Append(wordprocessingShape10);
         }
 
-        private void DrawHashBondLines(Wpg.WordprocessingGroup wordprocessingGroup1, List<Point> points)
+        private void DrawHatchBondLines(Wpg.WordprocessingGroup wordprocessingGroup1, List<Point> points)
         {
             // Create modifyable Points
             Point p0 = new Point(points[0].X, points[0].Y);

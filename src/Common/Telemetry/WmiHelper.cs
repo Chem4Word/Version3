@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -8,6 +8,7 @@
 using System;
 using System.Globalization;
 using System.Management;
+using Chem4Word.Core.Helpers;
 
 namespace Chem4Word.Telemetry
 {
@@ -15,7 +16,9 @@ namespace Chem4Word.Telemetry
     {
         public WmiHelper()
         {
-            //
+            GetWin32ProcessorData();
+            GetWin32PhysicalMemeoryData();
+            GetWin32OperatingSystemData();
         }
 
         private string _cpuName;
@@ -28,13 +31,14 @@ namespace Chem4Word.Telemetry
                 {
                     try
                     {
-                        GatherCpuData();
+                        GetWin32ProcessorData();
                     }
                     catch (Exception)
                     {
                         //
                     }
                 }
+
                 return _cpuName;
             }
         }
@@ -49,13 +53,14 @@ namespace Chem4Word.Telemetry
                 {
                     try
                     {
-                        GatherCpuData();
+                        GetWin32ProcessorData();
                     }
                     catch (Exception)
                     {
                         //
                     }
                 }
+
                 return _cpuSpeed;
             }
         }
@@ -70,13 +75,14 @@ namespace Chem4Word.Telemetry
                 {
                     try
                     {
-                        GatherCpuData();
+                        GetWin32ProcessorData();
                     }
                     catch (Exception)
                     {
                         //
                     }
                 }
+
                 return _logicalProcessors;
             }
         }
@@ -91,20 +97,45 @@ namespace Chem4Word.Telemetry
                 {
                     try
                     {
-                        GatherMemoryData();
+                        GetWin32PhysicalMemeoryData();
                     }
                     catch (Exception)
                     {
                         //
                     }
                 }
+
                 return _physicalMemory;
             }
         }
 
-        private void GatherCpuData()
+        private string _lastBootUpTime;
+
+        public string LastLastBootUpTime
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor");
+            get
+            {
+                if (_lastBootUpTime == null)
+                {
+                    try
+                    {
+                        GetWin32OperatingSystemData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
+                }
+
+                return _lastBootUpTime;
+            }
+
+        }
+
+        private void GetWin32ProcessorData()
+        {
+            ManagementObjectSearcher searcher =
+                new ManagementObjectSearcher("SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor");
             ManagementObjectCollection objCol = searcher.Get();
 
             foreach (var o in objCol)
@@ -126,6 +157,7 @@ namespace Chem4Word.Telemetry
                             break;
                         }
                     }
+
                     _cpuName = temp;
                 }
                 catch
@@ -154,9 +186,32 @@ namespace Chem4Word.Telemetry
             }
         }
 
-        private void GatherMemoryData()
+        private void GetWin32OperatingSystemData()
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory");
+            ManagementObjectSearcher searcher = 
+                new ManagementObjectSearcher("SELECT LastBootUpTime FROM Win32_OperatingSystem");
+            ManagementObjectCollection objCol = searcher.Get();
+
+            try
+            {
+                foreach (var o in objCol)
+                {
+                    var mgtObject = (ManagementObject)o;
+                    DateTime lastBootUp = ManagementDateTimeConverter.ToDateTime(mgtObject["LastBootUpTime"].ToString());
+                    _lastBootUpTime = lastBootUp.ToUniversalTime().ToString("dd-MMM-yyyy hh:mm:ss", CultureInfo.InvariantCulture);
+                    break;
+                }
+            }
+            catch
+            {
+                _lastBootUpTime = "?";
+            }
+        }
+
+        private void GetWin32PhysicalMemeoryData()
+        {
+            ManagementObjectSearcher searcher = 
+                new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory");
             ManagementObjectCollection objCol = searcher.Get();
 
             try

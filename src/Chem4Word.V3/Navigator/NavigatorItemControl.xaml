@@ -7,13 +7,15 @@
     xmlns:local="clr-namespace:Chem4Word.Navigator"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignWidth="300"
+    Background="{Binding RelativeSource={RelativeSource AncestorType=local:NavigatorView}, Path=Background}"
     Loaded="NavItemControl_Loaded"
     mc:Ignorable="d">
     <UserControl.Resources>
         <SolidColorBrush x:Key="Chem4WordBlue">
             <SolidColorBrush.Color>#2A579A</SolidColorBrush.Color>
         </SolidColorBrush>
-        <Style x:Key="NavButtonStyle" TargetType="{x:Type Button}">
+        <Style x:Key="NavButtonStyle"
+            TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Foreground" Value="Blue" />

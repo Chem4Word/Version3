@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2018, The .NET Foundation.
+//  Copyright (c) 2019, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -8,6 +8,8 @@
 using Chem4Word.Core.Helpers;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Chem4Word.Helpers
@@ -25,6 +27,7 @@ namespace Chem4Word.Helpers
             if (rk != null)
             {
                 string[] names = rk.GetValueNames();
+                List<string> values = new List<string>();
                 foreach (var name in names)
                 {
                     string message = rk.GetValue(name).ToString();
@@ -36,9 +39,13 @@ namespace Chem4Word.Helpers
                         timestamp = timestamp.Substring(0, bracket).Trim();
                     }
 
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Setup", $"{timestamp} {message}");
-
+                    values.Add($"{timestamp} {message}");
                     rk.DeleteValue(name);
+                }
+
+                if (values.Any())
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Setup", string.Join(Environment.NewLine, values));
                 }
             }
         }
@@ -51,6 +58,7 @@ namespace Chem4Word.Helpers
             if (rk != null)
             {
                 string[] names = rk.GetValueNames();
+                List<string> values = new List<string>();
                 foreach (var name in names)
                 {
                     string message = rk.GetValue(name).ToString();
@@ -62,9 +70,12 @@ namespace Chem4Word.Helpers
                         timestamp = timestamp.Substring(0, bracket).Trim();
                     }
 
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Update", $"{timestamp} {message}");
-
+                    values.Add($"{timestamp} {message}");
                     rk.DeleteValue(name);
+                }
+                if (values.Any())
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Update", string.Join(Environment.NewLine, values));
                 }
             }
         }

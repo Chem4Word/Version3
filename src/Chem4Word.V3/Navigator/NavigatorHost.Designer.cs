@@ -54,6 +54,6 @@
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost elementHost;
-        private NavigatorView navigatorView1;
+        public NavigatorView navigatorView1;
     }
 }
