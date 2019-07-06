@@ -337,81 +337,63 @@ namespace Chem4Word.Model
         /// Returns a vector which points to the most uncrowded side of the atom.
         ///
         /// </summary>
-        public Vector BalancingVector
+        public Vector BalancingVector (bool forAtomLabelPlacement = false)
         {
-            get
-            {
-                Vector vsumVector = new Vector();
+            Vector vsumVector = new Vector();
 
-                if (Bonds.Any())
+            if (Bonds.Any())
+            {
+                double sumOfLengths = 0;
+                foreach (var bond in Bonds)
                 {
-                    double sumOfLengths = 0;
-                    foreach (var bond in Bonds)
+                    Vector v = bond.OtherAtom(this).Position - this.Position;
+
+                    if (forAtomLabelPlacement)
                     {
-                        Vector v = bond.OtherAtom(this).Position - this.Position;
-                        sumOfLengths += v.Length;
-                        vsumVector += v;
+                        // Multiply by bond order to bias away from double or triple bonds
+                        double order = bond.OrderValue.Value;
+                        if (order > 0.1)
+                        {
+                            v = v * bond.OrderValue.Value;
+                        }
                     }
 
-                    // Set tiny amount as 10% of average bond length
-                    double tinyAmount = sumOfLengths / Bonds.Count * 0.1;
-                    double xy = vsumVector.Length;
+                    sumOfLengths += v.Length;
+                    vsumVector += v;
+                }
 
-                    // Is resultant vector is big enough for us to use?
-                    if (xy >= tinyAmount)
+                // Set tiny amount as 10% of average bond length
+                double tinyAmount = sumOfLengths / Bonds.Count * 0.1;
+                double xy = vsumVector.Length;
+
+                // Is resultant vector is big enough for us to use?
+                if (xy >= tinyAmount)
+                {
+                    // Get vector in opposite direction
+                    vsumVector = -vsumVector;
+                    vsumVector.Normalize();
+                }
+                else
+                {
+                    // Get vector of first bond
+                    Vector vector = Bonds[0].OtherAtom(this).Position - this.Position;
+                    if (Bonds.Count == 2)
                     {
-                        // Get vector in opposite direction
-                        vsumVector = -vsumVector;
-                        vsumVector.Normalize();
+                        // Get vector at right angles
+                        vsumVector = vector.Perpendicular();
                     }
                     else
                     {
-                        // Get vector of first bond
-                        Vector vector = Bonds[0].OtherAtom(this).Position - this.Position;
-                        if (Bonds.Count == 2)
-                        {
-                            // Get vector at right angles
-                            vsumVector = vector.Perpendicular();
-                        }
-                        else
-                        {
-                            // Get vector in opposite direction
-                            vsumVector = -vector;
-                        }
-                        vsumVector.Normalize();
+                        // Get vector in opposite direction
+                        vsumVector = -vector;
                     }
+                    vsumVector.Normalize();
                 }
-
-                //Debug.WriteLine($"Atom {Id} Resultant Balancing Vector Angle is {Vector.AngleBetween(BasicGeometry.ScreenNorth(), vsumVector)}");
-                return vsumVector;
             }
+
+            //Debug.WriteLine($"Atom {Id} Resultant Balancing Vector Angle is {Vector.AngleBetween(BasicGeometry.ScreenNorth(), vsumVector)}");
+            return vsumVector;
         }
-
-        // This is Clyde's Code saved Just in case it's needed
-        //public Vector BalancingVector
-        //{
-        //    get
-        //    {
-        //        Vector total= new Vector();
-        //        foreach (Bond b in Bonds)
-        //        {
-        //            Vector bv = b.OtherAtom(this).Position - this.Position;
-        //            bv.Normalize();
-        //            total += bv;
-        //        }
-
-        //        if (total.Length < VectorTolerance)
-        //        {
-        //            return new Vector();
-        //        }
-        //        else
-        //        {
-        //            total.Normalize();
-        //            total.Negate();
-        //            return total;
-        //        }
-        //    }
-        //}
 
         #endregion Properties
 

@@ -23,15 +23,17 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
-        private Dictionary<char, TtfCharacter> m_TtfCharacterSet;
+        private Dictionary<char, TtfCharacter> _TtfCharacterSet;
 
-        private List<AtomLabelCharacter> m_AtomLabelCharacters;
+        private List<AtomLabelCharacter> _AtomLabelCharacters;
+        private Dictionary<string, List<Point>> _convexhHulls;
         private IChem4WordTelemetry _telemetry;
 
-        public AtomLabelPositioner(List<AtomLabelCharacter> atomLabelCharacters, Dictionary<char, TtfCharacter> characterset, PeriodicTable atomDefinitions, IChem4WordTelemetry telemetry)
+        public AtomLabelPositioner(List<AtomLabelCharacter> atomLabelCharacters, Dictionary<string, List<Point>> convexHulls, Dictionary<char, TtfCharacter> characterset, PeriodicTable atomDefinitions, IChem4WordTelemetry telemetry)
         {
-            m_AtomLabelCharacters = atomLabelCharacters;
-            m_TtfCharacterSet = characterset;
+            _AtomLabelCharacters = atomLabelCharacters;
+            _TtfCharacterSet = characterset;
+            _convexhHulls = convexHulls;
             _telemetry = telemetry;
         }
 
@@ -40,14 +42,8 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             //Debug.WriteLine("Atom: " + atom.Id + " is " + atom.ElementType);
 
-            //Point atomCentre = new Point((double)atom.X2, (double)atom.Y2);
             string atomLabel = atom.Element.Symbol;
             Rect labelBounds;
-
-            //Debug Code
-            //atomLabel = "H" + "abcdefHghijklmnopqrstuvwxyz" + "H";
-            //atomLabel = "ABCHDEFGHIJKLMNOHPQRSHTUVWXYZ";
-            //atomLabel = "-+H01234567890H+-";
 
             // Get Charge and Isotope valuesfor use later on
             int iCharge = atom.FormalCharge ?? 0;
@@ -68,7 +64,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
             int ringCount = atom.Rings.Count();
             int bondCount = atom.Bonds.Count;
 
-            //var bv = atom.BalancingVector;
+            //var bv = atom.BalancingVector();
             //_telemetry.Write(module, "Debugging", $"Atom {atomLabel} [{atom.Id}] at {atom.Position} BalancingVector {bv} [{CoordinateTool.BearingOfVector(bv)}°]");
 
             #region Decide if atom label is to be displayed
@@ -139,7 +135,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                 for (int idx = 0; idx < atomLabel.Length; idx++)
                 {
                     char chr = atomLabel[idx];
-                    TtfCharacter c = m_TtfCharacterSet[chr];
+                    TtfCharacter c = _TtfCharacterSet[chr];
                     if (c != null)
                     {
                         thisCharacterPosition = GetCharacterPosition(cursorPosition, c);
@@ -181,12 +177,12 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 foreach (char chr in atomLabel)
                 {
-                    TtfCharacter c = m_TtfCharacterSet[chr];
+                    TtfCharacter c = _TtfCharacterSet[chr];
                     if (c != null)
                     {
                         thisCharacterPosition = GetCharacterPosition(cursorPosition, c);
                         AtomLabelCharacter alc = new AtomLabelCharacter(thisCharacterPosition, c, atomColour, chr, atom.Id, atom.Parent.Id);
-                        m_AtomLabelCharacters.Add(alc);
+                        _AtomLabelCharacters.Add(alc);
 
                         // Move to next Character position
                         lastOffset = OoXmlHelper.ScaleCsTtfToCml(c.IncrementX);
@@ -199,7 +195,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 #region Determine NESW
 
-                double baFromNorth = Vector.AngleBetween(BasicGeometry.ScreenNorth(), atom.BalancingVector);
+                double baFromNorth = Vector.AngleBetween(BasicGeometry.ScreenNorth(), atom.BalancingVector(true));
                 CompassPoints nesw = CompassPoints.East;
 
                 if (bondCount == 1)
@@ -217,19 +213,19 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 if (iCharge != 0)
                 {
-                    TtfCharacter hydrogenCharacter = m_TtfCharacterSet['H'];
+                    TtfCharacter hydrogenCharacter = _TtfCharacterSet['H'];
 
                     char sign = '.';
                     TtfCharacter chargeSignCharacter = null;
                     if (iCharge >= 1)
                     {
                         sign = '+';
-                        chargeSignCharacter = m_TtfCharacterSet['+'];
+                        chargeSignCharacter = _TtfCharacterSet['+'];
                     }
                     else if (iCharge <= 1)
                     {
                         sign = '-';
-                        chargeSignCharacter = m_TtfCharacterSet['-'];
+                        chargeSignCharacter = _TtfCharacterSet['-'];
                     }
 
                     if (iAbsCharge > 1)
@@ -238,7 +234,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                         // Insert digits
                         foreach (char chr in digits)
                         {
-                            TtfCharacter chargeValueCharacter = m_TtfCharacterSet[chr];
+                            TtfCharacter chargeValueCharacter = _TtfCharacterSet[chr];
                             thisCharacterPosition = GetCharacterPosition(chargeCursorPosition, chargeValueCharacter);
 
                             // Raise the superscript Character
@@ -246,7 +242,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                             AtomLabelCharacter alcc = new AtomLabelCharacter(thisCharacterPosition, chargeValueCharacter, atomColour, chr, atom.Id, atom.Parent.Id);
                             alcc.IsSubScript = true;
-                            m_AtomLabelCharacters.Add(alcc);
+                            _AtomLabelCharacters.Add(alcc);
 
                             // Move to next Character position
                             chargeCursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(chargeValueCharacter.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
@@ -261,7 +257,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                     AtomLabelCharacter alcs = new AtomLabelCharacter(thisCharacterPosition, chargeSignCharacter, atomColour, sign, atom.Id, atom.Parent.Id);
                     alcs.IsSubScript = true;
-                    m_AtomLabelCharacters.Add(alcs);
+                    _AtomLabelCharacters.Add(alcs);
 
                     if (iAbsCharge != 0)
                     {
@@ -275,9 +271,9 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 if (options.ShowHydrogens && implicitHCount > 0)
                 {
-                    TtfCharacter hydrogenCharacter = m_TtfCharacterSet['H'];
+                    TtfCharacter hydrogenCharacter = _TtfCharacterSet['H'];
                     string numbers = "012345";
-                    TtfCharacter implicitValueCharacter = m_TtfCharacterSet[numbers[implicitHCount]];
+                    TtfCharacter implicitValueCharacter = _TtfCharacterSet[numbers[implicitHCount]];
 
                     #region Add H
 
@@ -338,7 +334,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                         //_telemetry.Write(module, "Debugging", $"Adding H at {cursorPosition}");
                         thisCharacterPosition = GetCharacterPosition(cursorPosition, hydrogenCharacter);
                         AtomLabelCharacter alc = new AtomLabelCharacter(thisCharacterPosition, hydrogenCharacter, atomColour, 'H', atom.Id, atom.Parent.Id);
-                        m_AtomLabelCharacters.Add(alc);
+                        _AtomLabelCharacters.Add(alc);
 
                         // Move to next Character position
                         cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(hydrogenCharacter.IncrementX), 0);
@@ -368,7 +364,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                             AtomLabelCharacter alc = new AtomLabelCharacter(thisCharacterPosition, implicitValueCharacter, atomColour, numbers[implicitHCount], atom.Id, atom.Parent.Id);
                             alc.IsSubScript = true;
-                            m_AtomLabelCharacters.Add(alc);
+                            _AtomLabelCharacters.Add(alc);
 
                             // Move to next Character position
                             cursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(implicitValueCharacter.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
@@ -380,7 +376,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 #endregion Step 5 - Add Implicit H if required
 
-                #region Step 6 Add IsoTope Number if required
+                #region Step 6 - Add IsoTope Number if required
 
                 if (isoValue > 0)
                 {
@@ -396,7 +392,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                     // Calculate width of digits
                     foreach (char chr in digits)
                     {
-                        TtfCharacter c = m_TtfCharacterSet[chr];
+                        TtfCharacter c = _TtfCharacterSet[chr];
                         thisCharacterPosition = GetCharacterPosition(isotopeCursorPosition, c);
 
                         // Raise the superscript Character
@@ -418,7 +414,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                     // Insert digits
                     foreach (char chr in digits)
                     {
-                        TtfCharacter c = m_TtfCharacterSet[chr];
+                        TtfCharacter c = _TtfCharacterSet[chr];
                         thisCharacterPosition = GetCharacterPosition(isotopeCursorPosition, c);
 
                         // Raise the superscript Character
@@ -426,7 +422,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                         AtomLabelCharacter alcc = new AtomLabelCharacter(thisCharacterPosition, c, atomColour, chr, atom.Id, atom.Parent.Id);
                         alcc.IsSubScript = true;
-                        m_AtomLabelCharacters.Add(alcc);
+                        _AtomLabelCharacters.Add(alcc);
 
                         // Move to next Character position
                         isotopeCursorPosition.Offset(OoXmlHelper.ScaleCsTtfToCml(c.IncrementX) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR, 0);
@@ -434,6 +430,46 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                 }
 
                 #endregion Step 6 Add IsoTope Number if required
+
+                #region Step 7 - Create Convex Hull
+
+                List<Point> points = new List<Point>();
+
+                var chars = _AtomLabelCharacters.Where(m => m.ParentAtom == atom.Id);
+                double margin = OoXmlHelper.CHARACTER_CLIPPING_MARGIN;
+                foreach (var c in chars)
+                {
+                    // Top Left --
+                    points.Add(new Point(c.Position.X - margin, c.Position.Y -margin));
+                    if (c.IsSubScript)
+                    {
+                        // Top Right +-
+                        points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin, 
+                                            c.Position.Y - margin));
+                        // Bottom Right ++
+                        points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin,
+                                            c.Position.Y + OoXmlHelper.ScaleCsTtfToCml(c.Character.Height) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin));
+                        // Bottom Left -+
+                        points.Add(new Point(c.Position.X - margin,
+                                            c.Position.Y + OoXmlHelper.ScaleCsTtfToCml(c.Character.Height) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin));
+                    }
+                    else
+                    {
+                        // Top Right +-
+                        points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) + margin,
+                                            c.Position.Y - margin));
+                        // Bottom Right ++
+                        points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) + margin,
+                                            c.Position.Y + OoXmlHelper.ScaleCsTtfToCml(c.Character.Height) + margin));
+                        // Bottom Left -+
+                        points.Add(new Point(c.Position.X - margin,
+                                              c.Position.Y + OoXmlHelper.ScaleCsTtfToCml(c.Character.Height) + margin));
+                    }
+                }
+
+                _convexhHulls.Add(atom.Id, GeometryTool.MakeConvexHull(points));
+
+                #endregion
             }
         }
 
@@ -441,7 +477,6 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
         {
             // Add the (negative) OriginY to raise the character by it
             return new Point(cursorPosition.X, cursorPosition.Y + OoXmlHelper.ScaleCsTtfToCml(character.OriginY));
-            // return new Point(cursorPosition.X, cursorPosition.Y + OoXmlHelper.ScaleCsTtfToCml(character.Height) - OoXmlHelper.ScaleCsTtfToCml(character.Height - character.OriginY));
         }
     }
 }

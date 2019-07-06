@@ -167,8 +167,8 @@ namespace Chem4Word.Model.Converters.CML
             XElement result = new XElement(Converters.CML.CML.cml + "atom",
                 new XAttribute("id", atom.Id),
                 new XAttribute("elementType", atom.Element.ToString()),
-                new XAttribute("x2", atom.Position.X),
-                new XAttribute("y2", atom.Position.Y)
+                new XAttribute("x2", atom.Position.X.ToString("0.####", CultureInfo.InvariantCulture)),
+                new XAttribute("y2", atom.Position.Y.ToString("0.####", CultureInfo.InvariantCulture))
                );
 
             if (atom.FormalCharge != null)

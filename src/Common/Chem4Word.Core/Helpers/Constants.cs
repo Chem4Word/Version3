@@ -20,7 +20,7 @@ namespace Chem4Word.Core.Helpers
         public static string OoXmlBookmarkPrefix = "C4W_";
         public const string LibraryFileName = "Library.db";
 
-        public static string DefaultChem4WordWebServiceUri = "https://chemicalservices.azurewebsites.net/api/Resolve";
+        public static string Chem4WordWebServiceUri = "https://chemicalservices.azurewebsites.net/api/Resolve";
 
         public static string DefaultEditorPlugIn800 = "ChemDoodle Web Structure Editor V8.0.0";
         public static string DefaultEditorPlugIn702 = "ChemDoodle Web Structure Editor V7.0.2";

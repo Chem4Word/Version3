@@ -18,6 +18,17 @@ namespace Chem4Word.Telemetry
 {
     public class AzureServiceBusWriter
     {
+        public AzureServiceBusWriter()
+        {
+            ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Https;
+
+            ServicePointManager.DefaultConnectionLimit = 100;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
+
+            _client = QueueClient.CreateFromConnectionString(ServiceBus, QueueName);
+        }
+
         // Make sure this is a Send Only Access key
         string ServiceBus = "Endpoint=sb://c4w-telemetry.servicebus.windows.net/;SharedAccessKeyName=TelemetrySender;SharedAccessKey=J8tkibrh5CHc2vZJgn1gbynZRmMLUf0mz/WZtmcjH6Q=";
         string QueueName = "telemetry";
@@ -66,14 +77,6 @@ namespace Chem4Word.Telemetry
                     Monitor.PulseAll(_queueLock);
                 }
 
-                ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Https;
-
-                ServicePointManager.DefaultConnectionLimit = 100;
-                ServicePointManager.UseNagleAlgorithm = false;
-                ServicePointManager.Expect100Continue = false;
-
-                _client = QueueClient.CreateFromConnectionString(ServiceBus, QueueName);
-
                 while (buffer2.Count > 0)
                 {
                     WriteMessage(buffer2.Dequeue());
@@ -94,7 +97,7 @@ namespace Chem4Word.Telemetry
             }
         }
 
-        private void WriteMessage(ServiceBusMessage message)
+        public void WriteMessage(ServiceBusMessage message)
         {
             try
             {

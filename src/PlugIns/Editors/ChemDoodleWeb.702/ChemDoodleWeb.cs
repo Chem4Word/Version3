@@ -544,7 +544,6 @@ namespace Chem4Word.Editor.ChemDoodleWeb702
             }
 
             File.WriteAllText(Path.Combine(ProductAppDataPath, "Editor.html"), htmlfile);
-            AverageBondLength = (double) nudBondLength.Value;
             browser.Navigate(Path.Combine(ProductAppDataPath, "Editor.html"));
         }
 

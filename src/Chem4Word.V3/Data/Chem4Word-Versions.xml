@@ -3,6 +3,18 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.27 Release 15</Number>
+    <IsBeta>false</IsBeta>
+    <Released>06-Jul-2019</Released>
+    <Changes>
+      <Change>Fix bounding box for subscript characters</Change>
+      <Change>Fix bug in CDW702 editor always setting bond length to 20</Change>
+      <Change>Implement clipping of bond lines using ConvexHull of atom characters</Change>
+      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.26.Release.14.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.26 Release 14</Number>
     <IsBeta>false</IsBeta>
     <Released>27-Apr-2019</Released>
@@ -11,7 +23,6 @@
       <Change>Fix Show As dropdown list of 1D labels, when a 1D structure selected.</Change>
       <Change>Fix positioning of aromatic bond lines.</Change>
       <Change>Update copyright to 2019</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
     <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.26.Release.14.msi</Url>
   </Version>

@@ -30,12 +30,7 @@ namespace Chem4Word.WebServices
             Telemetry = telemetry;
 
             // http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
-            string uri = Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri;
-            if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
-            {
-                uri = Constants.DefaultChem4WordWebServiceUri;
-            }
-            var sp = ServicePointManager.FindServicePoint(new Uri(uri));
+            var sp = ServicePointManager.FindServicePoint(new Uri(Constants.Chem4WordWebServiceUri));
             sp.ConnectionLeaseTimeout = 60 * 1000; // 1 minute
         }
 
@@ -64,12 +59,7 @@ namespace Chem4Word.WebServices
 
                     try
                     {
-                        string uri = Globals.Chem4WordV3.SystemOptions.Chem4WordWebServiceUri;
-                        if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
-                        {
-                            uri = Constants.DefaultChem4WordWebServiceUri;
-                        }
-                        var response = httpClient.PostAsync(uri, content).Result;
+                        var response = httpClient.PostAsync(Constants.Chem4WordWebServiceUri, content).Result;
                         if (response.Content != null)
                         {
                             var responseContent = response.Content;

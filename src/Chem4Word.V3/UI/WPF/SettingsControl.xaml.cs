@@ -165,7 +165,7 @@ namespace Chem4Word.UI.WPF
 
         #endregion Bottom Buttons
 
-        #region Tab 1 Events
+        #region Tab Editor Plug-Ins Events
 
         private void SelectedEditorSettings_OnClick(object sender, RoutedEventArgs e)
         {
@@ -248,22 +248,7 @@ namespace Chem4Word.UI.WPF
 
         #endregion Tab 1 Events
 
-        #region Tab 2 Events
-
-        private void Chem4WordWebServiceUri_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            if (!_loading)
-            {
-                Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
-                SystemOptions.Chem4WordWebServiceUri = Chem4WordWebServiceUri.Text;
-                Dirty = true;
-            }
-        }
-
-        #endregion Tab 2 Events
-
-        #region Tab 3 Events
+        #region Telemetry Tab Events
 
         private void TelemetryEnabled_OnClick(object sender, RoutedEventArgs e)
         {
@@ -278,7 +263,7 @@ namespace Chem4Word.UI.WPF
 
         #endregion Tab 3 Events
 
-        #region Tab 4 Events
+        #region Library Tab Events
 
         private void ImportIntoLibrary_OnClick(object sender, RoutedEventArgs e)
         {
@@ -506,7 +491,7 @@ namespace Chem4Word.UI.WPF
 
         #endregion Tab 4 Events
 
-        #region Tab 5 Events
+        #region Maintenance Tab Events
 
         private void SettingsFolder_OnClick(object sender, RoutedEventArgs e)
         {
@@ -561,7 +546,7 @@ namespace Chem4Word.UI.WPF
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            #region Tab 1
+            #region Editor Plug Ins Tab
 
             SelectEditorPlugIn.Items.Clear();
             SelectRendererPlugIn.Items.Clear();
@@ -648,21 +633,7 @@ namespace Chem4Word.UI.WPF
 
             #endregion Tab 1
 
-            #region Tab 2
-
-            string uri = SystemOptions.Chem4WordWebServiceUri;
-            if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
-            {
-                uri = Constants.DefaultChem4WordWebServiceUri;
-                SystemOptions.Chem4WordWebServiceUri = uri;
-                Dirty = true;
-            }
-
-            Chem4WordWebServiceUri.Text = uri;
-
-            #endregion Tab 2
-
-            #region Tab 3
+            #region Telemetry Tab
 
             string betaValue = Globals.Chem4WordV3.ThisVersion.Root?.Element("IsBeta")?.Value;
             bool isBeta = betaValue != null && bool.Parse(betaValue);

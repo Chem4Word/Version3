@@ -363,18 +363,6 @@ namespace Chem4Word.Model
         public BondDirection? ExplicitPlacement { get; set; }
 
         ///
-        ///  indicates which side of bond to draw subsidiary double bond
-        /// if bond order is not 2, returns null
-        /// if bond is in single ring, vector points to centre of ring
-        /// if bond is in cisoid bond (excluding hydrogens) points to area
-        /// including both bonds
-        /// if bond is in 3 rings vector is null
-        ///
-        ///
-
-        //private BondDirection? _dir;
-
-        ///
         /// <summary>
         /// This stores the double bond placement as set by user
         /// Defaults to a computed value

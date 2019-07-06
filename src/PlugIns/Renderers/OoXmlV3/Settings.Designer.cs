@@ -44,6 +44,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkClipLines = new System.Windows.Forms.CheckBox();
             this.btnSetDefaults = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
+            this.chkShowConvexHulls = new System.Windows.Forms.CheckBox();
             this.tabControlEx.SuspendLayout();
             this.tabRendering.SuspendLayout();
             this.tabDebug.SuspendLayout();
@@ -122,6 +123,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             // 
             this.tabDebug.BackColor = System.Drawing.SystemColors.Control;
             this.tabDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabDebug.Controls.Add(this.chkShowConvexHulls);
             this.tabDebug.Controls.Add(this.chkShowAtomPositions);
             this.tabDebug.Controls.Add(this.chkShowRingCentres);
             this.tabDebug.Controls.Add(this.chkShowCharacterBox);
@@ -139,7 +141,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkShowAtomPositions.AutoSize = true;
             this.chkShowAtomPositions.Checked = true;
             this.chkShowAtomPositions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowAtomPositions.Location = new System.Drawing.Point(12, 37);
+            this.chkShowAtomPositions.Location = new System.Drawing.Point(7, 12);
             this.chkShowAtomPositions.Margin = new System.Windows.Forms.Padding(4);
             this.chkShowAtomPositions.Name = "chkShowAtomPositions";
             this.chkShowAtomPositions.Size = new System.Drawing.Size(125, 17);
@@ -153,7 +155,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkShowRingCentres.AutoSize = true;
             this.chkShowRingCentres.Checked = true;
             this.chkShowRingCentres.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowRingCentres.Location = new System.Drawing.Point(12, 62);
+            this.chkShowRingCentres.Location = new System.Drawing.Point(203, 37);
             this.chkShowRingCentres.Margin = new System.Windows.Forms.Padding(4);
             this.chkShowRingCentres.Name = "chkShowRingCentres";
             this.chkShowRingCentres.Size = new System.Drawing.Size(169, 17);
@@ -167,12 +169,12 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkShowCharacterBox.AutoSize = true;
             this.chkShowCharacterBox.Checked = true;
             this.chkShowCharacterBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowCharacterBox.Location = new System.Drawing.Point(12, 112);
+            this.chkShowCharacterBox.Location = new System.Drawing.Point(7, 37);
             this.chkShowCharacterBox.Margin = new System.Windows.Forms.Padding(4);
             this.chkShowCharacterBox.Name = "chkShowCharacterBox";
-            this.chkShowCharacterBox.Size = new System.Drawing.Size(188, 17);
+            this.chkShowCharacterBox.Size = new System.Drawing.Size(185, 17);
             this.chkShowCharacterBox.TabIndex = 19;
-            this.chkShowCharacterBox.Text = "Show Bounding Box of Characters";
+            this.chkShowCharacterBox.Text = "Show BoundingBox of Characters";
             this.chkShowCharacterBox.UseVisualStyleBackColor = true;
             this.chkShowCharacterBox.CheckedChanged += new System.EventHandler(this.chkShowCharacterBox_CheckedChanged);
             // 
@@ -181,7 +183,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkShowMoleculeBox.AutoSize = true;
             this.chkShowMoleculeBox.Checked = true;
             this.chkShowMoleculeBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowMoleculeBox.Location = new System.Drawing.Point(12, 87);
+            this.chkShowMoleculeBox.Location = new System.Drawing.Point(203, 62);
             this.chkShowMoleculeBox.Margin = new System.Windows.Forms.Padding(4);
             this.chkShowMoleculeBox.Name = "chkShowMoleculeBox";
             this.chkShowMoleculeBox.Size = new System.Drawing.Size(191, 17);
@@ -195,12 +197,12 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.chkClipLines.AutoSize = true;
             this.chkClipLines.Checked = true;
             this.chkClipLines.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkClipLines.Location = new System.Drawing.Point(12, 12);
+            this.chkClipLines.Location = new System.Drawing.Point(203, 12);
             this.chkClipLines.Margin = new System.Windows.Forms.Padding(4);
             this.chkClipLines.Name = "chkClipLines";
-            this.chkClipLines.Size = new System.Drawing.Size(67, 17);
+            this.chkClipLines.Size = new System.Drawing.Size(94, 17);
             this.chkClipLines.TabIndex = 13;
-            this.chkClipLines.Text = "Clip lines";
+            this.chkClipLines.Text = "Clip bond lines";
             this.chkClipLines.UseVisualStyleBackColor = true;
             this.chkClipLines.CheckedChanged += new System.EventHandler(this.chkClipLines_CheckedChanged);
             // 
@@ -227,6 +229,20 @@ namespace Chem4Word.Renderer.OoXmlV3
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
             this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // chkShowConvexHulls
+            // 
+            this.chkShowConvexHulls.AutoSize = true;
+            this.chkShowConvexHulls.Checked = true;
+            this.chkShowConvexHulls.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkShowConvexHulls.Location = new System.Drawing.Point(7, 62);
+            this.chkShowConvexHulls.Margin = new System.Windows.Forms.Padding(4);
+            this.chkShowConvexHulls.Name = "chkShowConvexHulls";
+            this.chkShowConvexHulls.Size = new System.Drawing.Size(176, 17);
+            this.chkShowConvexHulls.TabIndex = 22;
+            this.chkShowConvexHulls.Text = "Show ConvexHull of Characters";
+            this.chkShowConvexHulls.UseVisualStyleBackColor = true;
+            this.chkShowConvexHulls.CheckedChanged += new System.EventHandler(this.chkShowConvexHulls_CheckedChanged);
             // 
             // Settings
             // 
@@ -269,5 +285,6 @@ namespace Chem4Word.Renderer.OoXmlV3
         private System.Windows.Forms.CheckBox chkShowMoleculeBox;
         private System.Windows.Forms.CheckBox chkShowAtomPositions;
         private System.Windows.Forms.CheckBox chkShowCarbons;
+        private System.Windows.Forms.CheckBox chkShowConvexHulls;
     }
 }

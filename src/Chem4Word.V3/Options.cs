@@ -16,16 +16,6 @@ namespace Chem4Word
     [JsonObject(MemberSerialization.OptIn)]
     public class Options
     {
-        #region Web Services
-
-        //[JsonProperty]
-        public bool UseWebServices { get; set; }
-
-        [JsonProperty]
-        public string Chem4WordWebServiceUri { get; set; }
-
-        #endregion Web Services
-
         #region Telemetry
 
         [JsonProperty]
@@ -65,9 +55,6 @@ namespace Chem4Word
         {
             Options clone = new Options();
 
-            clone.UseWebServices = UseWebServices;
-            clone.Chem4WordWebServiceUri = Chem4WordWebServiceUri;
-
             clone.TelemetryEnabled = TelemetryEnabled;
 
             clone.SelectedEditorPlugIn = SelectedEditorPlugIn;
@@ -104,9 +91,6 @@ namespace Chem4Word
                 SelectedEditorPlugIn = Constants.DefaultEditorPlugIn800;
             }
             SelectedRendererPlugIn = Constants.DefaultRendererPlugIn;
-
-            UseWebServices = true;
-            Chem4WordWebServiceUri = Constants.DefaultChem4WordWebServiceUri;
 
             AutoUpdateEnabled = true;
             AutoUpdateFrequency = 7;

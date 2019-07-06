@@ -116,24 +116,6 @@
                     </GroupBox>
                 </Grid>
             </TabItem>
-            <TabItem Header="Web Services">
-                <Grid Margin="5">
-                    <StackPanel>
-                        <DockPanel Margin="0,10,5,0">
-                            <Label
-                                Width="200"
-                                Margin="0,0,5,0"
-                                HorizontalContentAlignment="Right"
-                                Content="Chem4Word Web Service:"
-                                DockPanel.Dock="Left" />
-                            <TextBox x:Name="Chem4WordWebServiceUri"
-                                Margin="5,0,0,0"
-                                Text="https://chemicalservices.azurewebsites.net/api/Resolve"
-                                TextChanged="Chem4WordWebServiceUri_OnTextChanged" />
-                        </DockPanel>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
             <TabItem Header="Privacy">
                 <Grid Margin="5">
                     <StackPanel>

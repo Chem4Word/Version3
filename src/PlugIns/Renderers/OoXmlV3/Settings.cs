@@ -206,6 +206,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             chkShowMoleculeBox.Checked = RendererOptions.ShowMoleculeBoundingBoxes;
             chkShowRingCentres.Checked = RendererOptions.ShowRingCentres;
             chkShowAtomPositions.Checked = RendererOptions.ShowAtomPositions;
+            chkShowConvexHulls.Checked = RendererOptions.ShowHulls;
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
@@ -265,6 +266,21 @@ namespace Chem4Word.Renderer.OoXmlV3
             try
             {
                 RendererOptions.ShowCarbons = chkShowCarbons.Checked;
+                _dirty = true;
+            }
+            catch (Exception ex)
+            {
+                new ReportError(Telemetry, TopLeft, module, ex).ShowDialog();
+            }
+        }
+
+        private void chkShowConvexHulls_CheckedChanged(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            Telemetry.Write(module, "Action", "Triggered");
+            try
+            {
+                RendererOptions.ShowHulls = chkShowConvexHulls.Checked;
                 _dirty = true;
             }
             catch (Exception ex)

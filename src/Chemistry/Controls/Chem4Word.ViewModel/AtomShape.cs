@@ -251,7 +251,7 @@ namespace Chem4Word.View
                 else
                 {
                     double baFromNorth = Vector.AngleBetween(BasicGeometry.ScreenNorth(),
-                        parentAtom.BalancingVector);
+                        parentAtom.BalancingVector());
 
                     switch (BasicGeometry.SnapTo4NESW(baFromNorth))
                     {

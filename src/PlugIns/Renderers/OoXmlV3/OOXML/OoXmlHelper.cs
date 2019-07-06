@@ -11,6 +11,9 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 {
     public static class OoXmlHelper
     {
+        // https://startbigthinksmall.wordpress.com/2010/02/05/unit-converter-and-specification-search-for-ooxmlwordml-development/
+        // http://lcorneliussen.de/raw/dashboards/ooxml/
+
         // Margins are in CML Points
         public const double DRAWING_MARGIN = 5; // 5 is a good value to use (Use 0 to compare with AMC diagrams)
 

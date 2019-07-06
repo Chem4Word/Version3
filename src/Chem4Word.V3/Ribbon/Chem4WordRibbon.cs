@@ -958,7 +958,9 @@ namespace Chem4Word
                                     // Delete the temporary file now we are finished with it
                                     try
                                     {
+#if !DEBUG
                                         File.Delete(tempfileName);
+#endif
                                     }
                                     catch
                                     {

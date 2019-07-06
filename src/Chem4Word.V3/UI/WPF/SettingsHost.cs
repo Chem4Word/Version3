@@ -138,8 +138,6 @@ namespace Chem4Word.UI.WPF
 
         private void SaveChanges()
         {
-            SystemOptions.Chem4WordWebServiceUri = StripTrailingSlash(SystemOptions.Chem4WordWebServiceUri);
-
             string json = JsonConvert.SerializeObject(SystemOptions, Formatting.Indented);
 
             string padPath = Globals.Chem4WordV3.AddInInfo.ProductAppDataPath;

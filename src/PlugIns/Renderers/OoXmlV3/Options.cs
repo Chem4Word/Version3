@@ -39,6 +39,10 @@ namespace Chem4Word.Renderer.OoXmlV3
 
         // Debugging
         [JsonProperty]
+        public bool ShowHulls { get; set; }
+
+        // Debugging
+        [JsonProperty]
         public bool ShowRingCentres { get; set; }
 
         public Options()
@@ -60,6 +64,7 @@ namespace Chem4Word.Renderer.OoXmlV3
             clone.ShowMoleculeBoundingBoxes = ShowMoleculeBoundingBoxes;
             clone.ShowRingCentres = ShowRingCentres;
             clone.ShowAtomPositions = ShowAtomPositions;
+            clone.ShowHulls = ShowHulls;
 
             return clone;
         }
