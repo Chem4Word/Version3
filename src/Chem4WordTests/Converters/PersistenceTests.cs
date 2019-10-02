@@ -5,11 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4WordTests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Chem4Word.Model.Converters.CML;
 using Chem4Word.Model.Converters.MDL;
+using Chem4WordTests;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chem4Word.Model.Converters.Tests
 {

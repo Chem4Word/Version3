@@ -5,15 +5,15 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core;
-using Chem4Word.Core.UI.Forms;
-using IChem4Word.Contracts;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Chem4Word.Core;
+using Chem4Word.Core.UI.Forms;
+using IChem4Word.Contracts;
+using Newtonsoft.Json;
 
 namespace Chem4Word.Searcher.ExamplePlugIn
 {

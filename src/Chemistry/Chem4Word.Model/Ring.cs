@@ -5,8 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Enums;
-using Chem4Word.Model.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +12,8 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using Chem4Word.Model.Enums;
+using Chem4Word.Model.Geometry;
 
 namespace Chem4Word.Model
 {

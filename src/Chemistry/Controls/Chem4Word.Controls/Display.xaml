@@ -4,17 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="clr-namespace:Chem4Word.Controls.Behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:debug="condition:DEBUG"
     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:Chem4Word.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:Chem4Word.Model;assembly=Chem4Word.Model"
+    xmlns:release="condition:!DEBUG"
     xmlns:view="clr-namespace:Chem4Word.View;assembly=Chem4Word.ViewModel"
     d:DesignHeight="300"
     d:DesignWidth="300"
-    mc:Ignorable="d debug release"
-    xmlns:debug="condition:DEBUG"
-    xmlns:release="condition:!DEBUG">
+    mc:Ignorable="d debug release">
     <UserControl.Resources>
         <ResourceDictionary Source="Resources/BondBrushes.xaml" />
     </UserControl.Resources>
@@ -38,7 +38,7 @@
                 <local:DoNothingConverter x:Key="DoNothingConverter" />
                 <DataTemplate DataType="{x:Type model:Bond}">
                     <DataTemplate.Resources>
-                        <LinearGradientBrush x:Key="HatchBrush"  MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
+                        <LinearGradientBrush x:Key="HatchBrush" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
                             <GradientStop Offset="0.00" Color="Black" />
                             <GradientStop Offset="0.25" Color="Black" />
                             <GradientStop Offset="0.25" Color="Transparent" />
@@ -47,7 +47,7 @@
                                 <RotateTransform Angle="{Binding Path=Angle, Mode=OneWay}" />
                             </LinearGradientBrush.Transform>
                         </LinearGradientBrush>
-                        <LinearGradientBrush x:Key="HighlightHatchBrush"  MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
+                        <LinearGradientBrush x:Key="HighlightHatchBrush" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="50,0" EndPoint="50,5">
                             <GradientStop Offset="0.00" Color="DarkOrange" />
                             <GradientStop Offset="0.25" Color="DarkOrange" />
                             <GradientStop Offset="0.25" Color="Transparent" />
@@ -76,8 +76,7 @@
                                     <debug:Setter.Value>
                                         <StackPanel>
                                             <TextBlock>
-                                                Bond Id:
-                                                <Bold>
+                                                Bond Id:<Bold>
                                                     <TextBlock Text="{Binding Id, Mode=OneWay}" />
                                                 </Bold>
                                             </TextBlock>
@@ -114,7 +113,7 @@
                                         <Setter Property="Fill" Value="{StaticResource HatchBrush}" />
                                         <Setter Property="Stroke" Value="Transparent" />
                                     </DataTrigger>
-                                    <!-- highlights the bonds on mouseover -->
+                                    <!--  highlights the bonds on mouseover  -->
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Fill">
                                             <Setter.Value>
@@ -165,8 +164,7 @@
                                     <debug:Setter.Value>
                                         <StackPanel>
                                             <TextBlock>
-                                                Atom Id:
-                                                <Bold>
+                                                Atom Id:<Bold>
                                                     <TextBlock Text="{Binding Id}" />
                                                 </Bold>
                                             </TextBlock>

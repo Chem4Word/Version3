@@ -5,6 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Reflection;
+using System.Windows.Forms;
 using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
@@ -12,11 +17,6 @@ using Chem4Word.Helpers;
 using Chem4Word.Model;
 using Chem4Word.Model.Converters.CML;
 using Chem4Word.UI.UserControls;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Reflection;
-using System.Windows.Forms;
 
 namespace Chem4Word.UI
 {

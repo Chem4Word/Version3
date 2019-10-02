@@ -5,10 +5,10 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Win32;
 
 namespace Chem4WordUpdater
 {

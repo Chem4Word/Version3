@@ -55,6 +55,7 @@ namespace Chem4Word.Core.Helpers
 
         // Bond length limits etc
         public const double MinimumBondLength = 5;
+
         public const double StandardBondLength = 20;
         public const double MaximumBondLength = 95;
         public const double BondLengthTolerance = 1;

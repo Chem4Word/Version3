@@ -3,6 +3,19 @@
 <ChangeLog>
   <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
   <Version>
+    <Number>3.0.28 Release 16</Number>
+    <IsBeta>false</IsBeta>
+    <Released>07-Jul-2019</Released>
+    <Changes>
+      <Change>Bug Fix; Series does not contain a matching element in OoXml rendering [https://github.com/Chem4Word/Version3/issues/15]</Change>
+      <Change>Bug Fix; Sequence contains no elements in CustomRibbon Edit [https://github.com/Chem4Word/Version3/issues/9]</Change>
+      <Change>Bug Fix; System.NullReferenceException in Editor.ChemDoodleWeb800 [https://github.com/Chem4Word/Version3/issues/13]</Change>
+      <Change>Bug Fix; HandleRightClick(); The requested member of the collection does not exist. [https://github.com/Chem4Word/Version3/issues/10]</Change>
+        <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.28.Release.16.msi</Url>
+  </Version>
+  <Version>
     <Number>3.0.27 Release 15</Number>
     <IsBeta>false</IsBeta>
     <Released>06-Jul-2019</Released>
@@ -10,9 +23,8 @@
       <Change>Fix bounding box for subscript characters</Change>
       <Change>Fix bug in CDW702 editor always setting bond length to 20</Change>
       <Change>Implement clipping of bond lines using ConvexHull of atom characters</Change>
-      <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
     </Changes>
-    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.26.Release.14.msi</Url>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.27.Release.15.msi</Url>
   </Version>
   <Version>
     <Number>3.0.26 Release 14</Number>

@@ -5,9 +5,9 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using IChem4Word.Contracts;
 using System;
 using System.Windows.Forms;
+using IChem4Word.Contracts;
 
 namespace Chem4Word.Core.UI.Forms
 {

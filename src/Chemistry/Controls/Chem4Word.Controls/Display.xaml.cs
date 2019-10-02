@@ -5,11 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core;
-using Chem4Word.Core.Helpers;
-using Chem4Word.Model;
-using Chem4Word.Model.Converters.CML;
-using Chem4Word.Model.Converters.MDL;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,6 +12,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Model;
+using Chem4Word.Model.Converters.CML;
+using Chem4Word.Model.Converters.MDL;
 using ChemistryModel = Chem4Word.Model.Model;
 
 namespace Chem4Word.Controls

@@ -5,15 +5,15 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model;
-using Chem4Word.Model.Geometry;
-using Chem4Word.Renderer.OoXmlV3.TTF;
-using IChem4Word.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using Chem4Word.Model;
+using Chem4Word.Model.Geometry;
+using Chem4Word.Renderer.OoXmlV3.TTF;
+using IChem4Word.Contracts;
 using Point = System.Windows.Point;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
@@ -429,7 +429,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                     }
                 }
 
-                #endregion Step 6 Add IsoTope Number if required
+                #endregion Step 6 - Add IsoTope Number if required
 
                 #region Step 7 - Create Convex Hull
 
@@ -440,11 +440,11 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
                 foreach (var c in chars)
                 {
                     // Top Left --
-                    points.Add(new Point(c.Position.X - margin, c.Position.Y -margin));
+                    points.Add(new Point(c.Position.X - margin, c.Position.Y - margin));
                     if (c.IsSubScript)
                     {
                         // Top Right +-
-                        points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin, 
+                        points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin,
                                             c.Position.Y - margin));
                         // Bottom Right ++
                         points.Add(new Point(c.Position.X + OoXmlHelper.ScaleCsTtfToCml(c.Character.Width) * OoXmlHelper.SUBSCRIPT_SCALE_FACTOR + margin,
@@ -469,7 +469,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 
                 _convexhHulls.Add(atom.Id, GeometryTool.MakeConvexHull(points));
 
-                #endregion
+                #endregion Step 7 - Create Convex Hull
             }
         }
 

@@ -5,10 +5,10 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System.Reflection;
 using Chem4Word.Core.Helpers;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools;
-using System.Reflection;
 
 namespace Chem4Word.Navigator
 {

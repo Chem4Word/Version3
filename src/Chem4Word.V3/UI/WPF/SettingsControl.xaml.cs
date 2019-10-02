@@ -5,13 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core;
-using Chem4Word.Core.Helpers;
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Core.UI.Wpf;
-using Chem4Word.Database;
-using IChem4Word.Contracts;
-using Ookii.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +15,13 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Core.UI.Wpf;
+using Chem4Word.Database;
+using IChem4Word.Contracts;
+using Ookii.Dialogs;
 using Forms = System.Windows.Forms;
 
 namespace Chem4Word.UI.WPF
@@ -246,7 +246,7 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-        #endregion Tab 1 Events
+        #endregion Tab Editor Plug-Ins Events
 
         #region Telemetry Tab Events
 
@@ -261,7 +261,7 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-        #endregion Tab 3 Events
+        #endregion Telemetry Tab Events
 
         #region Library Tab Events
 
@@ -489,7 +489,7 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-        #endregion Tab 4 Events
+        #endregion Library Tab Events
 
         #region Maintenance Tab Events
 
@@ -538,7 +538,7 @@ namespace Chem4Word.UI.WPF
             }
         }
 
-        #endregion Tab 5 Events
+        #endregion Maintenance Tab Events
 
         #region Private methods
 
@@ -631,7 +631,7 @@ namespace Chem4Word.UI.WPF
                 }
             }
 
-            #endregion Tab 1
+            #endregion Editor Plug Ins Tab
 
             #region Telemetry Tab
 
@@ -645,7 +645,7 @@ namespace Chem4Word.UI.WPF
                 BetaInformation.Visibility = Visibility.Hidden;
             }
 
-            #endregion Tab 3
+            #endregion Telemetry Tab
         }
 
         private BitmapImage CreateImageFromStream(Stream stream)

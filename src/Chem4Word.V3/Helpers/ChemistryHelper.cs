@@ -5,16 +5,16 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.Helpers;
-using Chem4Word.Model;
-using Chem4Word.Model.Converters.CML;
-using IChem4Word.Contracts;
-using Microsoft.Office.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Model;
+using Chem4Word.Model.Converters.CML;
+using IChem4Word.Contracts;
+using Microsoft.Office.Core;
 using Word = Microsoft.Office.Interop.Word;
 
 namespace Chem4Word.Helpers

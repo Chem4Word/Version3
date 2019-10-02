@@ -5,13 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Helpers;
 using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Helpers;
 
 namespace Chem4Word.Navigator
 {

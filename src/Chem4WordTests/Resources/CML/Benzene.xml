@@ -1,5 +1,5 @@
 <cml:cml
-  xmlns:conventions="http://www.xml-cml.org/convention/" 
+  xmlns:conventions="http://www.xml-cml.org/convention/"
   xmlns:cml="http://www.xml-cml.org/schema"
   xmlns:cmlDict="http://www.xml-cml.org/dictionary/cml/"
   xmlns:nameDict="http://www.xml-cml.org/dictionary/cml/name/"

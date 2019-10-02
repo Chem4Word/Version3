@@ -5,13 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Shared;
-using Microsoft.Deployment.WindowsInstaller;
-using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using Chem4Word.Shared;
+using Microsoft.Deployment.WindowsInstaller;
+using Microsoft.Win32;
 
 namespace WiX.CustomAction
 {

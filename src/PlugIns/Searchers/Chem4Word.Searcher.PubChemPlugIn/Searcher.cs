@@ -5,16 +5,16 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Searcher.PubChemPlugIn.Properties;
-using IChem4Word.Contracts;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Searcher.PubChemPlugIn.Properties;
+using IChem4Word.Contracts;
+using Newtonsoft.Json;
 using Point = System.Windows.Point;
 
 namespace Chem4Word.Searcher.PubChemPlugIn

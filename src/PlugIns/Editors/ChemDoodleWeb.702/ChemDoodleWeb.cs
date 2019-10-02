@@ -5,12 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.Helpers;
-using Chem4Word.Core.UI.Forms;
-using IChem4Word.Contracts;
-using Ionic.Zip;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,6 +12,12 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
+using IChem4Word.Contracts;
+using Ionic.Zip;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Chem4Word.Editor.ChemDoodleWeb702
 {

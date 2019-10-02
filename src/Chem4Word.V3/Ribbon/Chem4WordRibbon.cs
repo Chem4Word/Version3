@@ -5,6 +5,14 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
 using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
@@ -22,14 +30,6 @@ using Chem4Word.WebServices;
 using IChem4Word.Contracts;
 using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Ribbon;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Windows.Forms;
 using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using SaveFileDialog = System.Windows.Forms.SaveFileDialog;
@@ -719,59 +719,69 @@ namespace Chem4Word
                             {
                                 Dictionary<string, string> synonyms = new Dictionary<string, string>();
 
-                                // ChemSpider InChiKey (1.05) generator does not support Mdl Bond Types < 0 or > 4 or Elements < 1 or > 118
-                                List<Bond> invalidBonds = mol.Bonds.Where(b => b.OrderValue != null && (CtabProcessor.MdlBondType(b.Order) < 1 || CtabProcessor.MdlBondType(b.Order) > 4)).ToList();
-                                int maxAtomicNumber = mol.Atoms.Max(x => ((Element)x.Element).AtomicNumber);
-                                int minAtomicNumber = mol.Atoms.Min(x => ((Element)x.Element).AtomicNumber);
-                                if (invalidBonds.Any() || minAtomicNumber < 1 || maxAtomicNumber > 118)
+                                // GitHub: Issue #9 https://github.com/Chem4Word/Version3/issues/9
+                                if (mol.Atoms.Any())
                                 {
-                                    Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to Web Service; Invalid Bonds: {invalidBonds?.Count} Min Atomic Number: {minAtomicNumber} Max Atomic Number: {maxAtomicNumber}");
-                                    synonyms.Add(Constants.Chem4WordInchiKeyName, "Not Requested");
-                                }
-                                else
-                                {
-                                    pb.Show();
-                                    pb.Increment(1);
-                                    pb.Message = $"Calculating InChiKey and Resolving Names using Chem4Word Web Service for molecule {mol.Id}";
+                                    int maxAtomicNumber = mol.Atoms.Max(x => ((Element)x.Element).AtomicNumber);
+                                    int minAtomicNumber = mol.Atoms.Min(x => ((Element)x.Element).AtomicNumber);
 
-                                    try
+                                    List<Bond> invalidBonds = new List<Bond>();
+                                    if (mol.Bonds.Any())
                                     {
-                                        Model.Model temp = new Model.Model();
-                                        temp.Molecules.Add(mol);
+                                        invalidBonds = mol.Bonds.Where(b => b.OrderValue != null && (CtabProcessor.MdlBondType(b.Order) < 1 || CtabProcessor.MdlBondType(b.Order) > 4)).ToList();
+                                    }
 
-                                        string afterMolFile = molConverter.Export(temp);
-                                        mol.ConciseFormula = mol.CalculatedFormula();
+                                    if (invalidBonds.Any() || minAtomicNumber < 1 || maxAtomicNumber > 118)
+                                    {
+                                        // ChemSpider InChiKey (1.05) generator does not support Mdl Bond Types < 0 or > 4 or Elements < 1 or > 118
+                                        Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Not sending structure to Web Service; Invalid Bonds: {invalidBonds?.Count} Min Atomic Number: {minAtomicNumber} Max Atomic Number: {maxAtomicNumber}");
+                                        synonyms.Add(Constants.Chem4WordInchiKeyName, "Not Requested");
+                                    }
+                                    else
+                                    {
+                                        pb.Show();
+                                        pb.Increment(1);
+                                        pb.Message = $"Calculating InChiKey and Resolving Names using Chem4Word Web Service for molecule {mol.Id}";
 
-                                        ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
-                                        var csr = cs.GetChemicalServicesResult(afterMolFile);
-
-                                        if (csr?.Properties != null && csr.Properties.Any())
+                                        try
                                         {
-                                            var first = csr.Properties[0];
-                                            if (first != null)
+                                            Model.Model temp = new Model.Model();
+                                            temp.Molecules.Add(mol);
+
+                                            string afterMolFile = molConverter.Export(temp);
+                                            mol.ConciseFormula = mol.CalculatedFormula();
+
+                                            ChemicalServices cs = new ChemicalServices(Globals.Chem4WordV3.Telemetry);
+                                            var csr = cs.GetChemicalServicesResult(afterMolFile);
+
+                                            if (csr?.Properties != null && csr.Properties.Any())
                                             {
-                                                if (!string.IsNullOrEmpty(first.InchiKey))
+                                                var first = csr.Properties[0];
+                                                if (first != null)
                                                 {
-                                                    synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
-                                                }
-                                                if (!string.IsNullOrEmpty(first.Formula))
-                                                {
-                                                    synonyms.Add(Constants.Chem4WordResolverFormulaName, first.Formula);
-                                                }
-                                                if (!string.IsNullOrEmpty(first.Name))
-                                                {
-                                                    synonyms.Add(Constants.Chem4WordResolverIupacName, first.Name);
-                                                }
-                                                if (!string.IsNullOrEmpty(first.Smiles))
-                                                {
-                                                    synonyms.Add(Constants.Chem4WordResolverSmilesName, first.Smiles);
+                                                    if (!string.IsNullOrEmpty(first.InchiKey))
+                                                    {
+                                                        synonyms.Add(Constants.Chem4WordInchiKeyName, first.InchiKey);
+                                                    }
+                                                    if (!string.IsNullOrEmpty(first.Formula))
+                                                    {
+                                                        synonyms.Add(Constants.Chem4WordResolverFormulaName, first.Formula);
+                                                    }
+                                                    if (!string.IsNullOrEmpty(first.Name))
+                                                    {
+                                                        synonyms.Add(Constants.Chem4WordResolverIupacName, first.Name);
+                                                    }
+                                                    if (!string.IsNullOrEmpty(first.Smiles))
+                                                    {
+                                                        synonyms.Add(Constants.Chem4WordResolverSmilesName, first.Smiles);
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"{e.ToString()}");
+                                        catch (Exception e)
+                                        {
+                                            Globals.Chem4WordV3.Telemetry.Write(module, "Exception", $"{e.ToString()}");
+                                        }
                                     }
                                 }
 
@@ -1005,6 +1015,9 @@ namespace Chem4Word
                 {
                     Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Finished; No ContentControl was inserted");
                 }
+
+                app.ActiveWindow.SetFocus();
+                app.Activate();
             }
         }
 
@@ -1018,9 +1031,9 @@ namespace Chem4Word
             {
                 Globals.Chem4WordV3.EventsEnabled = false;
 
+                Word.Application app = Globals.Chem4WordV3.Application;
                 try
                 {
-                    Word.Application app = Globals.Chem4WordV3.Application;
                     Word.Selection sel = app.Selection;
                     Word.ContentControl cc = null;
                     CustomXMLPart customXmlPart = null;
@@ -1050,6 +1063,9 @@ namespace Chem4Word
                 }
 
                 Globals.Chem4WordV3.EventsEnabled = true;
+
+                app.ActiveWindow.SetFocus();
+                app.Activate();
             }
 
             AfterButtonChecks(sender as RibbonButton);
@@ -1167,9 +1183,9 @@ namespace Chem4Word
             {
                 Globals.Chem4WordV3.EventsEnabled = false;
 
+                Word.Application app = Globals.Chem4WordV3.Application;
                 try
                 {
-                    Word.Application app = Globals.Chem4WordV3.Application;
                     Word.Document doc = app.ActiveDocument;
                     Word.Selection sel = app.Selection;
                     Word.ContentControl cc = null;
@@ -1178,7 +1194,6 @@ namespace Chem4Word
                     if (sel.ContentControls.Count > 0)
                     {
                         cc = sel.ContentControls[1];
-                        //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                         if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
                             Word.Application app1 = Globals.Chem4WordV3.Application;
@@ -1217,6 +1232,8 @@ namespace Chem4Word
                 }
 
                 Globals.Chem4WordV3.EventsEnabled = true;
+                app.ActiveWindow.SetFocus();
+                app.Activate();
             }
 
             AfterButtonChecks(sender as RibbonButton);

@@ -5,11 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model;
-using Chem4Word.Model.Enums;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
+using Chem4Word.Model;
+using Chem4Word.Model.Enums;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
 {

@@ -5,13 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
+using Chem4Word.Model.Enums;
 
 namespace Chem4Word.Model.Converters.CML
 {

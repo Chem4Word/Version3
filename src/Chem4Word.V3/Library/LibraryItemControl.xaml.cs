@@ -5,16 +5,16 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Helpers;
-using Chem4Word.View;
-using Microsoft.Office.Interop.Word;
 using System;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Helpers;
+using Chem4Word.View;
+using Microsoft.Office.Interop.Word;
 using static Chem4Word.Core.UserInteractions;
 using UserControl = System.Windows.Controls.UserControl;
 

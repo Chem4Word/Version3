@@ -30,8 +30,9 @@ namespace Chem4Word.Telemetry
         }
 
         // Make sure this is a Send Only Access key
-        string ServiceBus = "Endpoint=sb://c4w-telemetry.servicebus.windows.net/;SharedAccessKeyName=TelemetrySender;SharedAccessKey=J8tkibrh5CHc2vZJgn1gbynZRmMLUf0mz/WZtmcjH6Q=";
-        string QueueName = "telemetry";
+        private string ServiceBus = "Endpoint=sb://c4w-telemetry.servicebus.windows.net/;SharedAccessKeyName=TelemetrySender;SharedAccessKey=J8tkibrh5CHc2vZJgn1gbynZRmMLUf0mz/WZtmcjH6Q=";
+
+        private string QueueName = "telemetry";
         private static QueueClient _client;
 
         private readonly object _queueLock = new object();

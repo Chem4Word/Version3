@@ -5,8 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Geometry;
-using Chem4Word.Model.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +13,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Chem4Word.Model.Geometry;
+using Chem4Word.Model.Properties;
 
 namespace Chem4Word.Model
 {
@@ -337,7 +337,7 @@ namespace Chem4Word.Model
         /// Returns a vector which points to the most uncrowded side of the atom.
         ///
         /// </summary>
-        public Vector BalancingVector (bool forAtomLabelPlacement = false)
+        public Vector BalancingVector(bool forAtomLabelPlacement = false)
         {
             Vector vsumVector = new Vector();
 

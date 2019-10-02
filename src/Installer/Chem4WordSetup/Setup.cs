@@ -5,8 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Shared;
-using Microsoft.Win32;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,6 +15,8 @@ using System.Net.Http;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Shared;
+using Microsoft.Win32;
 
 namespace Chem4WordSetup
 {
@@ -34,7 +34,7 @@ namespace Chem4WordSetup
         private const string DetectV2AddIn = @"Chemistry Add-in for Word\Chem4Word.AddIn.vsto";
         private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.V3.vsto";
 
-        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.22.Release.9.msi";
+        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.28.Release.16.msi";
         private const string VstoInstaller = "https://www.chem4word.co.uk/files3/vstor_redist.exe";
 
         private WebClient _webClient;

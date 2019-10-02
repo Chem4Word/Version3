@@ -5,10 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.Helpers;
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.UI;
-using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -18,6 +14,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.UI;
+using Microsoft.Win32;
 
 namespace Chem4Word.Helpers
 {
@@ -209,7 +209,7 @@ namespace Chem4Word.Helpers
                     {
                         Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Looking for Chem4Word-Versions.xml at {domain}");
 
-                        client.DefaultRequestHeaders.Add("user-agent", "Chem4Word Bootstrapper");
+                        client.DefaultRequestHeaders.Add("user-agent", "Chem4Word VersionChecker");
                         client.BaseAddress = new Uri(domain);
                         var response = client.GetAsync(VersionsFile).Result;
                         response.EnsureSuccessStatusCode();

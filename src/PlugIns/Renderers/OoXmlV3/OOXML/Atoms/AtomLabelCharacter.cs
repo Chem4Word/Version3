@@ -5,9 +5,9 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Renderer.OoXmlV3.TTF;
 using System;
 using System.Windows;
+using Chem4Word.Renderer.OoXmlV3.TTF;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML.Atoms
 {

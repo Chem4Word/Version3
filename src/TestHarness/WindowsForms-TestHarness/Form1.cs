@@ -5,12 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model;
-using Chem4Word.Model.Converters;
 using System;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using Chem4Word.Model;
 using Chem4Word.Model.Converters.CML;
 using Chem4Word.Model.Converters.MDL;
 

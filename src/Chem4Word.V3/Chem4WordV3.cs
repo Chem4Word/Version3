@@ -5,17 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core;
-using Chem4Word.Core.Helpers;
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Helpers;
-using Chem4Word.Library;
-using Chem4Word.Model.Converters.CML;
-using Chem4Word.Navigator;
-using Chem4Word.Telemetry;
-using IChem4Word.Contracts;
-using Microsoft.Office.Core;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,6 +19,17 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml.Linq;
+using Chem4Word.Core;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Helpers;
+using Chem4Word.Library;
+using Chem4Word.Model.Converters.CML;
+using Chem4Word.Navigator;
+using Chem4Word.Telemetry;
+using IChem4Word.Contracts;
+using Microsoft.Office.Core;
+using Newtonsoft.Json;
 using Extensions = Microsoft.Office.Tools.Word.Extensions;
 using OfficeTools = Microsoft.Office.Tools;
 using Word = Microsoft.Office.Interop.Word;
@@ -237,8 +237,8 @@ namespace Chem4Word
 
                 if (app.Documents.Count > 0)
                 {
-                    EnableDocumentEvents(app.Documents[1]);
-                    if (app.Documents[1].CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
+                    EnableDocumentEvents(app.ActiveDocument);
+                    if (app.ActiveDocument.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
                     {
                         SetButtonStates(ButtonState.CanInsert);
                     }
@@ -1007,7 +1007,7 @@ namespace Chem4Word
                     //Debug.WriteLine($"CC '{cc.Tag}' Range from {cc.Range.Start} to {cc.Range.End}");
 
                     // Already Selected
-                    if (sel.Range.Start == cc.Range.Start -1 && sel.Range.End == cc.Range.End + 1)
+                    if (sel.Range.Start == cc.Range.Start - 1 && sel.Range.End == cc.Range.End + 1)
                     {
                         if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
@@ -1243,46 +1243,56 @@ namespace Chem4Word
                 if (LibraryNames != null && LibraryNames.Any())
                 {
                     // Limit to selections which have less than 5 sentences
-                    if (sel.Sentences.Count <= 5)
+                    if (sel != null && sel.Sentences != null && sel.Sentences.Count <= 5)
                     {
                         Word.Document doc = Application.ActiveDocument;
                         if (doc != null)
                         {
                             int last = doc.Range().End;
+                            int sentenceCount = sel.Sentences.Count;
                             // Handling the selected text sentence by sentence should make us immune to return character sizing.
-                            for (int i = 1; i <= sel.Sentences.Count; i++)
+                            for (int i = 1; i <= sentenceCount; i++)
                             {
-                                var sentence = sel.Sentences[i];
-                                int start = Math.Max(sentence.Start, sel.Start);
-                                start = Math.Max(0, start);
-                                int end = Math.Min(sel.End, sentence.End);
-                                end = Math.Min(end, last);
-                                if (start < end)
+                                // GitHub: Issue #10 https://github.com/Chem4Word/Version3/issues/10
+                                try
                                 {
-                                    var range = doc.Range(start, end);
-                                    //Exclude any ranges which contain content controls
-                                    if (range.ContentControls.Count == 0)
+                                    var sentence = sel.Sentences[i];
+                                    int start = Math.Max(sentence.Start, sel.Start);
+                                    start = Math.Max(0, start);
+                                    int end = Math.Min(sel.End, sentence.End);
+                                    end = Math.Min(end, last);
+                                    if (start < end)
                                     {
-                                        string sentenceText = range.Text;
-                                        //Debug.WriteLine($"Sentences[{i}] --> {sentenceText}");
-                                        if (!string.IsNullOrEmpty(sentenceText))
+                                        var range = doc.Range(start, end);
+                                        //Exclude any ranges which contain content controls
+                                        if (range.ContentControls.Count == 0)
                                         {
-                                            foreach (var kvp in LibraryNames)
+                                            string sentenceText = range.Text;
+                                            if (!string.IsNullOrEmpty(sentenceText))
                                             {
-                                                int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
-                                                if (idx > 0)
+                                                foreach (var kvp in LibraryNames)
                                                 {
-                                                    selectedWords.Add(new TargetWord
+                                                    int idx = sentenceText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase);
+                                                    if (idx > 0)
                                                     {
-                                                        ChemicalName = kvp.Key,
-                                                        Start = start + idx,
-                                                        ChemistryId = kvp.Value,
-                                                        End = start + idx + kvp.Key.Length
-                                                    });
+                                                        selectedWords.Add(new TargetWord
+                                                        {
+                                                            ChemicalName = kvp.Key,
+                                                            Start = start + idx,
+                                                            ChemistryId = kvp.Value,
+                                                            End = start + idx + kvp.Key.Length
+                                                        });
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+                                }
+                                catch (Exception e)
+                                {
+                                    Telemetry.Write(module, "Exception", $"Handled; Sentences[{i}] of {sentenceCount} not found");
+                                    Telemetry.Write(module, "Exception", e.Message);
+                                    Telemetry.Write(module, "Exception", e.ToString());
                                 }
                             }
                         }
@@ -1567,7 +1577,6 @@ namespace Chem4Word
                         {
                             SetButtonStates(ButtonState.NoDocument);
                         }
-
                     }
                 }
             }
@@ -2254,6 +2263,7 @@ namespace Chem4Word
 
                 if (!InUndoRedo && !string.IsNullOrEmpty(ccTag))
                 {
+                    // Check that tag looks like it might be a C4W Tag
                     var regex = @"^[0-9a-fmn.:]+$";
                     Match match = Regex.Match(ccTag, regex, RegexOptions.IgnoreCase);
                     if (match.Success)

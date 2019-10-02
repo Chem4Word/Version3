@@ -5,6 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Model;
@@ -15,14 +22,6 @@ using Chem4Word.Renderer.OoXmlV3.TTF;
 using DocumentFormat.OpenXml;
 using IChem4Word.Contracts;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using DocumentFormat.OpenXml.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 using Drawing = DocumentFormat.OpenXml.Wordprocessing.Drawing;
 using Point = System.Windows.Point;
@@ -320,10 +319,10 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                 for (int i = 0; i < points.Count - 1; i++)
                 {
                     Rect bb = new Rect(points[i], points[i + 1]);
-                    DrawLine(wordprocessingGroup1, bb, points[i], points[i+1] , "ff0000", 3000);
+                    DrawLine(wordprocessingGroup1, bb, points[i], points[i + 1], "ff0000", 3000);
                 }
 
-                Rect bb2 = new Rect(points[points.Count-1], points[0]);
+                Rect bb2 = new Rect(points[points.Count - 1], points[0]);
                 DrawLine(wordprocessingGroup1, bb2, points[points.Count - 1], points[0], "ff0000", 3000);
             }
         }
@@ -439,8 +438,8 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
                 // select lines which start or end with this atom
                 var targeted = from l in _bondLines
-                    where (l.StartAtomId == hull.Key | l.EndAtomId == hull.Key)
-                        select l;
+                               where (l.StartAtomId == hull.Key | l.EndAtomId == hull.Key)
+                               select l;
 
                 foreach (BondLine bl in targeted.ToList())
                 {
@@ -464,6 +463,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
                                 bl.End = new Point(r[2].X, r[2].Y);
                             }
                             break;
+
                         case 2:
                             if (!outside)
                             {
@@ -841,7 +841,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
 
             Point pp1 = new Point(left1, top1);
             Size ss2 = new Size(width1, height1);
-            pp1.Offset(OoXmlHelper.ScaleCmlToEmu(- _canvasExtents.Left), OoXmlHelper.ScaleCmlToEmu(- _canvasExtents.Top));
+            pp1.Offset(OoXmlHelper.ScaleCmlToEmu(-_canvasExtents.Left), OoXmlHelper.ScaleCmlToEmu(-_canvasExtents.Top));
             Rect boundingBox = new Rect(pp1, ss2);
 
             Int64Value width = (Int64Value)boundingBox.Width;

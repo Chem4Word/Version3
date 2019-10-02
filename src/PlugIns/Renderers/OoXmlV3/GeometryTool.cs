@@ -5,11 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Chem4Word.Model;
 
 namespace Chem4Word.Renderer.OoXmlV3
 {
@@ -61,6 +61,7 @@ namespace Chem4Word.Renderer.OoXmlV3
 
         // For debugging.
         private static Point[] _minMaxCorners;
+
         private static Rect _minMaxBox;
         private static Point[] _nonCulledPoints;
 

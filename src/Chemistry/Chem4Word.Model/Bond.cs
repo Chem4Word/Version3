@@ -5,8 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Enums;
-using Chem4Word.Model.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -15,6 +13,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using Chem4Word.Model.Enums;
+using Chem4Word.Model.Geometry;
 
 namespace Chem4Word.Model
 {
@@ -536,8 +536,6 @@ namespace Chem4Word.Model
                     if (endLigands.AreAllH())
                     {
                         //Already caught.
-                        // ToDo: Check with Clyde
-                        //throw new ApplicationException("This scenario should already have been caught");
                         return null;
                     }
                     if (endLigands.ContainNoH())
@@ -554,8 +552,6 @@ namespace Chem4Word.Model
                 if (endLigands.AreAllH())
                 {
                     //Already caught
-                    // ToDo: Check with Clyde
-                    //throw new ApplicationException("This scenario should already have been caught");
                     return null;
                 }
 
@@ -599,8 +595,6 @@ namespace Chem4Word.Model
                     if (endLigands.AreAllH())
                     {
                         // Already caught.
-                        // ToDo: Check with Clyde
-                        //throw new ApplicationException("This scenario should already have been caught");
                         return null;
                     }
                     if (endLigands.ContainNoH())
@@ -616,8 +610,6 @@ namespace Chem4Word.Model
                 if (endLigands.AreAllH())
                 {
                     // Already caught.
-                    // ToDo: Check with Clyde
-                    //throw new ApplicationException("This scenario should already hve been caught");
                     return null;
                 }
             }
@@ -627,7 +619,7 @@ namespace Chem4Word.Model
                 {
                     if (endLigands.AreAllH())
                     {
-                        //Double dbond on the side of StartLigands' !H, bevel one end.
+                        //double bond on the side of StartLigands' !H, bevel one end.
                         return VectorOnSideOfNonHAtomFromStartLigands(StartAtom, EndAtom, startLigands);
                     }
                     if (endLigands.ContainNoH())
@@ -672,25 +664,38 @@ namespace Chem4Word.Model
 
         private Vector? VectorOnSideOfNonHAtomFromStartLigands(Atom startAtom, Atom endAtom, IEnumerable<Atom> startLigands)
         {
-            Vector posDisplacementVector = BondVector.Perpendicular();
-            Vector negDisplacementVector = -posDisplacementVector;
-            posDisplacementVector.Normalize();
-            negDisplacementVector.Normalize();
+            Vector? displacementVector = null;
 
-            posDisplacementVector = posDisplacementVector * 3;
-            negDisplacementVector = negDisplacementVector * 3;
+            // GitHub: Issue #15 https://github.com/Chem4Word/Version3/issues/15
+            try
+            {
+                Vector posDisplacementVector = BondVector.Perpendicular();
+                Vector negDisplacementVector = -posDisplacementVector;
+                posDisplacementVector.Normalize();
+                negDisplacementVector.Normalize();
 
-            Point posEndPoint = endAtom.Position + posDisplacementVector;
-            Point negEndPoint = endAtom.Position + negDisplacementVector;
+                posDisplacementVector = posDisplacementVector * 3;
+                negDisplacementVector = negDisplacementVector * 3;
 
-            Atom nonHAtom = startAtom.Neighbours.First(n => n != endAtom && (Element)n.Element != Globals.PeriodicTable.H);
-            Point nonHAtomLoc = nonHAtom.Position;
+                Point posEndPoint = endAtom.Position + posDisplacementVector;
+                Point negEndPoint = endAtom.Position + negDisplacementVector;
 
-            double posDist = (nonHAtomLoc - posEndPoint).Length;
-            double negDist = (nonHAtomLoc - negEndPoint).Length;
+                Atom nonHAtom = startAtom.Neighbours.FirstOrDefault(n => n != endAtom && (Element)n.Element != Globals.PeriodicTable.H);
+                if (nonHAtom != null)
+                {
+                    Point nonHAtomLoc = nonHAtom.Position;
 
-            bool posDisplacement = posDist < negDist;
-            Vector displacementVector = posDisplacement ? posDisplacementVector : negDisplacementVector;
+                    double posDist = (nonHAtomLoc - posEndPoint).Length;
+                    double negDist = (nonHAtomLoc - negEndPoint).Length;
+
+                    bool posDisplacement = posDist < negDist;
+                    displacementVector = posDisplacement ? posDisplacementVector : negDisplacementVector;
+                }
+            }
+            catch
+            {
+                // Do Nothing
+            }
 
             return displacementVector;
         }

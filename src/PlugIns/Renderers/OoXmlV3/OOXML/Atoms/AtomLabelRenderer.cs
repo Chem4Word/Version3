@@ -5,9 +5,9 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System.Windows;
 using Chem4Word.Renderer.OoXmlV3.TTF;
 using DocumentFormat.OpenXml;
-using System.Windows;
 using A = DocumentFormat.OpenXml.Drawing;
 using Point = System.Windows.Point;
 using Wpg = DocumentFormat.OpenXml.Office2010.Word.DrawingGroup;

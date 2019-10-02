@@ -5,10 +5,6 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Controls.Annotations;
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Database;
-using Chem4Word.Model.Converters.CML;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +18,10 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using Chem4Word.Controls.Annotations;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Database;
+using Chem4Word.Model.Converters.CML;
 
 namespace Chem4Word.Library
 {

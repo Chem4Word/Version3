@@ -5,17 +5,16 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Core.Helpers;
-using Chem4Word.Model.Converters;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using IChem4Word.Contracts;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
+using Chem4Word.Core.Helpers;
 using Chem4Word.Model.Converters.CML;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using IChem4Word.Contracts;
 
 namespace Chem4Word.Renderer.OoXmlV3.OOXML
 {

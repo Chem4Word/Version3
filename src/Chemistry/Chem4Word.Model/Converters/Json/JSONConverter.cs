@@ -5,11 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model.Enums;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using Chem4Word.Model.Enums;
+using Newtonsoft.Json;
 
 namespace Chem4Word.Model.Converters.Json
 {
@@ -168,29 +168,34 @@ namespace Chem4Word.Model.Converters.Json
         {
             var newMol = new Molecule();
             Element ce;
-            foreach (AtomJSON a in data.a)
+
+            // GitHub: Issue #13 https://github.com/Chem4Word/Version3/issues/13
+            if (data.a != null)
             {
-                if (!string.IsNullOrEmpty(a.l))
+                foreach (AtomJSON a in data.a)
                 {
-                    bool OK = Globals.PeriodicTable.HasElement(a.l);
-                    ce = Globals.PeriodicTable.Elements[a.l];
-                }
-                else
-                {
-                    ce = Globals.PeriodicTable.C;
-                }
+                    if (!string.IsNullOrEmpty(a.l))
+                    {
+                        bool ok = Globals.PeriodicTable.HasElement(a.l);
+                        ce = Globals.PeriodicTable.Elements[a.l];
+                    }
+                    else
+                    {
+                        ce = Globals.PeriodicTable.C;
+                    }
 
-                Atom atom = new Atom()
-                {
-                    Element = ce,
-                    Position = new Point(a.x, a.y)
-                };
+                    Atom atom = new Atom()
+                    {
+                        Element = ce,
+                        Position = new Point(a.x, a.y)
+                    };
 
-                if (a.c != null)
-                {
-                    atom.FormalCharge = a.c.Value;
+                    if (a.c != null)
+                    {
+                        atom.FormalCharge = a.c.Value;
+                    }
+                    newMol.Atoms.Add(atom);
                 }
-                newMol.Atoms.Add(atom);
             }
 
             if (data.b != null)

@@ -5,10 +5,10 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Chem4Word.Model;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
+using Chem4Word.Model;
 
 namespace Chem4Word.View
 {

@@ -7,10 +7,6 @@
 //
 // Created by Mike Williams - 06-Jan-2016
 
-using Chem4Word.Core.Helpers;
-using Chem4Word.Core.UI.Forms;
-using Chem4Word.Shared;
-using IChem4Word.Contracts;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -20,6 +16,10 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI.Forms;
+using Chem4Word.Shared;
+using IChem4Word.Contracts;
 
 namespace Chem4Word.UI
 {

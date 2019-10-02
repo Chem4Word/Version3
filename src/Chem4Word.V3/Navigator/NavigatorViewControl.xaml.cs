@@ -5,10 +5,10 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-using Microsoft.Office.Interop.Word;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Office.Interop.Word;
 using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace Chem4Word.Navigator

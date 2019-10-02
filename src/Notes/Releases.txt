@@ -1,9 +1,10 @@
 ﻿# Set Build Numbers
 
-.\SetAssemblyVersion.ps1 -version 3.0.26 -name "Release 14" -released "01-Jan-2019" -path ..
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.28 -name "Release 16" -released 07-Jul-2019
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.28 -name "Release 16" -released 02-Oct-2019
 
 # GetReady.cmd
-set release=Chem4Word-Setup.3.0.2.Beta.2.msi
+set release=Chem4Word-Setup.3.0.28.Release.16.msi
 set working=C:\Temp
 
 pushd %working%

@@ -8,7 +8,6 @@
 using System;
 using System.Globalization;
 using System.Management;
-using Chem4Word.Core.Helpers;
 
 namespace Chem4Word.Telemetry
 {
@@ -129,7 +128,6 @@ namespace Chem4Word.Telemetry
 
                 return _lastBootUpTime;
             }
-
         }
 
         private void GetWin32ProcessorData()
@@ -188,7 +186,7 @@ namespace Chem4Word.Telemetry
 
         private void GetWin32OperatingSystemData()
         {
-            ManagementObjectSearcher searcher = 
+            ManagementObjectSearcher searcher =
                 new ManagementObjectSearcher("SELECT LastBootUpTime FROM Win32_OperatingSystem");
             ManagementObjectCollection objCol = searcher.Get();
 
@@ -210,7 +208,7 @@ namespace Chem4Word.Telemetry
 
         private void GetWin32PhysicalMemeoryData()
         {
-            ManagementObjectSearcher searcher = 
+            ManagementObjectSearcher searcher =
                 new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory");
             ManagementObjectCollection objCol = searcher.Get();
 
