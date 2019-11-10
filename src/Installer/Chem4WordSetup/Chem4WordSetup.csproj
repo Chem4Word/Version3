@@ -81,6 +81,9 @@
     <Compile Include="..\..\Shared\OfficeHelper.cs">
       <Link>OfficeHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Shared\RegistryWOW6432.cs">
+      <Link>RegistryWOW6432.cs</Link>
+    </Compile>
     <Compile Include="Constants.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -97,7 +97,7 @@ namespace Chem4Word
                     try
                     {
                         RibbonButton b = sender as RibbonButton;
-                        Debug.WriteLine($"User chose {b.Tag}");
+                        //Debug.WriteLine($"User chose {b.Tag}");
 
                         Word.Selection sel = app.Selection;
 
@@ -130,7 +130,7 @@ namespace Chem4Word
                                         {
                                             // Stop Screen Updating and Disable Document Event Handlers
                                             app.ScreenUpdating = false;
-                                            Globals.Chem4WordV3.DisableDocumentEvents(doc);
+                                            Globals.Chem4WordV3.DisableContentControlEvents(doc);
 
                                             // Erase old CC
                                             cc.LockContents = false;
@@ -204,7 +204,7 @@ namespace Chem4Word
                     {
                         // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
                         app.ScreenUpdating = true;
-                        Globals.Chem4WordV3.EnableDocumentEvents(doc);
+                        Globals.Chem4WordV3.EnableContentControlEvents(doc);
 
                         if (cc != null)
                         {
@@ -391,7 +391,7 @@ namespace Chem4Word
                     if (dr == DialogResult.OK)
                     {
                         Globals.Chem4WordV3.SystemOptions = f.SystemOptions.Clone();
-                        Globals.Chem4WordV3.Telemetry = new TelemetryWriter(Globals.Chem4WordV3.SystemOptions.TelemetryEnabled);
+                        Globals.Chem4WordV3.Telemetry = new TelemetryWriter(Globals.Chem4WordV3.SystemOptions.TelemetryEnabled, Globals.Chem4WordV3.Helper);
                     }
                 }
                 catch (Exception ex)
@@ -457,6 +457,7 @@ namespace Chem4Word
                                     break;
 
                                 default:
+                                    // No need to do anything as model is already null
                                     break;
                             }
 
@@ -541,16 +542,10 @@ namespace Chem4Word
 
         public void ActivateChemistryTab()
         {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-
             try
             {
                 RibbonUI.ActivateTab(Chem4WordV3.ControlId.ToString());
             }
-            //catch (Exception ex)
-            //{
-            //    new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
-            //}
             catch
             {
                 // Do Nothing
@@ -579,7 +574,17 @@ namespace Chem4Word
                 Globals.Chem4WordV3.LoadOptions();
             }
 
-            UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
+            // Only do update check if we are not coming from an update button
+            bool checkForUpdates = true;
+            if (button != null)
+            {
+                checkForUpdates = !button.Label.ToLower().Contains("update");
+            }
+
+            if (checkForUpdates)
+            {
+                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
+            }
 
             Globals.Chem4WordV3.EvaluateChemistryAllowed();
         }
@@ -589,10 +594,11 @@ namespace Chem4Word
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             Word.Application app = Globals.Chem4WordV3.Application;
+
+            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Started");
             Word.Document doc = app.ActiveDocument;
             Word.ContentControl cc = null;
 
-            Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Started");
             try
             {
                 if (Globals.Chem4WordV3.SystemOptions == null)
@@ -659,7 +665,7 @@ namespace Chem4Word
                         {
                             // Stop Screen Updating and Disable Document Event Handlers
                             app.ScreenUpdating = false;
-                            Globals.Chem4WordV3.DisableDocumentEvents(doc);
+                            Globals.Chem4WordV3.DisableContentControlEvents(doc);
 
                             CMLConverter cmlConverter = new CMLConverter();
                             SdFileConverter molConverter = new SdFileConverter();
@@ -1004,7 +1010,7 @@ namespace Chem4Word
             {
                 // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
                 app.ScreenUpdating = true;
-                Globals.Chem4WordV3.EnableDocumentEvents(doc);
+                Globals.Chem4WordV3.EnableContentControlEvents(doc);
 
                 if (cc != null)
                 {
@@ -1664,7 +1670,7 @@ namespace Chem4Word
 
                 // Stop Screen Updating and Disable Document Event Handlers
                 app.ScreenUpdating = false;
-                Globals.Chem4WordV3.DisableDocumentEvents(doc);
+                Globals.Chem4WordV3.DisableContentControlEvents(doc);
 
                 try
                 {
@@ -1755,7 +1761,7 @@ namespace Chem4Word
                 {
                     // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
                     app.ScreenUpdating = true;
-                    Globals.Chem4WordV3.EnableDocumentEvents(doc);
+                    Globals.Chem4WordV3.EnableContentControlEvents(doc);
 
                     if (cc != null)
                     {

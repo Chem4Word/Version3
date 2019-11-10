@@ -25,12 +25,15 @@ namespace Chem4Word.Telemetry
 
         private readonly bool _permissionGranted;
 
-        public TelemetryWriter(bool permissionGranted)
+        public TelemetryWriter(bool permissionGranted, SystemHelper helper)
         {
             _permissionGranted = permissionGranted;
+
+            _helper = helper;
+
             if (_helper == null)
             {
-                _helper = new SystemHelper();
+                Debugger.Break();
             }
 
             if (_wmiHelper == null)
@@ -59,9 +62,6 @@ namespace Chem4Word.Telemetry
             {
                 operation = operation.Remove(0, unwanted.Length);
             }
-
-            string debugMessage = $"[{_counter}] {operation} - {level} - {message}";
-            Debug.WriteLine(debugMessage);
 
             try
             {
@@ -94,8 +94,6 @@ namespace Chem4Word.Telemetry
 
         private void WriteStartUpInfo()
         {
-            List<string> lines = new List<string>();
-
             // Log Add-In Version
             WritePrivate("StartUp", "Information", _helper.AddInVersion); // ** Used by Andy's Knime protocol ?
 
@@ -116,9 +114,11 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
             WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
 
-            // Log UtcOffsets
-            lines = new List<string>();
+            WritePrivate("StartUp", "Timing", string.Join(Environment.NewLine, _helper.StartUpTimings));
 
+            List<string> lines = new List<string>();
+
+            // Log UtcOffsets
             lines.Add($"Server UTC DateTime is {_helper.ServerUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
             lines.Add($"System UTC DateTime is { _helper.SystemUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
 
@@ -221,8 +221,8 @@ namespace Chem4Word.Telemetry
             sbm.Message = message;
             sbm.AssemblyVersionNumber = _helper.AssemblyVersionNumber;
 
-            //_azureServiceBusWriter.QueueMessage(sbm);
-            _azureServiceBusWriter.WriteMessage(sbm);
+            _azureServiceBusWriter.QueueMessage(sbm);
+            //_azureServiceBusWriter.WriteMessage(sbm);
         }
     }
 }

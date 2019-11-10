@@ -5,6 +5,8 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+// Shared file (Add As Link)
+
 using System;
 using System.Runtime.InteropServices;
 

@@ -1,6 +1,7 @@
 ﻿# Set Build Numbers
 
-.\SetAssemblyVersion.ps1 -path .. -version 3.0.28 -name "Release 16" -released 07-Jul-2019
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.30 -name "Release 18" -released 31-Dec-2019
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.29 -name "Release 17" -released 10-Nov-2019
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.28 -name "Release 16" -released 02-Oct-2019
 
 # GetReady.cmd

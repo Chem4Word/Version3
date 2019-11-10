@@ -26,7 +26,6 @@ namespace Chem4Word.Telemetry
     public class SystemHelper
     {
         private static string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
-        private static string Click2RunConfiguration = @"SOFTWARE\Microsoft\Office\ClickToRun\Configuration";
         private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
         private static readonly string DetectionFile = $"{Constants.Chem4WordVersionFiles}/client-ip-date.php";
@@ -66,6 +65,7 @@ namespace Chem4Word.Telemetry
         public string ServerUtcDateRaw { get; set; }
         public DateTime ServerUtcDateTime { get; set; }
         public string BrowserVersion { get; set; }
+        public List<string> StartUpTimings { get; set; }
 
         private static int _retryCount;
 
@@ -154,7 +154,7 @@ namespace Chem4Word.Telemetry
             {
                 WordProduct = OfficeHelper.GetWordProduct();
 
-                Click2RunProductIds = GetClick2RunProductIds();
+                Click2RunProductIds = OfficeHelper.GetClick2RunProductIds();
 
                 if (WordProduct.Contains("2010") || WordProduct.Contains("2013") || WordProduct.Contains("2016") || WordProduct.Contains("365"))
                 {
@@ -252,22 +252,8 @@ namespace Chem4Word.Telemetry
 #endif
         }
 
-        private string GetClick2RunProductIds()
-        {
-            string result = "";
-            try
-            {
-                // Need special routine here as MachineGuid does not exist in the wow6432 path
-                result = RegistryWOW6432.GetRegKey64(RegHive.HKEY_LOCAL_MACHINE, Click2RunConfiguration, "ProductReleaseIds");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                result = "Exception " + ex.Message;
-            }
-
-            return result;
-        }
+        //    return result;
+        //}
 
         private void GetGitStatus()
         {
@@ -315,9 +301,12 @@ namespace Chem4Word.Telemetry
         {
             List<string> screens = new List<string>();
 
+            int idx = 0;
             foreach (var screen in Screen.AllScreens)
             {
-                screens.Add($"{screen.Bounds.Width} x {screen.Bounds.Height}");
+                idx++;
+                var primary = screen.Primary ? "[P]" : "";
+                screens.Add($"#{idx}{primary}: {screen.Bounds.Width}x{screen.Bounds.Height} @ {screen.Bounds.X},{screen.Bounds.Y}");
             }
 
             Screens = string.Join("; ", screens);
@@ -341,6 +330,18 @@ namespace Chem4Word.Telemetry
                 if (ndpKey != null)
                 {
                     int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
+
+                    // .Net 4.8
+                    if (releaseKey >= 528049)
+                    {
+                        DotNetVersion = $".NET 4.8 [{releaseKey}]";
+                        return;
+                    }
+                    if (releaseKey >= 528040)
+                    {
+                        DotNetVersion = $".NET 4.8 (W10 1903) [{releaseKey}]";
+                        return;
+                    }
 
                     // .Net 4.7.2
                     if (releaseKey >= 461814)
@@ -442,7 +443,7 @@ namespace Chem4Word.Telemetry
 
                     if (releaseKey < 378389)
                     {
-                        DotNetVersion = ".Net Version Unknown [{releaseKey}]";
+                        DotNetVersion = $".Net Version Unknown [{releaseKey}]";
                     }
                 }
             }
@@ -590,6 +591,7 @@ namespace Chem4Word.Telemetry
                     Thread.Sleep(500);
                     ParameterizedThreadStart pts = GetExternalIpAddress;
                     Thread t = new Thread(pts);
+                    t.SetApartmentState(ApartmentState.STA);
                     t.Start(null);
                 }
             }

@@ -5,11 +5,13 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+// Shared file (Add As Link)
+
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Chem4Word.Telemetry
+namespace Chem4Word.Shared
 {
     // http://www.rhyous.com/2011/01/24/how-read-the-64-bit-registry-from-a-32-bit-application-or-vice-versa/
 

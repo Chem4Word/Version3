@@ -86,9 +86,11 @@
     <Compile Include="..\..\Shared\OfficeHelper.cs">
       <Link>OfficeHelper.cs</Link>
     </Compile>
+    <Compile Include="..\..\Shared\RegistryWOW6432.cs">
+      <Link>RegistryWOW6432.cs</Link>
+    </Compile>
     <Compile Include="AzureServiceBusWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistryWOW6432.cs" />
     <Compile Include="ServiceBusMessage.cs" />
     <Compile Include="SystemHelper.cs" />
     <Compile Include="TelemetryWriter.cs" />

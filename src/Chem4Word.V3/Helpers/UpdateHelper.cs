@@ -8,6 +8,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -26,11 +27,11 @@ namespace Chem4Word.Helpers
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
-        public static int CheckForUpdates(int days)
+        public static int CheckForUpdates(int frequency)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Debug.WriteLine($"{module} days: {days}");
+            Debug.WriteLine($"{module} days: {frequency}");
             try
             {
                 if (!string.IsNullOrEmpty(Globals.Chem4WordV3.AddInInfo.DeploymentPath))
@@ -39,45 +40,21 @@ namespace Chem4Word.Helpers
 
                     bool doCheck = true;
 
-                    RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
+                    ReadSavedValues();
 
-                    string lastChecked = null;
-                    try
+                    if (frequency > 0)
                     {
-                        lastChecked = key.GetValue(Constants.RegistryValueNameLastCheck).ToString();
-                    }
-                    catch
-                    {
-                        // Should only happen if the value does not exist
-                    }
-
-                    string behind = null;
-                    try
-                    {
-                        behind = key.GetValue(Constants.RegistryValueNameVersionsBehind).ToString();
-                        Globals.Chem4WordV3.VersionsBehind = int.Parse(behind);
-                    }
-                    catch
-                    {
-                        // Should only happen if the value does not exist
-                    }
-
-                    // Bypass for testing
-                    if (days > 0)
-                    {
-                        if (!string.IsNullOrEmpty(lastChecked))
+                        TimeSpan delta = DateTime.Today - Globals.Chem4WordV3.VersionLastChecked;
+                        if (Math.Abs(delta.TotalDays) < frequency)
                         {
-                            DateTime last = SafeDate.Parse(lastChecked);
-                            TimeSpan delta = DateTime.Today - last;
-                            if (delta.TotalDays < days)
-                            {
-                                doCheck = false;
-                            }
+                            doCheck = false;
                         }
 
                         if (doCheck)
                         {
-                            key.SetValue(Constants.RegistryValueNameLastCheck, DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+                            Debug.WriteLine($"Saving date last checked in Registry as Today");
+                            RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
+                            key?.SetValue(Constants.RegistryValueNameLastCheck, DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
                         }
                     }
 
@@ -110,9 +87,77 @@ namespace Chem4Word.Helpers
                 }
             }
 
-            Globals.Chem4WordV3.SetUpdateButtonState();
+            Globals.Chem4WordV3.ShowOrHideUpdateShield();
 
             return Globals.Chem4WordV3.VersionsBehind;
+        }
+
+        public static void ReadSavedValues()
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            try
+            {
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(Constants.Chem4WordRegistryKey);
+                if (key != null)
+                {
+                    var names = key.GetValueNames();
+
+                    if (names.Contains(Constants.RegistryValueNameLastCheck))
+                    {
+                        try
+                        {
+                            var lastChecked = key.GetValue(Constants.RegistryValueNameLastCheck).ToString();
+                            if (!string.IsNullOrEmpty(lastChecked))
+                            {
+                                DateTime last = SafeDate.Parse(lastChecked);
+                                Globals.Chem4WordV3.VersionLastChecked = last;
+                            }
+                        }
+                        catch
+                        {
+                            Globals.Chem4WordV3.VersionLastChecked = DateTime.Now.AddDays(-30);
+                        }
+                    }
+                    else
+                    {
+                        Globals.Chem4WordV3.VersionLastChecked = DateTime.Now.AddDays(-30);
+                    }
+
+                    if (names.Contains(Constants.RegistryValueNameLastCheck))
+                    {
+                        try
+                        {
+                            var behind = key.GetValue(Constants.RegistryValueNameVersionsBehind).ToString();
+                            Globals.Chem4WordV3.VersionsBehind = string.IsNullOrEmpty(behind) ? 0 : int.Parse(behind);
+                        }
+                        catch
+                        {
+                            Globals.Chem4WordV3.VersionsBehind = 0;
+                        }
+                    }
+                    else
+                    {
+                        Globals.Chem4WordV3.VersionsBehind = 0;
+                    }
+                }
+                else
+                {
+                    Globals.Chem4WordV3.VersionLastChecked = DateTime.Now.AddDays(-30);
+                    Globals.Chem4WordV3.VersionsBehind = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.Message);
+                Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.StackTrace);
+                if (ex.InnerException != null)
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.InnerException.Message);
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", ex.InnerException.StackTrace);
+                }
+            }
         }
 
         public static void ReadThisVersion(Assembly assembly)
@@ -128,8 +173,6 @@ namespace Chem4Word.Helpers
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             bool updateRequired = false;
-
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
 
             Globals.Chem4WordV3.VersionsBehind = 0;
 
@@ -161,8 +204,10 @@ namespace Chem4Word.Helpers
                         }
                     }
 
-                    // Save VersionsBehind for next start up
-                    key.SetValue(Constants.RegistryValueNameVersionsBehind, Globals.Chem4WordV3.VersionsBehind.ToString());
+                    // Save VersionsBehind and Last Checked for next start up
+                    Debug.WriteLine($"Saving Versions Behind in Registry: {Globals.Chem4WordV3.VersionsBehind}");
+                    RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordRegistryKey);
+                    key?.SetValue(Constants.RegistryValueNameVersionsBehind, Globals.Chem4WordV3.VersionsBehind.ToString());
 
                     #endregion Got Our File
                 }
@@ -213,7 +258,7 @@ namespace Chem4Word.Helpers
                         client.BaseAddress = new Uri(domain);
                         var response = client.GetAsync(VersionsFile).Result;
                         response.EnsureSuccessStatusCode();
-                        Debug.Write(response.StatusCode);
+                        //Debug.WriteLine(response.StatusCode);
                         string result = response.Content.ReadAsStringAsync().Result;
                         if (result.Contains(VersionsFileMarker))
                         {

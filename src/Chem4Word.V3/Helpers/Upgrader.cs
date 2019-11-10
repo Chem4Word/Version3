@@ -146,7 +146,7 @@ namespace Chem4Word.Helpers
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             int sel = doc.Application.Selection.Range.Start;
-            Globals.Chem4WordV3.DisableDocumentEvents(doc);
+            Globals.Chem4WordV3.DisableContentControlEvents(doc);
 
             try
             {
@@ -252,7 +252,7 @@ namespace Chem4Word.Helpers
                 kvp.Value.Delete();
             }
 
-            Globals.Chem4WordV3.EnableDocumentEvents(doc);
+            Globals.Chem4WordV3.EnableContentControlEvents(doc);
             doc.Application.Selection.SetRange(sel, sel);
             if (upgradedCCs + upgradedXml > 0)
             {

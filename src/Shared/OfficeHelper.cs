@@ -1,8 +1,16 @@
-﻿// Shared file (Add As Link)
+﻿// ---------------------------------------------------------------------------
+//  Copyright (c) 2019, The .NET Foundation.
+//  This software is released under the Apache License, Version 2.0.
+//  The license and further copyright text can be found in the file LICENSE.md
+//  at the root directory of the distribution.
+// ---------------------------------------------------------------------------
+ 
+// Shared file (Add As Link)
 
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.Win32;
 
 namespace Chem4Word.Shared
@@ -13,6 +21,7 @@ namespace Chem4Word.Shared
 
         private static string InstallRootTemplate64 = @"SOFTWARE\Microsoft\Office\{0}.0\Word\InstallRoot";
         private static string InstallRootTemplate32 = @"SOFTWARE\Wow6432Node\Microsoft\Office\{0}.0\Word\InstallRoot";
+        private static string Click2RunConfiguration = @"SOFTWARE\Microsoft\Office\ClickToRun\Configuration";
 
         private static int[] OfficeVersions = { 16, 15, 14 };
 
@@ -53,11 +62,22 @@ namespace Chem4Word.Shared
         {
             string result = "";
 
-            string officeProductName = GetOfficeProductName();
-
             string pathToWinword = GetWinWordPath();
             FileVersionInfo fi = FileVersionInfo.GetVersionInfo(pathToWinword);
             string wordVersionNumber = fi.FileVersion;
+
+            string officeProductName = string.Empty;
+
+            // If this is Office 2016 or 2019 or 365
+            if (wordVersionNumber.StartsWith("16."))
+            {
+                officeProductName = DecodeClickToRun();
+            }
+
+            if (string.IsNullOrEmpty(officeProductName))
+            {
+                officeProductName = GetOfficeProductName();
+            }
 
             if (string.IsNullOrEmpty(officeProductName))
             {
@@ -81,6 +101,174 @@ namespace Chem4Word.Shared
             return result;
         }
 
+        private static string DecodeClickToRun()
+        {
+            var products = GetClick2RunProductIds()
+                           .Split(',')
+                           .Select(p => p.ToLower()).ToList();
+
+            // Loop backward so that we can remove products we don't care about
+            for (int i = products.Count - 1; i >= 0; i--)
+            {
+                var p0 = products[i];
+                if (p0.Contains("access")
+                    || p0.Contains("excel")
+                    || p0.Contains("outlook")
+                    || p0.Contains("onenote")
+                    || p0.Contains("powerpoint")
+                    || p0.Contains("publisher")
+                    || p0.Contains("project")
+                    || p0.Contains("visio")
+                    || p0.Contains("skype")
+                    || p0.Contains("mondo") // ???
+                    || p0.Contains("none") // ???
+                    || p0.Contains("spd")) // sharepoint
+                {
+                    products.RemoveAt(i);
+                }
+            }
+
+            string[] stringArray = { "retail", "volume" };
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                foreach (var name in stringArray)
+                {
+                    products[i] = products[i].Replace(name, "");
+                }
+            }
+
+            string versionNumber = "";
+
+            foreach (var p1 in products)
+            {
+                if (p1.Contains("365"))
+                {
+                    versionNumber = "365";
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(versionNumber))
+            {
+                foreach (var p2 in products)
+                {
+                    if (p2.Contains("2019"))
+                    {
+                        versionNumber = "2019";
+                        break;
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty(versionNumber))
+            {
+                versionNumber = "2016";
+            }
+
+            string productName = "";
+
+            foreach (var p3 in products)
+            {
+                if (p3.Contains("standard"))
+                {
+                    productName = "Standard";
+                    break;
+                }
+
+                if (p3.Contains("professional"))
+                {
+                    productName = "Professional";
+                    break;
+                }
+                if (p3.Contains("proplus"))
+                {
+                    productName = "Professional Plus";
+                    break;
+                }
+
+                if (p3.Contains("homepremium"))
+                {
+                    productName = "Home Premium";
+                    break;
+                }
+                if (p3.Contains("homebusiness"))
+                {
+                    productName = "Home Business";
+                    break;
+                }
+                if (p3.Contains("homestudent"))
+                {
+                    productName = "Home and Student";
+                    break;
+                }
+
+                // This test MUST come anywhere after homebusiness
+                if (p3.Contains("business"))
+                {
+                    productName = "Business";
+                    break;
+                }
+
+                // This one MUST be last of all
+                if (p3.Contains("word"))
+                {
+                    productName = "Word";
+                    break;
+                }
+            }
+
+            if (productName.Equals("Word"))
+            {
+                return $"Microsoft Word {versionNumber} {GetBitness()}";
+            }
+            else
+            {
+                return $"Microsoft Office {versionNumber} {productName} {GetBitness()}";
+            }
+        }
+
+        public static string GetClick2RunProductIds()
+        {
+            string result = "";
+            try
+            {
+                result = RegistryWOW6432.GetRegKey64(RegHive.HKEY_LOCAL_MACHINE, Click2RunConfiguration, "ProductReleaseIds");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            return result;
+        }
+
+        public static string GetBitness()
+        {
+            string result = null;
+
+            // Get HKEY_CLASSES_ROOT\Word.Document\CurVer
+            string currentVersion = GetRegistryValue(Registry.ClassesRoot, @"Word.Document\CurVer", null);
+            if (!string.IsNullOrEmpty(currentVersion))
+            {
+                // Get HKEY_CLASSES_ROOT\Word.Document.12\DefaultIcon
+                string defaultIcon = GetRegistryValue(Registry.ClassesRoot, $@"{currentVersion}\DefaultIcon", null);
+                if (!string.IsNullOrEmpty(defaultIcon))
+                {
+                    int start = defaultIcon.IndexOf("{", StringComparison.Ordinal);
+                    int end = defaultIcon.IndexOf("}", StringComparison.Ordinal);
+                    if (end > start)
+                    {
+                        string officeGuid = defaultIcon.Substring(start, end - start + 1);
+
+                        result = DecodeBits(officeGuid);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static string GetOfficeProductName()
         {
             string result = null;
@@ -98,12 +286,62 @@ namespace Chem4Word.Shared
                     if (end > start)
                     {
                         string officeGuid = defaultIcon.Substring(start, end - start + 1);
-                        Debug.WriteLine("Office Guid: " + officeGuid);
 
                         result = DecodeOfficeGuid(officeGuid);
                     }
                 }
             }
+
+            return result;
+        }
+
+        private static string DecodeBits(string officeGuid)
+        {
+            // Office 2007 https://support.microsoft.com/en-us/kb/928516
+            // Office 2010 https://support.microsoft.com/en-us/kb/2186281
+            // Office 2013 https://support.microsoft.com/en-us/kb/2786054
+            // Office 2016 https://support.microsoft.com/en-us/kb/3120274
+
+            //           1         2         3
+            // 01234567890123456789012345678901234567
+            // {BRMMmmmm-PPPP-LLLL-p000-D000000FF1CE}
+
+            // The following table describes the characters of the GUID.
+            // B    Release version 0-9, A-F
+            // R    Release type 0-9, A-F
+            // MM   Major version 0-9
+            // mmmm Minor version 0-9
+            // PPPP Product ID 0-9, A-F
+            // LLLL Language identifier 0-9, A-F
+            // p    0 for x86, 1 for x64 0-1
+            // 000  Reserved for future use, currently 0 0
+            // D    1 for debug, 0 for ship 0-1
+            // 000000FF1CE Office Family ID
+
+            string result = "";
+
+            string releaseVersion = officeGuid.Substring(1, 1);
+            string releaseType = officeGuid.Substring(2, 1);
+            string majorVersion = officeGuid.Substring(3, 2);
+            string minorVersion = officeGuid.Substring(5, 4);
+            string productId = officeGuid.Substring(10, 4);
+            string language = officeGuid.Substring(15, 4);
+            string bitFlag = officeGuid.Substring(20, 1);
+            string debugFlag = officeGuid.Substring(25, 1);
+
+
+            #region 32 / 64 bit
+
+            if (bitFlag.Equals("1"))
+            {
+                result += "64bit";
+            }
+            else
+            {
+                result += "32bit";
+            }
+
+            #endregion 32 / 64 bit
 
             return result;
         }
@@ -332,7 +570,7 @@ namespace Chem4Word.Shared
                     }
                     break;
 
-                #endregion Office 2016
+                    #endregion Office 2016
             }
 
             #region 32 / 64 bit
@@ -395,9 +633,6 @@ namespace Chem4Word.Shared
                     break;
 
                 case 16: // Word 2016
-                    break;
-
-                case 17: // Word 2019
                     break;
             }
 

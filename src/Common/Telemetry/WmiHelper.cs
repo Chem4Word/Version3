@@ -196,7 +196,7 @@ namespace Chem4Word.Telemetry
                 {
                     var mgtObject = (ManagementObject)o;
                     DateTime lastBootUp = ManagementDateTimeConverter.ToDateTime(mgtObject["LastBootUpTime"].ToString());
-                    _lastBootUpTime = lastBootUp.ToUniversalTime().ToString("dd-MMM-yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+                    _lastBootUpTime = lastBootUp.ToUniversalTime().ToString("dd-MMM-yyyy HH:mm:ss UTC", CultureInfo.InvariantCulture);
                     break;
                 }
             }
