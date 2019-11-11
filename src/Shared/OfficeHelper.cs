@@ -103,129 +103,138 @@ namespace Chem4Word.Shared
 
         private static string DecodeClickToRun()
         {
-            var products = GetClick2RunProductIds()
-                           .Split(',')
-                           .Select(p => p.ToLower()).ToList();
+            string result = String.Empty;
 
-            // Loop backward so that we can remove products we don't care about
-            for (int i = products.Count - 1; i >= 0; i--)
+            var c2r = GetClick2RunProductIds();
+
+            if (!string.IsNullOrEmpty(c2r))
             {
-                var p0 = products[i];
-                if (p0.Contains("access")
-                    || p0.Contains("excel")
-                    || p0.Contains("outlook")
-                    || p0.Contains("onenote")
-                    || p0.Contains("powerpoint")
-                    || p0.Contains("publisher")
-                    || p0.Contains("project")
-                    || p0.Contains("visio")
-                    || p0.Contains("skype")
-                    || p0.Contains("mondo") // ???
-                    || p0.Contains("none") // ???
-                    || p0.Contains("spd")) // sharepoint
+                var products = GetClick2RunProductIds()
+                               .Split(',')
+                               .Select(p => p.ToLower()).ToList();
+
+                // Loop backward so that we can remove products we don't care about
+                for (int i = products.Count - 1; i >= 0; i--)
                 {
-                    products.RemoveAt(i);
-                }
-            }
-
-            string[] stringArray = { "retail", "volume" };
-
-            for (int i = 0; i < products.Count; i++)
-            {
-                foreach (var name in stringArray)
-                {
-                    products[i] = products[i].Replace(name, "");
-                }
-            }
-
-            string versionNumber = "";
-
-            foreach (var p1 in products)
-            {
-                if (p1.Contains("365"))
-                {
-                    versionNumber = "365";
-                    break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(versionNumber))
-            {
-                foreach (var p2 in products)
-                {
-                    if (p2.Contains("2019"))
+                    var p0 = products[i];
+                    if (p0.Contains("access")
+                        || p0.Contains("excel")
+                        || p0.Contains("outlook")
+                        || p0.Contains("onenote")
+                        || p0.Contains("powerpoint")
+                        || p0.Contains("publisher")
+                        || p0.Contains("project")
+                        || p0.Contains("visio")
+                        || p0.Contains("skype")
+                        || p0.Contains("mondo") // ???
+                        || p0.Contains("none") // ???
+                        || p0.Contains("spd")) // sharepoint
                     {
-                        versionNumber = "2019";
+                        products.RemoveAt(i);
+                    }
+                }
+
+                string[] stringArray = { "retail", "volume" };
+
+                for (int i = 0; i < products.Count; i++)
+                {
+                    foreach (var name in stringArray)
+                    {
+                        products[i] = products[i].Replace(name, "");
+                    }
+                }
+
+                string versionNumber = "";
+
+                foreach (var p1 in products)
+                {
+                    if (p1.Contains("365"))
+                    {
+                        versionNumber = "365";
                         break;
                     }
                 }
+
+                if (string.IsNullOrEmpty(versionNumber))
+                {
+                    foreach (var p2 in products)
+                    {
+                        if (p2.Contains("2019"))
+                        {
+                            versionNumber = "2019";
+                            break;
+                        }
+                    }
+                }
+
+                if (string.IsNullOrEmpty(versionNumber))
+                {
+                    versionNumber = "2016";
+                }
+
+                string productName = "";
+
+                foreach (var p3 in products)
+                {
+                    if (p3.Contains("standard"))
+                    {
+                        productName = "Standard";
+                        break;
+                    }
+
+                    if (p3.Contains("professional"))
+                    {
+                        productName = "Professional";
+                        break;
+                    }
+                    if (p3.Contains("proplus"))
+                    {
+                        productName = "Professional Plus";
+                        break;
+                    }
+
+                    if (p3.Contains("homepremium"))
+                    {
+                        productName = "Home Premium";
+                        break;
+                    }
+                    if (p3.Contains("homebusiness"))
+                    {
+                        productName = "Home Business";
+                        break;
+                    }
+                    if (p3.Contains("homestudent"))
+                    {
+                        productName = "Home and Student";
+                        break;
+                    }
+
+                    // This test MUST come anywhere after homebusiness
+                    if (p3.Contains("business"))
+                    {
+                        productName = "Business";
+                        break;
+                    }
+
+                    // This one MUST be last of all
+                    if (p3.Contains("word"))
+                    {
+                        productName = "Word";
+                        break;
+                    }
+                }
+
+                if (productName.Equals("Word"))
+                {
+                    result = $"Microsoft Word {versionNumber} {GetBitness()}";
+                }
+                else
+                {
+                    result = $"Microsoft Office {versionNumber} {productName} {GetBitness()}";
+                }
             }
 
-            if (string.IsNullOrEmpty(versionNumber))
-            {
-                versionNumber = "2016";
-            }
-
-            string productName = "";
-
-            foreach (var p3 in products)
-            {
-                if (p3.Contains("standard"))
-                {
-                    productName = "Standard";
-                    break;
-                }
-
-                if (p3.Contains("professional"))
-                {
-                    productName = "Professional";
-                    break;
-                }
-                if (p3.Contains("proplus"))
-                {
-                    productName = "Professional Plus";
-                    break;
-                }
-
-                if (p3.Contains("homepremium"))
-                {
-                    productName = "Home Premium";
-                    break;
-                }
-                if (p3.Contains("homebusiness"))
-                {
-                    productName = "Home Business";
-                    break;
-                }
-                if (p3.Contains("homestudent"))
-                {
-                    productName = "Home and Student";
-                    break;
-                }
-
-                // This test MUST come anywhere after homebusiness
-                if (p3.Contains("business"))
-                {
-                    productName = "Business";
-                    break;
-                }
-
-                // This one MUST be last of all
-                if (p3.Contains("word"))
-                {
-                    productName = "Word";
-                    break;
-                }
-            }
-
-            if (productName.Equals("Word"))
-            {
-                return $"Microsoft Word {versionNumber} {GetBitness()}";
-            }
-            else
-            {
-                return $"Microsoft Office {versionNumber} {productName} {GetBitness()}";
-            }
+            return result;
         }
 
         public static string GetClick2RunProductIds()
