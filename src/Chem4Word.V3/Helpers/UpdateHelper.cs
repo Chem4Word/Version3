@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2019, The .NET Foundation.
+//  Copyright (c) 2020, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -58,6 +58,9 @@ namespace Chem4Word.Helpers
                         }
                     }
 
+#if DEBUG
+                    doCheck = true;
+#endif
                     if (doCheck)
                     {
                         bool update = false;
@@ -183,7 +186,7 @@ namespace Chem4Word.Helpers
             {
                 string currentVersionNumber = Globals.Chem4WordV3.ThisVersion.Root.Element("Number").Value;
                 DateTime currentReleaseDate = SafeDate.Parse(Globals.Chem4WordV3.ThisVersion.Root.Element("Released").Value);
-                Debug.WriteLine("Current Version " + currentVersionNumber + " Released " + currentReleaseDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+                Debug.WriteLine("Current Version " + currentVersionNumber + " Released " + SafeDate.ToShortDate(currentReleaseDate));
 
                 string xml = GetVersionsXmlFile();
                 if (!string.IsNullOrEmpty(xml))
@@ -196,7 +199,7 @@ namespace Chem4Word.Helpers
                     {
                         var thisVersionNumber = version.Element("Number").Value;
                         DateTime thisVersionDate = SafeDate.Parse(version.Element("Released").Value);
-                        Debug.WriteLine("New Version " + thisVersionNumber + " Released " + thisVersionDate.ToString("dd-MMM-yyyy", CultureInfo.InvariantCulture));
+                        Debug.WriteLine("New Version " + thisVersionNumber + " Released " + SafeDate.ToShortDate(thisVersionDate));
                         if (thisVersionDate > currentReleaseDate)
                         {
                             Globals.Chem4WordV3.VersionsBehind++;
@@ -329,7 +332,10 @@ namespace Chem4Word.Helpers
             }
             catch (Exception ex)
             {
-                new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex).ShowDialog();
+                using (var form = new ReportError(Globals.Chem4WordV3.Telemetry, Globals.Chem4WordV3.WordTopLeft, module, ex))
+                {
+                    form.ShowDialog();
+                }
             }
         }
     }

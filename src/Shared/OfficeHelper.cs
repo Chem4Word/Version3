@@ -1,10 +1,10 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2019, The .NET Foundation.
+//  Copyright (c) 2020, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
- 
+
 // Shared file (Add As Link)
 
 using System;
@@ -87,7 +87,7 @@ namespace Chem4Word.Shared
             string servicePack = GetOfficeServicePack(fi.FileVersion);
             if (!string.IsNullOrEmpty(servicePack))
             {
-                officeProductName = officeProductName + " " + servicePack;
+                officeProductName = officeProductName + " " + servicePack.Trim();
             }
 
             // Get a bit more information about this version
@@ -97,6 +97,17 @@ namespace Chem4Word.Shared
             }
 
             result = officeProductName + " [" + wordVersionNumber + "]";
+
+            int limiter = 32;
+            while (result.IndexOf("  ", StringComparison.Ordinal) >= 0)
+            {
+                result = result.Replace("  ", " ");
+                limiter--;
+                if (limiter == 0)
+                {
+                    break;
+                }
+            }
 
             return result;
         }
@@ -337,7 +348,6 @@ namespace Chem4Word.Shared
             string language = officeGuid.Substring(15, 4);
             string bitFlag = officeGuid.Substring(20, 1);
             string debugFlag = officeGuid.Substring(25, 1);
-
 
             #region 32 / 64 bit
 

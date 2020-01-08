@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2019, The .NET Foundation.
+//  Copyright (c) 2020, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -86,8 +86,17 @@ namespace Chem4Word.Telemetry
             return result;
         }
 
-        public SystemHelper()
+        private List<string> Initialise()
         {
+            List<string> timings = new List<string>();
+
+            string message = $"SystemHelper.Initialise() started at {SafeDate.ToLongDate(DateTime.Now)}";
+            timings.Add(message);
+            Debug.WriteLine(message);
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             WordVersion = -1;
 
             #region Get Machine Guid
@@ -229,8 +238,9 @@ namespace Chem4Word.Telemetry
             #region Get IpAddress
 
             ParameterizedThreadStart pts = GetExternalIpAddress;
-            Thread t = new Thread(pts);
-            t.Start(null);
+            Thread thread = new Thread(pts);
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start(null);
 
             #endregion Get IpAddress
 
@@ -250,16 +260,39 @@ namespace Chem4Word.Telemetry
 #if DEBUG
             GetGitStatus();
 #endif
+
+            sw.Stop();
+
+            message = $"SystemHelper.Initialise() took {sw.ElapsedMilliseconds.ToString("#,000")}ms";
+            timings.Add(message);
+            Debug.WriteLine(message);
+
+            return timings;
         }
 
-        //    return result;
-        //}
+        public SystemHelper(List<string> timings)
+        {
+            StartUpTimings = timings;
+
+            StartUpTimings.AddRange(Initialise());
+        }
+
+        public SystemHelper()
+        {
+            if (StartUpTimings == null)
+            {
+                StartUpTimings = new List<string>();
+            }
+
+            StartUpTimings.AddRange(Initialise());
+        }
 
         private void GetGitStatus()
         {
             var result = new List<string>();
+            result.Add("Git Origin");
+            result.AddRange(RunCommand("git.exe", "config --get remote.origin.url", AddInLocation));
             result.Add("Git Branch");
-            // git rev-parse --abbrev-ref HEAD == Current Branch
             result.AddRange(RunCommand("git.exe", "rev-parse --abbrev-ref HEAD", AddInLocation));
 
             // git status --porcelain == Get List of changed files
@@ -468,6 +501,15 @@ namespace Chem4Word.Telemetry
 
         private void GetExternalIpAddress(object o)
         {
+            string module = $"{MethodBase.GetCurrentMethod().Name}()";
+
+            string message = $"{module} started at {SafeDate.ToLongDate(DateTime.Now)}";
+            StartUpTimings.Add(message);
+            Debug.WriteLine(message);
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             // http://www.ipv6proxy.net/ --> "Your IP address : 2600:3c00::f03c:91ff:fe93:dcd4"
 
             try
@@ -590,11 +632,17 @@ namespace Chem4Word.Telemetry
                     _retryCount++;
                     Thread.Sleep(500);
                     ParameterizedThreadStart pts = GetExternalIpAddress;
-                    Thread t = new Thread(pts);
-                    t.SetApartmentState(ApartmentState.STA);
-                    t.Start(null);
+                    Thread thread = new Thread(pts);
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start(null);
                 }
             }
+
+            sw.Stop();
+
+            message = $"{module} took {sw.ElapsedMilliseconds.ToString("#,000")}ms";
+            StartUpTimings.Add(message);
+            Debug.WriteLine(message);
         }
 
         private DateTime FromPhpDate(string line)

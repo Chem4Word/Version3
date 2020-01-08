@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2019, The .NET Foundation.
+//  Copyright (c) 2020, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -238,12 +238,12 @@ namespace Chem4Word.Database
             }
         }
 
-        public string GetChemistryByID(long id)
+        public string GetChemistryById(long id)
         {
             string result = null;
             using (SQLiteConnection conn = LibraryConnection())
             {
-                SQLiteDataReader chemistry = GetChemistryByID(conn, id);
+                SQLiteDataReader chemistry = GetChemistryById(conn, id);
                 while (chemistry.Read())
                 {
                     var byteArray = (Byte[])chemistry["Chemistry"];
@@ -258,7 +258,7 @@ namespace Chem4Word.Database
             return result;
         }
 
-        private SQLiteDataReader GetChemistryByID(SQLiteConnection conn, long id)
+        private SQLiteDataReader GetChemistryById(SQLiteConnection conn, long id)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try

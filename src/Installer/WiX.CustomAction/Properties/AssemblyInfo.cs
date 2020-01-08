@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2019, The .NET Foundation.
+//  Copyright (c) 2020, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("Chem4Word")]
 [assembly: AssemblyProduct("WiX.CustomAction")]
-[assembly: AssemblyCopyright("© Chem4Word 2019. All rights reserved.")]
+[assembly: AssemblyCopyright("© Chem4Word 2020. All rights reserved.")]
 [assembly: AssemblyTrademark("Chem4Word")]
 [assembly: AssemblyCulture("")]
 
@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.30.7254")]
-[assembly: AssemblyFileVersion("3.0.30.7254")]
+[assembly: AssemblyVersion("3.0.31.7312")]
+[assembly: AssemblyFileVersion("3.0.31.7312")]

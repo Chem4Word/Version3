@@ -3,14 +3,25 @@
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
     <Version>
+        <Number>3.0.31 Release 19</Number>
+        <IsBeta>false</IsBeta>
+        <Released>08-Jan-2020</Released>
+        <Changes>
+            <Change>Bug Fix; Insert and Web Search buttons wrongly enabled when structure is selected</Change>
+            <Change>Bug Fix; Ensure Add-in is dumb when word is embedded in another document</Change>
+            <Change>Bug Fix; Null pointer exception in loading of user options</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.31.Release.19.msi</Url>
+    </Version>
+    <Version>
         <Number>3.0.30 Release 18</Number>
         <IsBeta>false</IsBeta>
         <Released>11-Nov-2019</Released>
         <Changes>
             <Change>Bug Fix; Null pointer exception in new O365 detection due to unexpected data</Change>
-            <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.29.Release.17.msi</Url>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.30.Release.18.msi</Url>
     </Version>
     <Version>
         <Number>3.0.29 Release 17</Number>
