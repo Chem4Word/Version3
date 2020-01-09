@@ -988,11 +988,11 @@ namespace Chem4Word
                         break;
 
                     case ButtonState.CanInsert:
-                        Ribbon.EditStructure.Enabled = false;
+                        Ribbon.EditStructure.Enabled = plugInsLoaded && Editors.Count > 0;
                         Ribbon.EditStructure.Label = "Draw";
                         Ribbon.EditLabels.Enabled = false;
                         Ribbon.ViewCml.Enabled = false;
-                        Ribbon.ImportFromFile.Enabled = true;
+                        Ribbon.ImportFromFile.Enabled = plugInsLoaded && Renderers.Count > 0;
                         Ribbon.ExportToFile.Enabled = false;
                         Ribbon.ShowAsMenu.Enabled = false;
                         Ribbon.ShowNavigator.Enabled = true;
