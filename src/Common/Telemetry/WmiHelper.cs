@@ -6,18 +6,34 @@
 // ---------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Management;
+using Chem4Word.Core.Helpers;
 
 namespace Chem4Word.Telemetry
 {
     public class WmiHelper
     {
+
+        private const string QueryProcessor = "SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor";
+        private const string QueryOperatingSystem = "SELECT ProductType,LastBootUpTime FROM Win32_OperatingSystem";
+        private const string QueryPhysicalMemory = "SELECT Capacity FROM Win32_PhysicalMemory";
+        private const string QueryAntiVirusProduct = "SELECT DisplayName,ProductState FROM AntiVirusProduct";
+
+        private const string Workstation = "Workstation";
+        private const string DomainController = "Domain Controller";
+        private const string Server = "Server";
+
+        private const string Unknown = "Unknown";
+
         public WmiHelper()
         {
             GetWin32ProcessorData();
-            GetWin32PhysicalMemeoryData();
+            GetWin32PhysicalMemoryData();
             GetWin32OperatingSystemData();
+            GetAntiVirusStatus();
         }
 
         private string _cpuName;
@@ -96,7 +112,7 @@ namespace Chem4Word.Telemetry
                 {
                     try
                     {
-                        GetWin32PhysicalMemeoryData();
+                        GetWin32PhysicalMemoryData();
                     }
                     catch (Exception)
                     {
@@ -130,10 +146,46 @@ namespace Chem4Word.Telemetry
             }
         }
 
+        private string _productType;
+
+        public string ProductType
+        {
+            get
+            {
+                if (_productType == null)
+                {
+                    try
+                    {
+                        GetWin32OperatingSystemData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
+                }
+
+                return _productType;
+            }
+        }
+
+        private string _antiVirusStatus;
+
+        public string AntiVirusStatus
+        {
+            get
+            {
+                if (_antiVirusStatus == null)
+                {
+                    GetAntiVirusStatus();
+                }
+
+                return _antiVirusStatus;
+            }
+        }
+
         private void GetWin32ProcessorData()
         {
-            ManagementObjectSearcher searcher =
-                new ManagementObjectSearcher("SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(QueryProcessor);
             ManagementObjectCollection objCol = searcher.Get();
 
             foreach (var o in objCol)
@@ -144,9 +196,9 @@ namespace Chem4Word.Telemetry
                     string temp = mgtObject["Name"].ToString();
                     // Replace tab with space
                     temp = temp.Replace("\t", " ");
-                    // Replace upto 15 double spaces with single space
+                    // Replace up to 15 double spaces with single space
                     int i = 0;
-                    while (temp.IndexOf("  ") != -1)
+                    while (temp.IndexOf("  ", StringComparison.InvariantCulture) != -1)
                     {
                         temp = temp.Replace("  ", " ");
                         i++;
@@ -186,8 +238,7 @@ namespace Chem4Word.Telemetry
 
         private void GetWin32OperatingSystemData()
         {
-            ManagementObjectSearcher searcher =
-                new ManagementObjectSearcher("SELECT LastBootUpTime FROM Win32_OperatingSystem");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(QueryOperatingSystem);
             ManagementObjectCollection objCol = searcher.Get();
 
             try
@@ -196,8 +247,24 @@ namespace Chem4Word.Telemetry
                 {
                     var mgtObject = (ManagementObject)o;
                     DateTime lastBootUp = ManagementDateTimeConverter.ToDateTime(mgtObject["LastBootUpTime"].ToString());
-                    _lastBootUpTime = lastBootUp.ToUniversalTime().ToString("dd-MMM-yyyy HH:mm:ss UTC", CultureInfo.InvariantCulture);
-                    break;
+                    _lastBootUpTime = SafeDate.ToLongDate(lastBootUp.ToUniversalTime()) + " UTC";
+
+                    var productType = int.Parse(mgtObject["ProductType"].ToString());
+                    switch (productType)
+                    {
+                        case 1:
+                            _productType = Workstation;
+                            break;
+                        case 2:
+                            _productType = DomainController;
+                            break;
+                        case 3:
+                            _productType = Server;
+                            break;
+                        default:
+                            _productType = Unknown + $" [{productType}]";
+                            break;
+                    }
                 }
             }
             catch
@@ -206,10 +273,9 @@ namespace Chem4Word.Telemetry
             }
         }
 
-        private void GetWin32PhysicalMemeoryData()
+        private void GetWin32PhysicalMemoryData()
         {
-            ManagementObjectSearcher searcher =
-                new ManagementObjectSearcher("SELECT Capacity FROM Win32_PhysicalMemory");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(QueryPhysicalMemory);
             ManagementObjectCollection objCol = searcher.Get();
 
             try
@@ -225,6 +291,103 @@ namespace Chem4Word.Telemetry
             catch
             {
                 _physicalMemory = "?";
+            }
+        }
+
+        private void GetAntiVirusStatus()
+        {
+            // This is a combination of information from the following sources
+
+            // http://neophob.com/2010/03/wmi-query-windows-securitycenter2/
+            // https://mspscripts.com/get-installed-antivirus-information-2/
+            // https://gallery.technet.microsoft.com/scriptcenter/Get-the-status-of-4b748f25
+            // https://stackoverflow.com/questions/4700897/wmi-security-center-productstate-clarification/4711211
+            // https://blogs.msdn.microsoft.com/alejacma/2008/05/12/how-to-get-antivirus-information-with-wmi-vbscript/#comment-442
+
+            // Only works if not a server
+            if (!string.IsNullOrEmpty(ProductType) && ProductType.Equals(Workstation))
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(@"root\SecurityCenter2", QueryAntiVirusProduct);
+                ManagementObjectCollection objCol = searcher.Get();
+
+                try
+                {
+                    List<string> products = new List<string>();
+                    foreach (var o in objCol)
+                    {
+                        var mgtObject = (ManagementObject)o;
+                        var product = mgtObject["DisplayName"].ToString();
+
+                        var status = int.Parse(mgtObject["ProductState"].ToString());
+
+                        var hex = Hex(status);
+                        var bin = Binary(status);
+                        var reversed = Reverse(bin);
+
+                        // https://blogs.msdn.microsoft.com/alejacma/2008/05/12/how-to-get-antivirus-information-with-wmi-vbscript/#comment-442
+                        // 19th bit = not so sure but, Av is turned on (I wouldn't be sure it's enabled)
+                        // 13th bit = On Access Scanning (Memory Resident Scanning) is on, this tells you that the product is scanning every file that you open as opposed to just scanning at regular intervals.
+                        // 5th Bit = if this is true (==1) the virus scanner is out of date
+
+                        bool enabled = GetBit(reversed, 18);
+                        bool scanning = GetBit(reversed, 12);
+                        bool outdated = GetBit(reversed, 4);
+                        products.Add($"{product} {status} [{hex}] Enabled: {enabled} Scanning: {scanning} Outdated: {outdated}");
+                    }
+                    _antiVirusStatus = string.Join(";", products);
+                }
+                catch (Exception exception)
+                {
+                    _antiVirusStatus = $"{exception.Message}";
+                }
+            }
+        }
+
+        private string Hex(int value)
+        {
+            try
+            {
+                return Convert.ToString(value, 16).PadLeft(6, '0');
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        private string Binary(int value)
+        {
+            try
+            {
+                return Convert.ToString(value, 2).PadLeft(24, '0');
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        private string Reverse(string value)
+        {
+            try
+            {
+                return new string(value.Reverse().ToArray());
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        private bool GetBit(string value, int index)
+        {
+            try
+            {
+                return value.Substring(index, 1).Equals("1");
+            }
+            catch
+            {
+                return false;
             }
         }
     }

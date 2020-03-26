@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
+using Chem4Word.Core.Helpers;
 using IChem4Word.Contracts;
 
 namespace Chem4Word.Telemetry
@@ -66,10 +66,10 @@ namespace Chem4Word.Telemetry
             try
             {
                 string fileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    $@"Chem4Word.V3\Telemetry\{DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)}.log");
+                    $@"Chem4Word.V3\Telemetry\{SafeDate.ToIsoShortDate(DateTime.Now)}.log");
                 using (StreamWriter w = File.AppendText(fileName))
                 {
-                    string logMessage = $"[{DateTime.Now.ToString("HH:mm:ss.fff", CultureInfo.InvariantCulture)}] {operation} - {level} - {message}";
+                    string logMessage = $"[{SafeDate.ToShortTime(DateTime.Now)}] {operation} - {level} - {message}";
                     w.WriteLine(logMessage);
                 }
             }
@@ -84,7 +84,7 @@ namespace Chem4Word.Telemetry
 
                 if (!_systemInfoSent)
                 {
-                    if (!_helper.IpAddress.Contains("0.0.0.0"))
+                    if (_helper.IpAddress != null && !_helper.IpAddress.Contains("0.0.0.0"))
                     {
                         WriteStartUpInfo();
                     }
@@ -111,16 +111,22 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", $"Browser Version: {_helper.BrowserVersion}");
 
             // Log IP Address
-            WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
-            WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
+            if (!_helper.IpAddress.Contains("8.8.8.8"))
+            {
+                WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
+                WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
+            }
 
-            WritePrivate("StartUp", "Timing", string.Join(Environment.NewLine, _helper.StartUpTimings));
+            if (_helper.StartUpTimings != null)
+            {
+                WritePrivate("StartUp", "Timing", string.Join(Environment.NewLine, _helper.StartUpTimings));
+            }
 
             List<string> lines = new List<string>();
 
             // Log UtcOffsets
-            lines.Add($"Server UTC DateTime is {_helper.ServerUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
-            lines.Add($"System UTC DateTime is { _helper.SystemUtcDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture)}");
+            lines.Add($"Server UTC DateTime is {SafeDate.ToLongDate(_helper.ServerUtcDateTime)}");
+            lines.Add($"System UTC DateTime is {SafeDate.ToLongDate(_helper.SystemUtcDateTime)}");
 
             lines.Add($"Server Header [Date] is {_helper.ServerDateHeader}");
             lines.Add($"Server UTC DateTime raw is {_helper.ServerUtcDateRaw}");
@@ -148,8 +154,20 @@ namespace Chem4Word.Telemetry
             lines.Add($"Physical Memory: {_wmiHelper.PhysicalMemory}");
             lines.Add($"Booted Up: {_wmiHelper.LastLastBootUpTime}");
 
+            lines.Add($"Type: {_wmiHelper.ProductType}");
+            if (!string.IsNullOrEmpty(_wmiHelper.AntiVirusStatus))
+            {
+                lines.Add("AntiVirus:");
+                var products = _wmiHelper.AntiVirusStatus.Split(';');
+                foreach (var product in products)
+                {
+                    lines.Add($"  {product}");
+                }
+            }
+
             // Log Screen Sizes
             lines.Add($"Screens: {_helper.Screens}");
+
             WritePrivate("StartUp", "Information", string.Join(Environment.NewLine, lines));
 
 #if DEBUG
@@ -205,7 +223,10 @@ namespace Chem4Word.Telemetry
             WritePrivate("StartUp", "Information", _helper.SystemOs); // ** Used by Andy's Knime protocol
 
             // Log IP Address
-            WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
+            if (!_helper.IpAddress.Contains("8.8.8.8"))
+            {
+                WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
+            }
 
             #endregion Log critical System Info again to ensure we get it
 
@@ -214,6 +235,7 @@ namespace Chem4Word.Telemetry
 
         private void WritePrivate(string operation, string level, string message)
         {
+            Debug.WriteLine($"{operation} - {level} - {message}");
             ServiceBusMessage sbm = new ServiceBusMessage(_helper.UtcOffset, _helper.ProcessId);
             sbm.MachineId = _helper.MachineId;
             sbm.Operation = operation;

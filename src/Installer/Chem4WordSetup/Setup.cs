@@ -34,7 +34,7 @@ namespace Chem4WordSetup
         private const string DetectV2AddIn = @"Chemistry Add-in for Word\Chem4Word.AddIn.vsto";
         private const string DetectV3AddIn = @"Chem4Word V3\Chem4Word.V3.vsto";
 
-        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.28.Release.16.msi";
+        private const string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.33.Release.21.msi";
         private const string VstoInstaller = "https://www.chem4word.co.uk/files3/vstor_redist.exe";
 
         private WebClient _webClient;
@@ -64,7 +64,7 @@ namespace Chem4WordSetup
             bool isDesignTimeInstalled = false;
             bool isRuntimeInstalled = false;
             bool isWordInstalled = false;
-            bool isOperatinSystemWindows7Plus = false;
+            bool isOperatingSystemWindows7Plus = false;
             bool isChem4WordVersion2Installed = false;
             bool isChem4WordVersion3Installed = false;
 
@@ -75,17 +75,17 @@ namespace Chem4WordSetup
             if (osVer.Version.Major >= 6 && osVer.Version.Minor >= 1)
             {
                 // Running Windows 7 or Windows 2008 R2
-                isOperatinSystemWindows7Plus = true;
+                isOperatingSystemWindows7Plus = true;
             }
 
             #endregion Detect Windows Version
 
-            WindowsInstalled.Indicator = isOperatinSystemWindows7Plus ? Properties.Resources.Windows : Properties.Resources.Halt;
+            WindowsInstalled.Indicator = isOperatingSystemWindows7Plus ? Properties.Resources.Windows : Properties.Resources.Halt;
             Application.DoEvents();
 
             #region Detect Word
 
-            isWordInstalled = OfficeHelper.GetWinWordVersion() >= 2010;
+            isWordInstalled = OfficeHelper.GetWinWordVersionNumber() >= 2010;
 
             #endregion Detect Word
 
@@ -218,7 +218,7 @@ namespace Chem4WordSetup
 
             #endregion Is Chem4Word Installed
 
-            if (isOperatinSystemWindows7Plus && isWordInstalled)
+            if (isOperatingSystemWindows7Plus && isWordInstalled)
             {
                 if (isChem4WordVersion2Installed)
                 {
@@ -274,7 +274,7 @@ namespace Chem4WordSetup
                     Information.Text = "Please install Microsoft Word 2010 or 2013 or 2016.";
                 }
 
-                if (!isOperatinSystemWindows7Plus)
+                if (!isOperatingSystemWindows7Plus)
                 {
                     WindowsInstalled.Indicator = Properties.Resources.No;
                     Information.Text = "This program requires Windows 7 or greater.";

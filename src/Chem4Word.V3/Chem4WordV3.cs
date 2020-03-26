@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -187,9 +188,56 @@ namespace Chem4Word
         private void C4WAddIn_Startup(object sender, EventArgs e)
         {
             string module = $"{MethodBase.GetCurrentMethod().Name}()";
+            try
+            {
+                var cmd = Environment.CommandLine.ToLower();
+                if (Ribbon != null && !cmd.Contains("-embedding"))
+                {
+                    string message = $"{module} started at {SafeDate.ToLongDate(DateTime.Now)}";
+                    Debug.WriteLine(message);
+                    StartUpTimings.Add(message);
 
-            var cmd = Environment.CommandLine.ToLower();
-            if (Ribbon != null && !cmd.Contains("-embedding"))
+                    Stopwatch sw = new Stopwatch();
+                    sw.Start();
+
+                    PerformStartUpActions();
+
+                    sw.Stop();
+                    message = $"{module} took {sw.ElapsedMilliseconds.ToString("#,000")}ms";
+                    StartUpTimings.Add(message);
+                    Debug.WriteLine(message);
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine($"{module} {exception.Message}");
+                RegistryHelper.StoreException(module, exception);
+            }
+        }
+
+        private void C4WAddIn_Shutdown(object sender, EventArgs e)
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+            try
+            {
+                if (Ribbon != null)
+                {
+                    PerformShutDownActions();
+                }
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine($"{module} {exception.Message}");
+                RegistryHelper.StoreException(module, exception);
+            }
+        }
+
+        private void SlowOperations()
+        {
+            string module = $"{MethodBase.GetCurrentMethod().Name}()";
+
+
+            try
             {
                 string message = $"{module} started at {SafeDate.ToLongDate(DateTime.Now)}";
                 Debug.WriteLine(message);
@@ -198,56 +246,35 @@ namespace Chem4Word
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                PerformStartUpActions();
+                Thread thread = new Thread(LoadPluginsOnThread);
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+
+                Helper = new SystemHelper(StartUpTimings);
+
+                ServicePointManager.DefaultConnectionLimit = 100;
+                ServicePointManager.UseNagleAlgorithm = false;
+                ServicePointManager.Expect100Continue = false;
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                _configWatcher = new ConfigWatcher(AddInInfo.ProductAppDataPath);
+
+                Telemetry = new TelemetryWriter(true, Helper);
 
                 sw.Stop();
                 message = $"{module} took {sw.ElapsedMilliseconds.ToString("#,000")}ms";
-                StartUpTimings.Add(message);
                 Debug.WriteLine(message);
+                StartUpTimings.Add(message);
             }
-        }
-
-        private void C4WAddIn_Shutdown(object sender, EventArgs e)
-        {
-            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-
-            if (Ribbon != null)
+            catch (ThreadAbortException threadAbortException)
             {
-                PerformShutDownActions();
+                RegistryHelper.StoreException(module, threadAbortException);
             }
-        }
-
-        private void SlowOperations()
-        {
-            string module = $"{MethodBase.GetCurrentMethod().Name}()";
-
-            string message = $"{module} started at {SafeDate.ToLongDate(DateTime.Now)}";
-            Debug.WriteLine(message);
-            StartUpTimings.Add(message);
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            Thread thread = new Thread(LoadPluginsOnThread);
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-
-            Helper = new SystemHelper(StartUpTimings);
-
-            ServicePointManager.DefaultConnectionLimit = 100;
-            ServicePointManager.UseNagleAlgorithm = false;
-            ServicePointManager.Expect100Continue = false;
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            _configWatcher = new ConfigWatcher(AddInInfo.ProductAppDataPath);
-
-            Telemetry = new TelemetryWriter(true, Helper);
-
-            sw.Stop();
-            message = $"{module} took {sw.ElapsedMilliseconds.ToString("#,000")}ms";
-            Debug.WriteLine(message);
-            StartUpTimings.Add(message);
+            catch (Exception exception)
+            {
+                RegistryHelper.StoreException(module, exception);
+            }
         }
 
         private void PerformStartUpActions()
@@ -265,7 +292,7 @@ namespace Chem4Word
                 UpdateHelper.ReadThisVersion(Assembly.GetExecutingAssembly());
                 ShowOrHideUpdateShield();
 
-                if (VersionsBehind < Constants.MaximunVersionsBehind)
+                if (VersionsBehind < Constants.MaximumVersionsBehind)
                 {
                     Word.Application app = Application;
 
@@ -284,7 +311,7 @@ namespace Chem4Word
 
                     if (app.Documents.Count > 0)
                     {
-                        EnableContentControlEvents(app.ActiveDocument);
+                        EnableContentControlEvents();
                         if (app.ActiveDocument.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010)
                         {
                             SetButtonStates(ButtonState.CanInsert);
@@ -292,6 +319,8 @@ namespace Chem4Word
                         else
                         {
                             SetButtonStates(ButtonState.NoDocument);
+                            ChemistryAllowed = false;
+                            ChemistryProhibitedReason = "document is in compatibility mode.";
                         }
                     }
 
@@ -315,14 +344,23 @@ namespace Chem4Word
                 //int dd = 0;
                 //int bang = ii / dd;
             }
-            catch (Exception ex)
+            catch (ThreadAbortException threadAbortException)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
-
-                using (var form = new ReportError(Telemetry, WordTopLeft, module, ex))
+                RegistryHelper.StoreException(module, threadAbortException);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine($"{module} {exception.Message}");
+                if (Telemetry != null)
                 {
-                    form.ShowDialog();
+                    using (var form = new ReportError(Telemetry, WordTopLeft, module, exception))
+                    {
+                        form.ShowDialog();
+                    }
+                }
+                else
+                {
+                    RegistryHelper.StoreException(module, exception);
                 }
             }
         }
@@ -335,10 +373,17 @@ namespace Chem4Word
                 var lib = new Database.Library();
                 LibraryNames = lib.GetLibraryNames();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Telemetry.Write(module, "Exception", ex.Message);
-                Telemetry.Write(module, "Exception", ex.StackTrace);
+                if (Telemetry != null)
+                {
+                    Telemetry.Write(module, "Exception", exception.Message);
+                    Telemetry.Write(module, "Exception", exception.StackTrace);
+                }
+                else
+                {
+                    RegistryHelper.StoreException(module, exception);
+                }
                 LibraryNames = null;
             }
         }
@@ -489,10 +534,17 @@ namespace Chem4Word
                     //
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Telemetry.Write(module, "Exception", ex.Message);
-                Telemetry.Write(module, "Exception", ex.StackTrace);
+                if (Telemetry != null)
+                {
+                    Telemetry.Write(module, "Exception", exception.Message);
+                    Telemetry.Write(module, "Exception", exception.StackTrace);
+                }
+                else
+                {
+                    RegistryHelper.StoreException(module, exception);
+                }
                 SystemOptions = null;
             }
         }
@@ -500,12 +552,9 @@ namespace Chem4Word
         private void PerformShutDownActions()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-            //Debug.WriteLine(module);
 
             try
             {
-                //RemoveRightClickButton(_targetedPopUps);
-
                 if (Editors != null)
                 {
                     for (int i = 0; i < Editors.Count; i++)
@@ -547,19 +596,34 @@ namespace Chem4Word
 
         private void LoadPluginsOnThread()
         {
-            LoadPlugIns(false);
-            if (Ribbon != null)
+            string module = $"{MethodBase.GetCurrentMethod().Name}()";
+
+            try
             {
-                _plugInsLoaded = true;
-                if (VersionsBehind >= Constants.MaximunVersionsBehind)
+                LoadPlugIns(false);
+                if (Ribbon != null)
                 {
-                    SetButtonStates(ButtonState.Disabled);
-                    ChemistryProhibitedReason = Constants.Chem4WordTooOld;
+                    _plugInsLoaded = true;
+                    if (VersionsBehind >= Constants.MaximumVersionsBehind)
+                    {
+                        SetButtonStates(ButtonState.Disabled);
+                        ChemistryProhibitedReason = Constants.Chem4WordTooOld;
+                    }
+                    else
+                    {
+                        OnWindowSelectionChange(Application.Selection);
+                    }
+
+                    LoadOptions();
                 }
-                else
-                {
-                    OnWindowSelectionChange(Application.Selection);
-                }
+            }
+            catch (ThreadAbortException threadAbortException)
+            {
+                RegistryHelper.StoreException(module, threadAbortException);
+            }
+            catch (Exception exception)
+            {
+                RegistryHelper.StoreException(module, exception);
             }
         }
 
@@ -613,10 +677,9 @@ namespace Chem4Word
                                 var certificate = mod.GetSignerCertificate();
                                 if (certificate != null)
                                 {
+                                    signedBy = certificate.Subject;
                                     // E=developer@chem4word.co.uk, CN="Open Source Developer, Mike Williams", O=Open Source Developer, C=GB
                                     Debug.WriteLine(certificate.Subject);
-                                    signedBy = certificate.Subject;
-                                    // CN=Certum Code Signing CA SHA2, OU=Certum Certification Authority, O=Unizeto Technologies S.A., C=PL
                                     Debug.WriteLine(certificate.Issuer);
                                 }
 
@@ -827,117 +890,145 @@ namespace Chem4Word
             return plugin;
         }
 
-        public void EnableContentControlEvents(Word.Document doc)
+        [HandleProcessCorruptedStateExceptions]
+        public void EnableContentControlEvents()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-
             //Debug.WriteLine("EnableContentControlEvents()");
 
-            // Get reference to active document
-            WordTools.Document wdoc = Extensions.DocumentExtensions.GetVstoObject(doc, Globals.Factory);
-
-            // Hook in Content Control Events
-            // See: https://msdn.microsoft.com/en-us/library/Microsoft.Office.Interop.Word.DocumentEvents2_methods%28v=office.14%29.aspx
-            // See: https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.documentevents2_event_methods%28v=office.14%29.aspx
-
-            // Remember to add corresponding code in DisableContentControlEvents()
-
-            // ContentControlOnEnter Event Handler
             try
             {
-                wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
-                wdoc.ContentControlOnEnter += OnContentControlOnEnter;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            // ContentControlOnExit Event Handler
-            try
-            {
-                wdoc.ContentControlOnExit -= OnContentControlOnExit;
-                wdoc.ContentControlOnExit += OnContentControlOnExit;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            // ContentControlBeforeDelete Event Handler
-            try
-            {
-                wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
-                wdoc.ContentControlBeforeDelete += OnContentControlBeforeDelete;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            // ContentControlAfterAdd Event Handler
-            try
-            {
-                wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
-                wdoc.ContentControlAfterAdd += OnContentControlAfterAdd;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
+                if (Application.Documents.Count > 0)
+                {
+                    // Get reference to active document
+                    var wdoc = Globals.Factory.GetVstoObject(Globals.Chem4WordV3.Application.ActiveDocument);
 
-            EventsEnabled = true;
+                    // Hook in Content Control Events
+                    // See: https://msdn.microsoft.com/en-us/library/Microsoft.Office.Interop.Word.DocumentEvents2_methods%28v=office.14%29.aspx
+                    // See: https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.documentevents2_event_methods%28v=office.14%29.aspx
+
+                    // Remember to add corresponding code in DisableContentControlEvents()
+
+                    // ContentControlOnEnter Event Handler
+                    try
+                    {
+                        wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+                        wdoc.ContentControlOnEnter += OnContentControlOnEnter;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                    // ContentControlOnExit Event Handler
+                    try
+                    {
+                        wdoc.ContentControlOnExit -= OnContentControlOnExit;
+                        wdoc.ContentControlOnExit += OnContentControlOnExit;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                    // ContentControlBeforeDelete Event Handler
+                    try
+                    {
+                        wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+                        wdoc.ContentControlBeforeDelete += OnContentControlBeforeDelete;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                    // ContentControlAfterAdd Event Handler
+                    try
+                    {
+                        wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+                        wdoc.ContentControlAfterAdd += OnContentControlAfterAdd;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+
+                    EventsEnabled = true;
+                }
+            }
+            catch (Exception exception)
+            {
+                RegistryHelper.StoreException(module, exception);
+            }
         }
 
-        public void DisableContentControlEvents(Word.Document doc)
+        [HandleProcessCorruptedStateExceptions]
+        public void DisableContentControlEvents()
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
-
             //Debug.WriteLine("DisableContentControlEvents()");
 
-            EventsEnabled = false;
-
-            // Get reference to active document
-            WordTools.Document wdoc = Extensions.DocumentExtensions.GetVstoObject(doc, Globals.Factory);
-
-            // Hook out Content Control Events
-            // See: https://msdn.microsoft.com/en-us/library/Microsoft.Office.Interop.Word.DocumentEvents2_methods%28v=office.14%29.aspx
-            // See: https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.documentevents2_event_methods%28v=office.14%29.aspx
-
-            // Remember to add corresponding code in EnableContentControlEvents()
-
-            // ContentControlOnEnter Event Handler
             try
             {
-                wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+                EventsEnabled = false;
+
+                if (Application.Documents.Count > 0)
+                {
+                    // Get reference to active document
+                    var wdoc = Globals.Factory.GetVstoObject(Globals.Chem4WordV3.Application.ActiveDocument);
+
+                    // Hook out Content Control Events
+                    // See: https://msdn.microsoft.com/en-us/library/Microsoft.Office.Interop.Word.DocumentEvents2_methods%28v=office.14%29.aspx
+                    // See: https://msdn.microsoft.com/en-us/library/microsoft.office.interop.word.documentevents2_event_methods%28v=office.14%29.aspx
+
+                    // Remember to add corresponding code in EnableContentControlEvents()
+
+                    // ContentControlOnEnter Event Handler
+                    try
+                    {
+                        wdoc.ContentControlOnEnter -= OnContentControlOnEnter;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                    // ContentControlOnExit Event Handler
+                    try
+                    {
+                        wdoc.ContentControlOnExit -= OnContentControlOnExit;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                    // ContentControlBeforeDelete Event Handler
+                    try
+                    {
+                        wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                    // ContentControlAfterAdd Event Handler
+                    try
+                    {
+                        wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
+                    }
+                    catch (Exception e)
+                    {
+                        RegistryHelper.StoreException(module, e);
+                        Debug.WriteLine(e.Message);
+                    }
+                }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Debug.WriteLine(e.Message);
-            }
-            // ContentControlOnExit Event Handler
-            try
-            {
-                wdoc.ContentControlOnExit -= OnContentControlOnExit;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            // ContentControlBeforeDelete Event Handler
-            try
-            {
-                wdoc.ContentControlBeforeDelete -= OnContentControlBeforeDelete;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            // ContentControlAfterAdd Event Handler
-            try
-            {
-                wdoc.ContentControlAfterAdd -= OnContentControlAfterAdd;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
+                RegistryHelper.StoreException(module, exception);
             }
         }
 
@@ -992,7 +1083,7 @@ namespace Chem4Word
                         Ribbon.EditStructure.Label = "Draw";
                         Ribbon.EditLabels.Enabled = false;
                         Ribbon.ViewCml.Enabled = false;
-                        Ribbon.ImportFromFile.Enabled = plugInsLoaded && Renderers.Count > 0;
+                        Ribbon.ImportFromFile.Enabled = plugInsLoaded;
                         Ribbon.ExportToFile.Enabled = false;
                         Ribbon.ShowAsMenu.Enabled = false;
                         Ribbon.ShowNavigator.Enabled = true;
@@ -1099,7 +1190,7 @@ namespace Chem4Word
                         }
                     }
 
-                    if (VersionsBehind >= Constants.MaximunVersionsBehind)
+                    if (VersionsBehind >= Constants.MaximumVersionsBehind)
                     {
                         SetButtonStates(ButtonState.Disabled);
                         ChemistryProhibitedReason = Constants.Chem4WordTooOld;
@@ -1245,7 +1336,7 @@ namespace Chem4Word
                         try
                         {
                             app.ScreenUpdating = false;
-                            DisableContentControlEvents(doc);
+                            DisableContentControlEvents();
 
                             app.Options.SmartCutPaste = false;
                             int insertionPoint = tw.Start;
@@ -1265,7 +1356,7 @@ namespace Chem4Word
                         }
                         finally
                         {
-                            EnableContentControlEvents(doc);
+                            EnableContentControlEvents();
                             app.ScreenUpdating = true;
                             app.Options.SmartCutPaste = previousState;
                         }
@@ -1409,66 +1500,92 @@ namespace Chem4Word
 
         #endregion Methods
 
+        [HandleProcessCorruptedStateExceptions]
         private void AddChemistryMenuPopup(List<TargetWord> selectedWords)
         {
-            ClearChemistryContextMenus();
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            WordTools.Document doc = Extensions.DocumentExtensions.GetVstoObject(Application.ActiveDocument, Globals.Factory);
-            Application.CustomizationContext = doc.AttachedTemplate;
-
-            foreach (string contextMenuName in ContextMenusTargets)
+            try
             {
-                CommandBar contextMenu = Application.CommandBars[contextMenuName];
-                if (contextMenu != null)
+                ClearChemistryContextMenus();
+
+                if (Application.Documents.Count > 0)
                 {
-                    CommandBarPopup popupControl = (CommandBarPopup)contextMenu.Controls.Add(
-                                                                             MsoControlType.msoControlPopup,
-                                                                             Type.Missing, Type.Missing, Type.Missing, true);
-                    if (popupControl != null)
+                    WordTools.Document doc = Extensions.DocumentExtensions.GetVstoObject(Application.ActiveDocument, Globals.Factory);
+                    Application.CustomizationContext = doc.AttachedTemplate;
+
+                    foreach (string contextMenuName in ContextMenusTargets)
                     {
-                        popupControl.Caption = ContextMenuText;
-                        popupControl.Tag = ContextMenuTag;
-                        foreach (var word in selectedWords)
+                        CommandBar contextMenu = Application.CommandBars[contextMenuName];
+                        if (contextMenu != null)
                         {
-                            CommandBarButton button = (CommandBarButton)popupControl.Controls.Add(
-                                                                            MsoControlType.msoControlButton,
-                                                                            Type.Missing, Type.Missing, Type.Missing, true);
-                            if (button != null)
+                            CommandBarPopup popupControl = (CommandBarPopup)contextMenu.Controls.Add(
+                                MsoControlType.msoControlPopup,
+                                Type.Missing, Type.Missing, Type.Missing, true);
+                            if (popupControl != null)
                             {
-                                button.Caption = word.ChemicalName;
-                                button.Tag = JsonConvert.SerializeObject(word);
-                                button.FaceId = 1241;
-                                button.Click += OnCommandBarButtonClick;
+                                popupControl.Caption = ContextMenuText;
+                                popupControl.Tag = ContextMenuTag;
+                                foreach (var word in selectedWords)
+                                {
+                                    CommandBarButton button = (CommandBarButton)popupControl.Controls.Add(
+                                        MsoControlType.msoControlButton,
+                                        Type.Missing, Type.Missing, Type.Missing, true);
+                                    if (button != null)
+                                    {
+                                        button.Caption = word.ChemicalName;
+                                        button.Tag = JsonConvert.SerializeObject(word);
+                                        button.FaceId = 1241;
+                                        button.Click += OnCommandBarButtonClick;
+                                    }
+                                }
                             }
                         }
                     }
+
+                    ((Word.Template)doc.AttachedTemplate).Saved = true;
                 }
             }
-
-            ((Word.Template)doc.AttachedTemplate).Saved = true;
+            catch (Exception exception)
+            {
+                RegistryHelper.StoreException(module, exception);
+            }
         }
 
+        [HandleProcessCorruptedStateExceptions]
         private void ClearChemistryContextMenus()
         {
-            WordTools.Document doc = Extensions.DocumentExtensions.GetVstoObject(Application.ActiveDocument, Globals.Factory);
-            Application.CustomizationContext = doc.AttachedTemplate;
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            foreach (string contextMenuName in ContextMenusTargets)
+            try
             {
-                CommandBar contextMenu = Application.CommandBars[contextMenuName];
-                if (contextMenu != null)
+                if (Application.Documents.Count > 0)
                 {
-                    CommandBarPopup popupControl = (CommandBarPopup)contextMenu.FindControl(
-                                                                         MsoControlType.msoControlPopup, Type.Missing,
-                                                                         ContextMenuTag, true, true);
-                    if (popupControl != null)
+                    WordTools.Document doc = Extensions.DocumentExtensions.GetVstoObject(Application.ActiveDocument, Globals.Factory);
+                    Application.CustomizationContext = doc.AttachedTemplate;
+
+                    foreach (string contextMenuName in ContextMenusTargets)
                     {
-                        popupControl.Delete(true);
+                        CommandBar contextMenu = Application.CommandBars[contextMenuName];
+                        if (contextMenu != null)
+                        {
+                            CommandBarPopup popupControl = (CommandBarPopup)contextMenu.FindControl(
+                                MsoControlType.msoControlPopup, Type.Missing,
+                                ContextMenuTag, true, true);
+                            if (popupControl != null)
+                            {
+                                popupControl.Delete(true);
+                            }
+                        }
                     }
+
+                    ((Word.Template)doc.AttachedTemplate).Saved = true;
                 }
             }
-
-            ((Word.Template)doc.AttachedTemplate).Saved = true;
+            catch (Exception exception)
+            {
+                RegistryHelper.StoreException(module, exception);
+            }
         }
 
         #endregion Right Click
@@ -1528,9 +1645,6 @@ namespace Chem4Word
                     if (doc != null)
                     {
                         bool docxMode = doc.CompatibilityMode >= (int)Word.WdCompatibilityMode.wdWord2010;
-
-                        // Call disable first to ensure events not registered multiple times
-                        DisableContentControlEvents(doc);
 
                         if (Ribbon != null)
                         {
@@ -1649,17 +1763,27 @@ namespace Chem4Word
 
                         #endregion Handle Library Task Panes
 
-                        EnableContentControlEvents(doc);
-
                         if (docxMode)
                         {
-                            SetButtonStates(ButtonState.NoDocument);
-                            SelectChemistry(doc.Application.Selection);
+                            // Call disable first to ensure events not registered multiple times
+                            DisableContentControlEvents();
+                            EnableContentControlEvents();
+
                             EvaluateChemistryAllowed();
+                            if (ChemistryAllowed)
+                            {
+                                SelectChemistry(doc.Application.Selection);
+                            }
+                            else
+                            {
+                                SetButtonStates(ButtonState.NoDocument);
+                            }
                         }
                         else
                         {
                             SetButtonStates(ButtonState.NoDocument);
+                            ChemistryAllowed = false;
+                            ChemistryProhibitedReason = "document is in compatibility mode.";
                         }
                     }
                 }
@@ -1747,6 +1871,25 @@ namespace Chem4Word
                             CustomXmlPartHelper.RemoveOrphanedXmlParts(doc);
                         }
                     }
+                }
+            }
+            catch (COMException cex)
+            {
+                string comCode = HexErrorCode(cex.ErrorCode);
+                switch (comCode)
+                {
+                    case "0xE0041804":
+                        Telemetry.Write(module, "Exception", $"ErrorCode: {comCode}");
+                        Telemetry.Write(module, "Exception", cex.Message);
+                        Telemetry.Write(module, "Exception", cex.ToString());
+                        break;
+
+                    default:
+                        // Keep exception hidden from end user.
+                        Telemetry.Write(module, "Exception", $"ErrorCode: {comCode}");
+                        Telemetry.Write(module, "Exception", cex.Message);
+                        Telemetry.Write(module, "Exception", cex.ToString());
+                        break;
                 }
             }
             catch (Exception ex)
@@ -1866,6 +2009,10 @@ namespace Chem4Word
                 //int dd = 0;
                 //int bang = ii / dd;
             }
+            catch (ThreadAbortException tex)
+            {
+                RegistryHelper.StoreException(module, tex);
+            }
             catch (Exception ex)
             {
                 if (SystemOptions == null)
@@ -1873,13 +2020,17 @@ namespace Chem4Word
                     LoadOptions();
                 }
 
-                using (var form = new ReportError(Telemetry, WordTopLeft, module, ex))
+                if (Telemetry != null)
                 {
-                    form.ShowDialog();
+                    using (var form = new ReportError(Telemetry, WordTopLeft, module, ex))
+                    {
+                        form.ShowDialog();
+                    }
                 }
-
-                UpdateHelper.ClearSettings();
-                UpdateHelper.CheckForUpdates(SystemOptions.AutoUpdateFrequency);
+                else
+                {
+                    RegistryHelper.StoreException(module, ex);
+                }
             }
         }
 
@@ -1887,7 +2038,7 @@ namespace Chem4Word
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            bool allowed = true;
+            bool allowed = ChemistryAllowed;
 
             // Skip checks if ChemistryProhibitedReason is already set
             if (string.IsNullOrEmpty(ChemistryProhibitedReason))
@@ -1975,7 +2126,7 @@ namespace Chem4Word
                                 catch
                                 {
                                     // ComException 0x80004005
-                                    ChemistryProhibitedReason = $"can't determine which part of the story the selection point is.";
+                                    ChemistryProhibitedReason = "can't determine which part of the story the selection point is.";
                                     allowed = false;
                                 }
                             }
@@ -2033,8 +2184,7 @@ namespace Chem4Word
                                             {
                                                 if (sel.ShapeRange.Count > 0)
                                                 {
-                                                    ChemistryProhibitedReason =
-                                                        "selection contains shape(s) inside Content Control.";
+                                                    ChemistryProhibitedReason = "selection contains shape(s) inside Content Control.";
                                                     allowed = false;
                                                 }
                                             }
@@ -2092,18 +2242,34 @@ namespace Chem4Word
                             break;
 
                         default:
-                            // Keep exception hidden from end user.
-                            Telemetry.Write(module, "Exception", $"ErrorCode: {comCode}");
-                            Telemetry.Write(module, "Exception", cex.Message);
-                            Telemetry.Write(module, "Exception", cex.ToString());
+                            ChemistryAllowed = false;
+                            ChemistryProhibitedReason = $"COMException {cex.Message} ErrorCode: {comCode}";
+                            if (Telemetry != null)
+                            {
+                                // Keep exception hidden from end user.
+                                Telemetry.Write(module, "Exception", $"ErrorCode: {comCode}");
+                                Telemetry.Write(module, "Exception", cex.Message);
+                                Telemetry.Write(module, "Exception", cex.ToString());
+                            }
+                            else
+                            {
+                                RegistryHelper.StoreException(module, cex);
+                            }
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Keep exception hidden from end user.
-                    Telemetry.Write(module, "Exception", ex.Message);
-                    Telemetry.Write(module, "Exception", ex.ToString());
+                    if (Telemetry != null)
+                    {
+                        // Keep exception hidden from end user.
+                        Telemetry.Write(module, "Exception", ex.Message);
+                        Telemetry.Write(module, "Exception", ex.ToString());
+                    }
+                    else
+                    {
+                        RegistryHelper.StoreException(module, ex);
+                    }
                 }
             }
 
@@ -2313,7 +2479,7 @@ namespace Chem4Word
 
             try
             {
-                //Debug.WriteLine($"{module.Replace("()", $"({doc.Name})")}");
+                Debug.WriteLine($"{module.Replace("()", $"({doc.Name})")}");
 
                 EvaluateChemistryAllowed();
 
@@ -2512,16 +2678,14 @@ namespace Chem4Word
                     LoadOptions();
                 }
 
-                //Debug.WriteLine($"{module.Replace("()", $"({contentControl.Application.ActiveDocument.Name})")}");
-
                 if (EventsEnabled)
                 {
                     EventsEnabled = false;
 #if DEBUG
-                    //Word.Document doc = contentControl.Application.ActiveDocument;
-                    //Word.Selection sel = doc.Application.Selection;
-                    //Debug.WriteLine($"  OnContentControlOnEnter() Document: {doc.Name} Selection from {sel.Range.Start} to {sel.Range.End}");
-                    //Debug.WriteLine($"  OnContentControlOnEnter() Document: {doc.Name} Selection has {sel.ContentControls.Count} CCs");
+                    Word.Document doc = contentControl.Application.ActiveDocument;
+                    Word.Selection sel = doc.Application.Selection;
+                    Debug.WriteLine($"  OnContentControlOnEnter() Document: {doc.Name} Selection from {sel.Range.Start} to {sel.Range.End}");
+                    Debug.WriteLine($"  OnContentControlOnEnter() Document: {doc.Name} Selection has {sel.ContentControls.Count} CCs");
 #endif
                     EvaluateChemistryAllowed();
                     EventsEnabled = true;

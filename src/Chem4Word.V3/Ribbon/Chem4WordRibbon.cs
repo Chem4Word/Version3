@@ -132,7 +132,7 @@ namespace Chem4Word
                                         {
                                             // Stop Screen Updating and Disable Document Event Handlers
                                             app.ScreenUpdating = false;
-                                            Globals.Chem4WordV3.DisableContentControlEvents(doc);
+                                            Globals.Chem4WordV3.DisableContentControlEvents();
 
                                             // Erase old CC
                                             cc.LockContents = false;
@@ -208,7 +208,7 @@ namespace Chem4Word
                     {
                         // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
                         app.ScreenUpdating = true;
-                        Globals.Chem4WordV3.EnableContentControlEvents(doc);
+                        Globals.Chem4WordV3.EnableContentControlEvents();
 
                         if (cc != null)
                         {
@@ -573,41 +573,69 @@ namespace Chem4Word
 
         private bool BeforeButtonChecks(RibbonButton button)
         {
-            if (Globals.Chem4WordV3.SystemOptions == null)
-            {
-                Globals.Chem4WordV3.LoadOptions();
-            }
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            Globals.Chem4WordV3.EvaluateChemistryAllowed();
+            try
+            {
+                if (Globals.Chem4WordV3.SystemOptions == null)
+                {
+                    Globals.Chem4WordV3.LoadOptions();
+                }
+
+                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+            }
+            catch (Exception exception)
+            {
+                RegistryHelper.StoreException(module, exception);
+            }
 
             return true;
         }
 
         private void AfterButtonChecks(RibbonButton button)
         {
-            RegistryHelper.SendSetupActions();
-            RegistryHelper.SendUpdateActions();
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            if (Globals.Chem4WordV3.SystemOptions == null)
+            try
             {
-                Globals.Chem4WordV3.LoadOptions();
-            }
+                if (Globals.Chem4WordV3.Telemetry != null)
+                {
+                    RegistryHelper.SendSetupActions();
+                    RegistryHelper.SendUpdateActions();
+                    RegistryHelper.SendExceptions();
+                }
 
-            // Only do update check if we are not coming from an update button
-            bool checkForUpdates = true;
-            if (button != null)
+                if (Globals.Chem4WordV3.SystemOptions == null)
+                {
+                    Globals.Chem4WordV3.LoadOptions();
+                }
+
+                // Only do update check if we are not coming from an update button
+                bool checkForUpdates = true;
+                if (button != null)
+                {
+                    checkForUpdates = !button.Label.ToLower().Contains("update");
+                }
+
+                if (checkForUpdates)
+                {
+                    if (Globals.Chem4WordV3.SystemOptions != null)
+                    {
+                        UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
+                    }
+                }
+
+                Globals.Chem4WordV3.EvaluateChemistryAllowed();
+                Globals.Chem4WordV3.ShowOrHideUpdateShield();
+                if (Globals.Chem4WordV3.ChemistryAllowed)
+                {
+                    Globals.Chem4WordV3.SelectChemistry(Globals.Chem4WordV3.Application.Selection);
+                }
+            }
+            catch (Exception exception)
             {
-                checkForUpdates = !button.Label.ToLower().Contains("update");
+                RegistryHelper.StoreException(module, exception);
             }
-
-            if (checkForUpdates)
-            {
-                UpdateHelper.CheckForUpdates(Globals.Chem4WordV3.SystemOptions.AutoUpdateFrequency);
-            }
-
-            Globals.Chem4WordV3.EvaluateChemistryAllowed();
-            Globals.Chem4WordV3.ShowOrHideUpdateShield();
-            Globals.Chem4WordV3.SelectChemistry(Globals.Chem4WordV3.Application.Selection);
         }
 
         public static void PerformEdit()
@@ -686,7 +714,7 @@ namespace Chem4Word
                         {
                             // Stop Screen Updating and Disable Document Event Handlers
                             app.ScreenUpdating = false;
-                            Globals.Chem4WordV3.DisableContentControlEvents(doc);
+                            Globals.Chem4WordV3.DisableContentControlEvents();
 
                             CMLConverter cmlConverter = new CMLConverter();
                             SdFileConverter molConverter = new SdFileConverter();
@@ -992,6 +1020,7 @@ namespace Chem4Word
                                     // Delete the temporary file now we are finished with it
                                     try
                                     {
+                                        // Only delete file in release mode
 #if !DEBUG
                                         File.Delete(tempfileName);
 #endif
@@ -1031,7 +1060,7 @@ namespace Chem4Word
             {
                 // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
                 app.ScreenUpdating = true;
-                Globals.Chem4WordV3.EnableContentControlEvents(doc);
+                Globals.Chem4WordV3.EnableContentControlEvents();
 
                 if (cc != null)
                 {
@@ -1715,7 +1744,7 @@ namespace Chem4Word
 
                 // Stop Screen Updating and Disable Document Event Handlers
                 app.ScreenUpdating = false;
-                Globals.Chem4WordV3.DisableContentControlEvents(doc);
+                Globals.Chem4WordV3.DisableContentControlEvents();
 
                 try
                 {
@@ -1808,7 +1837,7 @@ namespace Chem4Word
                 {
                     // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
                     app.ScreenUpdating = true;
-                    Globals.Chem4WordV3.EnableContentControlEvents(doc);
+                    Globals.Chem4WordV3.EnableContentControlEvents();
 
                     if (cc != null)
                     {

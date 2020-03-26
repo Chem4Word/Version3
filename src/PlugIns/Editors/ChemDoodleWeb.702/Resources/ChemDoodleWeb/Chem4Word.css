@@ -22,8 +22,26 @@ body {
     border: 1px solid #c3c3c3;
 }
 
+/* Hide Unwanted Buttons */
 #sketcher_button_open,
 #sketcher_button_save,
-#sketcher_buttons_shape {
+#sketcher_buttons_shape,
+#sketcher_button_attribute_lonePair_increment,
+#sketcher_button_attribute_lonePair_decrement,
+#sketcher_button_attribute_radical_increment,
+#sketcher_button_attribute_radical_decrement
+{
+    display:none;
+}
+
+#sketcher_buttons_attribute_dd_set > label:nth-child(6),
+#sketcher_buttons_attribute_dd_set > label:nth-child(7),
+#sketcher_buttons_attribute_dd_set > label:nth-child(8),
+#sketcher_buttons_attribute_dd_set > label:nth-child(9),
+#sketcher_buttons_attribute_dd_set > label:nth-child(10),
+#sketcher_buttons_attribute_dd_set > label:nth-child(11),
+#sketcher_buttons_attribute_dd_set > label:nth-child(12),
+#sketcher_buttons_attribute_dd_set > label:nth-child(13)
+{
     display:none;
 }

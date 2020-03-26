@@ -3,12 +3,24 @@
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
     <Version>
+        <Number>3.0.33 Release 21</Number>
+        <IsBeta>false</IsBeta>
+        <Released>26-Mar-2020</Released>
+        <Changes>
+            <Change>Bug Fix; Setup should now repair missing registry settings</Change>
+            <Change>Bug Fix; Prevent exception if Telemetry not initialised in Evaluate If Chemistry Is Allowed</Change>
+            <Change>Bug Fix; Compatibility mode detection not working all the time</Change>
+            <Change>Add AntiVirus Detection</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.33.Release.21.msi</Url>
+    </Version>
+    <Version>
         <Number>3.0.32 Release 20</Number>
         <IsBeta>false</IsBeta>
         <Released>09-Jan-2020</Released>
         <Changes>
             <Change>Bug Fix; Draw button is now re-enabled for new document</Change>
-            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
         </Changes>
         <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.32.Release.20.msi</Url>
     </Version>

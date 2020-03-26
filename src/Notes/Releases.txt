@@ -1,7 +1,8 @@
 ﻿# Set Build Numbers
 
-.\SetAssemblyVersion.ps1 -path .. -version 3.0.32 -name "Release 20" -released 09-Jan-2020
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.33 -name "Release 21" -released 26-Mar-2020
 
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.32 -name "Release 20" -released 09-Jan-2020
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.31 -name "Release 19" -released 08-Jan-2020
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.30 -name "Release 18" -released 11-Nov-2019
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.29 -name "Release 17" -released 10-Nov-2019

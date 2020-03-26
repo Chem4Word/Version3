@@ -28,8 +28,25 @@ body {
 #sketcher_button_save,
 #sketcher_button_flip_hor,
 #sketcher_button_flip_ver,
-#sketcher_button_template_label {
-    display: none;
+#sketcher_button_template_label,
+#sketcher_button_attribute_lonePair_increment,
+#sketcher_button_attribute_lonePair_decrement,
+#sketcher_button_attribute_radical_increment,
+#sketcher_button_attribute_radical_decrement
+{
+    display:none;
+}
+
+#sketcher_buttons_attribute_dd_set > label:nth-child(6),
+#sketcher_buttons_attribute_dd_set > label:nth-child(7),
+#sketcher_buttons_attribute_dd_set > label:nth-child(8),
+#sketcher_buttons_attribute_dd_set > label:nth-child(9),
+#sketcher_buttons_attribute_dd_set > label:nth-child(10),
+#sketcher_buttons_attribute_dd_set > label:nth-child(11),
+#sketcher_buttons_attribute_dd_set > label:nth-child(12),
+#sketcher_buttons_attribute_dd_set > label:nth-child(13)
+{
+    display:none;
 }
 
 /* Hide Shapes Button */

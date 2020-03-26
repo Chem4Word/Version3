@@ -48,9 +48,10 @@ namespace Chem4Word.Core.Helpers
         public const string RegistryValueNameVersionsBehind = "Versions Behind";
         public const string Chem4WordSetupRegistryKey = @"SOFTWARE\Chem4Word V3\Setup";
         public const string Chem4WordUpdateRegistryKey = @"SOFTWARE\Chem4Word V3\Update";
+        public const string Chem4WordExceptionsRegistryKey = @"SOFTWARE\Chem4Word V3\Exceptions";
 
         // Update Checks
-        public const int MaximunVersionsBehind = 7;
+        public const int MaximumVersionsBehind = 7;
         public static string Chem4WordTooOld = "Chem4Word is too many versions old.";
 
         // Bond length limits etc

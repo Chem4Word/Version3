@@ -7,6 +7,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Chem4Word.Core.Helpers;
@@ -18,6 +20,8 @@ namespace Chem4Word.Helpers
     {
         private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
+
+        private static int _counter = 1;
 
         public static void SendSetupActions()
         {
@@ -77,6 +81,56 @@ namespace Chem4Word.Helpers
                 {
                     Globals.Chem4WordV3.Telemetry.Write(module, "Update", string.Join(Environment.NewLine, values));
                 }
+            }
+        }
+
+        public static void SendExceptions()
+        {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey(Constants.Chem4WordExceptionsRegistryKey, true);
+            if (rk != null)
+            {
+                string[] names = rk.GetValueNames();
+                List<string> values = new List<string>();
+                foreach (var name in names)
+                {
+                    string message = rk.GetValue(name).ToString();
+
+                    string timestamp = name;
+                    int bracket = timestamp.IndexOf("[", StringComparison.InvariantCulture);
+                    if (bracket > 0)
+                    {
+                        timestamp = timestamp.Substring(0, bracket).Trim();
+                    }
+
+                    values.Add($"{timestamp} {message}");
+                    rk.DeleteValue(name);
+                }
+                if (values.Any())
+                {
+                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, values));
+                }
+            }
+        }
+
+        public static void StoreException(string module, Exception exception)
+        {
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(Constants.Chem4WordExceptionsRegistryKey);
+            if (key != null)
+            {
+                int procId = 0;
+                try
+                {
+                    procId = Process.GetCurrentProcess().Id;
+                }
+                catch
+                {
+                    //
+                }
+
+                string timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                key.SetValue($"{timestamp} [{procId}.{_counter++.ToString("000")}]", $"[{procId}] {module} {exception}");
             }
         }
     }

@@ -32,14 +32,8 @@ namespace Chem4Word.Shared
             @"Microsoft Office {0}\Client{1}\Root\Office{0}"
         };
 
-        public static int GetWinWordVersion(string path = null)
+        public static FileVersionInfo GetWinWordVersion(string path = null)
         {
-            string wordVersionNumber = String.Empty;
-
-            if (path == null)
-            {
-                path = GetWinWordPath();
-            }
             if (!string.IsNullOrEmpty(path))
             {
                 try
@@ -47,7 +41,7 @@ namespace Chem4Word.Shared
                     // Strip off any quotes
                     path = path.Replace("\"", "");
                     FileVersionInfo fi = FileVersionInfo.GetVersionInfo(path);
-                    wordVersionNumber = fi.FileVersion;
+                    return fi;
                 }
                 catch (Exception ex)
                 {
@@ -55,15 +49,33 @@ namespace Chem4Word.Shared
                 }
             }
 
-            return HumanOfficeVersion(wordVersionNumber);
+            return null;
         }
 
-        public static string GetWordProduct()
+        /// <summary>
+        /// Returns Word version Number Office 365 and 2019 return 2016
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static int GetWinWordVersionNumber(string path = null)
         {
-            string result = "";
+            string wordVersionNumber = String.Empty;
 
+            if (path == null)
+            {
+                path = GetWinWordPath();
+            }
+
+            var fi = GetWinWordVersion(path);
+
+            return HumanOfficeVersion(fi.FileMajorPart);
+        }
+
+        public static string GetWordProduct(string clickToRun)
+        {
             string pathToWinword = GetWinWordPath();
-            FileVersionInfo fi = FileVersionInfo.GetVersionInfo(pathToWinword);
+            var fi = GetWinWordVersion(pathToWinword);
+
             string wordVersionNumber = fi.FileVersion;
 
             string officeProductName = string.Empty;
@@ -71,7 +83,7 @@ namespace Chem4Word.Shared
             // If this is Office 2016 or 2019 or 365
             if (wordVersionNumber.StartsWith("16."))
             {
-                officeProductName = DecodeClickToRun();
+                officeProductName = DecodeClickToRun(clickToRun);
             }
 
             if (string.IsNullOrEmpty(officeProductName))
@@ -96,11 +108,18 @@ namespace Chem4Word.Shared
                 officeProductName += Environment.NewLine + fi.ProductName;
             }
 
-            result = officeProductName + " [" + wordVersionNumber + "]";
+            string result = officeProductName + " [" + wordVersionNumber + "]";
+
+            // Not 100% sure why we would ever get this ???
+            if (result.Contains("[11."))
+            {
+                result = $"Microsoft Office 2003 [{wordVersionNumber}]";
+            }
 
             int limiter = 32;
             while (result.IndexOf("  ", StringComparison.Ordinal) >= 0)
             {
+                result = result.Replace("\t", " ");
                 result = result.Replace("  ", " ");
                 limiter--;
                 if (limiter == 0)
@@ -112,17 +131,13 @@ namespace Chem4Word.Shared
             return result;
         }
 
-        private static string DecodeClickToRun()
+        private static string DecodeClickToRun(string clickToRun)
         {
             string result = String.Empty;
 
-            var c2r = GetClick2RunProductIds();
-
-            if (!string.IsNullOrEmpty(c2r))
+            if (!string.IsNullOrEmpty(clickToRun))
             {
-                var products = GetClick2RunProductIds()
-                               .Split(',')
-                               .Select(p => p.ToLower()).ToList();
+                var products = clickToRun.Split(',').Select(p => p.ToLower()).ToList();
 
                 // Loop backward so that we can remove products we don't care about
                 for (int i = products.Count - 1; i >= 0; i--)
@@ -563,7 +578,7 @@ namespace Chem4Word.Shared
 
                 case 16:
 
-                    #region Office 2016
+                    #region Office 2016 / 365 / 2019
 
                     switch (productId)
                     {
@@ -589,7 +604,7 @@ namespace Chem4Word.Shared
                     }
                     break;
 
-                    #endregion Office 2016
+                    #endregion Office 2016 / 365 / 2019
             }
 
             #region 32 / 64 bit
@@ -894,36 +909,27 @@ namespace Chem4Word.Shared
         }
 
         // Generate Human version number from major of word's internal version number
-        private static int HumanOfficeVersion(string wordVersionString)
+        private static int HumanOfficeVersion(int major)
         {
             int version = -1;
 
-            if (!string.IsNullOrEmpty(wordVersionString))
+            switch (major)
             {
-                string[] parts = wordVersionString.Split('.');
-                int major = int.Parse(parts[0]);
-                switch (major)
-                {
-                    case 12:
-                        version = 2007;
-                        break;
+                case 12:
+                    version = 2007;
+                    break;
 
-                    case 14:
-                        version = 2010;
-                        break;
+                case 14:
+                    version = 2010;
+                    break;
 
-                    case 15:
-                        version = 2013;
-                        break;
+                case 15:
+                    version = 2013;
+                    break;
 
-                    case 16:
-                        version = 2016;
-                        break;
-
-                    case 17:
-                        version = 2019;
-                        break;
-                }
+                case 16:
+                    version = 2016;
+                    break;
             }
             return version;
         }
