@@ -123,7 +123,7 @@ namespace WiX.CustomAction
         {
             session.Log("Begin FindWord()");
 
-            int officeVersion = OfficeHelper.GetWinWordVersion();
+            int officeVersion = OfficeHelper.GetWinWordVersionNumber();
             if (officeVersion >= 2010)
             {
                 // Must be UPPERCASE

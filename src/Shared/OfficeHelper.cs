@@ -59,8 +59,6 @@ namespace Chem4Word.Shared
         /// <returns></returns>
         public static int GetWinWordVersionNumber(string path = null)
         {
-            string wordVersionNumber = String.Empty;
-
             if (path == null)
             {
                 path = GetWinWordPath();
