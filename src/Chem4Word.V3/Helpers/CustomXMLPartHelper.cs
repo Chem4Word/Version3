@@ -5,8 +5,11 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
 using System.Xml;
 using Chem4Word.Core.Helpers;
 using Microsoft.Office.Core;
@@ -16,6 +19,15 @@ namespace Chem4Word.Helpers
 {
     public static class CustomXmlPartHelper
     {
+        private static string _product = Assembly.GetExecutingAssembly().FullName.Split(',')[0];
+        private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
+
+        private static CustomXMLParts AllChemistryParts(Word.Document document)
+            => document.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema");
+
+        public static int ChemistryXmlParts(Word.Document doc)
+            => AllChemistryParts(doc).Count;
+
         public static CustomXMLPart FindCustomXmlPart(string id, Word.Document document)
         {
             CustomXMLPart result = null;
@@ -27,15 +39,13 @@ namespace Chem4Word.Helpers
             {
                 if (!otherDocument.Name.Equals(activeDocumentName))
                 {
-                    //Debug.WriteLine("Looking in " + otherDoc.Name);
                     foreach (
-                        CustomXMLPart x in
-                            otherDocument.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema"))
+                        CustomXMLPart customXmlPart in AllChemistryParts(otherDocument))
                     {
-                        string molId = GetCmlId(x);
+                        string molId = GetCmlId(customXmlPart);
                         if (molId.Equals(id))
                         {
-                            result = x;
+                            result = customXmlPart;
                             break;
                         }
                     }
@@ -71,7 +81,7 @@ namespace Chem4Word.Helpers
             {
                 Word.Document doc = activeDocument;
 
-                foreach (CustomXMLPart xmlPart in doc.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema"))
+                foreach (CustomXMLPart xmlPart in AllChemistryParts(doc))
                 {
                     string cmlId = GetCmlId(xmlPart);
                     if (!string.IsNullOrEmpty(cmlId))
@@ -101,7 +111,6 @@ namespace Chem4Word.Helpers
             XmlNode node = xdoc.SelectSingleNode("//c4w:customXmlPartGuid", nsmgr);
             if (node != null)
             {
-                Debug.WriteLine(node.InnerText);
                 result = node.InnerText;
             }
 
@@ -110,7 +119,7 @@ namespace Chem4Word.Helpers
 
         public static void RemoveOrphanedXmlParts(Word.Document doc)
         {
-            //Diagnostics(doc, "Before RemoveOrphanedXmlParts()");
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             Dictionary<string, int> referencedXmlParts = new Dictionary<string, int>();
 
@@ -130,49 +139,30 @@ namespace Chem4Word.Helpers
                 }
             }
 
-            foreach (CustomXMLPart x in doc.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema"))
+            string backupFolder = Path.Combine(Globals.Chem4WordV3.AddInInfo.ProductAppDataPath, "Backups");
+            string header = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine;
+
+            foreach (CustomXMLPart customXmlPart in AllChemistryParts(doc))
             {
-                string molId = GetCmlId(x);
+                string molId = GetCmlId(customXmlPart);
                 if (!referencedXmlParts.ContainsKey(molId))
                 {
-                    x.Delete();
+                    try
+                    {
+                        string guid = Guid.NewGuid().ToString("N");
+                        string timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
+
+                        string fileName = Path.Combine(backupFolder, $"Chem4Word-Orphaned-Structure-{timestamp}-{guid}.cml");
+                        File.WriteAllText(fileName, header + customXmlPart.XML);
+
+                        customXmlPart.Delete();
+                    }
+                    catch (Exception exception)
+                    {
+                        RegistryHelper.StoreException(module, exception);
+                    }
                 }
             }
-
-            //Diagnostics(doc, "After RemoveOrphanedXmlParts()");
-        }
-
-        public static void Diagnostics(Word.Document doc, string when)
-        {
-            Debug.WriteLine("----- Diagnostics " + when + " -----");
-
-            int counter = 0;
-
-            // List all of our ContentControl(s)
-            foreach (Word.ContentControl ccc in doc.ContentControls)
-            {
-                if (ccc.Title.Equals(Constants.ContentControlTitle))
-                {
-                    counter++;
-                    Debug.WriteLine("ContentControl: " + ccc.ID);
-                    Debug.WriteLine("   Range.Start: " + ccc.Range.Start);
-                    Debug.WriteLine("           Tag: " + ccc?.Tag);
-                }
-            }
-
-            Debug.WriteLine("  Found " + counter + " ContentControl(s)");
-
-            // List all of our CustomXMLPart(s)
-            counter = 0;
-            foreach (CustomXMLPart x in doc.CustomXMLParts.SelectByNamespace("http://www.xml-cml.org/schema"))
-            {
-                counter++;
-                Debug.WriteLine("CustomXMLPart: " + x.Id);
-                string molId = CustomXmlPartHelper.GetCmlId(x);
-                Debug.WriteLine("   MoleculeId: " + molId);
-            }
-
-            Debug.WriteLine("  Found " + counter + " CustomXMLPart(s)");
         }
     }
 }

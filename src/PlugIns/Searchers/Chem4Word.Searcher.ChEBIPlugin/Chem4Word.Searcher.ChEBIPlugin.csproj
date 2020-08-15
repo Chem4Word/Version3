@@ -99,7 +99,6 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="WaitCursor.cs" />
     <Compile Include="Web References\ChEBI\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

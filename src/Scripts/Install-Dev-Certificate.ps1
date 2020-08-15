@@ -1,3 +1,5 @@
+# Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
 $pwd = Split-Path -Path $MyInvocation.MyCommand.Path
 
 CD "$($pwd)\Certificates\Developer"

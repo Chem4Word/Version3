@@ -14,7 +14,6 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Chem4Word.Core.Helpers;
@@ -27,9 +26,6 @@ namespace Chem4Word.Telemetry
     {
         private static string CryptoRoot = @"SOFTWARE\Microsoft\Cryptography";
         private string DotNetVersionKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
-
-        private static readonly string DetectionFile = $"{Constants.Chem4WordVersionFiles}/client-ip-date.php";
-        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com" };
 
         public string MachineId { get; set; }
 
@@ -67,170 +63,10 @@ namespace Chem4Word.Telemetry
         public string BrowserVersion { get; set; }
         public List<string> StartUpTimings { get; set; }
 
-        private static int _retryCount;
-        private static Stopwatch _stopwatch;
+        private static Stopwatch _ipStopwatch;
 
-        public static string GetMachineId()
-        {
-            string result = "";
-            try
-            {
-                // Need special routine here as MachineGuid does not exist in the wow6432 path
-                result = RegistryWOW6432.GetRegKey64(RegHive.HKEY_LOCAL_MACHINE, CryptoRoot, "MachineGuid");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                result = "Exception " + ex.Message;
-            }
-
-            return result;
-        }
-
-        private List<string> Initialise()
-        {
-            List<string> timings = new List<string>();
-
-            string message = $"SystemHelper.Initialise() started at {SafeDate.ToLongDate(DateTime.Now)}";
-            timings.Add(message);
-            Debug.WriteLine(message);
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            WordVersion = -1;
-
-            #region Get Machine Guid
-
-            MachineId = GetMachineId();
-
-            ProcessId = Process.GetCurrentProcess().Id;
-
-            #endregion Get Machine Guid
-
-            #region Get OS Version
-
-            // The current code returns 6.2.* for Windows 8.1 and Windows 10 on some systems
-            // https://msdn.microsoft.com/en-gb/library/windows/desktop/ms724832(v=vs.85).aspx
-            // https://msdn.microsoft.com/en-gb/library/windows/desktop/dn481241(v=vs.85).aspx
-            // However as we do not NEED the exact version number,
-            //  I am not going to implement the above as they are too risky
-
-            try
-            {
-                OperatingSystem operatingSystem = Environment.OSVersion;
-
-                string ProductName = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ProductName");
-                string CsdVersion = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CSDVersion");
-
-                if (!string.IsNullOrEmpty(ProductName))
-                {
-                    StringBuilder sb = new StringBuilder();
-                    if (!ProductName.StartsWith("Microsoft"))
-                    {
-                        sb.Append("Microsoft ");
-                    }
-                    sb.Append(ProductName);
-                    if (!string.IsNullOrEmpty(CsdVersion))
-                    {
-                        sb.AppendLine($" {CsdVersion}");
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(operatingSystem.ServicePack))
-                        {
-                            sb.Append($" {operatingSystem.ServicePack}");
-                        }
-                    }
-
-                    sb.Append($" {OsBits}");
-                    sb.Append($" [{operatingSystem.Version}]");
-                    sb.Append($" {CultureInfo.CurrentCulture.Name}");
-
-                    SystemOs = sb.ToString().Replace(Environment.NewLine, "").Replace("Service Pack ", "SP");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                SystemOs = "Exception " + ex.Message;
-            }
-
-            #endregion Get OS Version
-
-            #region Get Office/Word Version
-
-            try
-            {
-                Click2RunProductIds = OfficeHelper.GetClick2RunProductIds();
-
-                WordVersion = OfficeHelper.GetWinWordVersionNumber();
-
-                WordProduct = OfficeHelper.GetWordProduct(Click2RunProductIds);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                WordProduct = "Exception " + ex.Message;
-            }
-
-            #endregion Get Office/Word Version
-
-            #region Get Product Version and Location using reflection
-
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            // CodeBase is the location of the installed files
-            Uri uriCodeBase = new Uri(assembly.CodeBase);
-            AddInLocation = Path.GetDirectoryName(uriCodeBase.LocalPath);
-
-            Version productVersion = assembly.GetName().Version;
-            AssemblyVersionNumber = productVersion.ToString();
-
-            AddInVersion = "Chem4Word V" + productVersion;
-
-            #endregion Get Product Version and Location using reflection
-
-            #region Get IpAddress on Thread
-
-            message = $"GetIpAddress started at {SafeDate.ToLongDate(DateTime.Now)}";
-            StartUpTimings.Add(message);
-            Debug.WriteLine(message);
-
-            _stopwatch = new Stopwatch();
-            _stopwatch.Start();
-
-            ParameterizedThreadStart pts = GetExternalIpAddress;
-            Thread thread = new Thread(pts);
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start(null);
-
-            #endregion Get IpAddress on Thread
-
-            GetDotNetVersionFromRegistry();
-
-            try
-            {
-                BrowserVersion = new WebBrowser().Version.ToString();
-            }
-            catch
-            {
-                BrowserVersion = "?";
-            }
-
-            GetScreens();
-
-#if DEBUG
-            GetGitStatus();
-#endif
-
-            sw.Stop();
-
-            message = $"SystemHelper.Initialise() took {sw.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
-            timings.Add(message);
-            Debug.WriteLine(message);
-
-            return timings;
-        }
+        private readonly List<string> _placesToTry = new List<string>();
+        private int _attempts;
 
         public SystemHelper(List<string> timings)
         {
@@ -249,19 +85,208 @@ namespace Chem4Word.Telemetry
             StartUpTimings.AddRange(Initialise());
         }
 
-        private void GetGitStatus()
+        private List<string> Initialise()
+        {
+            try
+            {
+                List<string> timings = new List<string>();
+
+                string message = $"SystemHelper.Initialise() started at {SafeDate.ToLongDate(DateTime.Now)}";
+                timings.Add(message);
+                Debug.WriteLine(message);
+
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
+
+                WordVersion = -1;
+
+                #region Get Machine Guid
+
+                MachineId = GetMachineId();
+
+                ProcessId = Process.GetCurrentProcess().Id;
+
+                #endregion Get Machine Guid
+
+                #region Get OS Version
+
+                // The current code returns 6.2.* for Windows 8.1 and Windows 10 on some systems
+                // https://msdn.microsoft.com/en-gb/library/windows/desktop/ms724832(v=vs.85).aspx
+                // https://msdn.microsoft.com/en-gb/library/windows/desktop/dn481241(v=vs.85).aspx
+                // However as we do not NEED the exact version number,
+                //  I am not going to implement the above as they are too risky
+
+                try
+                {
+                    OperatingSystem operatingSystem = Environment.OSVersion;
+
+                    string ProductName = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "ProductName");
+                    string CsdVersion = HKLM_GetString(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CSDVersion");
+
+                    if (!string.IsNullOrEmpty(ProductName))
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        if (!ProductName.StartsWith("Microsoft"))
+                        {
+                            sb.Append("Microsoft ");
+                        }
+                        sb.Append(ProductName);
+                        if (!string.IsNullOrEmpty(CsdVersion))
+                        {
+                            sb.AppendLine($" {CsdVersion}");
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(operatingSystem.ServicePack))
+                            {
+                                sb.Append($" {operatingSystem.ServicePack}");
+                            }
+                        }
+
+                        sb.Append($" {OsBits}");
+                        sb.Append($" [{operatingSystem.Version}]");
+                        sb.Append($" {CultureInfo.CurrentCulture.Name}");
+
+                        SystemOs = sb.ToString().Replace(Environment.NewLine, "").Replace("Service Pack ", "SP");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    SystemOs = "Exception " + ex.Message;
+                }
+
+                #endregion Get OS Version
+
+                #region Get Office/Word Version
+
+                try
+                {
+                    Click2RunProductIds = OfficeHelper.GetClick2RunProductIds();
+
+                    WordVersion = OfficeHelper.GetWinWordVersionNumber();
+
+                    WordProduct = OfficeHelper.GetWordProduct(Click2RunProductIds);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    WordProduct = "Exception " + ex.Message;
+                }
+
+                #endregion Get Office/Word Version
+
+                #region Get Product Version and Location using reflection
+
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                // CodeBase is the location of the installed files
+                Uri uriCodeBase = new Uri(assembly.CodeBase);
+                AddInLocation = Path.GetDirectoryName(uriCodeBase.LocalPath);
+
+                Version productVersion = assembly.GetName().Version;
+                AssemblyVersionNumber = productVersion.ToString();
+
+                AddInVersion = "Chem4Word V" + productVersion;
+
+                #endregion Get Product Version and Location using reflection
+
+                #region Get IpAddress on Thread
+
+                // These can be tested via http://www.ipv6proxy.net/
+
+                // Our locations
+                _placesToTry.Add($"https://www.chem4word.co.uk/{Constants.Chem4WordVersionFiles}/client-ip-date.php");
+                _placesToTry.Add($"http://www.chem4word.com/{Constants.Chem4WordVersionFiles}/client-ip-date.php");
+                _placesToTry.Add($"https://chem4word.azurewebsites.net/{Constants.Chem4WordVersionFiles}/client-ip-date.php");
+
+                // Other Locations
+                _placesToTry.Add("https://api.my-ip.io/ip");
+                _placesToTry.Add("https://ip.seeip.org");
+                _placesToTry.Add("https://ipapi.co/ip");
+                _placesToTry.Add("https://ident.me/");
+                _placesToTry.Add("https://api6.ipify.org/");
+                _placesToTry.Add("https://v4v6.ipv6-test.com/api/myip.php");
+
+                message = $"GetIpAddress started at {SafeDate.ToLongDate(DateTime.Now)}";
+                StartUpTimings.Add(message);
+                Debug.WriteLine(message);
+
+                _ipStopwatch = new Stopwatch();
+                _ipStopwatch.Start();
+
+                Thread thread1 = new Thread(GetExternalIpAddress);
+                thread1.SetApartmentState(ApartmentState.STA);
+                thread1.Start(null);
+
+                #endregion Get IpAddress on Thread
+
+                GetDotNetVersionFromRegistry();
+
+                try
+                {
+                    BrowserVersion = new WebBrowser().Version.ToString();
+                }
+                catch
+                {
+                    BrowserVersion = "?";
+                }
+
+                GetScreens();
+
+#if DEBUG
+                Thread thread2 = new Thread(GetGitStatus);
+                thread2.SetApartmentState(ApartmentState.STA);
+                thread2.Start(null);
+#endif
+
+                sw.Stop();
+
+                message = $"SystemHelper.Initialise() took {sw.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
+                timings.Add(message);
+                Debug.WriteLine(message);
+
+                return timings;
+            }
+            catch (ThreadAbortException threadAbortException)
+            {
+                // Do Nothing
+                Debug.WriteLine(threadAbortException.Message);
+            }
+
+            return new List<string>();
+        }
+
+        public static string GetMachineId()
+        {
+            string result = "";
+            try
+            {
+                // Need special routine here as MachineGuid does not exist in the wow6432 path
+                result = RegistryWOW6432.GetRegKey64(RegHive.HKEY_LOCAL_MACHINE, CryptoRoot, "MachineGuid");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                result = "Exception " + ex.Message;
+            }
+
+            return result;
+        }
+
+        private void GetGitStatus(object o)
         {
             var result = new List<string>();
             result.Add("Git Origin");
             result.AddRange(RunCommand("git.exe", "config --get remote.origin.url", AddInLocation));
-            result.Add("Git Branch");
-            result.AddRange(RunCommand("git.exe", "rev-parse --abbrev-ref HEAD", AddInLocation));
 
-            // git status --porcelain == Get List of changed files
-            var changedFiles = RunCommand("git.exe", "status --porcelain", AddInLocation);
+            // Ensure status is accurate
+            RunCommand("git.exe", "fetch", AddInLocation);
+
+            // git status -s -b --porcelain == Gets Branch, Status and a List of any changed files
+            var changedFiles = RunCommand("git.exe", "status -s -b --porcelain", AddInLocation);
             if (changedFiles.Any())
             {
-                result.Add("Changed Files");
+                result.Add("Git Branch, Status & Changed files");
                 result.AddRange(changedFiles);
             }
             GitStatus = string.Join(Environment.NewLine, result.ToArray());
@@ -461,166 +486,204 @@ namespace Chem4Word.Telemetry
             }
         }
 
-        private static void IncrementRetryCount()
-        {
-            _retryCount++;
-        }
-
         private void GetExternalIpAddress(object o)
         {
             string module = $"{MethodBase.GetCurrentMethod().Name}()";
-
-            // http://www.ipv6proxy.net/ --> "Your IP address : 2600:3c00::f03c:91ff:fe93:dcd4"
-
             try
             {
-                int idx = 0;
-                foreach (var domain in Domains)
+                string message;
+                IpAddress = "0.0.0.0";
+
+                for (int i = 0; i < 2; i++)
                 {
-                    try
+                    foreach (string place in _placesToTry)
                     {
-                        string url = $"{domain}/{DetectionFile}";
+                        _attempts++;
 
-                        string message = $"Fetching external IpAddress from {url} attempt {_retryCount}.{idx++}";
-                        Debug.WriteLine(message);
-                        StartUpTimings.Add(message);
-                        IpAddress = "IpAddress 0.0.0.0";
-
-                        HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-                        if (request != null)
+                        try
                         {
-                            request.UserAgent = "Chem4Word Add-In";
-                            request.Timeout = 2000; // 2 seconds
-                            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                            message = $"Attempt #{_attempts} using '{place}'";
+                            StartUpTimings.Add(message);
+                            Debug.WriteLine(message);
 
-                            try
+                            if (place.Contains("chem4word"))
                             {
-                                // Get Server Date header i.e. "Tue, 01 Jan 2019 19:52:46 GMT"
-                                ServerDateHeader = response.Headers["date"];
+                                GetInternalVersion(place);
                             }
-                            catch
+                            else
                             {
-                                // Do Nothing
+                                GetExternalVersion(place);
                             }
 
-                            if (HttpStatusCode.OK.Equals(response.StatusCode))
+                            // Exit out of inner loop
+                            if (!IpAddress.Contains("0.0.0.0"))
                             {
-                                using (var reader = new StreamReader(response.GetResponseStream()))
-                                {
-                                    string webPage = reader.ReadToEnd();
-
-                                    if (webPage.StartsWith("Your IP address : "))
-                                    {
-                                        // Tidy Up the data
-                                        webPage = webPage.Replace("Your IP address : ", "");
-                                        webPage = webPage.Replace("UTC Date : ", "");
-                                        webPage = webPage.Replace("<br/>", "|");
-                                        webPage = webPage.Replace("<br />", "|");
-
-                                        string[] lines = webPage.Split('|');
-
-                                        #region Detect IPv6
-
-                                        if (lines[0].Contains(":"))
-                                        {
-                                            string[] ipV6Parts = lines[0].Split(':');
-                                            // Must have between 4 and 8 parts
-                                            if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
-                                            {
-                                                IpAddress = "IpAddress " + lines[0];
-                                                IpObtainedFrom = $"IpAddress V6 obtained from {url} on attempt {_retryCount + 1}";
-                                            }
-                                        }
-
-                                        #endregion Detect IPv6
-
-                                        #region Detect IPv4
-
-                                        if (lines[0].Contains("."))
-                                        {
-                                            // Must have 4 parts
-                                            string[] ipV4Parts = lines[0].Split('.');
-                                            if (ipV4Parts.Length == 4)
-                                            {
-                                                IpAddress = "IpAddress " + lines[0];
-                                                IpObtainedFrom = $"IpAddress V4 obtained from {url} on attempt {_retryCount + 1}";
-                                            }
-                                        }
-
-                                        #endregion Detect IPv4
-
-                                        #region Detect Php UTC Date
-
-                                        if (lines.Length > 1)
-                                        {
-                                            ServerUtcDateRaw = lines[1];
-                                            ServerUtcDateTime = FromPhpDate(lines[1]);
-                                            SystemUtcDateTime = DateTime.UtcNow;
-
-                                            UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
-                                        }
-
-                                        #endregion Detect Php UTC Date
-
-                                        // Failure, try next one
-                                        if (!IpAddress.Contains("0.0.0.0"))
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
+                                break;
                             }
                         }
+                        catch (Exception exception)
+                        {
+                            Debug.WriteLine(exception.Message);
+                            StartUpTimings.Add(exception.Message);
+                        }
                     }
-                    catch (Exception ex)
+
+                    // Exit out of outer loop
+                    if (!IpAddress.Contains("0.0.0.0"))
                     {
-                        Debug.WriteLine(ex.Message);
-                        StartUpTimings.Add($"GetExternalIpAddress {ex.Message}");
+                        break;
                     }
-                    Thread.Sleep(500);
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                // Something went wrong
-                IpAddress = "IpAddress 0.0.0.0 - " + ex.Message;
-                StartUpTimings.Add($"GetExternalIpAddress {ex.Message}");
-            }
 
-            if (string.IsNullOrEmpty(IpAddress) || IpAddress.Contains("0.0.0.0"))
-            {
-                // Try 0..4 times from 0..2 domains
-                if (_retryCount < 4)
+                if (IpAddress.Contains("0.0.0.0"))
                 {
-                    // Retry
-                    IncrementRetryCount();
-                    Thread.Sleep(500);
-                    ParameterizedThreadStart pts = GetExternalIpAddress;
-                    Thread thread = new Thread(pts);
-                    thread.SetApartmentState(ApartmentState.STA);
-                    thread.Start(null);
+                    // Handle failure
+                    IpAddress = "8.8.8.8";
                 }
-                else
-                {
-                    // Failure
-                    IpAddress = IpAddress.Replace("0.0.0.0", "8.8.8.8");
-                    _stopwatch.Stop();
 
-                    var message = $"{module} took {_stopwatch.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
-                    StartUpTimings.Add(message);
-                    Debug.WriteLine(message);
-                }
-            }
-            else
-            {
-                // Success
-                _stopwatch.Stop();
+                _ipStopwatch.Stop();
 
-                var message = $"{module} took {_stopwatch.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
+                message = $"{module} took {_ipStopwatch.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
                 StartUpTimings.Add(message);
                 Debug.WriteLine(message);
             }
+            catch (ThreadAbortException threadAbortException)
+            {
+                // Do Nothing
+                Debug.WriteLine(threadAbortException.Message);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception.Message);
+                StartUpTimings.Add(exception.Message);
+            }
+        }
+
+        private void GetInternalVersion(string url)
+        {
+            var data = GetData(url);
+
+            // Tidy Up the data
+            data = data.Replace("Your IP address : ", "");
+            data = data.Replace("UTC Date : ", "");
+            data = data.Replace("<br/>", "|");
+            data = data.Replace("<br />", "|");
+
+            string[] lines = data.Split('|');
+
+            if (lines[0].Contains(":"))
+            {
+                string[] ipV6Parts = lines[0].Split(':');
+                // Must have between 4 and 8 parts
+                if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
+                {
+                    IpAddress = "IpAddress " + lines[0];
+                    IpObtainedFrom = $"IpAddress V6 obtained from '{url}' on attempt {_attempts}";
+                }
+            }
+
+            if (lines[0].Contains("."))
+            {
+                // Must have 4 parts
+                string[] ipV4Parts = lines[0].Split('.');
+                if (ipV4Parts.Length == 4)
+                {
+                    IpAddress = "IpAddress " + lines[0];
+                    IpObtainedFrom = $"IpAddress V4 obtained from '{url}' on attempt {_attempts}";
+                }
+            }
+
+            if (lines.Length > 1)
+            {
+                ServerUtcDateRaw = lines[1];
+                ServerUtcDateTime = FromPhpDate(lines[1]);
+                SystemUtcDateTime = DateTime.UtcNow;
+
+                UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
+            }
+        }
+
+        private void GetExternalVersion(string url)
+        {
+            var data = GetData(url);
+
+            if (data.Contains(":"))
+            {
+                IpAddress = "IpAddress " + data;
+                IpObtainedFrom = $"IpAddress V6 obtained from '{url}' on attempt {_attempts}";
+
+                if (!string.IsNullOrEmpty(ServerDateHeader))
+                {
+                    ServerUtcDateTime = DateTime.Parse(ServerDateHeader).ToUniversalTime();
+                    SystemUtcDateTime = DateTime.UtcNow;
+                    UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
+                }
+            }
+
+            if (data.Contains("."))
+            {
+                IpAddress = "IpAddress " + data;
+                IpObtainedFrom = $"IpAddress V4 obtained from '{url}' on attempt {_attempts}";
+
+                if (!string.IsNullOrEmpty(ServerDateHeader))
+                {
+                    ServerUtcDateTime = DateTime.Parse(ServerDateHeader).ToUniversalTime();
+                    SystemUtcDateTime = DateTime.UtcNow;
+                    UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
+                }
+            }
+        }
+
+        private string GetData(string url)
+        {
+            string result = "0.0.0.0";
+
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                if (request != null)
+                {
+                    request.UserAgent = "Chem4Word Add-In";
+                    request.Timeout = url.Contains("chem4word") ? 2000 : 1000;
+
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                    try
+                    {
+                        // Get Server Date header i.e. "Tue, 01 Jan 2019 19:52:46 GMT"
+                        ServerDateHeader = response.Headers["date"];
+                    }
+                    catch
+                    {
+                        // Do Nothing
+                        ServerDateHeader = null;
+                    }
+
+                    if (HttpStatusCode.OK.Equals(response.StatusCode))
+                    {
+                        var stream = response.GetResponseStream();
+                        if (stream != null)
+                        {
+                            using (var reader = new StreamReader(stream))
+                            {
+                                result = reader.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (WebException webException)
+            {
+                StartUpTimings.Add(webException.Status == WebExceptionStatus.Timeout
+                                       ? $"Timeout: '{url}'"
+                                       : webException.Message);
+            }
+            catch (Exception exception)
+            {
+                StartUpTimings.Add(exception.Message);
+            }
+
+            return result;
         }
 
         private DateTime FromPhpDate(string line)

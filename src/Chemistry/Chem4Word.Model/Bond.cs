@@ -429,7 +429,15 @@ namespace Chem4Word.Model
             }
             else
             {
-                dir = (BondDirection)Math.Sign(Vector.CrossProduct(vec.Value, BondVector));
+                // Azure DevOps #713
+                if (double.IsNaN(vec.Value.X) || double.IsNaN(vec.Value.Y))
+                {
+                    dir = BondDirection.None;
+                }
+                else
+                {
+                    dir = (BondDirection)Math.Sign(Vector.CrossProduct(vec.Value, BondVector));
+                }
             }
 
             return dir;

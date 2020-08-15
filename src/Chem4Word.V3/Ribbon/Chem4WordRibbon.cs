@@ -15,6 +15,7 @@ using System.Text;
 using System.Windows.Forms;
 using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.Helpers;
 using Chem4Word.Library;
@@ -158,7 +159,7 @@ namespace Chem4Word
                                                 string tempfileName = renderer.Render();
                                                 if (File.Exists(tempfileName))
                                                 {
-                                                    ChemistryHelper.Insert2D(cc, tempfileName, guid);
+                                                    ChemistryHelper.Insert2D(cc.ID, tempfileName, guid);
                                                 }
                                                 else
                                                 {
@@ -184,7 +185,7 @@ namespace Chem4Word
                                                     text = ChemistryHelper.GetInlineText(model, chosenState, ref isFormula, out source);
                                                     Globals.Chem4WordV3.Telemetry.Write(module, "Information", $"Render structure as {source}");
                                                 }
-                                                ChemistryHelper.Insert1D(cc, text, isFormula, chosenState + ":" + guid);
+                                                ChemistryHelper.Insert1D(cc.ID, text, isFormula, chosenState + ":" + guid);
                                             }
                                         }
                                     }
@@ -383,7 +384,7 @@ namespace Chem4Word
             BeforeButtonChecks(sender as RibbonButton);
             Globals.Chem4WordV3.Telemetry.Write(module, "Action", "Triggered");
 
-            if (Globals.Chem4WordV3.EventsEnabled && Globals.Chem4WordV3.ChemistryAllowed)
+            if (Globals.Chem4WordV3.EventsEnabled)
             {
                 Globals.Chem4WordV3.EventsEnabled = false;
                 Word.Application app = Globals.Chem4WordV3.Application;
@@ -668,6 +669,7 @@ namespace Chem4Word
                     if (sel.ContentControls.Count > 0)
                     {
                         cc = sel.ContentControls[1];
+                        Debug.WriteLine($"Existing CC: {cc.ID} Range: {cc.Range.Start} to {cc.Range.End}");
                         //Debug.WriteLine("Existing CC ID: " + cc.ID + " Tag: " + cc?.Tag + " Title: " + cc.Title);
                         if (cc.Title != null && cc.Title.Equals(Constants.ContentControlTitle))
                         {
@@ -1058,20 +1060,23 @@ namespace Chem4Word
             }
             finally
             {
-                // Tidy Up - Resume Screen Updating and Enable Document Event Handlers
-                app.ScreenUpdating = true;
+                // Tidy Up - Enable Document Event Handlers
                 Globals.Chem4WordV3.EnableContentControlEvents();
+                app.ScreenUpdating = true;
 
                 if (cc != null)
                 {
                     // Move selection point into the Content Control which was just edited or added
+                    Debug.WriteLine($"New CC: {cc.ID} Range: {cc.Range.Start} to {cc.Range.End}");
                     app.Selection.SetRange(cc.Range.Start, cc.Range.End);
+                    Globals.Chem4WordV3.SelectChemistry(app.Selection);
                 }
                 else
                 {
                     Globals.Chem4WordV3.Telemetry.Write(module, "Information", "Finished; No ContentControl was inserted");
                 }
 
+                // Tidy Up - Resume Screen Updating
                 app.ActiveWindow.SetFocus();
                 app.Activate();
             }
@@ -1410,6 +1415,7 @@ namespace Chem4Word
                 }
 
                 Globals.Chem4WordV3.EventsEnabled = true;
+                Globals.Chem4WordV3.SelectChemistry(Globals.Chem4WordV3.Application.Selection);
 
                 app.ActiveWindow.SetFocus();
                 app.Activate();
@@ -1623,7 +1629,7 @@ namespace Chem4Word
             {
                 // See https://msdn.microsoft.com/en-us/library/bb608590.aspx
                 Word.Application app = Globals.Chem4WordV3.Application;
-                using (new UI.WaitCursor())
+                using (new WaitCursor())
                 {
                     if (Globals.Chem4WordV3.EventsEnabled)
                     {
@@ -1865,7 +1871,7 @@ namespace Chem4Word
                 {
                     if (Globals.Chem4WordV3.ThisVersion == null || Globals.Chem4WordV3.AllVersions == null)
                     {
-                        using (new UI.WaitCursor())
+                        using (new WaitCursor())
                         {
                             UpdateHelper.FetchUpdateInfo();
                         }
@@ -1998,9 +2004,10 @@ namespace Chem4Word
             {
                 Globals.Chem4WordV3.EventsEnabled = false;
 
+                const string fileNameOfManual = "Chem4Word-Version3-User-Manual.docx";
                 try
                 {
-                    string userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Manual", "Chem4Word-Version3-User-Manual.docx");
+                    string userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, "Manual", fileNameOfManual);
                     if (File.Exists(userManual))
                     {
                         Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);
@@ -2008,7 +2015,8 @@ namespace Chem4Word
                     }
                     else
                     {
-                        userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, @"..\..\..\..\doc", "Chem4Word-Version3-User-Manual.docx");
+                        // This code is used when this is not an installed version of Chem4Word
+                        userManual = Path.Combine(Globals.Chem4WordV3.AddInInfo.DeploymentPath, @"..\..\..\..\docs", fileNameOfManual);
                         if (File.Exists(userManual))
                         {
                             Globals.Chem4WordV3.Telemetry.Write(module, "ReadManual", userManual);

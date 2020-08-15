@@ -44,7 +44,7 @@
             // 
             this.btnSubmit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSubmit.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubmit.Location = new System.Drawing.Point(511, 513);
+            this.btnSubmit.Location = new System.Drawing.Point(529, 518);
             this.btnSubmit.Margin = new System.Windows.Forms.Padding(4);
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(87, 28);
@@ -64,14 +64,15 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(467, 153);
+            this.textBox1.Size = new System.Drawing.Size(500, 153);
             this.textBox1.TabIndex = 1;
+            this.textBox1.WordWrap = false;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = global::Chem4Word.Core.Properties.Resources.Chem4Word_Stop_Icon;
-            this.pictureBox1.Location = new System.Drawing.Point(511, 38);
+            this.pictureBox1.Location = new System.Drawing.Point(541, 38);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(64, 64);
@@ -85,9 +86,10 @@
             this.label1.Location = new System.Drawing.Point(14, 262);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(357, 16);
+            this.label1.Size = new System.Drawing.Size(483, 32);
             this.label1.TabIndex = 4;
-            this.label1.Text = "What were you doing at the time? (In English please.)";
+            this.label1.Text = "What Chem4Word operations you doing at the time? (In English please.)\r\ni.e. \"Sear" +
+    "ch Pubchem for xxx\", \"Edit Structure to change bond length\", ... ";
             // 
             // label2
             // 
@@ -120,7 +122,7 @@
             this.UserEmailAddress.Location = new System.Drawing.Point(13, 226);
             this.UserEmailAddress.Margin = new System.Windows.Forms.Padding(4);
             this.UserEmailAddress.Name = "UserEmailAddress";
-            this.UserEmailAddress.Size = new System.Drawing.Size(465, 23);
+            this.UserEmailAddress.Size = new System.Drawing.Size(500, 23);
             this.UserEmailAddress.TabIndex = 3;
             this.UserEmailAddress.WordWrap = false;
             // 
@@ -130,11 +132,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.UserComments.Font = new System.Drawing.Font("Tahoma", 9.75F);
-            this.UserComments.Location = new System.Drawing.Point(13, 282);
+            this.UserComments.Location = new System.Drawing.Point(13, 297);
             this.UserComments.Multiline = true;
             this.UserComments.Name = "UserComments";
             this.UserComments.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.UserComments.Size = new System.Drawing.Size(465, 265);
+            this.UserComments.Size = new System.Drawing.Size(500, 249);
             this.UserComments.TabIndex = 7;
             this.UserComments.WordWrap = false;
             // 

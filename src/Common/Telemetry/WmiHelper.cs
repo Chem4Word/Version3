@@ -16,7 +16,6 @@ namespace Chem4Word.Telemetry
 {
     public class WmiHelper
     {
-
         private const string QueryProcessor = "SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor";
         private const string QueryOperatingSystem = "SELECT ProductType,LastBootUpTime FROM Win32_OperatingSystem";
         private const string QueryPhysicalMemory = "SELECT Capacity FROM Win32_PhysicalMemory";
@@ -255,12 +254,15 @@ namespace Chem4Word.Telemetry
                         case 1:
                             _productType = Workstation;
                             break;
+
                         case 2:
                             _productType = DomainController;
                             break;
+
                         case 3:
                             _productType = Server;
                             break;
+
                         default:
                             _productType = Unknown + $" [{productType}]";
                             break;
@@ -325,16 +327,19 @@ namespace Chem4Word.Telemetry
                         var reversed = Reverse(bin);
 
                         // https://blogs.msdn.microsoft.com/alejacma/2008/05/12/how-to-get-antivirus-information-with-wmi-vbscript/#comment-442
-                        // 19th bit = not so sure but, Av is turned on (I wouldn't be sure it's enabled)
+                        // 19th bit = Not so sure but, AV is turned on (I wouldn't be sure it's enabled)
                         // 13th bit = On Access Scanning (Memory Resident Scanning) is on, this tells you that the product is scanning every file that you open as opposed to just scanning at regular intervals.
-                        // 5th Bit = if this is true (==1) the virus scanner is out of date
+                        //  5th Bit = If this is true (==1) the virus scanner is out of date
 
                         bool enabled = GetBit(reversed, 18);
                         bool scanning = GetBit(reversed, 12);
                         bool outdated = GetBit(reversed, 4);
-                        products.Add($"{product} {status} [{hex}] Enabled: {enabled} Scanning: {scanning} Outdated: {outdated}");
+
+                        products.Add($"{product} Status: {status} [0x{hex}] --> Enabled: {enabled} Scanning: {scanning} Outdated: {outdated}");
                     }
-                    _antiVirusStatus = string.Join(";", products);
+
+                    // Return distinct list of products and states
+                    _antiVirusStatus = string.Join(";", products.Distinct());
                 }
                 catch (Exception exception)
                 {

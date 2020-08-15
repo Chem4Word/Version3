@@ -1,12 +1,7 @@
+You will need to import the developer certificate
+Run Install-Dev-Certificate.ps1 in /src/Scripts folder
+
 Any supporting assemblies for PlugIns MUST be referenced in the main AddIn project to ensure they are deployed.
-
-You will need to import the developer certificate from both, making sure they go in the "Current User\Personal" store.
-src\Tools\Certificates\Developer\Chem4WordAddIn.cer
-src\Tools\Certificates\Developer\Chem4WordAddIn.pfx
-
-Once imported you can use the select from store button in the Add-In properties Signing page as described in
-src\Tools\Certificates\Setting Up Chem4Word V3.docx
-
 
 Office Locations
 ----------------

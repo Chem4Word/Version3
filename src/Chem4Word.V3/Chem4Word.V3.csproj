@@ -270,6 +270,7 @@
     <Compile Include="Helpers\RegistryHelper.cs" />
     <Compile Include="Helpers\TargetWord.cs" />
     <Compile Include="Helpers\UpdateHelper.cs" />
+    <Compile Include="Helpers\WordSettings.cs" />
     <Compile Include="Library\LibraryValidation.cs" />
     <Compile Include="Library\NameValidationRule.cs" />
     <Compile Include="Library\TagEditor.cs" />
@@ -373,7 +374,6 @@
     <Compile Include="UI\UserControls\UcMoleculeLabelEditor.Designer.cs">
       <DependentUpon>UcMoleculeLabelEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\WaitCursor.cs" />
     <Compile Include="UI\WPF\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>
     </Compile>

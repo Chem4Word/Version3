@@ -33,7 +33,7 @@ namespace Chem4Word.Telemetry
 
             if (_helper == null)
             {
-                Debugger.Break();
+                //Debugger.Break();
             }
 
             if (_wmiHelper == null)
@@ -82,7 +82,7 @@ namespace Chem4Word.Telemetry
             {
                 WritePrivate(operation, level, message);
 
-                if (!_systemInfoSent)
+                if (!_systemInfoSent && _helper != null)
                 {
                     if (_helper.IpAddress != null && !_helper.IpAddress.Contains("0.0.0.0"))
                     {
@@ -92,12 +92,34 @@ namespace Chem4Word.Telemetry
             }
         }
 
+        /// <summary>
+        /// "Last chance" fix for missing word version number
+        /// </summary>
+        private void FixUpWordVersion()
+        {
+            var product = _helper.WordProduct;
+            if (product.Contains("[16."))
+            {
+                if (product.Contains("2016")
+                    || product.Contains("2019")
+                    || product.Contains("365"))
+                {
+                    // Word version is set
+                }
+                else
+                {
+                    _helper.WordProduct = product + " 2016";
+                }
+            }
+        }
+
         private void WriteStartUpInfo()
         {
             // Log Add-In Version
             WritePrivate("StartUp", "Information", _helper.AddInVersion); // ** Used by Andy's Knime protocol ?
 
-            // Log Word
+            // Log Word Version
+            FixUpWordVersion();
             WritePrivate("StartUp", "Information", _helper.WordProduct); // ** Used by Andy's Knime protocol
             if (!string.IsNullOrEmpty(_helper.Click2RunProductIds))
             {
@@ -124,26 +146,29 @@ namespace Chem4Word.Telemetry
 
             List<string> lines = new List<string>();
 
-            // Log UtcOffsets
-            lines.Add($"Server UTC DateTime is {SafeDate.ToLongDate(_helper.ServerUtcDateTime)}");
-            lines.Add($"System UTC DateTime is {SafeDate.ToLongDate(_helper.SystemUtcDateTime)}");
-
-            lines.Add($"Server Header [Date] is {_helper.ServerDateHeader}");
-            lines.Add($"Server UTC DateTime raw is {_helper.ServerUtcDateRaw}");
-
-            lines.Add($"Calculated UTC Offset is {_helper.UtcOffset}");
-            if (_helper.UtcOffset > 0)
+            if (_helper.SystemUtcDateTime > DateTime.MinValue)
             {
-                TimeSpan delta = TimeSpan.FromTicks(_helper.UtcOffset);
-                lines.Add($"System UTC DateTime is {delta} ahead of Server time");
-            }
-            if (_helper.UtcOffset < 0)
-            {
-                TimeSpan delta = TimeSpan.FromTicks(0 - _helper.UtcOffset);
-                lines.Add($"System UTC DateTime is {delta} behind Server time");
-            }
+                // Log UtcOffsets
+                lines.Add($"Server UTC DateTime is {SafeDate.ToLongDate(_helper.ServerUtcDateTime)}");
+                lines.Add($"System UTC DateTime is {SafeDate.ToLongDate(_helper.SystemUtcDateTime)}");
 
-            WritePrivate("StartUp", "Information", string.Join(Environment.NewLine, lines));
+                lines.Add($"Server Header [Date] is {_helper.ServerDateHeader}");
+                lines.Add($"Server UTC DateTime raw is {_helper.ServerUtcDateRaw}");
+
+                lines.Add($"Calculated UTC Offset is {_helper.UtcOffset}");
+                if (_helper.UtcOffset > 0)
+                {
+                    TimeSpan delta = TimeSpan.FromTicks(_helper.UtcOffset);
+                    lines.Add($"System UTC DateTime is {delta} ahead of Server time");
+                }
+                if (_helper.UtcOffset < 0)
+                {
+                    TimeSpan delta = TimeSpan.FromTicks(0 - _helper.UtcOffset);
+                    lines.Add($"System UTC DateTime is {delta} behind Server time");
+                }
+
+                WritePrivate("StartUp", "Information", string.Join(Environment.NewLine, lines));
+            }
 
             // Log Wmi Gathered Data
             lines = new List<string>();

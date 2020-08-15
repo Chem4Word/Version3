@@ -1,6 +1,6 @@
 @echo off
 
-set release=Chem4Word-Setup.3.0.33.Release.21.msi
+set release=Chem4Word-Setup.3.0.34.Release.22.msi
 set working=C:\Temp
 set signclientpath=C:\Tools\Azure\SignClient
 

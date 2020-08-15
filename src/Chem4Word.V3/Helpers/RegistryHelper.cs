@@ -89,6 +89,7 @@ namespace Chem4Word.Helpers
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
             RegistryKey rk = Registry.CurrentUser.OpenSubKey(Constants.Chem4WordExceptionsRegistryKey, true);
+            int messageSize = 0;
             if (rk != null)
             {
                 string[] names = rk.GetValueNames();
@@ -105,12 +106,25 @@ namespace Chem4Word.Helpers
                     }
 
                     values.Add($"{timestamp} {message}");
+                    messageSize += timestamp.Length + message.Length;
+                    if (messageSize > 30000)
+                    {
+                        SendData(module, values);
+                        values = new List<string>();
+                        messageSize = 0;
+                    }
                     rk.DeleteValue(name);
                 }
-                if (values.Any())
-                {
-                    Globals.Chem4WordV3.Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, values));
-                }
+
+                SendData(module, values);
+            }
+        }
+
+        private static void SendData(string module, List<string> values)
+        {
+            if (values.Any())
+            {
+                Globals.Chem4WordV3.Telemetry.Write(module, "Exception", string.Join(Environment.NewLine, values));
             }
         }
 

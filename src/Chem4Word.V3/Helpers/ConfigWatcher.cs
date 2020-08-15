@@ -24,7 +24,10 @@ namespace Chem4Word.Helpers
         private Config[] _watchedConfigs = {
             new Config { Name = "ShowHydrogens", Type = "bool" },
             new Config { Name = "ShowCarbons", Type = "bool" },
-            new Config { Name = "ColouredAtoms", Type = "bool" }};
+            new Config { Name = "ShowMoleculeGrouping", Type = "bool" },
+            new Config { Name = "ColouredAtoms", Type = "bool" },
+            new Config { Name = "BondLength", Type = "int" }
+        };
 
         private FileSystemWatcher _watcher;
         private string _watchedPath;
@@ -48,103 +51,115 @@ namespace Chem4Word.Helpers
         {
             if (_handleEvents)
             {
-                _handleEvents = false;
-                _watcher.EnableRaisingEvents = false;
-
-                Dictionary<string, Config> sourceConfigs = new Dictionary<string, Config>();
-
-                string thisFile = e.FullPath;
-                Debug.WriteLine($"Trigger file is {thisFile}");
-                Thread.Sleep(250);
-
-                using (StreamReader sr = File.OpenText(e.FullPath))
+                try
                 {
-                    using (JsonTextReader reader = new JsonTextReader(sr))
+                    _handleEvents = false;
+                    _watcher.EnableRaisingEvents = false;
+
+                    Dictionary<string, Config> sourceConfigs = new Dictionary<string, Config>();
+
+                    string thisFile = e.FullPath;
+                    Debug.WriteLine($"Trigger file is {thisFile}");
+                    Thread.Sleep(250);
+
+                    using (StreamReader sr = File.OpenText(e.FullPath))
                     {
-                        JObject jObject = (JObject)JToken.ReadFrom(reader);
-                        foreach (var config in _watchedConfigs)
+                        using (JsonTextReader reader = new JsonTextReader(sr))
                         {
-                            JToken t = jObject[config.Name];
-                            if (t != null)
+                            JObject jObject = (JObject)JToken.ReadFrom(reader);
+                            foreach (var config in _watchedConfigs)
                             {
-                                sourceConfigs.Add(config.Name, new Config { Type = config.Type, Value = t.Value<string>() });
+                                JToken t = jObject[config.Name];
+                                if (t != null)
+                                {
+                                    sourceConfigs.Add(config.Name, new Config { Type = config.Type, Value = t.Value<string>() });
+                                }
                             }
                         }
                     }
-                }
 
-                if (sourceConfigs.Any())
-                {
-                    string[] files = Directory.GetFiles(_watchedPath, _filter);
-                    foreach (var file in files)
+                    if (sourceConfigs.Any())
                     {
-                        if (!file.Equals(thisFile))
+                        string[] files = Directory.GetFiles(_watchedPath, _filter);
+                        foreach (var file in files)
                         {
-                            JObject jObject = null;
-
-                            List<JToken> targetTokens = new List<JToken>();
-                            using (StreamReader sr = File.OpenText(file))
+                            if (!file.Equals(thisFile))
                             {
-                                using (JsonTextReader reader = new JsonTextReader(sr))
-                                {
-                                    jObject = (JObject)JToken.ReadFrom(reader);
-                                    foreach (var config in _watchedConfigs)
-                                    {
-                                        JToken t = jObject[config.Name];
-                                        if (t != null)
-                                        {
-                                            targetTokens.Add(t);
-                                        }
-                                    }
-                                }
-                            }
+                                JObject jObject = null;
 
-                            if (targetTokens.Any())
-                            {
-                                bool write = false;
-
-                                foreach (var target in targetTokens)
+                                List<JToken> targetTokens = new List<JToken>();
+                                using (StreamReader sr = File.OpenText(file))
                                 {
-                                    foreach (var kvp in sourceConfigs)
+                                    using (JsonTextReader reader = new JsonTextReader(sr))
                                     {
-                                        if (target.Path.Equals(kvp.Key))
+                                        jObject = (JObject)JToken.ReadFrom(reader);
+                                        foreach (var config in _watchedConfigs)
                                         {
-                                            if (!target.Value<string>().Equals(kvp.Value.Value))
+                                            JToken t = jObject[config.Name];
+                                            if (t != null)
                                             {
-                                                Debug.WriteLine($"Changing setting {kvp.Key} to {kvp.Value.Value}");
-                                                switch (kvp.Value.Type)
-                                                {
-                                                    case "bool":
-                                                        jObject[kvp.Key] = bool.Parse(kvp.Value.Value);
-                                                        write = true;
-                                                        break;
-                                                }
+                                                targetTokens.Add(t);
                                             }
                                         }
                                     }
                                 }
 
-                                if (write)
+                                if (targetTokens.Any())
                                 {
-                                    Debug.WriteLine($"Writing file {file}");
-                                    string json = JsonConvert.SerializeObject(jObject, Formatting.Indented);
-                                    File.WriteAllText(file, json);
+                                    bool write = false;
+
+                                    foreach (var target in targetTokens)
+                                    {
+                                        foreach (var kvp in sourceConfigs)
+                                        {
+                                            if (target.Path.Equals(kvp.Key))
+                                            {
+                                                if (!target.Value<string>().Equals(kvp.Value.Value))
+                                                {
+                                                    Debug.WriteLine($"Changing setting {kvp.Key} to {kvp.Value.Value}");
+                                                    switch (kvp.Value.Type)
+                                                    {
+                                                        case "bool":
+                                                            jObject[kvp.Key] = bool.Parse(kvp.Value.Value);
+                                                            write = true;
+                                                            break;
+
+                                                        case "int":
+                                                            jObject[kvp.Key] = int.Parse(kvp.Value.Value);
+                                                            write = true;
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (write)
+                                    {
+                                        Debug.WriteLine($"Writing file {file}");
+                                        string json = JsonConvert.SerializeObject(jObject, Formatting.Indented);
+                                        File.WriteAllText(file, json);
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                _watcher.EnableRaisingEvents = true;
-                _handleEvents = true;
+                    _watcher.EnableRaisingEvents = true;
+                    _handleEvents = true;
+                }
+                catch
+                {
+                    // Do Nothing
+                }
             }
         }
-    }
 
-    public class Config
-    {
-        public string Type { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
+        private class Config
+        {
+            public string Type { get; set; }
+            public string Name { get; set; }
+            public string Value { get; set; }
+        }
     }
 }

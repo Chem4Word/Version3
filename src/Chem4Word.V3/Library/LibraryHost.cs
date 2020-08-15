@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Windows.Forms;
+using Chem4Word.Core.UI;
 using Chem4Word.Core.UI.Forms;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -29,7 +30,7 @@ namespace Chem4Word.Library
             try
             {
                 Word.Application app = Globals.Chem4WordV3.Application;
-                using (new UI.WaitCursor())
+                using (new WaitCursor())
                 {
                     libraryView1.MainGrid.DataContext = new LibraryViewModel();
                 }

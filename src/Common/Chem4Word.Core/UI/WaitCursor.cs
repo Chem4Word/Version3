@@ -8,7 +8,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Chem4Word.Searcher.ChEBIPlugin
+namespace Chem4Word.Core.UI
 {
     public class WaitCursor : IDisposable
     {
@@ -18,7 +18,7 @@ namespace Chem4Word.Searcher.ChEBIPlugin
 
         #endregion Fields
 
-        #region Constructors
+        #region Constructors and Destructors
 
         public WaitCursor(Cursor newCursor)
         {
@@ -31,13 +31,23 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         {
         }
 
-        #endregion Constructors
+        ~WaitCursor()
+        {
+            Reset();
+        }
+
+        #endregion Constructors and Destructors
+
+        public void Reset()
+        {
+            Cursor.Current = _previousCursor;
+        }
 
         #region IDisposable Members
 
         public void Dispose()
         {
-            Cursor.Current = _previousCursor;
+            Reset();
         }
 
         #endregion IDisposable Members

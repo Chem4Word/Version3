@@ -140,7 +140,6 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
             try
             {
-                Debug.WriteLine("Results_SelectedIndexChanged");
                 lastSelected = FetchStructure();
             }
             catch (Exception ex)

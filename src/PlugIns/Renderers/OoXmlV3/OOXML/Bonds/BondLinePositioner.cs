@@ -100,7 +100,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                     Point newStarta = new Point(a1.Start.X, a1.Start.Y);
                     Point newEnda = new Point(a1.End.X, a1.End.Y);
                     CoordinateTool.AdjustLineAboutMidpoint(ref newStarta, ref newEnda, -(BondOffset() / 1.75));
-                    a1 = new BondLine(newStarta, newEnda, BondLineStyle.Dotted, bond.Id, bond.Parent.Id, bond.StartAtom.Id, bond.EndAtom.Id);
+                    a1 = new BondLine(newStarta, newEnda, BondLineStyle.Dashed, bond.Id, bond.Parent.Id, bond.StartAtom.Id, bond.EndAtom.Id);
                     m_BondLines.Add(a1);
                     break;
 
@@ -142,7 +142,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML.Bonds
                         }
                         else
                         {
-                            Debug.WriteLine($"bond.Placement {bond.Placement}");
+                            //Debug.WriteLine($"bond.Placement {bond.Placement}");
                             Point outIntersectP1;
                             Point outIntersectP2;
                             bool linesIntersect;

@@ -79,7 +79,7 @@ namespace Chem4Word.Shared
 
         [DllImport("Shell32.dll")]
         private static extern int SHGetKnownFolderPath(
-            [MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken,
             out IntPtr ppszPath);
 
         [Flags]

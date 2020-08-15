@@ -638,7 +638,7 @@ namespace Chem4Word.Renderer.OoXmlV3.OOXML
             // Implement beautification of semi open double bonds and double bonds touching rings
 
             // Obtain list of Double Bonds with Placement of BondDirection.None
-            List<Bond> doubleBonds = mol.AllBonds.Where(b => b.OrderValue.Value == 2 && b.Placement == BondDirection.None).ToList();
+            List<Bond> doubleBonds = mol.AllBonds.Where(b => b.OrderValue.HasValue && b.OrderValue.Value == 2 && b.Placement == BondDirection.None).ToList();
             if (doubleBonds.Count > 0)
             {
                 pb.Message = $"Processing Double Bonds in Molecule {moleculeNo}";

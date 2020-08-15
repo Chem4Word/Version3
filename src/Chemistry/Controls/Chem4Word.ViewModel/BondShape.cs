@@ -105,7 +105,6 @@ namespace Chem4Word.View
                 {
                     if (!string.IsNullOrEmpty(ParentBond.StartAtom?.SymbolText) |
                         !string.IsNullOrEmpty(ParentBond.EndAtom?.SymbolText))
-
                     {
                         Pen newPen = new Pen(Brushes.Black, 0.1);
                         if (ParentBond.Stereo == BondStereo.Hatch | ParentBond.Stereo == BondStereo.Wedge)

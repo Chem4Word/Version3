@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Chem4Word.Core.Helpers;
+using Chem4Word.Core.UI;
 using Chem4Word.Core.UI.Forms;
 using Chem4Word.UI;
 using Microsoft.Win32;
@@ -64,7 +65,7 @@ namespace Chem4Word.Helpers
                     if (doCheck)
                     {
                         bool update = false;
-                        using (new UI.WaitCursor())
+                        using (new WaitCursor())
                         {
                             update = FetchUpdateInfo();
                         }

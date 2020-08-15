@@ -3,6 +3,20 @@
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
     <Version>
+        <Number>3.0.34 Release 22</Number>
+        <IsBeta>false</IsBeta>
+        <Released>15-Aug-2020</Released>
+        <Changes>
+            <Change>Improved code handling updating of Content Control(s)</Change>
+            <Change>Bug Fix; Prevent incorrect cursor position after edit operation reduces size of ContentControl</Change>
+            <Change>Added more use of Wait Cursor</Change>
+            <Change>Ensure that telemetry message body does not exceed 32Kb</Change>
+            <Change>Adjust style of dotted and dashed lines to more in line with ACS recommendations</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.34.Release.22.msi</Url>
+    </Version>
+    <Version>
         <Number>3.0.33 Release 21</Number>
         <IsBeta>false</IsBeta>
         <Released>26-Mar-2020</Released>
@@ -11,9 +25,7 @@
             <Change>Bug Fix; Prevent exception if Telemetry not initialised in Evaluate If Chemistry Is Allowed</Change>
             <Change>Bug Fix; Compatibility mode detection not working all the time</Change>
             <Change>Add AntiVirus Detection</Change>
-            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.33.Release.21.msi</Url>
     </Version>
     <Version>
         <Number>3.0.32 Release 20</Number>
@@ -22,7 +34,6 @@
         <Changes>
             <Change>Bug Fix; Draw button is now re-enabled for new document</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.32.Release.20.msi</Url>
     </Version>
     <Version>
         <Number>3.0.31 Release 19</Number>
@@ -33,7 +44,6 @@
             <Change>Bug Fix; Ensure Add-in is dumb when word is embedded in another document</Change>
             <Change>Bug Fix; Null pointer exception in loading of user options</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.31.Release.19.msi</Url>
     </Version>
     <Version>
         <Number>3.0.30 Release 18</Number>
@@ -42,7 +52,6 @@
         <Changes>
             <Change>Bug Fix; Null pointer exception in new O365 detection due to unexpected data</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.30.Release.18.msi</Url>
     </Version>
     <Version>
         <Number>3.0.29 Release 17</Number>
@@ -53,7 +62,6 @@
             <Change>Improve Office 365 detection</Change>
             <Change>Improve start up performance</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.29.Release.17.msi</Url>
     </Version>
     <Version>
         <Number>3.0.28 Release 16</Number>
@@ -65,7 +73,6 @@
             <Change>Bug Fix; System.NullReferenceException in Editor.ChemDoodleWeb800 [https://github.com/Chem4Word/Version3/issues/13]</Change>
             <Change>Bug Fix; HandleRightClick(); The requested member of the collection does not exist. [https://github.com/Chem4Word/Version3/issues/10]</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.28.Release.16.msi</Url>
     </Version>
     <Version>
         <Number>3.0.27 Release 15</Number>
@@ -76,7 +83,6 @@
             <Change>Fix bug in CDW702 editor always setting bond length to 20</Change>
             <Change>Implement clipping of bond lines using ConvexHull of atom characters</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.27.Release.15.msi</Url>
     </Version>
     <Version>
         <Number>3.0.26 Release 14</Number>
@@ -88,7 +94,6 @@
             <Change>Fix positioning of aromatic bond lines.</Change>
             <Change>Update copyright to 2019</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.26.Release.14.msi</Url>
     </Version>
     <Version>
         <Number>3.0.25 Release 12</Number>
@@ -98,7 +103,6 @@
             <Change>Fix inability to double click on structures to invoke editor.</Change>
             <Change>Greater than 5 JavaScript errors in ChemDoodle Web 800 triggers refresh of deployed editor.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.25.Release.12.msi</Url>
     </Version>
     <Version>
         <Number>3.0.24 Release 11</Number>
@@ -110,7 +114,6 @@
             <Change>Prevent Out of Memory Exception by limiting import from SDFile to first 16 structures.</Change>
             <Change>Fix blank Uri exception when calling our Chemical Services.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.24.Release.11.msi</Url>
     </Version>
     <Version>
         <Number>3.0.23 Release 10</Number>
@@ -122,7 +125,6 @@
             <Change>Force ChemDoodle Web 7.0.2 if IE browser version is less than 10.</Change>
             <Change>Fix memory leak in ChemDoodle Web 8.0.0 Editor.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.23.Release.10.msi</Url>
     </Version>
     <Version>
         <Number>3.0.22 Release 9</Number>
@@ -134,7 +136,6 @@
             <Change>Allow structure with No atoms</Change>
             <Change>Set Default editor to ChemDoodle Web 7.0.2 for new users if Windows 7 is detected</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.22.Release.9.msi</Url>
     </Version>
     <Version>
         <Number>3.0.21 Release 8</Number>
@@ -144,7 +145,6 @@
             <Change>Fix horizontal scrolling of structure in Task Panes.</Change>
             <Change>Handle error when WPF Browser does not load ChemDoodle Web.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.21.Release.8.msi</Url>
     </Version>
     <Version>
         <Number>3.0.20 Release 7</Number>
@@ -153,7 +153,6 @@
         <Changes>
             <Change>New resolution independent ChemDoodle Web Editor (8.0.0).</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.20.Release.7.msi</Url>
     </Version>
     <Version>
         <Number>3.0.19 Release 6</Number>
@@ -164,7 +163,6 @@
             <Change>Change to using our own InchiKey resolver, ChemSpider is no longer working.</Change>
             <Change>Update SQLite to latest version.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.19.Release.6.msi</Url>
     </Version>
     <Version>
         <Number>3.0.18 Release 5</Number>
@@ -175,7 +173,6 @@
             <Change>Protect against accidental double clicking on Library and Navigator Buttons.</Change>
             <Change>Add detection of conflict resolution mode.</Change>
             <Change>Update SQLite to latest version.</Change>
-            <Change>Please download Chem4Word-Setup.exe from https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
         </Changes>
     </Version>
     <Version>
@@ -190,7 +187,6 @@
             <Change>Trap errors during close of document.</Change>
             <Change>Fix Lazy Loading of Library Database.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.17.Release.4.msi</Url>
     </Version>
     <Version>
         <Number>3.0.16 Release 3</Number>
@@ -199,7 +195,6 @@
         <Changes>
             <Change>Emergency Fix for Lazy Loading bug.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.16.Release.3.msi</Url>
     </Version>
     <Version>
         <Number>3.0.15 Release 2</Number>
@@ -215,7 +210,6 @@
             <Change>Now handles MDL MOLfile bond types of 4 to 8.</Change>
             <Change>Return DialogResult.Cancel (to abort edit), after failed fetch of structure from ChemDoodle Web editor.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.15.Release.2.msi</Url>
     </Version>
     <Version>
         <Number>3.0.14 Release 1</Number>
@@ -225,7 +219,6 @@
             <Change>Ensure structure to be rendered has at least one atom.</Change>
             <Change>Sign Chem4Word Updater</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.14.Release.1.msi</Url>
     </Version>
     <Version>
         <Number>3.0.12 Beta 12</Number>
@@ -238,7 +231,6 @@
             <Change>Handle empty json from ChemDoodle Web.</Change>
             <Change>Add Check for Updates after RightClick and Selection Change errors.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.12.Beta.12.msi</Url>
     </Version>
     <Version>
         <Number>3.0.11 Beta 11</Number>
@@ -250,7 +242,6 @@
             <Change>Restrict Right Click chemistry detection to selections where there are up to 5 sentences, for performance reasons.</Change>
             <Change>Prohibit chemistry when more than one cell of a table is selected.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.11.Beta.11.msi</Url>
     </Version>
     <Version>
         <Number>3.0.10 Beta 10</Number>
@@ -261,7 +252,6 @@
             <Change>Handle old Word 2007 style Content Controls.</Change>
             <Change>Improved Right Click detection of Chemistry.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.10.Beta.10.msi</Url>
     </Version>
     <Version>
         <Number>3.0.9 Beta 9</Number>
@@ -272,7 +262,6 @@
             <Change>Run downloaded files from C:\Users\{InsertNameHere}\Downloads instead of C:\Users\{InsertNameHere}\AppData\Local\Temp. Host Intrustion Protection System (HIPS) preventing execution of files from temp folders.</Change>
             <Change>Clearer message when initial setup is completed.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.9.Beta.9.msi</Url>
     </Version>
     <Version>
         <Number>3.0.8 Beta 8</Number>
@@ -283,7 +272,6 @@
             <Change>Handle error in setting text of 1D labels.</Change>
             <Change>Make config files self healing, when options are added or removed.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.8.Beta.8.msi</Url>
     </Version>
     <Version>
         <Number>3.0.7 Beta 7</Number>
@@ -293,7 +281,6 @@
             <Change>Add option to Render Carbon Atoms.</Change>
             <Change>Change updater to remove passive switch as this is failing to update.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.7.Beta.7.msi</Url>
     </Version>
     <Version>
         <Number>3.0.6 Beta 6</Number>
@@ -310,7 +297,6 @@
             <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it.</Change>
             <Change>Revised Office version detection.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.6.Beta.6.msi</Url>
     </Version>
     <Version>
         <Number>3.0.5 Beta 5</Number>
@@ -319,7 +305,6 @@
         <Changes>
             <Change>Fix glitch with detection of Office 365 (2016) installation.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.5.Beta.5.msi</Url>
     </Version>
     <Version>
         <Number>3.0.4 Beta 4</Number>
@@ -329,7 +314,6 @@
             <Change>If user chooses not to upgrade, prevent legacy chemistry being erased when saving a document.</Change>
             <Change>Handle error caused if user tries to insert a V3000 molfile.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.4.Beta.4.msi</Url>
     </Version>
     <Version>
         <Number>3.0.3 Beta 3</Number>
@@ -340,6 +324,5 @@
             <Change>Add telemetry to ChemDoodle Web Editor to monitor start up time.</Change>
             <Change>Fix ChEBI Search.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.3.Beta.3.msi</Url>
     </Version>
 </ChangeLog>

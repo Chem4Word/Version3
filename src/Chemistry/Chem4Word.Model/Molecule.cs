@@ -461,7 +461,7 @@ namespace Chem4Word.Model
                 }
             }
 #if DEBUG
-            Debug.WriteLine($"Molecule = {(ChemicalNames.Count > 0 ? this.ChemicalNames?[0].Name : this.ConciseFormula)},  Number of rings = {Rings.Count}");
+            //Debug.WriteLine($"Molecule = {(ChemicalNames.Count > 0 ? this.ChemicalNames?[0].Name : this.ConciseFormula)},  Number of rings = {Rings.Count}");
             sw.Stop();
             Debug.WriteLine($"Elapsed {sw.ElapsedMilliseconds}");
 #endif
