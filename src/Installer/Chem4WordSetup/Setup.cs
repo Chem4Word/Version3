@@ -24,7 +24,7 @@ namespace Chem4WordSetup
     {
         private const string VersionsFile = "files3/Chem4Word-Versions.xml";
         private const string PrimaryDomain = "https://www.chem4word.co.uk";
-        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "https://chem4word.azurewebsites.net", "http://www.chem4word.com", };
+        private static readonly string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
         private const string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
 
         private const string RegistryKeyName = @"SOFTWARE\Chem4Word V3";
@@ -101,18 +101,7 @@ namespace Chem4WordSetup
 
             #region Detect Design Time VSTO
 
-            string feature = null;
-            try
-            {
-                feature =
-                    Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VSTO_DT\VS10\Feature", "", null)
-                        .ToString();
-            }
-            catch
-            {
-                // Do Nothing
-            }
-
+            string feature = GetRegistryValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VSTO_DT\VS10\Feature");
             if (!string.IsNullOrEmpty(feature))
             {
                 isDesignTimeInstalled = true;
@@ -122,30 +111,10 @@ namespace Chem4WordSetup
 
             #region Detect Runtime VSTO
 
-            string version = null;
-            try
-            {
-                version =
-                    Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VSTO Runtime Setup\v4R", "Version", null)
-                        .ToString();
-            }
-            catch
-            {
-                // Do Nothing
-            }
-
+            string version = GetRegistryValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VSTO Runtime Setup\v4R", "Version");
             if (string.IsNullOrEmpty(version))
             {
-                try
-                {
-                    version =
-                        Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VSTO Runtime Setup\v4R", "Version", null)
-                            .ToString();
-                }
-                catch
-                {
-                    // Do Nothing
-                }
+                version = GetRegistryValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VSTO Runtime Setup\v4R", "Version");
             }
 
             Version mimimumVersion = new Version("10.0.60724");
@@ -165,30 +134,11 @@ namespace Chem4WordSetup
             // SOFTWARE\Microsoft\VSTO_DT\VS10\Feature
             if (!isRuntimeInstalled)
             {
-                version = "";
-                try
-                {
-                    version =
-                        Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VSTO_DT\VS10\Feature", "", null)
-                            .ToString();
-                }
-                catch
-                {
-                    // Do Nothing
-                }
+                version = GetRegistryValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VSTO_DT\VS10\Feature");
 
                 if (string.IsNullOrEmpty(version))
                 {
-                    try
-                    {
-                        version =
-                            Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VSTO_DT\VS10\Feature", "", null)
-                                .ToString();
-                    }
-                    catch
-                    {
-                        // Do Nothing
-                    }
+                    version = GetRegistryValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VSTO_DT\VS10\Feature");
                 }
 
                 if (!string.IsNullOrEmpty(version))
@@ -287,6 +237,26 @@ namespace Chem4WordSetup
             }
         }
 
+        private string GetRegistryValue(string keyName, string valueName = "")
+        {
+            string result = "";
+
+            try
+            {
+                var value = Registry.GetValue(keyName, valueName, null);
+                if (value != null)
+                {
+                    result = value.ToString();
+                }
+            }
+            catch
+            {
+                // Just return empty string
+            }
+
+            return result;
+        }
+
         private string ChangeDomain(string input)
         {
             string output = input;
@@ -307,6 +277,10 @@ namespace Chem4WordSetup
             string contents = null;
 
             bool foundOurXmlFile = false;
+
+            var securityProtocol = ServicePointManager.SecurityProtocol;
+            ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             foreach (var domain in Domains)
             {
                 using (HttpClient client = new HttpClient())
@@ -363,6 +337,7 @@ namespace Chem4WordSetup
                 }
             }
 
+            ServicePointManager.SecurityProtocol = securityProtocol;
             return contents;
         }
 
@@ -490,18 +465,22 @@ namespace Chem4WordSetup
                         RegistryHelper.WriteAction($"Chem4Word ExitCode: {exitCode}");
                         if (exitCode == 0)
                         {
-                            // Erase previously stored Update Checks
+
                             RegistryKey key = Registry.CurrentUser.OpenSubKey(RegistryKeyName, true);
                             if (key == null)
                             {
                                 key = Registry.CurrentUser.CreateSubKey(RegistryKeyName);
                             }
+
                             if (key != null)
                             {
                                 try
                                 {
-                                    key.DeleteValue(RegistryLastCheckValueName);
-                                    key.DeleteValue(RegistryVersionsBehindValueName);
+                                    // Erase previously stored Update Checks etc
+                                    foreach (string keyName in key.GetSubKeyNames())
+                                    {
+                                        key.DeleteValue(keyName);
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
@@ -652,6 +631,9 @@ namespace Chem4WordSetup
                         // Do Nothing
                     }
                 }
+
+                var securityProtocol = ServicePointManager.SecurityProtocol;
+                ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                 _webClient = new WebClient();
                 _webClient.Headers.Add("user-agent", "Chem4Word Bootstrapper");

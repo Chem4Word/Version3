@@ -247,6 +247,9 @@ namespace Chem4Word.Helpers
 
             string contents = null;
 
+            var securityProtocol = ServicePointManager.SecurityProtocol;
+            ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             bool foundOurXmlFile = false;
             foreach (var domain in Domains)
             {
@@ -262,7 +265,7 @@ namespace Chem4Word.Helpers
                         client.BaseAddress = new Uri(domain);
                         var response = client.GetAsync(VersionsFile).Result;
                         response.EnsureSuccessStatusCode();
-                        //Debug.WriteLine(response.StatusCode);
+
                         string result = response.Content.ReadAsStringAsync().Result;
                         if (result.Contains(VersionsFileMarker))
                         {
@@ -303,6 +306,7 @@ namespace Chem4Word.Helpers
                 }
             }
 
+            ServicePointManager.SecurityProtocol = securityProtocol;
             return contents;
         }
 

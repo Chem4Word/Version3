@@ -172,6 +172,9 @@ namespace Chem4WordUpdater
 
                 _downloadedFile = Path.Combine(downloadPath, filename);
 
+                var securityProtocol = ServicePointManager.SecurityProtocol;
+                ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
                 _webClient = new WebClient();
                 _webClient.Headers.Add("user-agent", "Chem4Word Updater");
 
@@ -232,6 +235,8 @@ namespace Chem4WordUpdater
                 else
                 {
                     _downloadCompleted = true;
+                    _webClient.Dispose();
+
                     UpdateNow.Enabled = false;
                     Information.Text = "Your update has been downloaded.  It will be automatically installed once all Microsoft Word processes are closed.";
                     RegistryHelper.WriteAction($"Downloading of {_downloadTarget} took {_sw.ElapsedMilliseconds.ToString("#,##0", CultureInfo.InvariantCulture)}ms");
