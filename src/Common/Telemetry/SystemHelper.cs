@@ -352,6 +352,11 @@ namespace Chem4Word.Telemetry
                     int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
 
                     // .Net 4.8
+                    if (releaseKey >= 528372)
+                    {
+                        DotNetVersion = $".NET 4.8 (W10 2004) [{releaseKey}]";
+                        return;
+                    }
                     if (releaseKey >= 528049)
                     {
                         DotNetVersion = $".NET 4.8 [{releaseKey}]";
@@ -611,26 +616,12 @@ namespace Chem4Word.Telemetry
             {
                 IpAddress = "IpAddress " + data;
                 IpObtainedFrom = $"IpAddress V6 obtained from '{url}' on attempt {_attempts}";
-
-                if (!string.IsNullOrEmpty(ServerDateHeader))
-                {
-                    ServerUtcDateTime = DateTime.Parse(ServerDateHeader).ToUniversalTime();
-                    SystemUtcDateTime = DateTime.UtcNow;
-                    UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
-                }
             }
 
             if (data.Contains("."))
             {
                 IpAddress = "IpAddress " + data;
                 IpObtainedFrom = $"IpAddress V4 obtained from '{url}' on attempt {_attempts}";
-
-                if (!string.IsNullOrEmpty(ServerDateHeader))
-                {
-                    ServerUtcDateTime = DateTime.Parse(ServerDateHeader).ToUniversalTime();
-                    SystemUtcDateTime = DateTime.UtcNow;
-                    UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
-                }
             }
         }
 
@@ -638,13 +629,20 @@ namespace Chem4Word.Telemetry
         {
             string result = "0.0.0.0";
 
+            var securityProtocol = ServicePointManager.SecurityProtocol;
+
             try
             {
+                if (url.StartsWith("https"))
+                {
+                    ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                }
+
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 if (request != null)
                 {
                     request.UserAgent = "Chem4Word Add-In";
-                    request.Timeout = url.Contains("chem4word") ? 2000 : 1000;
+                    request.Timeout = url.Contains("chem4word") ? 5000 : 2500;
 
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
@@ -652,11 +650,15 @@ namespace Chem4Word.Telemetry
                     {
                         // Get Server Date header i.e. "Tue, 01 Jan 2019 19:52:46 GMT"
                         ServerDateHeader = response.Headers["date"];
+                        SystemUtcDateTime = DateTime.UtcNow;
+                        ServerUtcDateTime = DateTime.Parse(ServerDateHeader).ToUniversalTime();
+                        UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
                     }
                     catch
                     {
-                        // Do Nothing
+                        // Indicate failure
                         ServerDateHeader = null;
+                        SystemUtcDateTime = DateTime.MinValue;
                     }
 
                     if (HttpStatusCode.OK.Equals(response.StatusCode))
@@ -681,6 +683,10 @@ namespace Chem4Word.Telemetry
             catch (Exception exception)
             {
                 StartUpTimings.Add(exception.Message);
+            }
+            finally
+            {
+                ServicePointManager.SecurityProtocol = securityProtocol;
             }
 
             return result;
