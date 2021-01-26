@@ -1393,7 +1393,7 @@ namespace Chem4Word
                         if (searcher != null)
                         {
                             DialogResult dr = searcher.Search();
-                            if (dr == DialogResult.OK)
+                            if (dr == DialogResult.OK && !string.IsNullOrEmpty(searcher.Cml))
                             {
                                 Word.Document doc = Globals.Chem4WordV3.Application.ActiveDocument;
                                 Word.ContentControl cc = ChemistryHelper.Insert2DChemistry(doc, searcher.Cml, true);

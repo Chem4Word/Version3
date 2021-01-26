@@ -138,6 +138,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
         private void Results_SelectedIndexChanged(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             try
             {
                 lastSelected = FetchStructure();
@@ -151,6 +152,7 @@ namespace Chem4Word.Searcher.PubChemPlugIn
         private void Results_DoubleClick(object sender, EventArgs e)
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             try
             {
                 Debug.WriteLine("Results_DoubleClick");
@@ -165,6 +167,8 @@ namespace Chem4Word.Searcher.PubChemPlugIn
 
         private void ExecuteSearch(int direction)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             if (!string.IsNullOrEmpty(SearchFor.Text))
             {
                 Cursor = Cursors.WaitCursor;
@@ -193,6 +197,9 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                                 UserOptions.PubChemWebServiceUri, SearchFor.Text, UserOptions.ResultsPerCall, webEnv, startFrom);
                     }
                 }
+
+                var securityProtocol = ServicePointManager.SecurityProtocol;
+                ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                 var request = (HttpWebRequest)WebRequest.Create(webCall);
 
@@ -269,18 +276,27 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                     else
                     {
                         StringBuilder sb = new StringBuilder();
-                        sb.AppendLine($"Bad request. Status code: {response.StatusCode}");
+                        sb.AppendLine($"Status code {response.StatusCode} was returned by the server");
+                        Telemetry.Write(module, "Warning", sb.ToString());
                         UserInteractions.AlertUser(sb.ToString());
                     }
                 }
                 catch (Exception ex)
                 {
-                    ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
-                                        ? "Please try again later - the service has timed out"
-                                        : ex.Message;
+                    if (ex.Message.Equals("The operation has timed out"))
+                    {
+                        ErrorsAndWarnings.Text = "Please try again later - the service has timed out";
+                    }
+                    else
+                    {
+                        ErrorsAndWarnings.Text = ex.Message;
+                        Telemetry.Write(module, "Exception", ex.Message);
+                        Telemetry.Write(module, "Exception", ex.StackTrace);
+                    }
                 }
                 finally
                 {
+                    ServicePointManager.SecurityProtocol = securityProtocol;
                     Cursor = Cursors.Default;
                 }
             }
@@ -288,6 +304,8 @@ namespace Chem4Word.Searcher.PubChemPlugIn
 
         private void GetData(string idlist)
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             var request = (HttpWebRequest)
                 WebRequest.Create(
                     string.Format(CultureInfo.InvariantCulture,
@@ -296,6 +314,9 @@ namespace Chem4Word.Searcher.PubChemPlugIn
 
             request.Timeout = 30000;
             request.UserAgent = "Chem4Word";
+
+            var securityProtocol = ServicePointManager.SecurityProtocol;
+            ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             HttpWebResponse response;
             try
@@ -316,12 +337,12 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                             {
                                 var id = compound.XPathSelectElement("./Id");
                                 var name = compound.XPathSelectElement("./Item[@Name='IUPACName']");
-                                //var smiles = compound.XPathSelectElement("./Item[@Name='CanonicalSmile']");
+                                //var smiles = compound.XPathSelectElement("./Item[@Name='CanonicalSmile']")
                                 var formula = compound.XPathSelectElement("./Item[@Name='MolecularFormula']");
                                 ListViewItem lvi = new ListViewItem(id.Value);
 
                                 lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, name.Value));
-                                //lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, smiles.ToString()));
+                                //lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, smiles.ToString()))
                                 lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, formula.Value));
 
                                 Results.Items.Add(lvi);
@@ -343,9 +364,20 @@ namespace Chem4Word.Searcher.PubChemPlugIn
             }
             catch (Exception ex)
             {
-                ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
-                                    ? "Please try again later - the service has timed out"
-                                    : ex.Message;
+                if (ex.Message.Equals("The operation has timed out"))
+                {
+                    ErrorsAndWarnings.Text = "Please try again later - the service has timed out";
+                }
+                else
+                {
+                    ErrorsAndWarnings.Text = ex.Message;
+                    Telemetry.Write(module, "Exception", ex.Message);
+                    Telemetry.Write(module, "Exception", ex.StackTrace);
+                }
+            }
+            finally
+            {
+                ServicePointManager.SecurityProtocol = securityProtocol;
             }
         }
 
@@ -367,7 +399,10 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                 {
                     Cursor = Cursors.WaitCursor;
 
-                    // http://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/241/record/SDF
+                    // https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/241/record/SDF
+
+                    var securityProtocol = ServicePointManager.SecurityProtocol;
+                    ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                     try
                     {
@@ -434,12 +469,20 @@ namespace Chem4Word.Searcher.PubChemPlugIn
                     }
                     catch (Exception ex)
                     {
-                        ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
-                                            ? "Please try again later - the service has timed out"
-                                            : ex.Message;
+                        if (ex.Message.Equals("The operation has timed out"))
+                        {
+                            ErrorsAndWarnings.Text = "Please try again later - the service has timed out";
+                        }
+                        else
+                        {
+                            ErrorsAndWarnings.Text = ex.Message;
+                            Telemetry.Write(module, "Exception", ex.Message);
+                            Telemetry.Write(module, "Exception", ex.StackTrace);
+                        }
                     }
                     finally
                     {
+                        ServicePointManager.SecurityProtocol = securityProtocol;
                         Cursor = Cursors.Default;
                     }
                 }

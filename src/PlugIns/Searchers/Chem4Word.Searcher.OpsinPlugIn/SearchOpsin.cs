@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Markup.Localizer;
 using Chem4Word.Model.Converters.CML;
 using IChem4Word.Contracts;
 
@@ -42,6 +43,9 @@ namespace Chem4Word.Searcher.OpsinPlugIn
                 Telemetry.Write(module, "Information", $"User searched for '{SearchFor.Text}'");
                 Cursor = Cursors.WaitCursor;
 
+                var securityProtocol = ServicePointManager.SecurityProtocol;
+                ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
                 UriBuilder builder = new UriBuilder(UserOptions.OpsinWebServiceUri + SearchFor.Text);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(builder.Uri);
                 request.Timeout = 30000;
@@ -58,7 +62,8 @@ namespace Chem4Word.Searcher.OpsinPlugIn
                     }
                     else
                     {
-                        ShowFailureMessage($"An unexpected status code of {response.StatusCode} was returned by the server");
+                        Telemetry.Write(module, "Warning", $"Status code {response.StatusCode} was returned by the server");
+                        ShowFailureMessage($"An unexpected status code {response.StatusCode} was returned by the server");
                     }
                 }
                 catch (WebException ex)
@@ -73,13 +78,23 @@ namespace Chem4Word.Searcher.OpsinPlugIn
                         case HttpStatusCode.RequestTimeout:
                             ShowFailureMessage("Please try again later - the service has timed out");
                             break;
+
+                        default:
+                            Telemetry.Write(module, "Warning", $"Status code: {webResponse.StatusCode}  was returned by the server");
+                            break;
                     }
                 }
                 catch (Exception ex)
                 {
+                    Telemetry.Write(module, "Exception", ex.Message);
+                    Telemetry.Write(module, "Exception", ex.StackTrace);
                     ShowFailureMessage($"An unexpected error has occurred: {ex.Message}");
                 }
-                Cursor = Cursors.Default;
+                finally
+                {
+                    ServicePointManager.SecurityProtocol = securityProtocol;
+                    Cursor = Cursors.Default;
+                }
             }
         }
 

@@ -2,15 +2,24 @@
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
+    <Version>
+      <Number>3.0.36 Release 24</Number>
+      <IsBeta>false</IsBeta>
+      <Released>26-Jan-2021</Released>
+        <Changes>
+            <Change>Prevent import of empty structure in ChEBI search</Change>
+            <Change>Set Transport Layer Security TLS 1.2 protocol to prevent https errors (missed earlier) in PubChem Search</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.36.Release.24.msi</Url>
+    </Version>
         <Version>
         <Number>3.0.35 Release 23</Number>
         <IsBeta>false</IsBeta>
         <Released>02-Sep-2020</Released>
         <Changes>
             <Change>Set Transport Layer Security TLS 1.2 protocol to prevent https errors</Change>
-            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.35.Release.23.msi</Url>
     </Version>
     <Version>
         <Number>3.0.34 Release 22</Number>

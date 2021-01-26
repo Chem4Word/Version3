@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection;
 using System.Windows.Forms;
 using Chem4Word.Core.UI;
@@ -68,6 +69,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin
 
         private void ExecuteSearch()
         {
+            string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
+
             ErrorsAndWarnings.Text = "";
             using (new WaitCursor())
             {
@@ -76,6 +79,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                 {
                     ChebiWebServiceService ws = new ChebiWebServiceService();
                     getLiteEntityResponse results;
+
+                    var securityProtocol = ServicePointManager.SecurityProtocol;
+                    ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
                     ws.Url = UserOptions.ChEBIWebServiceUri;
                     ws.UserAgent = "Chem4Word";
@@ -117,12 +123,20 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                     }
                     catch (Exception ex)
                     {
-                        ErrorsAndWarnings.Text = "The operation has timed out".Equals(ex.Message)
-                            ? "Please try again later - the service has timed out"
-                            : ex.Message;
+                        if (ex.Message.Equals("The operation has timed out"))
+                        {
+                            ErrorsAndWarnings.Text = "Please try again later - the service has timed out";
+                        }
+                        else
+                        {
+                            ErrorsAndWarnings.Text = ex.Message;
+                            Telemetry.Write(module, "Exception", ex.Message);
+                            Telemetry.Write(module, "Exception", ex.StackTrace);
+                        }
                     }
                     finally
                     {
+                        ServicePointManager.SecurityProtocol = securityProtocol;
                     }
                 }
             }
@@ -133,6 +147,9 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         {
             using (new WaitCursor())
             {
+                var securityProtocol = ServicePointManager.SecurityProtocol;
+                ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
                 ChebiWebServiceService ws = new ChebiWebServiceService();
                 getCompleteEntityResponse results;
 
@@ -147,6 +164,8 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                 _allResults = results.@return;
 
                 var chemStructure = _allResults?.ChemicalStructures?[0]?.structure;
+
+                ServicePointManager.SecurityProtocol = securityProtocol;
                 return chemStructure;
             }
         }
@@ -168,42 +187,45 @@ namespace Chem4Word.Searcher.ChEBIPlugin
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            using (new WaitCursor())
+            if (_lastModel != null)
             {
-                CMLConverter conv = new CMLConverter();
-
-                var expModel = (Model.Model)display1.Chemistry;
-                double before = expModel.MeanBondLength;
-                expModel.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
-                double after = expModel.MeanBondLength;
-                Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
-                expModel.Relabel();
-
                 using (new WaitCursor())
                 {
-                    expModel.Molecules[0].ChemicalNames.Clear();
-                    if (_allResults.IupacNames != null)
+                    CMLConverter conv = new CMLConverter();
+
+                    double before = _lastModel.MeanBondLength;
+                    _lastModel.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
+                    double after = _lastModel.MeanBondLength;
+                    Telemetry.Write(module, "Information", $"Structure rescaled from {before.ToString("#0.00")} to {after.ToString("#0.00")}");
+                    _lastModel.Relabel();
+
+                    using (new WaitCursor())
                     {
-                        foreach (var di in _allResults.IupacNames)
+                        _lastModel.Molecules[0].ChemicalNames.Clear();
+                        if (_allResults.IupacNames != null)
                         {
-                            var cn = new Model.ChemicalName();
-                            cn.Name = di.data;
-                            cn.DictRef = "chebi:Iupac";
-                            expModel.Molecules[0].ChemicalNames.Add(cn);
+                            foreach (var di in _allResults.IupacNames)
+                            {
+                                var cn = new Model.ChemicalName();
+                                cn.Name = di.data;
+                                cn.DictRef = "chebi:Iupac";
+                                _lastModel.Molecules[0].ChemicalNames.Add(cn);
+                            }
                         }
-                    }
-                    if (_allResults.Synonyms != null)
-                    {
-                        foreach (var di in _allResults.Synonyms)
+                        if (_allResults.Synonyms != null)
                         {
-                            var cn = new Model.ChemicalName();
-                            cn.Name = di.data;
-                            cn.DictRef = "chebi:Synonym";
-                            expModel.Molecules[0].ChemicalNames.Add(cn);
+                            foreach (var di in _allResults.Synonyms)
+                            {
+                                var cn = new Model.ChemicalName();
+                                cn.Name = di.data;
+                                cn.DictRef = "chebi:Synonym";
+                                _lastModel.Molecules[0].ChemicalNames.Add(cn);
+                            }
                         }
+                        Cml = conv.Export(_lastModel);
                     }
-                    Cml = conv.Export(expModel);
                 }
+
             }
         }
 
@@ -219,9 +241,12 @@ namespace Chem4Word.Searcher.ChEBIPlugin
 
         private void ShowMolfile_Click(object sender, EventArgs e)
         {
-            MolFileViewer tv = new MolFileViewer(new System.Windows.Point(TopLeft.X + Core.Helpers.Constants.TopLeftOffset, TopLeft.Y + Core.Helpers.Constants.TopLeftOffset), _lastMolfile);
-            tv.ShowDialog();
-            ResultsListView.Focus();
+            if (_lastModel != null)
+            {
+                MolFileViewer tv = new MolFileViewer(new System.Windows.Point(TopLeft.X + Core.Helpers.Constants.TopLeftOffset, TopLeft.Y + Core.Helpers.Constants.TopLeftOffset), _lastMolfile);
+                tv.ShowDialog();
+                ResultsListView.Focus();
+            }
         }
 
         private void ResultsListView_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -242,8 +267,11 @@ namespace Chem4Word.Searcher.ChEBIPlugin
                             itemUnderCursor.Selected = true;
                             EnableImport();
                             ImportStructure();
-                            this.DialogResult = DialogResult.OK;
-                            Close();
+                            if (!string.IsNullOrEmpty(Cml))
+                            {
+                                DialogResult = DialogResult.OK;
+                                Close();
+                            }
                         }
                     }
                 }
@@ -335,48 +363,52 @@ namespace Chem4Word.Searcher.ChEBIPlugin
             {
                 var tag = ResultsListView.SelectedItems[0]?.Tag;
 
-                LiteEntity le = (LiteEntity)tag;
-                var chemStructure = GetChemStructure(le);
-
-                if (!string.IsNullOrEmpty(chemStructure))
+                if (tag is LiteEntity le && !string.IsNullOrEmpty(le.chebiId))
                 {
-                    _lastMolfile = ConvertToWindows(chemStructure);
-
-                    SdFileConverter sdConverter = new SdFileConverter();
-                    _lastModel = sdConverter.Import(chemStructure);
-                    if (_lastModel.AllWarnings.Count > 0 || _lastModel.AllErrors.Count > 0)
-                    {
-                        Telemetry.Write(module, "Exception(Data)", chemStructure);
-                        List<string> lines = new List<string>();
-                        if (_lastModel.AllErrors.Count > 0)
-                        {
-                            Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, _lastModel.AllErrors));
-                            lines.Add("Errors(s)");
-                            lines.AddRange(_lastModel.AllErrors);
-                        }
-                        if (_lastModel.AllWarnings.Count > 0)
-                        {
-                            Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, _lastModel.AllWarnings));
-                            lines.Add("Warnings(s)");
-                            lines.AddRange(_lastModel.AllWarnings);
-                        }
-                        ErrorsAndWarnings.Text = string.Join(Environment.NewLine, lines);
-                    }
                     ChebiId = le.chebiId;
-                    if (_lastModel.MeanBondLength < Core.Helpers.Constants.MinimumBondLength - Core.Helpers.Constants.BondLengthTolerance
-                        || _lastModel.MeanBondLength > Core.Helpers.Constants.MaximumBondLength + Core.Helpers.Constants.BondLengthTolerance)
-                    {
-                        _lastModel.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
-                    }
-                    display1.Chemistry = _lastModel;
-                }
-                else
-                {
-                    display1.Chemistry = null;
-                    ErrorsAndWarnings.Text = "No structure available.";
-                }
+                    var chemStructure = GetChemStructure(le);
 
-                EnableImport();
+                    if (!string.IsNullOrEmpty(chemStructure))
+                    {
+                        _lastMolfile = ConvertToWindows(chemStructure);
+
+                        SdFileConverter sdConverter = new SdFileConverter();
+                        _lastModel = sdConverter.Import(chemStructure);
+                        if (_lastModel.AllWarnings.Count > 0 || _lastModel.AllErrors.Count > 0)
+                        {
+                            Telemetry.Write(module, "Exception(Data)", chemStructure);
+                            List<string> lines = new List<string>();
+                            if (_lastModel.AllErrors.Count > 0)
+                            {
+                                Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, _lastModel.AllErrors));
+                                lines.Add("Errors(s)");
+                                lines.AddRange(_lastModel.AllErrors);
+                            }
+                            if (_lastModel.AllWarnings.Count > 0)
+                            {
+                                Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, _lastModel.AllWarnings));
+                                lines.Add("Warnings(s)");
+                                lines.AddRange(_lastModel.AllWarnings);
+                            }
+                            ErrorsAndWarnings.Text = string.Join(Environment.NewLine, lines);
+                        }
+                        if (_lastModel.MeanBondLength < Core.Helpers.Constants.MinimumBondLength - Core.Helpers.Constants.BondLengthTolerance
+                            || _lastModel.MeanBondLength > Core.Helpers.Constants.MaximumBondLength + Core.Helpers.Constants.BondLengthTolerance)
+                        {
+                            _lastModel.ScaleToAverageBondLength(Core.Helpers.Constants.StandardBondLength);
+                        }
+                        display1.Chemistry = _lastModel;
+                    }
+                    else
+                    {
+                        _lastModel = null;
+                        _lastMolfile = String.Empty;
+                        display1.Chemistry = null;
+                        ErrorsAndWarnings.Text = "No structure available.";
+                    }
+
+                    EnableImport();
+                }
             }
         }
 
