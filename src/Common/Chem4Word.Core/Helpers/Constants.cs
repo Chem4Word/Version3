@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2020, The .NET Foundation.
+//  Copyright (c) 2021, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -52,7 +52,8 @@ namespace Chem4Word.Core.Helpers
 
         // Update Checks
         public const int MaximumVersionsBehind = 7;
-        public static string Chem4WordTooOld = "Chem4Word is too many versions old.";
+        public const string Chem4WordTooOld = "Chem4Word is too many versions old.";
+        public const string WordIsNotActivated = "Micrsoft Word is not activated.";
 
         // Bond length limits etc
         public const double MinimumBondLength = 5;

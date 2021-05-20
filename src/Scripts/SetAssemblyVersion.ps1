@@ -43,7 +43,7 @@ function Update-SourceVersion
 		$assemblyVersion = 'AssemblyVersion("' + $version + '")';
 		$fileVersion = 'AssemblyFileVersion("' + $version + '")';
 		$company = 'AssemblyCompany("Chem4Word")'
-		$copyright = 'AssemblyCopyright("© Chem4Word 2020. All rights reserved.")'
+		$copyright = 'AssemblyCopyright("© Chem4Word 2021. All rights reserved.")'
 		$trademark = 'AssemblyTrademark("Chem4Word")'
 
 		(Get-Content $o.FullName -encoding UTF8) | ForEach-Object  { 
@@ -170,6 +170,7 @@ $xml.Save($wixProj)
 
 # ---------------------------------------------------------- #
 
+# Update SignFiles.cmd
 Write-Host " Updating 'SignFiles.cmd'" -ForegroundColor Yellow
 
 $file = "$($pwd)\..\Scripts\SignFiles.cmd"
@@ -177,8 +178,22 @@ Write-Host "$($file)" -ForegroundColor Green
 
 $findPattern = 'set release=Chem4Word-Setup.*'
 $replaceWith = "set release=Chem4Word-Setup.$($version).$($dottedname).msi"
-#(Get-Content $file).Replace($findPattern, $replaceWith) | Set-Content $file
 
 (Get-Content $file) | ForEach-Object { $_ -replace $findPattern, $replaceWith } | Set-Content $file
+
+# ---------------------------------------------------------- #
+ 
+# Update Setup.cs
+Write-Host " Updating 'Setup.cs'" -ForegroundColor Yellow
+
+$file = "$($pwd)\..\Installer\Chem4WordSetup\Setup.cs"
+Write-Host "$($file)" -ForegroundColor Green
+
+$findPattern = 'string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.*'
+$replaceWith = 'string DefaultMsiFile = "https://www.chem4word.co.uk/files3/Chem4Word-Setup.' + "$($version).$($dottedname)" + '.msi";'
+
+(Get-Content $file) | ForEach-Object { $_ -replace $findPattern, $replaceWith } | Set-Content $file
+
+# ---------------------------------------------------------- #
 
 #CD "$($pwd)"

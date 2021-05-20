@@ -1,345 +1,357 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
-    <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
-    <Version>
-      <Number>3.0.36 Release 24</Number>
-      <IsBeta>false</IsBeta>
-      <Released>26-Jan-2021</Released>
-        <Changes>
-            <Change>Prevent import of empty structure in ChEBI search</Change>
-            <Change>Set Transport Layer Security TLS 1.2 protocol to prevent https errors (missed earlier) in PubChem Search</Change>
-            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
-        </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.36.Release.24.msi</Url>
-    </Version>
-        <Version>
-        <Number>3.0.35 Release 23</Number>
-        <IsBeta>false</IsBeta>
-        <Released>02-Sep-2020</Released>
-        <Changes>
-            <Change>Set Transport Layer Security TLS 1.2 protocol to prevent https errors</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.34 Release 22</Number>
-        <IsBeta>false</IsBeta>
-        <Released>15-Aug-2020</Released>
-        <Changes>
-            <Change>Improved code handling updating of Content Control(s)</Change>
-            <Change>Bug Fix; Prevent incorrect cursor position after edit operation reduces size of ContentControl</Change>
-            <Change>Added more use of Wait Cursor</Change>
-            <Change>Ensure that telemetry message body does not exceed 32Kb</Change>
-            <Change>Adjust style of dotted and dashed lines to more in line with ACS recommendations</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.33 Release 21</Number>
-        <IsBeta>false</IsBeta>
-        <Released>26-Mar-2020</Released>
-        <Changes>
-            <Change>Bug Fix; Setup should now repair missing registry settings</Change>
-            <Change>Bug Fix; Prevent exception if Telemetry not initialised in Evaluate If Chemistry Is Allowed</Change>
-            <Change>Bug Fix; Compatibility mode detection not working all the time</Change>
-            <Change>Add AntiVirus Detection</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.32 Release 20</Number>
-        <IsBeta>false</IsBeta>
-        <Released>09-Jan-2020</Released>
-        <Changes>
-            <Change>Bug Fix; Draw button is now re-enabled for new document</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.31 Release 19</Number>
-        <IsBeta>false</IsBeta>
-        <Released>08-Jan-2020</Released>
-        <Changes>
-            <Change>Bug Fix; Insert and Web Search buttons wrongly enabled when structure is selected</Change>
-            <Change>Bug Fix; Ensure Add-in is dumb when word is embedded in another document</Change>
-            <Change>Bug Fix; Null pointer exception in loading of user options</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.30 Release 18</Number>
-        <IsBeta>false</IsBeta>
-        <Released>11-Nov-2019</Released>
-        <Changes>
-            <Change>Bug Fix; Null pointer exception in new O365 detection due to unexpected data</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.29 Release 17</Number>
-        <IsBeta>false</IsBeta>
-        <Released>10-Nov-2019</Released>
-        <Changes>
-            <Change>Bug Fix; Stop Right Click Convert to chemistry ignoring first character of selection</Change>
-            <Change>Improve Office 365 detection</Change>
-            <Change>Improve start up performance</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.28 Release 16</Number>
-        <IsBeta>false</IsBeta>
-        <Released>02-Oct-2019</Released>
-        <Changes>
-            <Change>Bug Fix; Series does not contain a matching element in OoXml rendering [https://github.com/Chem4Word/Version3/issues/15]</Change>
-            <Change>Bug Fix; Sequence contains no elements in CustomRibbon Edit [https://github.com/Chem4Word/Version3/issues/9]</Change>
-            <Change>Bug Fix; System.NullReferenceException in Editor.ChemDoodleWeb800 [https://github.com/Chem4Word/Version3/issues/13]</Change>
-            <Change>Bug Fix; HandleRightClick(); The requested member of the collection does not exist. [https://github.com/Chem4Word/Version3/issues/10]</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.27 Release 15</Number>
-        <IsBeta>false</IsBeta>
-        <Released>06-Jul-2019</Released>
-        <Changes>
-            <Change>Fix bounding box for subscript characters</Change>
-            <Change>Fix bug in CDW702 editor always setting bond length to 20</Change>
-            <Change>Implement clipping of bond lines using ConvexHull of atom characters</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.26 Release 14</Number>
-        <IsBeta>false</IsBeta>
-        <Released>27-Apr-2019</Released>
-        <Changes>
-            <Change>Detect if content control being added is ours (by examining it's tag) before trying to find it.</Change>
-            <Change>Fix Show As dropdown list of 1D labels, when a 1D structure selected.</Change>
-            <Change>Fix positioning of aromatic bond lines.</Change>
-            <Change>Update copyright to 2019</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.25 Release 12</Number>
-        <IsBeta>false</IsBeta>
-        <Released>30-Dec-2018</Released>
-        <Changes>
-            <Change>Fix inability to double click on structures to invoke editor.</Change>
-            <Change>Greater than 5 JavaScript errors in ChemDoodle Web 800 triggers refresh of deployed editor.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.24 Release 11</Number>
-        <IsBeta>false</IsBeta>
-        <Released>21-Dec-2018</Released>
-        <Changes>
-            <Change>Better reporting of MOLFile and SDFile import errors.</Change>
-            <Change>Fix detection of Chemistry selection when switching documents.</Change>
-            <Change>Prevent Out of Memory Exception by limiting import from SDFile to first 16 structures.</Change>
-            <Change>Fix blank Uri exception when calling our Chemical Services.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.23 Release 10</Number>
-        <IsBeta>false</IsBeta>
-        <Released>13-Nov-2018</Released>
-        <Changes>
-            <Change>Allow import of 1D chemical object (no atoms only labels)</Change>
-            <Change>Fix conversion of 1D chemical object (no atoms only labels)</Change>
-            <Change>Force ChemDoodle Web 7.0.2 if IE browser version is less than 10.</Change>
-            <Change>Fix memory leak in ChemDoodle Web 8.0.0 Editor.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.22 Release 9</Number>
-        <IsBeta>false</IsBeta>
-        <Released>31-Oct-2018</Released>
-        <Changes>
-            <Change>Changed compatibility level to IE10 in ChemDoodle Web 8.0.0</Change>
-            <Change>Changes to UTC system time detection.</Change>
-            <Change>Allow structure with No atoms</Change>
-            <Change>Set Default editor to ChemDoodle Web 7.0.2 for new users if Windows 7 is detected</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.21 Release 8</Number>
-        <IsBeta>false</IsBeta>
-        <Released>17-Oct-2018</Released>
-        <Changes>
-            <Change>Fix horizontal scrolling of structure in Task Panes.</Change>
-            <Change>Handle error when WPF Browser does not load ChemDoodle Web.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.20 Release 7</Number>
-        <IsBeta>false</IsBeta>
-        <Released>26-Sep-2018</Released>
-        <Changes>
-            <Change>New resolution independent ChemDoodle Web Editor (8.0.0).</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.19 Release 6</Number>
-        <IsBeta>false</IsBeta>
-        <Released>05-Sep-2018</Released>
-        <Changes>
-            <Change>Change method of opening files for import to improve handling of locked files.</Change>
-            <Change>Change to using our own InchiKey resolver, ChemSpider is no longer working.</Change>
-            <Change>Update SQLite to latest version.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.18 Release 5</Number>
-        <IsBeta>false</IsBeta>
-        <Released>01-Aug-2018</Released>
-        <Changes>
-            <Change>Change to sending Telemetry via Azure ServiceBus.</Change>
-            <Change>Protect against accidental double clicking on Library and Navigator Buttons.</Change>
-            <Change>Add detection of conflict resolution mode.</Change>
-            <Change>Update SQLite to latest version.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.17 Release 4</Number>
-        <IsBeta>false</IsBeta>
-        <Released>06-Mar-2018</Released>
-        <Changes>
-            <Change>Add button (under Help) to show why 'chemistry' ribbon buttons are all disabled.</Change>
-            <Change>Backup of document before conversion of legacy Content Controls.</Change>
-            <Change>Better positioning of charges when implicit hydrogens present.</Change>
-            <Change>Add support for legacy symbols for Elements 113 to 118.</Change>
-            <Change>Trap errors during close of document.</Change>
-            <Change>Fix Lazy Loading of Library Database.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.16 Release 3</Number>
-        <IsBeta>false</IsBeta>
-        <Released>15-Feb-2018</Released>
-        <Changes>
-            <Change>Emergency Fix for Lazy Loading bug.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.15 Release 2</Number>
-        <IsBeta>false</IsBeta>
-        <Released>14-Feb-2018</Released>
-        <Changes>
-            <Change>Change .Net Foundation url</Change>
-            <Change>Implement Lazy Loading of Options and LibraryNames, should help when two instances of Word strated at the same time.</Change>
-            <Change>Show any import Errors and/or Warnings on Import and in searcher forms.</Change>
-            <Change>Add telemetry to Copy/Paste operation.</Change>
-            <Change>Add detection of COMExceptions in language independant manner.</Change>
-            <Change>Added field for email address on Error Report form.</Change>
-            <Change>Now handles MDL MOLfile bond types of 4 to 8.</Change>
-            <Change>Return DialogResult.Cancel (to abort edit), after failed fetch of structure from ChemDoodle Web editor.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.14 Release 1</Number>
-        <IsBeta>false</IsBeta>
-        <Released>17-Jan-2018</Released>
-        <Changes>
-            <Change>Ensure structure to be rendered has at least one atom.</Change>
-            <Change>Sign Chem4Word Updater</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.12 Beta 12</Number>
-        <IsBeta>true</IsBeta>
-        <Released>01-Jan-2018</Released>
-        <Changes>
-            <Change>Ensure Library db is closed and disposed ASAP.</Change>
-            <Change>Fix wrong 1D tag inserted by convert to chemistry.</Change>
-            <Change>Allow Chemistry to be inserted from library when blank document opened.</Change>
-            <Change>Handle empty json from ChemDoodle Web.</Change>
-            <Change>Add Check for Updates after RightClick and Selection Change errors.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.11 Beta 11</Number>
-        <IsBeta>true</IsBeta>
-        <Released>28-Dec-2017</Released>
-        <Changes>
-            <Change>Fix Value out of range error during right click processing.</Change>
-            <Change>Fix get_ShapeRange error during selection processing.</Change>
-            <Change>Restrict Right Click chemistry detection to selections where there are up to 5 sentences, for performance reasons.</Change>
-            <Change>Prohibit chemistry when more than one cell of a table is selected.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.10 Beta 10</Number>
-        <IsBeta>true</IsBeta>
-        <Released>20-Dec-2017</Released>
-        <Changes>
-            <Change>Improved detection of places where chemistry is not allowed to be inserted (Microsoft Word does not allow it, not us!).</Change>
-            <Change>Handle old Word 2007 style Content Controls.</Change>
-            <Change>Improved Right Click detection of Chemistry.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.9 Beta 9</Number>
-        <IsBeta>true</IsBeta>
-        <Released>06-Dec-2017</Released>
-        <Changes>
-            <Change>Fix permissions issue with Library folder.</Change>
-            <Change>Run downloaded files from C:\Users\{InsertNameHere}\Downloads instead of C:\Users\{InsertNameHere}\AppData\Local\Temp. Host Intrustion Protection System (HIPS) preventing execution of files from temp folders.</Change>
-            <Change>Clearer message when initial setup is completed.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.8 Beta 8</Number>
-        <IsBeta>true</IsBeta>
-        <Released>21-Nov-2017</Released>
-        <Changes>
-            <Change>Handle documents in compatibility mode.</Change>
-            <Change>Handle error in setting text of 1D labels.</Change>
-            <Change>Make config files self healing, when options are added or removed.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.7 Beta 7</Number>
-        <IsBeta>true</IsBeta>
-        <Released>18-Nov-2017</Released>
-        <Changes>
-            <Change>Add option to Render Carbon Atoms.</Change>
-            <Change>Change updater to remove passive switch as this is failing to update.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.6 Beta 6</Number>
-        <IsBeta>true</IsBeta>
-        <Released>05-Nov-2017</Released>
-        <Changes>
-            <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check.</Change>
-            <Change>Prevent structures with half bonds being sent to ChemSpider.</Change>
-            <Change>Handle error when TaskPane has already been closed.</Change>
-            <Change>Handle error when Ribbon is null.</Change>
-            <Change>Handle error when Library can't be copied.</Change>
-            <Change>Make Chem4WordSetup.exe single instance.</Change>
-            <Change>Allow Chem4Word-Versions.xml and updates to be deployed to multiple domains.</Change>
-            <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it.</Change>
-            <Change>Revised Office version detection.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.5 Beta 5</Number>
-        <IsBeta>true</IsBeta>
-        <Released>18-Oct-2017</Released>
-        <Changes>
-            <Change>Fix glitch with detection of Office 365 (2016) installation.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.4 Beta 4</Number>
-        <IsBeta>true</IsBeta>
-        <Released>15-Oct-2017</Released>
-        <Changes>
-            <Change>If user chooses not to upgrade, prevent legacy chemistry being erased when saving a document.</Change>
-            <Change>Handle error caused if user tries to insert a V3000 molfile.</Change>
-        </Changes>
-    </Version>
-    <Version>
-        <Number>3.0.3 Beta 3</Number>
-        <IsBeta>true</IsBeta>
-        <Released>04-Oct-2017</Released>
-        <Changes>
-            <Change>Fix some null pointer exceptions, caused by legacy (V2) data.</Change>
-            <Change>Add telemetry to ChemDoodle Web Editor to monitor start up time.</Change>
-            <Change>Fix ChEBI Search.</Change>
-        </Changes>
-    </Version>
+  <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
+  <Version>
+    <Number>3.0.37 Release 25</Number>
+    <IsBeta>false</IsBeta>
+    <Released>20-May-2021</Released>
+    <Changes>
+      <Change>Check if Word is activated</Change>
+      <Change>Fix Right Click Convert to Chemistry when selection contains a paragraph ending</Change>
+      <Change>Detect other installed Add-Ins</Change>
+      <Change>Use more reliable means of obtaining boot up time</Change>
+      <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+    <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.37.Release.25.msi</Url>
+  </Version>
+  <Version>
+    <Number>3.0.36 Release 24</Number>
+    <IsBeta>false</IsBeta>
+    <Released>26-Jan-2021</Released>
+    <Changes>
+      <Change>Prevent import of empty structure in ChEBI search</Change>
+      <Change>Set Transport Layer Security TLS 1.2 protocol to prevent https errors (missed earlier) in PubChem Search</Change>
+      <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.35 Release 23</Number>
+    <IsBeta>false</IsBeta>
+    <Released>02-Sep-2020</Released>
+    <Changes>
+      <Change>Set Transport Layer Security TLS 1.2 protocol to prevent https errors</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.34 Release 22</Number>
+    <IsBeta>false</IsBeta>
+    <Released>15-Aug-2020</Released>
+    <Changes>
+      <Change>Improved code handling updating of Content Control(s)</Change>
+      <Change>Bug Fix; Prevent incorrect cursor position after edit operation reduces size of ContentControl</Change>
+      <Change>Added more use of Wait Cursor</Change>
+      <Change>Ensure that telemetry message body does not exceed 32Kb</Change>
+      <Change>Adjust style of dotted and dashed lines to more in line with ACS recommendations</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.33 Release 21</Number>
+    <IsBeta>false</IsBeta>
+    <Released>26-Mar-2020</Released>
+    <Changes>
+      <Change>Bug Fix; Setup should now repair missing registry settings</Change>
+      <Change>Bug Fix; Prevent exception if Telemetry not initialised in Evaluate If Chemistry Is Allowed</Change>
+      <Change>Bug Fix; Compatibility mode detection not working all the time</Change>
+      <Change>Add AntiVirus Detection</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.32 Release 20</Number>
+    <IsBeta>false</IsBeta>
+    <Released>09-Jan-2020</Released>
+    <Changes>
+      <Change>Bug Fix; Draw button is now re-enabled for new document</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.31 Release 19</Number>
+    <IsBeta>false</IsBeta>
+    <Released>08-Jan-2020</Released>
+    <Changes>
+      <Change>Bug Fix; Insert and Web Search buttons wrongly enabled when structure is selected</Change>
+      <Change>Bug Fix; Ensure Add-in is dumb when word is embedded in another document</Change>
+      <Change>Bug Fix; Null pointer exception in loading of user options</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.30 Release 18</Number>
+    <IsBeta>false</IsBeta>
+    <Released>11-Nov-2019</Released>
+    <Changes>
+      <Change>Bug Fix; Null pointer exception in new O365 detection due to unexpected data</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.29 Release 17</Number>
+    <IsBeta>false</IsBeta>
+    <Released>10-Nov-2019</Released>
+    <Changes>
+      <Change>Bug Fix; Stop Right Click Convert to chemistry ignoring first character of selection</Change>
+      <Change>Improve Office 365 detection</Change>
+      <Change>Improve start up performance</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.28 Release 16</Number>
+    <IsBeta>false</IsBeta>
+    <Released>02-Oct-2019</Released>
+    <Changes>
+      <Change>Bug Fix; Series does not contain a matching element in OoXml rendering [https://github.com/Chem4Word/Version3/issues/15]</Change>
+      <Change>Bug Fix; Sequence contains no elements in CustomRibbon Edit [https://github.com/Chem4Word/Version3/issues/9]</Change>
+      <Change>Bug Fix; System.NullReferenceException in Editor.ChemDoodleWeb800 [https://github.com/Chem4Word/Version3/issues/13]</Change>
+      <Change>Bug Fix; HandleRightClick(); The requested member of the collection does not exist. [https://github.com/Chem4Word/Version3/issues/10]</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.27 Release 15</Number>
+    <IsBeta>false</IsBeta>
+    <Released>06-Jul-2019</Released>
+    <Changes>
+      <Change>Fix bounding box for subscript characters</Change>
+      <Change>Fix bug in CDW702 editor always setting bond length to 20</Change>
+      <Change>Implement clipping of bond lines using ConvexHull of atom characters</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.26 Release 14</Number>
+    <IsBeta>false</IsBeta>
+    <Released>27-Apr-2019</Released>
+    <Changes>
+      <Change>Detect if content control being added is ours (by examining it's tag) before trying to find it.</Change>
+      <Change>Fix Show As dropdown list of 1D labels, when a 1D structure selected.</Change>
+      <Change>Fix positioning of aromatic bond lines.</Change>
+      <Change>Update copyright to 2019</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.25 Release 12</Number>
+    <IsBeta>false</IsBeta>
+    <Released>30-Dec-2018</Released>
+    <Changes>
+      <Change>Fix inability to double click on structures to invoke editor.</Change>
+      <Change>Greater than 5 JavaScript errors in ChemDoodle Web 800 triggers refresh of deployed editor.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.24 Release 11</Number>
+    <IsBeta>false</IsBeta>
+    <Released>21-Dec-2018</Released>
+    <Changes>
+      <Change>Better reporting of MOLFile and SDFile import errors.</Change>
+      <Change>Fix detection of Chemistry selection when switching documents.</Change>
+      <Change>Prevent Out of Memory Exception by limiting import from SDFile to first 16 structures.</Change>
+      <Change>Fix blank Uri exception when calling our Chemical Services.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.23 Release 10</Number>
+    <IsBeta>false</IsBeta>
+    <Released>13-Nov-2018</Released>
+    <Changes>
+      <Change>Allow import of 1D chemical object (no atoms only labels)</Change>
+      <Change>Fix conversion of 1D chemical object (no atoms only labels)</Change>
+      <Change>Force ChemDoodle Web 7.0.2 if IE browser version is less than 10.</Change>
+      <Change>Fix memory leak in ChemDoodle Web 8.0.0 Editor.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.22 Release 9</Number>
+    <IsBeta>false</IsBeta>
+    <Released>31-Oct-2018</Released>
+    <Changes>
+      <Change>Changed compatibility level to IE10 in ChemDoodle Web 8.0.0</Change>
+      <Change>Changes to UTC system time detection.</Change>
+      <Change>Allow structure with No atoms</Change>
+      <Change>Set Default editor to ChemDoodle Web 7.0.2 for new users if Windows 7 is detected</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.21 Release 8</Number>
+    <IsBeta>false</IsBeta>
+    <Released>17-Oct-2018</Released>
+    <Changes>
+      <Change>Fix horizontal scrolling of structure in Task Panes.</Change>
+      <Change>Handle error when WPF Browser does not load ChemDoodle Web.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.20 Release 7</Number>
+    <IsBeta>false</IsBeta>
+    <Released>26-Sep-2018</Released>
+    <Changes>
+      <Change>New resolution independent ChemDoodle Web Editor (8.0.0).</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.19 Release 6</Number>
+    <IsBeta>false</IsBeta>
+    <Released>05-Sep-2018</Released>
+    <Changes>
+      <Change>Change method of opening files for import to improve handling of locked files.</Change>
+      <Change>Change to using our own InchiKey resolver, ChemSpider is no longer working.</Change>
+      <Change>Update SQLite to latest version.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.18 Release 5</Number>
+    <IsBeta>false</IsBeta>
+    <Released>01-Aug-2018</Released>
+    <Changes>
+      <Change>Change to sending Telemetry via Azure ServiceBus.</Change>
+      <Change>Protect against accidental double clicking on Library and Navigator Buttons.</Change>
+      <Change>Add detection of conflict resolution mode.</Change>
+      <Change>Update SQLite to latest version.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.17 Release 4</Number>
+    <IsBeta>false</IsBeta>
+    <Released>06-Mar-2018</Released>
+    <Changes>
+      <Change>Add button (under Help) to show why 'chemistry' ribbon buttons are all disabled.</Change>
+      <Change>Backup of document before conversion of legacy Content Controls.</Change>
+      <Change>Better positioning of charges when implicit hydrogens present.</Change>
+      <Change>Add support for legacy symbols for Elements 113 to 118.</Change>
+      <Change>Trap errors during close of document.</Change>
+      <Change>Fix Lazy Loading of Library Database.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.16 Release 3</Number>
+    <IsBeta>false</IsBeta>
+    <Released>15-Feb-2018</Released>
+    <Changes>
+      <Change>Emergency Fix for Lazy Loading bug.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.15 Release 2</Number>
+    <IsBeta>false</IsBeta>
+    <Released>14-Feb-2018</Released>
+    <Changes>
+      <Change>Change .Net Foundation url</Change>
+      <Change>Implement Lazy Loading of Options and LibraryNames, should help when two instances of Word strated at the same time.</Change>
+      <Change>Show any import Errors and/or Warnings on Import and in searcher forms.</Change>
+      <Change>Add telemetry to Copy/Paste operation.</Change>
+      <Change>Add detection of COMExceptions in language independant manner.</Change>
+      <Change>Added field for email address on Error Report form.</Change>
+      <Change>Now handles MDL MOLfile bond types of 4 to 8.</Change>
+      <Change>Return DialogResult.Cancel (to abort edit), after failed fetch of structure from ChemDoodle Web editor.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.14 Release 1</Number>
+    <IsBeta>false</IsBeta>
+    <Released>17-Jan-2018</Released>
+    <Changes>
+      <Change>Ensure structure to be rendered has at least one atom.</Change>
+      <Change>Sign Chem4Word Updater</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.12 Beta 12</Number>
+    <IsBeta>true</IsBeta>
+    <Released>01-Jan-2018</Released>
+    <Changes>
+      <Change>Ensure Library db is closed and disposed ASAP.</Change>
+      <Change>Fix wrong 1D tag inserted by convert to chemistry.</Change>
+      <Change>Allow Chemistry to be inserted from library when blank document opened.</Change>
+      <Change>Handle empty json from ChemDoodle Web.</Change>
+      <Change>Add Check for Updates after RightClick and Selection Change errors.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.11 Beta 11</Number>
+    <IsBeta>true</IsBeta>
+    <Released>28-Dec-2017</Released>
+    <Changes>
+      <Change>Fix Value out of range error during right click processing.</Change>
+      <Change>Fix get_ShapeRange error during selection processing.</Change>
+      <Change>Restrict Right Click chemistry detection to selections where there are up to 5 sentences, for performance reasons.</Change>
+      <Change>Prohibit chemistry when more than one cell of a table is selected.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.10 Beta 10</Number>
+    <IsBeta>true</IsBeta>
+    <Released>20-Dec-2017</Released>
+    <Changes>
+      <Change>Improved detection of places where chemistry is not allowed to be inserted (Microsoft Word does not allow it, not us!).</Change>
+      <Change>Handle old Word 2007 style Content Controls.</Change>
+      <Change>Improved Right Click detection of Chemistry.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.9 Beta 9</Number>
+    <IsBeta>true</IsBeta>
+    <Released>06-Dec-2017</Released>
+    <Changes>
+      <Change>Fix permissions issue with Library folder.</Change>
+      <Change>Run downloaded files from C:\Users\{InsertNameHere}\Downloads instead of C:\Users\{InsertNameHere}\AppData\Local\Temp. Host Intrustion Protection System (HIPS) preventing execution of files from temp folders.</Change>
+      <Change>Clearer message when initial setup is completed.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.8 Beta 8</Number>
+    <IsBeta>true</IsBeta>
+    <Released>21-Nov-2017</Released>
+    <Changes>
+      <Change>Handle documents in compatibility mode.</Change>
+      <Change>Handle error in setting text of 1D labels.</Change>
+      <Change>Make config files self healing, when options are added or removed.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.7 Beta 7</Number>
+    <IsBeta>true</IsBeta>
+    <Released>18-Nov-2017</Released>
+    <Changes>
+      <Change>Add option to Render Carbon Atoms.</Change>
+      <Change>Change updater to remove passive switch as this is failing to update.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.6 Beta 6</Number>
+    <IsBeta>true</IsBeta>
+    <Released>05-Nov-2017</Released>
+    <Changes>
+      <Change>Add extra menus to Help, to open manual, WebSite, YouTube and Manual Update Check.</Change>
+      <Change>Prevent structures with half bonds being sent to ChemSpider.</Change>
+      <Change>Handle error when TaskPane has already been closed.</Change>
+      <Change>Handle error when Ribbon is null.</Change>
+      <Change>Handle error when Library can't be copied.</Change>
+      <Change>Make Chem4WordSetup.exe single instance.</Change>
+      <Change>Allow Chem4Word-Versions.xml and updates to be deployed to multiple domains.</Change>
+      <Change>Ensure Chem4WordUpdater.exe copy was successful before trying to run it.</Change>
+      <Change>Revised Office version detection.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.5 Beta 5</Number>
+    <IsBeta>true</IsBeta>
+    <Released>18-Oct-2017</Released>
+    <Changes>
+      <Change>Fix glitch with detection of Office 365 (2016) installation.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.4 Beta 4</Number>
+    <IsBeta>true</IsBeta>
+    <Released>15-Oct-2017</Released>
+    <Changes>
+      <Change>If user chooses not to upgrade, prevent legacy chemistry being erased when saving a document.</Change>
+      <Change>Handle error caused if user tries to insert a V3000 molfile.</Change>
+    </Changes>
+  </Version>
+  <Version>
+    <Number>3.0.3 Beta 3</Number>
+    <IsBeta>true</IsBeta>
+    <Released>04-Oct-2017</Released>
+    <Changes>
+      <Change>Fix some null pointer exceptions, caused by legacy (V2) data.</Change>
+      <Change>Add telemetry to ChemDoodle Web Editor to monitor start up time.</Change>
+      <Change>Fix ChEBI Search.</Change>
+    </Changes>
+  </Version>
 </ChangeLog>

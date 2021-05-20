@@ -5,20 +5,14 @@
 //  at the root directory of the distribution.
 // ---------------------------------------------------------------------------
 
-namespace Chem4Word.Model
+namespace Chem4Word.Telemetry
 {
-    public class Formula
+    public class AddInProperties
     {
-        public string Id { get; set; }
-
-        public string Convention { get; set; }
-
-        public string Inline { get; set; }
-
-        public bool IsValid { get; set; }
-
-        public Formula()
-        {
-        }
+        public string KeyName { get; set; }
+        public string Description { get; set; }
+        public string FriendlyName { get; set; }
+        public int LoadBehaviour { get; set; }
+        public string Manifest { get; set; }
     }
 }

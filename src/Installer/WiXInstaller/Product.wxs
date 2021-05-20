@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <!-- For automatic upgrade to work only first three parts of version number are used -->
-  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.36 Release 24" Manufacturer="Chem4Word" Version="3.0.36.7696" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
+  <Product Id="*" Name="Chemistry Add-In for Microsoft Word 3.0.37 Release 25" Manufacturer="Chem4Word" Version="3.0.37.7810" UpgradeCode="865226e7-d29d-49aa-a390-dda49979b102" Language="1033">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     <MajorUpgrade DowngradeErrorMessage="A newer version of Chem4Word is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
@@ -227,7 +227,6 @@
       <!-- OpenXML SDK -->
       <Component Id="OpenXML.SDK">
         <File Id="DocumentFormat.OpenXml.dll" Source="$(var.Chem4Word.V3.TargetDir)DocumentFormat.OpenXml.dll" />
-        <File Id="DocumentFormat.OpenXml.xml" Source="$(var.Chem4Word.V3.TargetDir)DocumentFormat.OpenXml.xml" />
       </Component>
       <Component Id="OpenXML.SDK.Dependancy">
         <File Id="WindowsBase.dll" Source="$(var.Chem4Word.V3.TargetDir)WindowsBase.dll" />
@@ -238,24 +237,19 @@
       </Component>
       <Component Id="Newtonsoft.Json">
         <File Id="Newtonsoft.Json.dll" Source="$(var.Chem4Word.V3.TargetDir)Newtonsoft.Json.dll" />
-        <File Id="Newtonsoft.Json.xml" Source="$(var.Chem4Word.V3.TargetDir)Newtonsoft.Json.xml" />
       </Component>
       <Component Id="Ookii.Dialogs">
         <File Id="Ookii.Dialogs.dll" Source="$(var.Chem4Word.V3.TargetDir)Ookii.Dialogs.dll" />
-        <File Id="Ookii.Dialogs.xml" Source="$(var.Chem4Word.V3.TargetDir)Ookii.Dialogs.xml" />
       </Component>
       <!-- Database -->
       <Component Id="EntityFramework">
         <File Id="EntityFramework.dll" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.dll" />
-        <File Id="EntityFramework.xml" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.xml" />
       </Component>
       <Component Id="EntityFramework.SqlServer">
         <File Id="EntityFramework.SqlServer.dll" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.SqlServer.dll" />
-        <File Id="EntityFramework.SqlServer.xml" Source="$(var.Chem4Word.V3.TargetDir)EntityFramework.SqlServer.xml" />
       </Component>
       <Component Id="System.Data.SQLite">
         <File Id="System.Data.SQLite.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.dll" />
-        <File Id="System.Data.SQLite.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.xml" />
       </Component>
       <Component Id="System.Data.SQLite.EF6">
         <File Id="System.Data.SQLite.EF6.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Data.SQLite.EF6.dll" />
@@ -265,34 +259,26 @@
       </Component>
       <Component Id="System.Windows.Interactivity">
         <File Id="System.Windows.Interactivity.dll" Source="$(var.Chem4Word.V3.TargetDir)System.Windows.Interactivity.dll" />
-        <File Id="System.Windows.Interactivity.xml" Source="$(var.Chem4Word.V3.TargetDir)System.Windows.Interactivity.xml" />
       </Component>
       <!-- Azure -->
       <Component Id="Microsoft.ServiceBus">
         <File Id="Microsoft.ServiceBus.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.ServiceBus.dll" />
-        <!--<File Id="Microsoft.ServiceBus.pdb" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.ServiceBus.pdb" />-->
-        <File Id="Microsoft.ServiceBus.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.ServiceBus.xml" />
       </Component>
       <!-- Microsoft Office Tools -->
       <Component Id="Microsoft.Office.Tools.Common.v4.0.Utilities">
         <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.dll" />
-        <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.xml" />
       </Component>
       <Component Id="Microsoft.Office.Tools.v4.0.Framework">
         <File Id="Microsoft.Office.Tools.v4.0.Framework.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.v4.0.Framework.dll" />
-        <File Id="Microsoft.Office.Tools.v4.0.Framework.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.v4.0.Framework.xml" />
       </Component>
       <Component Id="Microsoft.Office.Tools.Word">
         <File Id="Microsoft.Office.Tools.Word.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.dll" />
-        <File Id="Microsoft.Office.Tools.Word.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.xml" />
       </Component>
       <Component Id="Microsoft.Office.Tools.Word.v4.0.Utilities">
         <File Id="Microsoft.Office.Tools.Word.v4.0.Utilities.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.v4.0.Utilities.dll" />
-        <File Id="Microsoft.Office.Tools.Word.v4.0.Utilities.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.Office.Tools.Word.v4.0.Utilities.xml" />
       </Component>
       <Component Id="Microsoft.VisualStudio.Tools.Applications.Runtime">
         <File Id="Microsoft.VisualStudio.Tools.Applications.Runtime.dll" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.VisualStudio.Tools.Applications.Runtime.dll" />
-        <File Id="Microsoft.VisualStudio.Tools.Applications.Runtime.xml" Source="$(var.Chem4Word.V3.TargetDir)Microsoft.VisualStudio.Tools.Applications.Runtime.xml" />
       </Component>
     </ComponentGroup>
   </Fragment>

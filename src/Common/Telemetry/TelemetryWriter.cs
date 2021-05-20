@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2020, The .NET Foundation.
+//  Copyright (c) 2021, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -177,7 +177,8 @@ namespace Chem4Word.Telemetry
             lines.Add($"CPU Cores: {_wmiHelper.LogicalProcessors}");
             lines.Add($"CPU Speed: {_wmiHelper.CpuSpeed}");
             lines.Add($"Physical Memory: {_wmiHelper.PhysicalMemory}");
-            lines.Add($"Booted Up: {_wmiHelper.LastLastBootUpTime}");
+            lines.Add($"Booted Up: {_helper.LastBootUpTime}");
+            lines.Add($"Logged In: {_helper.LastLoginTime}");
 
             lines.Add($"Type: {_wmiHelper.ProductType}");
             if (!string.IsNullOrEmpty(_wmiHelper.AntiVirusStatus))
@@ -194,6 +195,20 @@ namespace Chem4Word.Telemetry
             lines.Add($"Screens: {_helper.Screens}");
 
             WritePrivate("StartUp", "Information", string.Join(Environment.NewLine, lines));
+
+            // Log All Add Ins
+            if (_helper.AllAddIns != null && _helper.AllAddIns.Count > 0)
+            {
+                lines = new List<string>();
+                foreach (var addIn in _helper.AllAddIns)
+                {
+                    if (addIn.LoadBehaviour >= 0 && !string.IsNullOrEmpty(addIn.Description))
+                    {
+                        lines.Add($"{addIn.KeyName} '{addIn.Description}' [{addIn.LoadBehaviour}] {addIn.Manifest}".Trim());
+                    }
+                }
+                WritePrivate("StartUp", "Information", string.Join(Environment.NewLine, lines));
+            }
 
 #if DEBUG
             lines = new List<string>();

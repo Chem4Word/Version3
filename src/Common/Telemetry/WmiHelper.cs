@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2020, The .NET Foundation.
+//  Copyright (c) 2021, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -17,7 +17,7 @@ namespace Chem4Word.Telemetry
     public class WmiHelper
     {
         private const string QueryProcessor = "SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor";
-        private const string QueryOperatingSystem = "SELECT ProductType,LastBootUpTime FROM Win32_OperatingSystem";
+        private const string QueryOperatingSystem = "SELECT ProductType FROM Win32_OperatingSystem";
         private const string QueryPhysicalMemory = "SELECT Capacity FROM Win32_PhysicalMemory";
         private const string QueryAntiVirusProduct = "SELECT DisplayName,ProductState FROM AntiVirusProduct";
 
@@ -123,28 +123,6 @@ namespace Chem4Word.Telemetry
             }
         }
 
-        private string _lastBootUpTime;
-
-        public string LastLastBootUpTime
-        {
-            get
-            {
-                if (_lastBootUpTime == null)
-                {
-                    try
-                    {
-                        GetWin32OperatingSystemData();
-                    }
-                    catch (Exception)
-                    {
-                        //
-                    }
-                }
-
-                return _lastBootUpTime;
-            }
-        }
-
         private string _productType;
 
         public string ProductType
@@ -245,8 +223,6 @@ namespace Chem4Word.Telemetry
                 foreach (var o in objCol)
                 {
                     var mgtObject = (ManagementObject)o;
-                    DateTime lastBootUp = ManagementDateTimeConverter.ToDateTime(mgtObject["LastBootUpTime"].ToString());
-                    _lastBootUpTime = SafeDate.ToLongDate(lastBootUp.ToUniversalTime()) + " UTC";
 
                     var productType = int.Parse(mgtObject["ProductType"].ToString());
                     switch (productType)
@@ -271,7 +247,7 @@ namespace Chem4Word.Telemetry
             }
             catch
             {
-                _lastBootUpTime = "?";
+                // Do Nothing
             }
         }
 
