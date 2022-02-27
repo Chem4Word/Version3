@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2021, The .NET Foundation.
+//  Copyright (c) 2022, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace Chem4Word.Core.Helpers
 {
-    public class SafeDouble
+    public static class SafeDouble
     {
         public static double Parse(string source)
         {
@@ -35,10 +35,15 @@ namespace Chem4Word.Core.Helpers
 
             if (source != null)
             {
-                result = source.Value.ToString(format);
+                result = source.Value.ToString(format, CultureInfo.InvariantCulture);
             }
 
             return result;
+        }
+
+        public static string AsString0(double value)
+        {
+            return value.ToString("#,##0", CultureInfo.InvariantCulture);
         }
     }
 }

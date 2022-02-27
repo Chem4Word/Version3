@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2021, The .NET Foundation.
+//  Copyright (c) 2022, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -42,6 +42,9 @@ namespace Chem4Word.WebServices
 
             ChemicalServicesResult data = null;
 
+            var securityProtocol = ServicePointManager.SecurityProtocol;
+            ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             try
             {
                 using (HttpClient httpClient = new HttpClient())
@@ -81,6 +84,7 @@ namespace Chem4Word.WebServices
                                 {
                                     Telemetry.Write(module, "Timing", string.Join(Environment.NewLine, data.Messages));
                                 }
+
                                 if (data.Errors.Any())
                                 {
                                     Telemetry.Write(module, "Exception(Data)", string.Join(Environment.NewLine, data.Errors));
@@ -99,6 +103,10 @@ namespace Chem4Word.WebServices
             {
                 Telemetry.Write(module, "Exception", e1.Message);
                 Telemetry.Write(module, "Exception", e1.ToString());
+            }
+            finally
+            {
+                ServicePointManager.SecurityProtocol = securityProtocol;
             }
 
             DateTime ended = DateTime.Now;

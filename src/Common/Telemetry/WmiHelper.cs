@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2021, The .NET Foundation.
+//  Copyright (c) 2022, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -17,7 +17,7 @@ namespace Chem4Word.Telemetry
     public class WmiHelper
     {
         private const string QueryProcessor = "SELECT Name,NumberOfLogicalProcessors,CurrentClockSpeed FROM Win32_Processor";
-        private const string QueryOperatingSystem = "SELECT ProductType FROM Win32_OperatingSystem";
+        private const string QueryOperatingSystem = "SELECT ProductType,Caption,Version FROM Win32_OperatingSystem";
         private const string QueryPhysicalMemory = "SELECT Capacity FROM Win32_PhysicalMemory";
         private const string QueryAntiVirusProduct = "SELECT DisplayName,ProductState FROM AntiVirusProduct";
 
@@ -123,6 +123,50 @@ namespace Chem4Word.Telemetry
             }
         }
 
+        private string _osCaption;
+
+        public string OSCaption
+        {
+            get
+            {
+                if (_osCaption == null)
+                {
+                    try
+                    {
+                        GetWin32OperatingSystemData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
+                }
+
+                return _osCaption;
+            }
+        }
+
+        private string _osVersion;
+
+        public string OSVersion
+        {
+            get
+            {
+                if (_osVersion == null)
+                {
+                    try
+                    {
+                        GetWin32OperatingSystemData();
+                    }
+                    catch (Exception)
+                    {
+                        //
+                    }
+                }
+
+                return _osVersion;
+            }
+        }
+
         private string _productType;
 
         public string ProductType
@@ -204,7 +248,7 @@ namespace Chem4Word.Telemetry
                 try
                 {
                     double speed = double.Parse(mgtObject["CurrentClockSpeed"].ToString()) / 1024;
-                    _cpuSpeed = speed.ToString("#,##0.00", CultureInfo.InvariantCulture) + "GHz";
+                    _cpuSpeed = SafeDouble.AsString(speed, "#,##0.00") + "GHz";
                 }
                 catch
                 {
@@ -243,6 +287,9 @@ namespace Chem4Word.Telemetry
                             _productType = Unknown + $" [{productType}]";
                             break;
                     }
+
+                    _osCaption = mgtObject["Caption"].ToString();
+                    _osVersion = mgtObject["Version"].ToString();
                 }
             }
             catch
@@ -264,7 +311,7 @@ namespace Chem4Word.Telemetry
                     var mgtObject = (ManagementObject)o;
                     capacity += (UInt64)mgtObject["Capacity"];
                 }
-                _physicalMemory = (capacity / (1024 * 1024 * 1024)).ToString("#,##0") + "GB";
+                _physicalMemory = SafeDouble.AsString0((double)capacity / (1024 * 1024 * 1024)) + "GB";
             }
             catch
             {

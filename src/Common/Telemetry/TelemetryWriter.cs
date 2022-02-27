@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2021, The .NET Foundation.
+//  Copyright (c) 2022, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -8,7 +8,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using Chem4Word.Core.Helpers;
 using IChem4Word.Contracts;
 
@@ -82,11 +85,38 @@ namespace Chem4Word.Telemetry
             {
                 WritePrivate(operation, level, message);
 
-                if (!_systemInfoSent && _helper != null)
+                if (!_systemInfoSent
+                    && _helper?.IpAddress != null
+                    && !_helper.IpAddress.Contains("0.0.0.0"))
                 {
-                    if (_helper.IpAddress != null && !_helper.IpAddress.Contains("0.0.0.0"))
+                    WriteStartUpInfo();
+
+                    if (!string.IsNullOrEmpty(_helper.GitStatus))
                     {
-                        WriteStartUpInfo();
+                        var tracking = _helper.GitStatus
+                                              .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                                              .FirstOrDefault(l => l.StartsWith("##"));
+
+                        if (!string.IsNullOrEmpty(tracking))
+                        {
+                            var idxStart = tracking.IndexOf('[');
+                            var idxEnd = tracking.IndexOf(']');
+                            if (idxStart > 0 && idxEnd > 0)
+                            {
+                                var info = tracking.Substring(idxStart, idxEnd - idxStart + 1);
+
+                                if (info.Contains("behind"))
+                                {
+                                    MessageBox.Show("Your local source code is behind origin!", "WARNING",
+                                                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                }
+                                if (info.Contains("gone"))
+                                {
+                                    MessageBox.Show("Your local source code is gone from origin!", "WARNING",
+                                                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -115,29 +145,17 @@ namespace Chem4Word.Telemetry
 
         private void WriteStartUpInfo()
         {
-            // Log Add-In Version
-            WritePrivate("StartUp", "Information", _helper.AddInVersion); // ** Used by Andy's Knime protocol ?
-
-            // Log Word Version
             FixUpWordVersion();
-            WritePrivate("StartUp", "Information", _helper.WordProduct); // ** Used by Andy's Knime protocol
+            AddKnimeProperies();
+
+            WritePrivate("StartUp", "Information", $"Internal Version {_helper.WordVersion}");
             if (!string.IsNullOrEmpty(_helper.Click2RunProductIds))
             {
                 WritePrivate("StartUp", "Information", _helper.Click2RunProductIds);
             }
             WritePrivate("StartUp", "Information", Environment.GetCommandLineArgs()[0]);
 
-            // Log System
-            WritePrivate("StartUp", "Information", _helper.SystemOs); // ** Used by Andy's Knime protocol
-            WritePrivate("StartUp", "Information", _helper.DotNetVersion);
             WritePrivate("StartUp", "Information", $"Browser Version: {_helper.BrowserVersion}");
-
-            // Log IP Address
-            if (!_helper.IpAddress.Contains("8.8.8.8"))
-            {
-                WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
-                WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
-            }
 
             if (_helper.StartUpTimings != null)
             {
@@ -248,29 +266,49 @@ namespace Chem4Word.Telemetry
 
             WritePrivate("StartUp", "Information", string.Join(Environment.NewLine, lines));
 
-            WritePrivate("StartUp", "Information", _helper.GitStatus);
+            if (!string.IsNullOrEmpty(_helper.GitStatus))
+            {
+                WritePrivate("StartUp", "Information", _helper.GitStatus);
+            }
 #endif
 
-            #region Log critical System Info again to ensure we get it
+            // Add Knime Properies again to ensure they get sent
+            AddKnimeProperies();
 
-            // Log Add-In Version
-            WritePrivate("StartUp", "Information", _helper.AddInVersion); // ** Used by Andy's Knime protocol ?
+            _systemInfoSent = true;
+        }
 
-            // Log Word
-            WritePrivate("StartUp", "Information", _helper.WordProduct); // ** Used by Andy's Knime protocol
+        private void AddKnimeProperies()
+        {
+            // Used by Andy's Knime protocol
 
-            // Log System
-            WritePrivate("StartUp", "Information", _helper.SystemOs); // ** Used by Andy's Knime protocol
+            // OS Info
+            if (string.IsNullOrEmpty(_wmiHelper.OSVersion) || string.IsNullOrEmpty(_wmiHelper.OSCaption))
+            {
+                WritePrivate("StartUp", "Information", _helper.SystemOs);
+            }
+            else
+            {
+                string bits = Environment.Is64BitOperatingSystem ? "64bit" : "32bit";
+                string culture = CultureInfo.CurrentCulture.Name;
+                WritePrivate("StartUp", "Information", $"{_wmiHelper.OSCaption} {bits} [{_wmiHelper.OSVersion}] {culture}");
+            }
 
-            // Log IP Address
+            // Dot Net Version
+            WritePrivate("StartUp", "Information", _helper.DotNetVersion);
+
+            // Word Version
+            WritePrivate("StartUp", "Information", _helper.WordProduct);
+
+            // Add-In Version
+            WritePrivate("StartUp", "Information", _helper.AddInVersion);
+
+            // IP Address
             if (!_helper.IpAddress.Contains("8.8.8.8"))
             {
                 WritePrivate("StartUp", "Information", _helper.IpAddress); // ** Used by Andy's Knime protocol
+                WritePrivate("StartUp", "Information", _helper.IpObtainedFrom);
             }
-
-            #endregion Log critical System Info again to ensure we get it
-
-            _systemInfoSent = true;
         }
 
         private void WritePrivate(string operation, string level, string message)

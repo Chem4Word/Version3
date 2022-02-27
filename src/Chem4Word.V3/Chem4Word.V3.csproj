@@ -416,6 +416,7 @@
     <Content Include="Resources\About Images\C4W Background 512.png" />
     <Content Include="Resources\Button Images\ArrowLeft.png" />
     <Content Include="Resources\Button Images\ArrowRight.png" />
+    <Content Include="Resources\Button Images\Code.png" />
     <Content Include="Resources\Button Images\DocumentFind.png" />
     <Content Include="Resources\Button Images\DocumentMake.png" />
     <Content Include="Resources\Button Images\Export.png" />

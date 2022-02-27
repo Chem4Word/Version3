@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2021, The .NET Foundation.
+//  Copyright (c) 2022, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -245,6 +245,10 @@ namespace Chem4Word.Telemetry
                 GetScreens();
 
 #if DEBUG
+                message = $"GetGitStatus started at {SafeDate.ToLongDate(DateTime.Now)}";
+                StartUpTimings.Add(message);
+                Debug.WriteLine(message);
+
                 Thread thread2 = new Thread(GetGitStatus);
                 thread2.SetApartmentState(ApartmentState.STA);
                 thread2.Start(null);
@@ -252,7 +256,7 @@ namespace Chem4Word.Telemetry
 
                 sw.Stop();
 
-                message = $"SystemHelper.Initialise() took {sw.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
+                message = $"SystemHelper.Initialise() took {SafeDouble.AsString0(sw.ElapsedMilliseconds)}ms";
                 timings.Add(message);
                 Debug.WriteLine(message);
 
@@ -357,6 +361,10 @@ namespace Chem4Word.Telemetry
                 result.AddRange(changedFiles);
             }
             GitStatus = string.Join(Environment.NewLine, result.ToArray());
+
+            var message = $"GetGitStatus finished at {SafeDate.ToLongDate(DateTime.Now)}";
+            StartUpTimings.Add(message);
+            Debug.WriteLine(message);
         }
 
         private List<string> RunCommand(string exeName, string args, string folder)
@@ -419,6 +427,11 @@ namespace Chem4Word.Telemetry
                     int releaseKey = Convert.ToInt32(ndpKey.GetValue("Release"));
 
                     // .Net 4.8
+                    if (releaseKey >= 528449)
+                    {
+                        DotNetVersion = $".NET 4.8 (W11/S2022) [{releaseKey}]";
+                        return;
+                    }
                     if (releaseKey >= 528372)
                     {
                         DotNetVersion = $".NET 4.8 (W10 2004) [{releaseKey}]";
@@ -615,7 +628,7 @@ namespace Chem4Word.Telemetry
 
                 _ipStopwatch.Stop();
 
-                message = $"{module} took {_ipStopwatch.ElapsedMilliseconds.ToString("#,000", CultureInfo.InvariantCulture)}ms";
+                message = $"{module} took {SafeDouble.AsString0(_ipStopwatch.ElapsedMilliseconds)}ms";
                 StartUpTimings.Add(message);
                 Debug.WriteLine(message);
             }

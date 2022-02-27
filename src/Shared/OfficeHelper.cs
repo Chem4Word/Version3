@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2021, The .NET Foundation.
+//  Copyright (c) 2022, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -53,7 +53,7 @@ namespace Chem4Word.Shared
         }
 
         /// <summary>
-        /// Returns Word version Number Office 365 and 2019 return 2016
+        /// Returns Word version Number. For Office 365 and 2019 it returns 2016
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -64,9 +64,16 @@ namespace Chem4Word.Shared
                 path = GetWinWordPath();
             }
 
-            var fi = GetWinWordVersion(path);
+            if (path != null)
+            {
+                var fi = GetWinWordVersion(path);
 
-            return HumanOfficeVersion(fi.FileMajorPart);
+                return HumanOfficeVersion(fi.FileMajorPart);
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public static string GetWordProduct(string clickToRun)
