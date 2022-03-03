@@ -130,8 +130,10 @@ namespace Chem4Word.Telemetry
             var product = _helper.WordProduct;
             if (product.Contains("[16."))
             {
+                // If this is Office 2016/2019/2021/365
                 if (product.Contains("2016")
                     || product.Contains("2019")
+                    || product.Contains("2021")
                     || product.Contains("365"))
                 {
                     // Word version is set

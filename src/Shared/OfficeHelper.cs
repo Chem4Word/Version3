@@ -53,7 +53,7 @@ namespace Chem4Word.Shared
         }
 
         /// <summary>
-        /// Returns Word version Number. For Office 365 and 2019 it returns 2016
+        /// Returns Word version Number. For Office 365, 2019 & 2021 it returns 2016
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -85,7 +85,7 @@ namespace Chem4Word.Shared
 
             string officeProductName = string.Empty;
 
-            // If this is Office 2016 or 2019 or 365
+            // If this is Office 2016/2019/2021/365
             if (wordVersionNumber.StartsWith("16."))
             {
                 officeProductName = DecodeClickToRun(clickToRun);
@@ -183,6 +183,18 @@ namespace Chem4Word.Shared
                     {
                         versionNumber = "365";
                         break;
+                    }
+                }
+
+                if (string.IsNullOrEmpty(versionNumber))
+                {
+                    foreach (var p2 in products)
+                    {
+                        if (p2.Contains("2021"))
+                        {
+                            versionNumber = "2021";
+                            break;
+                        }
                     }
                 }
 

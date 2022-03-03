@@ -3,17 +3,24 @@
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
     <Version>
-        <Version>
-            <Number>3.0.38 Release 26</Number>
-            <IsBeta>false</IsBeta>
-            <Released>27-Feb-2022</Released>
-        </Version>
+        <Number>3.0.39 Release 27</Number>
+        <IsBeta>false</IsBeta>
+        <Released>03-Mar-2022</Released>
+        <Changes>
+            <Change>Detect Office 2021</Change>
+            <Change>If you like our product, please consider buying us a coffee at https://www.buymeacoffee.com/chem4word</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.39.Release.27.msi</Url>
+    </Version>
+    <Version>
+        <Number>3.0.38 Release 26</Number>
+        <IsBeta>false</IsBeta>
+        <Released>27-Feb-2022</Released>
         <Changes>
             <Change>Detect Windows 11</Change>
             <Change>Update copyright year</Change>
-            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating.</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.38.Release.26.msi</Url>
     </Version>
     <Version>
         <Number>3.0.37 Release 25</Number>
