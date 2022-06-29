@@ -1,7 +1,8 @@
 ﻿# Set Build Numbers
 
-.\SetAssemblyVersion.ps1 -path .. -version 3.0.39 -name "Release 27" -released 03-Mar-2022
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.40 -name "Release 28" -released 29-Jun-2022
 
+.\SetAssemblyVersion.ps1 -path .. -version 3.0.39 -name "Release 27" -released 03-Mar-2022
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.38 -name "Release 26" -released 27-Feb-2022
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.37 -name "Release 25" -released 20-May-2021
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.36 -name "Release 24" -released 26-Jan-2021
@@ -13,17 +14,3 @@
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.30 -name "Release 18" -released 11-Nov-2019
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.29 -name "Release 17" -released 10-Nov-2019
 .\SetAssemblyVersion.ps1 -path .. -version 3.0.28 -name "Release 16" -released 02-Oct-2019
-
-# GetReady.cmd
-set release=Chem4Word-Setup.3.0.28.Release.16.msi
-set working=C:\Temp
-
-pushd %working%
-
-copy Chem4Word.V3\Data\Chem4Word-Versions.xml %working%
-copy Chem4Word.V3\Data\index.html %working%
-
-copy Installer\Chem4WordSetup\bin\Setup\Chem4Word-Setup.exe %working%
-copy Installer\WiXInstaller\bin\Setup\%release% %working%
-
-popd
