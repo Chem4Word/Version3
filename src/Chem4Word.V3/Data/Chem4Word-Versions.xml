@@ -5,7 +5,7 @@
 	<Version>
 		<Number>3.0.40 Release 28</Number>
 		<IsBeta>false</IsBeta>
-		<Released>29-Jun-2022</Released>
+		<Released>01-Jul-2022</Released>
 		<Changes>
 			<Change>Security Update Newtonsoft.Json -> 13.0.1</Change>
 			<Change>If you like our product, please consider buying us a coffee at https://www.buymeacoffee.com/chem4word</Change>
