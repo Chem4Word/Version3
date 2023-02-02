@@ -43,7 +43,7 @@ function Update-SourceVersion
 		$assemblyVersion = 'AssemblyVersion("' + $version + '")';
 		$fileVersion = 'AssemblyFileVersion("' + $version + '")';
 		$company = 'AssemblyCompany("Chem4Word")'
-		$copyright = 'AssemblyCopyright("© Chem4Word 2022. All rights reserved.")'
+		$copyright = 'AssemblyCopyright("© Chem4Word 2023. All rights reserved.")'
 		$trademark = 'AssemblyTrademark("Chem4Word")'
 
 		(Get-Content $o.FullName -encoding UTF8) | ForEach-Object  { 

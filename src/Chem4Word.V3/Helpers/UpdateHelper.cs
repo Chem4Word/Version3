@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2022, The .NET Foundation.
+//  Copyright (c) 2023, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -240,10 +240,10 @@ namespace Chem4Word.Helpers
         {
             string module = $"{_product}.{_class}.{MethodBase.GetCurrentMethod().Name}()";
 
-            string VersionsFile = $"{Constants.Chem4WordVersionFiles}/Chem4Word-Versions.xml";
-            string PrimaryDomain = "https://www.chem4word.co.uk";
-            string[] Domains = { "https://www.chem4word.co.uk", "http://www.chem4word.com", "https://chem4word.azurewebsites.net" };
-            string VersionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
+            string primaryDomain = Constants.OurDomains.FirstOrDefault();
+            string versionsFileMarker = "<Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>";
+
+            string versionsFile = $"{Constants.Chem4WordVersionFiles}/Chem4Word-Versions.xml";
 
             string contents = null;
 
@@ -251,7 +251,7 @@ namespace Chem4Word.Helpers
             ServicePointManager.SecurityProtocol = securityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             bool foundOurXmlFile = false;
-            foreach (var domain in Domains)
+            foreach (var domain in Constants.OurDomains)
             {
                 using (HttpClient client = new HttpClient())
                 {
@@ -263,14 +263,14 @@ namespace Chem4Word.Helpers
 
                         client.DefaultRequestHeaders.Add("user-agent", "Chem4Word VersionChecker");
                         client.BaseAddress = new Uri(domain);
-                        var response = client.GetAsync(VersionsFile).Result;
+                        var response = client.GetAsync(versionsFile).Result;
                         response.EnsureSuccessStatusCode();
 
                         string result = response.Content.ReadAsStringAsync().Result;
-                        if (result.Contains(VersionsFileMarker))
+                        if (result.Contains(versionsFileMarker))
                         {
                             foundOurXmlFile = true;
-                            contents = domain.Equals(PrimaryDomain) ? result : result.Replace(PrimaryDomain, domain);
+                            contents = domain.Equals(primaryDomain) ? result : result.Replace(primaryDomain, domain);
                         }
                         else
                         {

@@ -2,17 +2,26 @@
 <!-- This file must be uploaded to https://www.chem4word.co.uk/files3/ folder as Chem4Word-Versions.xml -->
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
-	<Version>
-		<Number>3.0.40 Release 28</Number>
-		<IsBeta>false</IsBeta>
-		<Released>01-Jul-2022</Released>
-		<Changes>
-			<Change>Security Update Newtonsoft.Json -> 13.0.1</Change>
-			<Change>If you like our product, please consider buying us a coffee at https://www.buymeacoffee.com/chem4word</Change>
-			<Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating</Change>
-		</Changes>
-		<Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.40.Release.28.msi</Url>
-	</Version>
+    <Version>
+        <Number>3.0.41 Release 29</Number>
+        <IsBeta>false</IsBeta>
+        <Released>02-Feb-2023</Released>
+        <Changes>
+            <Change>Updated telemetry</Change>
+            <Change>Remove legacy Chem4Word settings on install</Change>
+            <Change>If you like our product, please consider buying us a coffee at https://www.buymeacoffee.com/chem4word</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.41.Release.29.msi</Url>
+    </Version>
+    <Version>
+        <Number>3.0.40 Release 28</Number>
+        <IsBeta>false</IsBeta>
+        <Released>01-Jul-2022</Released>
+        <Changes>
+            <Change>Security Update Newtonsoft.Json -> 13.0.1</Change>
+        </Changes>
+    </Version>
     <Version>
         <Number>3.0.39 Release 27</Number>
         <IsBeta>false</IsBeta>

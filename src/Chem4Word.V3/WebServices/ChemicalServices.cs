@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2022, The .NET Foundation.
+//  Copyright (c) 2023, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using Chem4Word.Core;
 using Chem4Word.Core.Helpers;
 using Chem4Word.Telemetry;
 using IChem4Word.Contracts;
@@ -24,13 +25,14 @@ namespace Chem4Word.WebServices
         private static string _class = MethodBase.GetCurrentMethod().DeclaringType?.Name;
 
         private IChem4WordTelemetry Telemetry { get; set; }
+        private AzureSettings _settings = new AzureSettings(true);
 
         public ChemicalServices(IChem4WordTelemetry telemetry)
         {
             Telemetry = telemetry;
 
             // http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
-            var sp = ServicePointManager.FindServicePoint(new Uri(Constants.Chem4WordWebServiceUri));
+            var sp = ServicePointManager.FindServicePoint(new Uri($"{_settings.ChemicalServicesUri}Resolve"));
             sp.ConnectionLeaseTimeout = 60 * 1000; // 1 minute
         }
 
@@ -62,7 +64,7 @@ namespace Chem4Word.WebServices
 
                     try
                     {
-                        var response = httpClient.PostAsync(Constants.Chem4WordWebServiceUri, content).Result;
+                        var response = httpClient.PostAsync($"{_settings.ChemicalServicesUri}Resolve", content).Result;
                         if (response.Content != null)
                         {
                             var responseContent = response.Content;

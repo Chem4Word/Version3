@@ -1,5 +1,5 @@
 ﻿// ---------------------------------------------------------------------------
-//  Copyright (c) 2022, The .NET Foundation.
+//  Copyright (c) 2023, The .NET Foundation.
 //  This software is released under the Apache License, Version 2.0.
 //  The license and further copyright text can be found in the file LICENSE.md
 //  at the root directory of the distribution.
@@ -211,7 +211,7 @@ namespace Chem4Word.Telemetry
                 _placesToTry.Add("https://ip.seeip.org");
                 _placesToTry.Add("https://ipapi.co/ip");
                 _placesToTry.Add("https://ident.me/");
-                _placesToTry.Add("https://api6.ipify.org/");
+                // Dead Link [2022-12-08] _placesToTry.Add("https://api6.ipify.org/");
                 _placesToTry.Add("https://v4v6.ipv6-test.com/api/myip.php");
 
                 message = $"GetIpAddress started at {SafeDate.ToLongDate(DateTime.Now)}";
@@ -546,10 +546,7 @@ namespace Chem4Word.Telemetry
                         return;
                     }
 
-                    if (releaseKey < 378389)
-                    {
-                        DotNetVersion = $".Net Version Unknown [{releaseKey}]";
-                    }
+                    DotNetVersion = $".Net Version Unknown [{releaseKey}]";
                 }
             }
         }
@@ -654,11 +651,11 @@ namespace Chem4Word.Telemetry
             data = data.Replace("<br/>", "|");
             data = data.Replace("<br />", "|");
 
-            string[] lines = data.Split('|');
+            var lines = data.Split('|');
 
             if (lines[0].Contains(":"))
             {
-                string[] ipV6Parts = lines[0].Split(':');
+                var ipV6Parts = lines[0].Split(':');
                 // Must have between 4 and 8 parts
                 if (ipV6Parts.Length >= 4 && ipV6Parts.Length <= 8)
                 {
@@ -670,7 +667,7 @@ namespace Chem4Word.Telemetry
             if (lines[0].Contains("."))
             {
                 // Must have 4 parts
-                string[] ipV4Parts = lines[0].Split('.');
+                var ipV4Parts = lines[0].Split('.');
                 if (ipV4Parts.Length == 4)
                 {
                     IpAddress = "IpAddress " + lines[0];
@@ -678,13 +675,18 @@ namespace Chem4Word.Telemetry
                 }
             }
 
-            if (lines.Length > 1)
+            SystemUtcDateTime = DateTime.UtcNow;
+            if (lines.Length == 2)
             {
                 ServerUtcDateRaw = lines[1];
                 ServerUtcDateTime = FromPhpDate(lines[1]);
-                SystemUtcDateTime = DateTime.UtcNow;
 
                 UtcOffset = SystemUtcDateTime.Ticks - ServerUtcDateTime.Ticks;
+            }
+            else
+            {
+                ServerUtcDateRaw = string.Join(Environment.NewLine, lines);
+                ServerUtcDateTime = DateTime.UtcNow;
             }
         }
 
