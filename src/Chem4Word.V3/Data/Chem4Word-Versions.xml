@@ -3,16 +3,28 @@
 <ChangeLog>
     <Id>f3c4f4db-2fff-46db-b14a-feb8e09f7742</Id>
     <Version>
+        <Number>3.2.7 Release 3</Number>
+        <IsBeta>false</IsBeta>
+        <Released>07-Feb-2023</Released>
+        <Changes>
+            <Change>Version 3.0 of Chem4Word will no longer be supported after 28th February 2023</Change>
+            <Change>--------------------------------------------------------------------------------------------------------------------</Change>
+            <Change>Please update to V3.2.7 as soon as possible</Change>
+            <Change>There are a myriad of changes (mainly for security and performance) which have taken place in the transition from V2.0.1.0 -> V3.0 -> V3.1 -> V3.2</Change>
+            <Change>To take advantages of them please upgrade - It's still FREE</Change>
+            <Change>If you like our product, please consider buying us a coffee at https://www.buymeacoffee.com/chem4word</Change>
+            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating</Change>
+        </Changes>
+        <Url>https://www.chem4word.co.uk/files3-2/Chem4Word-Setup.3.2.7.Release.3.msi</Url>
+    </Version>
+    <Version>
         <Number>3.0.41 Release 29</Number>
         <IsBeta>false</IsBeta>
         <Released>02-Feb-2023</Released>
         <Changes>
             <Change>Updated telemetry</Change>
             <Change>Remove legacy Chem4Word settings on install</Change>
-            <Change>If you like our product, please consider buying us a coffee at https://www.buymeacoffee.com/chem4word</Change>
-            <Change>Please download Chem4Word-Setup.exe via https://www.chem4word.co.uk/download/ if you encounter any difficulties updating</Change>
         </Changes>
-        <Url>https://www.chem4word.co.uk/files3/Chem4Word-Setup.3.0.41.Release.29.msi</Url>
     </Version>
     <Version>
         <Number>3.0.40 Release 28</Number>
