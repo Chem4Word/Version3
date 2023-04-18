@@ -1,6 +1,8 @@
 # Introduction 
 This project is Version 3 of the Chemistry for Word Add-In
 
+**This version is now obsolete, please use [V3.2](https://github.com/Chem4Word/Version3-2)**
+
 ## Code of Conduct
 This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.<br>
 For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct). 
